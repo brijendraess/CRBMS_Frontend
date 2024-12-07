@@ -1,0 +1,97 @@
+header {
+  width: 100%;
+  height: 60px;
+  background-color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  text-decoration: none;
+}
+
+.logo img {
+  width: 50px;
+}
+
+.logo span {
+  color: #292929;
+  font-weight: bolder;
+  font-size: 18px;
+}
+
+.rounded-circle {
+  min-width: 40px !important;
+  width: 40px !important;
+  height: 40px !important;
+  background: #f0f5ff !important;
+  color: #292929;
+}
+
+.rounded-circle svg {
+  color: #292929 !important;
+  font-size: 24px;
+  transition: all 0.2s ease-in-out;
+}
+
+.rounded-circle svg:hover {
+  color: #0858f7;
+}
+.profileImage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  border: 1px solid #0858f7;
+  padding: 1px;
+}
+
+.profilePhoto {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  cursor: pointer;
+  position: relative;
+}
+.profilePhoto img {
+  object-fit: cover;
+  width: 100%;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 8px;
+}
+
+.userInfo h4 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 0px;
+  color: #292929;
+  text-transform: capitalize;
+}
+
+.userInfo p {
+  margin-top: 0px;
+  font-size: 13px;
+  color: black;
+}
+
+.myAccWrapper {
+  text-align: left;
+  color: rgba(0, 0, 0, 0.897) !important;
+}

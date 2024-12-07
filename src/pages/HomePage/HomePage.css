@@ -1,0 +1,41 @@
+.right-content {
+  /* padding: 70px  15px; */
+  padding-top: 70px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.homePageWrapper {
+  gap: 20px;
+  width: 100%;
+  flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chartWrapperRow {
+  margin-top: 20px;
+}
+.chartWrapper {
+  gap: 20px;
+  width: 100%;
+  flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* chartWrapperRow2 */
+
+.homepageCardBox {
+  width: 48%;
+  height: 150px;
+  /* background-color: #ccc; */
+}
+
+.box {
+  width: 100%;
+  height: 100%;
+  /* background-color: #ccc; */
+}

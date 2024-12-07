@@ -1,0 +1,110 @@
+.right-content {
+  padding: 13px 15px;
+}
+
+.pop-content {
+  padding: 15px 15px;
+}
+
+.cardFilters .col h4 {
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: #403e57;
+}
+
+.members {
+  font-size: 20px;
+  font-weight: bold;
+  color: #403e57;
+}
+
+.action {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.delete {
+  cursor: pointer;
+}
+
+.memberListHeader {
+  width: 100vw;
+  height: 50px;
+  background-color: #fff;
+  margin-left: 10px;
+  border-radius: 100px 10px;
+  padding-left: 25px;
+  padding-right: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+}
+
+.memberListHeader h1 {
+  font-size: 24px;
+  margin-left: 10px;
+}
+
+.memberListHeader button {
+  margin-left: auto;
+  margin-right: 15px;
+  color: white;
+  background-color: green;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+}
+
+.admin-row {
+  background-color: rgba(4, 224, 34, 0.1) !important;
+}
+
+.delete-row {
+  background-color: rgba(211, 20, 14, 0.1) !important;
+}
+
+.legends {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: row;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.legendAdmin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 5px;
+}
+.legendDeleted {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.legendText {
+  margin-bottom: 0;
+}
+
+.buttonWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.cursor {
+  cursor: pointer;
+  margin-top: 8px;
+}

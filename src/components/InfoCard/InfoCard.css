@@ -1,0 +1,39 @@
+.homepageCardBox {
+  width: 48%;
+  height: 150px;
+  /* background-color: red; */
+  border-radius: "20px";
+}
+
+.col1 {
+  display: flex;
+  flex-direction: column;
+  line-height: 50px;
+  font-family: "Poppins";
+}
+
+.col1 h4 {
+  font-size: 20px;
+  font-weight: 700;
+}
+.number {
+  text-align: left;
+  font-size: 36px;
+  font-weight: 900;
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  background-color: #3f3e3e44;
+}
+
+.iconContainer svg {
+  font-size: 45px;
+  opacity: 0.4;
+  color: #ffffff;
+}
