@@ -1,0 +1,106 @@
+/* Modal Wrapper */
+.dialogWrapper {
+  position: relative;
+  z-index: 50;
+}
+
+/* Background Overlay */
+.dialogOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.25);
+  transition: opacity 0.3s ease-out;
+}
+
+.dialogOverlay.enter {
+  opacity: 0;
+}
+
+.dialogOverlay.enter-to {
+  opacity: 1;
+}
+
+.dialogOverlay.leave {
+  opacity: 1;
+}
+
+.dialogOverlay.leave-to {
+  opacity: 0;
+}
+
+/* Centered Content */
+.dialogContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  text-align: center;
+  overflow-y: auto;
+}
+
+/* Dialog Panel */
+.dialogPanel {
+  width: 100%;
+  max-width: 48rem; /* max-w-3xl equivalent */
+  height: auto;
+  max-height: 520px;
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  text-align: left;
+  vertical-align: middle;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.dialogPanel.enter {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.dialogPanel.enter-to {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.dialogPanel.leave {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.dialogPanel.leave-to {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+/* Dialog Title */
+.dialogTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.125rem; /* text-lg equivalent */
+  font-weight: 500; /* font-medium equivalent */
+  color: #1a202c; /* text-gray-900 equivalent */
+  text-align: right;
+}
+
+.dialogTitle h1 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.dialogTitle button {
+  outline: none;
+}
+
+.closeIcons {
+  cursor: pointer;
+}

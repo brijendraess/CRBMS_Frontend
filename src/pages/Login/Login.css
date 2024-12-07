@@ -1,0 +1,186 @@
+.authWrapper {
+  min-height: 100vh;
+  background-image: linear-gradient(rgba(0, 0, 255, 0.5), rgba(255, 255, 0, 0.5)),url("../../assets/Images/crbmswallpaper.jpg");
+  background-size: cover; /* Ensures the entire image fits */
+  background-position: center; /* Centers the image */
+  background-repeat: no-repeat; /* Prevents tiling */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 8px;
+  backdrop-filter: blur(10px);
+}
+
+.userLogin {
+  max-width: 448px;
+  width: 100%;
+  background-color: rgba(221, 226, 226, 0.24);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  padding: 10px;
+}
+
+.heading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  /* background: linear-gradient(to right, #34d399, #10b981); */
+  color: #2232c5;
+  /* -webkit-background-clip: text; */
+}
+
+.forgotLink {
+  font-size: 0.875rem;
+  color: #000;
+  font-weight: 500;
+  text-decoration: none;
+}
+.forgotLink:hover {
+  text-decoration: underline;
+}
+.error {
+  color: red;
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+.loginButtonBox {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loginButton {
+  align-self: center;
+  width: 50%;
+  padding: 0.5rem 0.5rem;
+  background: linear-gradient(to right, #2276c5, #056196);
+  color: white;
+  font-weight: 700;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s, transform 0.2s;
+  outline: none;
+}
+.loginButton:hover {
+  background: linear-gradient(to right, #16a34a, #047857);
+}
+
+.loginButton:focus {
+  outline: none;
+  box-shadow: 0 0 0 1px #2232c5, 0 0 0 1px #111827;
+}
+
+.loaderIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.roomLoginLink {
+  color: #34d399;
+  text-decoration: none;
+}
+.roomLoginLink:hover {
+  text-decoration: underline;
+}
+.roomLoginText {
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+.roomLoginMessage {
+  /* padding-left: 2rem; */
+  /* padding-right: 2rem; */
+  /* padding-top: 1rem; */
+  /* padding-bottom: 1rem; */
+  /* background-color: rgba(17, 24, 39, 0.5); */
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  width: 100%;
+}
+
+.otpInput {
+  width: 3rem;
+  height: 3rem;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  background-color: #374151;
+  color: white;
+  border: 2px solid #4b5563;
+  border-radius: 1rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.otpInput:focus {
+  border-color: #212cd1;
+}
+
+.customDialogOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.customDialog {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.customDialog h3 {
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+
+.customDialog p {
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #555;
+}
+
+.customDialog button {
+  padding: 8px 16px;
+  margin: 0 5px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.customDialog button:first-of-type {
+  background-color: #f44336;
+  color: white;
+}
+
+.customDialog button:last-of-type {
+  background-color: #4caf50;
+  color: white;
+}

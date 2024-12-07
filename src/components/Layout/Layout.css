@@ -1,0 +1,34 @@
+.main {
+  display: flex;
+  transition: all 0.3s ease-in-out;
+}
+
+.sidebarWrapper {
+  width: 15%;
+  flex: 0 0 15%;
+  transition: all 0.3s ease-in-out;
+}
+
+.sidebarWrapper-toggle {
+  width: 60px;
+  flex: 0 0 60px;
+  transition: all 0.3s ease-in-out;
+}
+
+.content {
+  width: 85%;
+  flex: 0 0 85%;
+  transition: all 0.3s ease-in-out;
+}
+
+.contentToggle {
+  width: calc(100% - 60px);
+  flex: 0 0 calc(100% - 60px);
+  transition: all 0.3s ease-in-out;
+}
+
+.outlet-content {
+  margin-top: 50px;
+  padding: 10px 10px 0 10px;
+  /* position: fixed; */
+}
