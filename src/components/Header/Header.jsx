@@ -185,25 +185,29 @@ const Header = () => {
           <h4>Welcome,</h4>
           <p className="mb-0">{user?.fullname}</p>
         </div>
-        <Divider variant="middle" component="li" />
+        <Divider
+          variant="middle"
+          component="li"
+          sx={{ marginTop: "15px", marginBottom: "15px" }}
+        />
         <MenuItem
           onClick={handleMenuToggle(setMenuAnchor)}
-          sx={{ color: "blue" }}
+          sx={{ color: "black" }}
         >
           <ListItemIcon>
             <PersonOutlineOutlinedIcon
               fontSize="small"
-              sx={{ color: "blue" }}
+              sx={{ color: "black" }}
             />
           </ListItemIcon>
           Profile
         </MenuItem>
         <MenuItem
           onClick={handleMenuToggle(setMenuAnchor)}
-          sx={{ color: "blue" }}
+          sx={{ color: "black" }}
         >
           <ListItemIcon>
-            <KeyOutlinedIcon fontSize="small" sx={{ color: "blue" }} />
+            <KeyOutlinedIcon fontSize="small" sx={{ color: "black" }} />
           </ListItemIcon>
           Reset Password
         </MenuItem>

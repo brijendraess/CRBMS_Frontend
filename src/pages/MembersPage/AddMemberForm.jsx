@@ -18,6 +18,7 @@ import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { PopContent } from "../../Style";
 
 // Styled component for form container
 const FormWrapper = styled(Paper)(({ theme }) => ({
@@ -114,152 +115,151 @@ const AddMemberForm = () => {
   });
 
   return (
-    <div className="pop-content w-100">
-        <Box component="form" onSubmit={formik.handleSubmit}>
-          {/*Full Name */}
-          <Box display="flex" justifyContent="space-between" mb={2}>
-            <TextField
-              label="Full Name"
-              name="fullname"
-              value={formik.values.fullname}
-              onChange={formik.handleChange}
-              error={formik.touched.fullname && Boolean(formik.errors.fullname)}
-              helperText={formik.touched.fullname && formik.errors.fullname}
-              style={{ flex: 1 }}
-              size="small"
-            />
-          </Box>
-
-          {/* Email and Password */}
-          <Box display="flex" justifyContent="space-between" mb={2}>
-            <TextField
-              label="Email"
-              name="email"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
-              style={{ marginRight: 8, flex: 1 }}
-              size="small"
-            />
-            <TextField
-              label="Password"
-              name="password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
-              type={showPassword ? "text" : "password"}
-              size="small"
-              style={{ flex: 1 }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </Box>
-
-          {/* Role and Phone Number */}
-          <Box display="flex" justifyContent="space-between" mb={2}>
-            <TextField
-              label="Role"
-              name="role"
-              select
-              value={formik.values.role}
-              onChange={formik.handleChange}
-              error={formik.touched.role && Boolean(formik.errors.role)}
-              helperText={formik.touched.role && formik.errors.role}
-              style={{ marginRight: 8, flex: 1 }}
-              size="small"
-            >
-              <MenuItem value="User">User</MenuItem>
-              <MenuItem value="Admin">Admin</MenuItem>
-            </TextField>
-            <TextField
-              label="Phone Number"
-              name="phoneNumber"
-              value={formik.values.phoneNumber}
-              onChange={formik.handleChange}
-              error={
-                formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)
-              }
-              helperText={
-                formik.touched.phoneNumber && formik.errors.phoneNumber
-              }
-              size="small"
-              style={{ flex: 1 }}
-            />
-          </Box>
-
-          {/* Committee Selection */}
-          <Autocomplete
-          disableCloseOnSelect
-            multiple
-            id="committee"
-            options={committees}
-            getOptionLabel={(option) => option.name || option.id}            value={
-              committees.filter((committee) =>
-                formik.values.committee.includes(committee.id)
-              ) // Match the selected IDs with options
-            }
-            onChange={(_, selectedOptions) => {
-              formik.setFieldValue(
-                "committee",
-                selectedOptions.map((option) => option.id) // Extract only IDs
-              );
-            }}
-            isOptionEqualToValue={(option, value) => option.id === value.id} // Ensure correct matching
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Select Committee"
-                error={
-                  formik.touched.committee && Boolean(formik.errors.committee)
-                }
-                helperText={formik.touched.committee && formik.errors.committee}
-              />
-            )}
-            style={{ marginBottom: 16 }}
+    <PopContent>
+      <Box component="form" onSubmit={formik.handleSubmit}>
+        {/*Full Name */}
+        <Box display="flex" justifyContent="space-between" mb={2}>
+          <TextField
+            label="Full Name"
+            name="fullname"
+            value={formik.values.fullname}
+            onChange={formik.handleChange}
+            error={formik.touched.fullname && Boolean(formik.errors.fullname)}
+            helperText={formik.touched.fullname && formik.errors.fullname}
+            style={{ flex: 1 }}
+            size="small"
           />
-
-          {/* Avatar */}
-          <Box display="flex" justifyContent="center" mb={3}>
-            <input
-              accept="image/*"
-              style={{ display: "none" }}
-              id="avatar-upload"
-              type="file"
-              onChange={handleAvatarChange}
-            />
-            <label htmlFor="avatar-upload">
-              <IconButton component="span">
-                <Avatar
-                  sx={{ width: 100, height: 100 }}
-                  src={avatarPreview}
-                  alt="Avatar Preview"
-                >
-                  <PhotoCameraIcon fontSize="large" />
-                </Avatar>
-              </IconButton>
-            </label>
-          </Box>
-
-          {/* Submit Button */}
-          <Box display="flex" justifyContent="flex-end">
-            <Button type="submit" variant="contained" color="primary">
-              Add Member
-            </Button>
-          </Box>
         </Box>
-    </div>
+
+        {/* Email and Password */}
+        <Box display="flex" justifyContent="space-between" mb={2}>
+          <TextField
+            label="Email"
+            name="email"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
+            style={{ marginRight: 8, flex: 1 }}
+            size="small"
+          />
+          <TextField
+            label="Password"
+            name="password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            error={formik.touched.password && Boolean(formik.errors.password)}
+            helperText={formik.touched.password && formik.errors.password}
+            type={showPassword ? "text" : "password"}
+            size="small"
+            style={{ flex: 1 }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </Box>
+
+        {/* Role and Phone Number */}
+        <Box display="flex" justifyContent="space-between" mb={2}>
+          <TextField
+            label="Role"
+            name="role"
+            select
+            value={formik.values.role}
+            onChange={formik.handleChange}
+            error={formik.touched.role && Boolean(formik.errors.role)}
+            helperText={formik.touched.role && formik.errors.role}
+            style={{ marginRight: 8, flex: 1 }}
+            size="small"
+          >
+            <MenuItem value="User">User</MenuItem>
+            <MenuItem value="Admin">Admin</MenuItem>
+          </TextField>
+          <TextField
+            label="Phone Number"
+            name="phoneNumber"
+            value={formik.values.phoneNumber}
+            onChange={formik.handleChange}
+            error={
+              formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)
+            }
+            helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+            size="small"
+            style={{ flex: 1 }}
+          />
+        </Box>
+
+        {/* Committee Selection */}
+        <Autocomplete
+          disableCloseOnSelect
+          multiple
+          id="committee"
+          options={committees}
+          getOptionLabel={(option) => option.name || option.id}
+          value={
+            committees.filter((committee) =>
+              formik.values.committee.includes(committee.id)
+            ) // Match the selected IDs with options
+          }
+          onChange={(_, selectedOptions) => {
+            formik.setFieldValue(
+              "committee",
+              selectedOptions.map((option) => option.id) // Extract only IDs
+            );
+          }}
+          isOptionEqualToValue={(option, value) => option.id === value.id} // Ensure correct matching
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Select Committee"
+              error={
+                formik.touched.committee && Boolean(formik.errors.committee)
+              }
+              helperText={formik.touched.committee && formik.errors.committee}
+            />
+          )}
+          style={{ marginBottom: 16 }}
+        />
+
+        {/* Avatar */}
+        <Box display="flex" justifyContent="center" mb={3}>
+          <input
+            accept="image/*"
+            style={{ display: "none" }}
+            id="avatar-upload"
+            type="file"
+            onChange={handleAvatarChange}
+          />
+          <label htmlFor="avatar-upload">
+            <IconButton component="span">
+              <Avatar
+                sx={{ width: 100, height: 100 }}
+                src={avatarPreview}
+                alt="Avatar Preview"
+              >
+                <PhotoCameraIcon fontSize="large" />
+              </Avatar>
+            </IconButton>
+          </label>
+        </Box>
+
+        {/* Submit Button */}
+        <Box display="flex" justifyContent="flex-end">
+          <Button type="submit" variant="contained" color="primary">
+            Add Member
+          </Button>
+        </Box>
+      </Box>
+    </PopContent>
   );
 };
 

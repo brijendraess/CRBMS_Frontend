@@ -282,6 +282,8 @@ const MembersPage = () => {
         open={open}
         onClose={handleClose}
         onDeleteConfirm={handleDelete}
+        title="user"
+        button="Delete"
       />
       <PopupModals
         isOpen={isOpen}

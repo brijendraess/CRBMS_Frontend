@@ -41,7 +41,7 @@ export const PaperWrapper = styled(Paper)(({ theme }) => ({
   // height: "100%",
 }));
 
-export const PopContent = styled(Paper)(({ theme }) => ({
+export const PopContent = styled("div")(({ theme }) => ({
   padding: "15px",
 }));
 

@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import CloseIcon from "@mui/icons-material/Close";
 import "./PopupModals.css";
+import { Typography } from "@mui/material";
 
 const PopupModals = ({
   modalBody,
@@ -37,7 +38,18 @@ const PopupModals = ({
             >
               <Dialog.Panel className="dialogPanel">
                 <Dialog.Title className="dialogTitle">
-                  <h2>{title}</h2>
+                  <Typography
+                    variant="h4"
+                    component="h4"
+                    style={{
+                      fontSize: "20px",
+                      fontWeight: 400,
+                      lineHeight: 1.4,
+                      color: " #2E2E2E",
+                    }}
+                  >
+                    {title}
+                  </Typography>
                   <CloseIcon className="closeIcons" onClick={closeDialog} />
                 </Dialog.Title>
                 <div>{modalBody}</div>
