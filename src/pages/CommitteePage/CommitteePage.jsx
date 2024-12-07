@@ -19,6 +19,7 @@ import PopupModals from "../../components/Common Components/Modals/Popup/PopupMo
 import AddCommitteeForm from "./AddCommitteeForm";
 import CustomButton from "../../components/Common Components/CustomButton/CustomButton";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import DeleteModal from "../../components/Common Components/Modals/Delete/DeleteModal";
 
 // Styled component for the card wrapper
 const CardWrapper = styled(Paper)(({ theme }) => ({

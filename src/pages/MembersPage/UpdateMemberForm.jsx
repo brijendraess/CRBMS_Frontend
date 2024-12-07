@@ -7,6 +7,7 @@ import {
   Paper,
   styled,
   Autocomplete,
+  Chip,
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -25,7 +26,7 @@ const FormWrapper = styled(Paper)(({ theme }) => ({
   marginTop: "10px",
 }));
 
-const UpdateMemberForm = ({id}) => {
+const UpdateMemberForm = ({ id }) => {
   //const { id } = useParams();
   const [availableCommittees, setAvailableCommittees] = useState([]);
   const [userCommittees, setUserCommittees] = useState([]);
@@ -122,81 +123,99 @@ const UpdateMemberForm = ({id}) => {
   });
 
   return (
-    <div className="pop-content w-100">
-        <Box component="form" onSubmit={formik.handleSubmit}>
-          <TextField
-            label="Full Name"
-            name="fullname"
-            margin="normal"
-            value={formik.values.fullname}
-            onChange={formik.handleChange}
-            error={formik.touched.fullname && Boolean(formik.errors.fullname)}
-            helperText={formik.touched.fullname && formik.errors.fullname}
-            fullWidth
-            size="small"
-          />
+    <Box component="form" onSubmit={formik.handleSubmit}>
+      <TextField
+        label="Full Name"
+        name="fullname"
+        margin="normal"
+        value={formik.values.fullname}
+        onChange={formik.handleChange}
+        error={formik.touched.fullname && Boolean(formik.errors.fullname)}
+        helperText={formik.touched.fullname && formik.errors.fullname}
+        fullWidth
+        size="small"
+      />
 
-          <TextField
-            label="Email"
-            name="email"
-            margin="normal"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
-            fullWidth
-            size="small"
-          />
+      <TextField
+        label="Email"
+        name="email"
+        margin="normal"
+        value={formik.values.email}
+        onChange={formik.handleChange}
+        error={formik.touched.email && Boolean(formik.errors.email)}
+        helperText={formik.touched.email && formik.errors.email}
+        fullWidth
+        size="small"
+      />
 
+      <TextField
+        label="Phone Number"
+        name="phoneNumber"
+        margin="normal"
+        value={formik.values.phoneNumber}
+        onChange={formik.handleChange}
+        error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
+        helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+        fullWidth
+        size="small"
+      />
+
+      <Autocomplete
+        multiple
+        id="committees"
+        options={availableCommittees}
+        value={formik.values.committees}
+        getOptionLabel={(option) => option.name || ""}
+        onChange={(_, selectedCommittees) => {
+          formik.setFieldValue("committees", selectedCommittees);
+        }}
+        isOptionEqualToValue={(option, value) => option.id === value.id}
+        renderInput={(params) => (
           <TextField
-            label="Phone Number"
-            name="phoneNumber"
-            margin="normal"
-            value={formik.values.phoneNumber}
-            onChange={formik.handleChange}
+            marginTop={2}
+            {...params}
+            label="Select Committees"
             error={
-              formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)
+              formik.touched.committees && Boolean(formik.errors.committees)
             }
-            helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
-            fullWidth
-            size="small"
+            helperText={formik.touched.committees && formik.errors.committees}
           />
-
-          <Autocomplete
-            multiple
-            id="committees"
-            options={availableCommittees}
-            value={formik.values.committees}
-            getOptionLabel={(option) => option.name || ""}
-            onChange={(_, selectedCommittees) => {
-              formik.setFieldValue("committees", selectedCommittees);
+        )}
+        disableCloseOnSelect
+        slotProps={{
+          listbox: {
+            style: { maxHeight: 100, overflowY: "scroll" }, // Scrollable dropdown
+          },
+        }}
+        style={{ marginTop: "1rem" }}
+        renderTags={(selected, getTagProps) => (
+          <div
+            style={{
+              maxHeight: "100px", // Limit the height of the selected items container
+              overflowY: "auto", // Enable scroll
+              padding: "5px",
+              border: "1px solid #ccc", // Optional: Visual boundary
+              borderRadius: "4px", // Optional: Rounded edges
             }}
-            isOptionEqualToValue={(option, value) => option.id === value.id}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Select Committees"
-                error={
-                  formik.touched.committees && Boolean(formik.errors.committees)
-                }
-                helperText={
-                  formik.touched.committees && formik.errors.committees
-                }
+          >
+            {selected.map((option, index) => (
+              <Chip
+                key={option.id}
+                label={option.name}
+                {...getTagProps({ index })}
+                style={{ fontSize: "0.875rem" }} // Adjust text size for chips
               />
-            )}
-            disableCloseOnSelect
-            ListboxProps={{
-              style: { maxHeight: 200, overflowY: "auto" },
-            }}
-          />
+            ))}
+          </div>
+        )}
+      />
 
-          <Box mt={2} display="flex" justifyContent="flex-end">
-            <Button type="submit" variant="contained" color="primary">
-              Update Profile
-            </Button>
-          </Box>
-        </Box>
-    </div>
+      <Box mt={2} display="flex" justifyContent="flex-end">
+        <Button type="submit" variant="contained" color="primary">
+          Update Profile
+        </Button>
+      </Box>
+    </Box>
   );
 };
 

@@ -12,7 +12,7 @@ const style = {
   borderRadius: "10px",
 };
 
-const DeleteModal = ({ open, onClose, onDeleteConfirm }) => {
+const DeleteModal = ({ open, onClose, onDeleteConfirm, title, button }) => {
   return (
     <Modal
       open={open}
@@ -47,11 +47,11 @@ const DeleteModal = ({ open, onClose, onDeleteConfirm }) => {
             mb: 5,
           }}
         >
-          Are you sure you want to delete this item?
+          Are you sure you want to delete this {title}?
         </Typography>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <Button variant="contained" color="error" onClick={onDeleteConfirm}>
-            Delete
+            {button}
           </Button>
           <Button variant="outlined" onClick={onClose}>
             Cancel
