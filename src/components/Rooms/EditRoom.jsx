@@ -10,6 +10,8 @@ import {
   Paper,
   styled,
   Autocomplete,
+  FormControlLabel,
+  Switch,
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -28,10 +30,13 @@ const FormWrapper = styled(Paper)(({ theme }) => ({
   marginTop: "10px",
 }));
 
-const EditRoomForm = () => {
+const EditRoomForm = ({ room }) => {
   const [roomImagePreview, setRoomImagePreview] = useState(null);
-  const [amenitiesList, setAmenitiesList] = useState([]);
+  const [locationList, setLocationList] = useState([]);
   const [roomImageError, setRoomImageError] = useState("");
+  const [formState, setFormState] = useState({
+    sanitationStatus: false, // default value matches `defaultChecked`
+  });
 
   const validateImage = (file) => {
     // Allowed image types
@@ -53,40 +58,50 @@ const EditRoomForm = () => {
     return null;
   };
 
+  // Fetching the  list
   useEffect(() => {
-    const fetchAmenities = async () => {
+    const fetchLocation = async () => {
       try {
-        const response = await axios.get("api/v1/amenity/get-all-amenities");
-        const amenities = response.data.data.roomAmenities.map(
-          (amenity) => amenity.name
-        );
-        setAmenitiesList(amenities);
+        const response = await axios.get("api/v1/location/activeLocations");
+        const locations = response.data.data.result.map((location) => {
+          return { id: location.id, location: location.locationName };
+        });
+        setLocationList(locations);
       } catch (error) {
-        toast.error("Failed to load amenities");
-        console.error("Error fetching amenities:", error);
+        toast.error("Failed to load location");
+        console.error("Error fetching location:", error);
       }
     };
 
-    fetchAmenities();
+    fetchLocation();
   }, []);
+
+
 
   const formik = useFormik({
     initialValues: {
-      name: "",
-      location: "",
-      capacity: "",
-      roomImage: "",
+      name: room.name,
+      location: room.Location.locationName,
+      capacity: room.capacity,
+      tolerancePeriod: room.tolerancePeriod,
+      roomImage: room.roomImage,
       // password: "",
-      description: "",
-      sanitationStatus: false,
+      description: room.description,
+      sanitationStatus: room.sanitationStatus,
       isAvailable: true,
-      amenities: [],
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Room Name is required"),
-      location: Yup.string().required("Location is required"),
+      location: Yup.object({
+        id: Yup.string().required("Id is required"),
+        location: Yup.string().required("location is required"),
+      }),
       capacity: Yup.number()
         .required("Capacity is required")
+        .positive()
+        .integer(),
+      tolerancePeriod: Yup.number()
+        .required("Tolerance Period is required")
         .positive()
         .integer(),
       // password: Yup.string().required("Password is required"),
@@ -97,11 +112,11 @@ const EditRoomForm = () => {
       try {
         const formData = new FormData();
         formData.append("name", values.name);
-        formData.append("location", values.location);
         formData.append("capacity", values.capacity);
+        formData.append("tolerancePeriod", values.tolerancePeriod);
         formData.append("description", values.description);
-        // formData.append("password", values.password);
-        formData.append("amenities", JSON.stringify(values.amenities));
+        formData.append("location", values.location.id);
+        formData.append("sanitationStatus", formState.sanitationStatus);
         if (values.roomImage) formData.append("roomImage", values.roomImage);
 
         const response = await axios.post("api/v1/rooms/add-room", formData, {
@@ -111,6 +126,7 @@ const EditRoomForm = () => {
         toast.success("Room added successfully");
         resetForm();
         setRoomImagePreview(null);
+      
         setRoomImageError("");
       } catch (error) {
         toast.error(error.response?.data?.message || "An error occurred");
@@ -118,6 +134,8 @@ const EditRoomForm = () => {
       }
     },
   });
+
+  
 
   const handleRoomImageChange = (event) => {
     const file = event.currentTarget.files[0];
@@ -142,6 +160,15 @@ const EditRoomForm = () => {
     }
   };
 
+  // Handle change for the Switch
+  const handleSanitationStatusChange = (event) => {
+    const { name, checked } = event.target;
+    setFormState((prevState) => ({
+      ...prevState,
+      [name]: checked, // Update state based on Switch value
+    }));
+  };
+console.log(room)
   return (
     <div className="pop-content w-100">
       <FormWrapper>
@@ -158,16 +185,29 @@ const EditRoomForm = () => {
               style={{ marginRight: 8, flex: 1 }}
               size="small"
             />
-            <TextField
-              label="Location"
+            <Autocomplete
+              id="location"
               name="location"
-              margin="normal"
-              value={formik.values.location}
-              onChange={formik.handleChange}
-              error={formik.touched.location && Boolean(formik.errors.location)}
-              helperText={formik.touched.location && formik.errors.location}
-              style={{ flex: 1 }}
+              style={{ marginTop: 15, flex: 1 }}
               size="small"
+              margin="normal"
+              options={locationList}
+              getOptionLabel={(locationList) => locationList.location}
+              value={formik.values.location}
+              onChange={(_, newValue) =>
+                formik.setFieldValue("location", newValue)
+              }
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Select Location"
+                  error={
+                    formik.touched.location && Boolean(formik.errors.location)
+                  }
+                  helperText={formik.touched.location && formik.errors.location}
+                />
+              )}
+              disableCloseOnSelect
             />
           </Box>
           <Box display="flex" justifyContent="space-between">
@@ -188,12 +228,24 @@ const EditRoomForm = () => {
               name="tolerancePeriod"
               margin="normal"
               type="number"
-              // value={formik.values.Sanitation Time}
+             value={formik.values.tolerancePeriod}
               onChange={formik.handleChange}
               // error={formik.touched.Sanitation Time && Boolean(formik.errors.Sanitation Time)}
               // helperText={formik.touched.Sanitation Time && formik.errors.Sanitation Time}
               size="small"
               style={{ marginRight: 8, flex: 1 }}
+            />
+          </Box>
+          <Box display="flex" justifyContent="space-between">
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={formik.values.sanitationStatus}
+                  name="sanitationStatus"
+                  onChange={handleSanitationStatusChange}
+                />
+              }
+              label="Sanitation status"
             />
           </Box>
           <TextField
@@ -213,29 +265,7 @@ const EditRoomForm = () => {
             fullWidth
             style={{ marginBottom: 16 }}
           />
-          <Autocomplete
-            multiple
-            id="amenities"
-            name="amenities"
-            size="small"
-            options={amenitiesList}
-            value={formik.values.amenities}
-            onChange={(_, newValue) =>
-              formik.setFieldValue("amenities", newValue)
-            }
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Select Amenities"
-                error={
-                  formik.touched.amenities && Boolean(formik.errors.amenities)
-                }
-                helperText={formik.touched.amenities && formik.errors.amenities}
-              />
-            )}
-            disableCloseOnSelect
-            isOptionEqualToValue={(option, value) => option === value}
-          />
+
           <Box
             display="flex"
             alignItems="center"
@@ -275,7 +305,7 @@ const EditRoomForm = () => {
           )}
           <Box mt={2} display="flex" justifyContent="flex-end">
             <Button type="submit" variant="contained" color="primary">
-              Save
+              Add Room
             </Button>
           </Box>
         </Box>
