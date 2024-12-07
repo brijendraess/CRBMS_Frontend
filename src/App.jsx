@@ -105,7 +105,7 @@ function App() {
           element={
             <PublicRoutes>
               <ResetPassword />
-            </PublicRoutes>
+            </PublicRoutes> 
           }
         />
 
