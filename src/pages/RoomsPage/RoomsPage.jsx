@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import RoomsCard from "../../components/Rooms/RoomsCard";
-import { Box, styled, Paper, Button, Grid2, Typography } from "@mui/material";
+import { Box, styled, Paper, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { PersonAddAlt1Rounded } from "@mui/icons-material";
 import "./RoomsPage.css";
-import { MainContainer, RightContent } from "../../Style";
+import { MainContainer } from "../../Style";
 import PopupModals from "../../components/Common Components/Modals/Popup/PopupModals";
 import AddRoomForm from "./AddRoomForm";
 import RoomFilter from "./RoomFilter";
@@ -29,6 +28,7 @@ const RoomsPage = () => {
   const [selectedAmenities, setSelectedAmenities] = useState([]);
   const [amenitiesList, setAmenitiesList] = useState([]);
   const [isAddOpen, setIsAddOpen] = useState(false);
+  const [deleteUpdateStatus, setDeleteUpdateStatus] = useState("");
   const [meetingStartTime, setMeetingStartTime] = useState(null); // For start time filter
   const [meetingEndingTime, setMeetingEndingTime] = useState(null); // For end time filter
   const { user } = useSelector((state) => state.user);
@@ -59,7 +59,7 @@ const RoomsPage = () => {
   useEffect(() => {
     fetchRoomsData();
     fetchAmenitiesData();
-  }, []);
+  }, [deleteUpdateStatus]);
 
   // Handle capacity change
   const handleChangeCapacity = (event) => {
@@ -73,6 +73,8 @@ const RoomsPage = () => {
     } = event;
     setSelectedAmenities(typeof value === "string" ? value.split(",") : value);
   };
+
+
 
   // Handle availability change
   const handleAvailabilityChange = (event) => {
@@ -145,7 +147,7 @@ const RoomsPage = () => {
                 className="col-xs-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 mb-4"
                 key={index}
               >
-                <RoomsCard room={room} />
+                <RoomsCard room={room} setDeleteUpdateStatus={setDeleteUpdateStatus} />
               </div>
             ))}
           </div>
@@ -155,8 +157,9 @@ const RoomsPage = () => {
         isOpen={isAddOpen}
         setIsOpen={setIsAddOpen}
         title={"Add New Room"}
-        modalBody={<AddRoomForm />}
+        modalBody={<AddRoomForm setDeleteUpdateStatus={setDeleteUpdateStatus} setIsAddOpen={setIsAddOpen} />}
       />
+     
     </div>
   );
 };
