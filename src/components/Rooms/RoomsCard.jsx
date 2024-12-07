@@ -19,15 +19,21 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import PopupModals from "../Common Components/Modals/Popup/PopupModals";
 import RoomGallery from "./RoomGallery";
 import RoomAmenities from "./RoomAmenities";
+import toast from "react-hot-toast";
 import EditRoomForm from "./EditRoom";
 import MeetingForm from "../../pages/MeetingPage/MeetingForm";
+import DeleteModal from "../Common Components/Modals/Delete/DeleteModal";
+import axios from "axios";
 
-const RoomsCard = ({ room }) => {
+const RoomsCard = ({ room,setDeleteUpdateStatus }) => {
   const navigate = useNavigate();
   const [hover, setHover] = useState(false);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [isBookNowOpen, setIsBookNowOpen] = useState(false);
   const [isAmenitiesOpen, setIsAmenitiesOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [deleteId, setDeleteId] = useState(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const { user } = useSelector((state) => state.user);
   const handleCardClick = () => {
@@ -46,10 +52,40 @@ const RoomsCard = ({ room }) => {
     setIsAmenitiesOpen(true);
   };
 
+  // Handle delete functionality
+  const handleDeleteClose = () => {
+    setIsDeleteOpen(false);
+  };
+
+  // Handle delete functionality
+  const handleDeleteClick = (id) => {
+    setIsDeleteOpen(true);
+    setDeleteId(id);
+  };
+
+  // Handle delete room functionality
+  const handleDeleteRoom = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.delete(`/api/v1/rooms/${deleteId}`);
+      console.log(response);
+      if (response.status === 200) {
+        toast.success("Room deleted successfully");
+      }
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      toast.error("Failed to delete user");
+    } finally {
+      setLoading(false);
+      setDeleteUpdateStatus(Math.random())
+      handleDeleteClose();
+    }
+  };
+
   const handleRoomEdit = () => {
     setIsEditOpen(true);
   };
-  console.log(room);
+
   return (
     <>
       <Paper
@@ -248,7 +284,7 @@ const RoomsCard = ({ room }) => {
                 fullWidth
                 title="Delete Room"
                 variant="contained"
-                onClick={handleCardClick}
+                onClick={() => handleDeleteClick(room.id)}
                 sx={{
                   borderRadius: "0 0 10px 0px",
                   background: "red",
@@ -308,6 +344,11 @@ const RoomsCard = ({ room }) => {
         setIsOpen={setIsBookNowOpen}
         title={"Add New Meeting"}
         modalBody={<MeetingForm room={room} />}
+      />
+      <DeleteModal
+        open={isDeleteOpen}
+        onClose={handleDeleteClose}
+        onDeleteConfirm={handleDeleteRoom}
       />
     </>
   );
