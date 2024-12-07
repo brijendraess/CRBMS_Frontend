@@ -109,7 +109,7 @@ function App() {
           }
         />
 
-        {/* Protected Routes - With Sidebar and Header */}
+        {/* Protected Routes - With Sidebar and Header bar */}
         <Route
           element={
             <ProtectedRoutes>
