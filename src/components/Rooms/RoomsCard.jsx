@@ -85,7 +85,6 @@ const RoomsCard = ({ room,setDeleteUpdateStatus }) => {
   const handleRoomEdit = () => {
     setIsEditOpen(true);
   };
-
   return (
     <>
       <Paper

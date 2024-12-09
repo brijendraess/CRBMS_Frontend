@@ -3,9 +3,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
-import HomePage from "./pages/HomePage/HomePage";
-import Header from "./components/Header/Header";
-import Sidebar from "./components/Sidebar/Sidebar";
 import RoomsPage from "./pages/RoomsPage/RoomsPage";
 import MembersPage from "./pages/MembersPage/MembersPage";
 import DetailRoomPage from "./pages/DetailRoomPage/DetailRoomPage";
@@ -29,7 +26,6 @@ import CommitteeManagementMUI from "./pages/CommitteePage/CommitteePage";
 import AddCommitteeForm from "./pages/CommitteePage/AddCommitteeForm";
 import CommitteeMemberList from "./pages/CommitteePage/CommitteeMemberList";
 import ViewMember from "./pages/MembersPage/ViewMember";
-import { useState } from "react";
 import { useSelector } from "react-redux";
 import MyCommitteePage from "./pages/CommitteePage/MyCommitteePage";
 import MeetingForm from "./pages/MeetingPage/MeetingForm";
@@ -38,6 +34,7 @@ import TodaysMeetings from "./pages/SinglePage/TodaysMeetings";
 import Layout from "./components/Layout/Layout";
 import LocationPage from "./pages/LocationPage/LocationPage";
 import MeetingLogs from "./pages/MeetingLogs/MeetingLogs";
+import ReportPage from "./pages/ReportPage/ReportPage";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL
 axios.defaults.withCredentials = true;
@@ -64,7 +61,7 @@ function App() {
         }}
       />
       <Routes>
-      {/* Comment */}
+        {/* Comment */}
         {/* <Route path="/meeting-calendar" element={<CalenderPage />} /> */}
         {/* Public Routes - No Sidebar/Header */}
         <Route path="/rooms/:id" element={<DetailRoomPage />} />
@@ -119,7 +116,7 @@ function App() {
           }
         >
           {isAdmin ? (
-            <Route path="/home" element={<HomePage />} />
+            <Route path="/home" element={<ReportPage />} />
           ) : (
             <Route path="/home" element={<RoomsPage />} />
           )}
