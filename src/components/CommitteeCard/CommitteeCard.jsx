@@ -25,26 +25,37 @@ import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import PopupModals from "../Common Components/Modals/Popup/PopupModals";
 import AddCommitteeForm from "../../pages/CommitteePage/AddCommitteeForm";
+import DeleteModal from "../Common Components/Modals/Delete/DeleteModal";
 
 const CommitteeCard = ({ committee, onDelete }) => {
   const [hover, setHover] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+
+  const handleOpen = (id) => {
+    setDeleteId(id);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setDeleteId(null);
+  };
 
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
 
   const handleDelete = async () => {
-    if (window.confirm("Are you sure you want to delete this committee?")) {
-      try {
-        showLoading();
-        await axios.delete(`/api/v1/committee/committees/${committee.id}`);
-        onDelete(committee.id);
-        toast.success("Committee deleted successfully!");
-        hideLoading();
-      } catch (error) {
-        console.error("Error deleting committee:", error);
-        toast.error("Failed to delete committee. Please try again.");
-      }
+    try {
+      showLoading();
+      await axios.delete(`/api/v1/committee/committees/${committee.id}`);
+      onDelete(committee.id);
+      toast.success("Committee deleted successfully!");
+      hideLoading();
+    } catch (error) {
+      console.error("Error deleting committee:", error);
+      toast.error("Failed to delete committee. Please try again.");
     }
   };
 
@@ -113,7 +124,7 @@ const CommitteeCard = ({ committee, onDelete }) => {
                 </Tooltip>
                 <Tooltip title="Delete Committee">
                   <DeleteOutline
-                    onClick={handleDelete}
+                    onClick={handleOpen}
                     sx={{ cursor: "pointer" }}
                     fontSize="medium"
                     color="error"
@@ -200,6 +211,13 @@ const CommitteeCard = ({ committee, onDelete }) => {
         setIsOpen={setIsEditOpen}
         title={"Edit Committee"}
         modalBody={<AddCommitteeForm committeeId={committee.id} />}
+      />
+      <DeleteModal
+        open={open}
+        onClose={handleClose}
+        onDeleteConfirm={handleDelete}
+        title="committee"
+        button="Delete"
       />
     </Card>
   );
