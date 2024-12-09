@@ -183,8 +183,6 @@ const AmenitiesList = () => {
           open={open}
           onClose={handleClose}
           onDeleteConfirm={handleDelete}
-          title={"amenity"}
-          button="Delete"
         />
       </PaperWrapper>
     </RightContent>

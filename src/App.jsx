@@ -36,7 +36,7 @@ import LocationPage from "./pages/LocationPage/LocationPage";
 import MeetingLogs from "./pages/MeetingLogs/MeetingLogs";
 import ReportPage from "./pages/ReportPage/ReportPage";
 
-axios.defaults.baseURL = import.meta.env.VITE_API_URL
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 axios.defaults.withCredentials = true;
 
 function App() {
@@ -61,9 +61,6 @@ function App() {
         }}
       />
       <Routes>
-        {/* Comment */}
-        {/* <Route path="/meeting-calendar" element={<CalenderPage />} /> */}
-        {/* Public Routes - No Sidebar/Header */}
         <Route path="/rooms/:id" element={<DetailRoomPage />} />
         <Route path="/meetings/today" element={<TodaysMeetings />} />
         <Route
@@ -103,11 +100,9 @@ function App() {
           element={
             <PublicRoutes>
               <ResetPassword />
-            </PublicRoutes> 
+            </PublicRoutes>
           }
         />
-
-        {/* Protected Routes - With Sidebar and Header bar */}
         <Route
           element={
             <ProtectedRoutes>
@@ -115,14 +110,10 @@ function App() {
             </ProtectedRoutes>
           }
         >
-          {isAdmin ? (
-            <Route path="/home" element={<ReportPage />} />
-          ) : (
-            <Route path="/home" element={<RoomsPage />} />
-          )}
-          {/* <Route path="/home" element={<HomePage />} /> */}
+          {/* To-Do Admin Condition */}
+          <Route path="/home" element={<CalenderPage />} />
           <Route path="/rooms" element={<RoomsPage />} />
-          {/* <Route path="/rooms/:id" element={<DetailRoomPage />} /> */}
+          <Route path="/reports" element={<ReportPage />} />
           <Route path="/members" element={<MembersPage />} />
           <Route path="/meetings" element={<MainMeetingPage />} />
           <Route path="/meeting-calendar" element={<CalenderPage />} />

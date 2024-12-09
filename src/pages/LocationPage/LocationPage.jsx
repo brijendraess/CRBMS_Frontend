@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { PaperWrapper, RightContent } from "../../Style";
+import { PaperWrapper } from "../../Style";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import { Box, Button, Switch, Typography } from "@mui/material";
+import { Box, Switch, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import PopupModals from "../../components/Common Components/Modals/Popup/PopupModals";
 import LocationAdd from "./LocationAdd";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import {
-  DeleteOutlineOutlined as DeleteIcon,
-  ToggleOffOutlined as ToggleOffIcon,
-  ToggleOnOutlined as ToggleOnIcon,
-} from "@mui/icons-material";
+import { DeleteOutlineOutlined as DeleteIcon } from "@mui/icons-material";
 import axios from "axios";
 import toast from "react-hot-toast";
 import LocationEdit from "./LocationEdit";
@@ -125,70 +121,68 @@ const LocationPage = () => {
   ];
 
   return (
-    <RightContent>
-      <PaperWrapper>
-        <Box
+    <PaperWrapper>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: "10px",
+        }}
+      >
+        <Typography
+          variant="h1"
+          component="h1"
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginBottom: "10px",
+            marginRight: "20px",
+            fontSize: "22px",
+            fontWeight: 500,
+            lineHeight: 1.5,
+            color: "#2E2E2E",
           }}
         >
-          <Typography
-            variant="h1"
-            component="h1"
-            sx={{
-              marginRight: "20px",
-              fontSize: "22px",
-              fontWeight: 500,
-              lineHeight: 1.5,
-              color: "#2E2E2E",
-            }}
-          >
-            Location
-          </Typography>
-          <CustomButton
-            onClick={() => setIsAddOpen(true)}
-            title={"Add New Room"}
-            placement={"left"}
-            Icon={AddOutlinedIcon}
-            fontSize={"medium"}
-            background={"rgba(3, 176, 48, 0.68)"}
-          />
-        </Box>
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <DataGrid
-            rows={location}
-            columns={columns}
-            pageSize={5}
-            rowsPerPageOptions={[5]}
-            disableSelectionOnClick
-            rowHeight={40}
-          />
-        </div>
-        <PopupModals
-          isOpen={isAddOpen}
-          setIsOpen={setIsAddOpen}
-          title={"Add Location"}
-          modalBody={<LocationAdd />}
+          Location
+        </Typography>
+        <CustomButton
+          onClick={() => setIsAddOpen(true)}
+          title={"Add New Room"}
+          placement={"left"}
+          Icon={AddOutlinedIcon}
+          fontSize={"medium"}
+          background={"rgba(3, 176, 48, 0.68)"}
         />
-        <PopupModals
-          isOpen={isEditOpen}
-          setIsOpen={setIsEditOpen}
-          title={"Edit Location"}
-          modalBody={
-            <LocationEdit
-              id={updatedId}
-              locationName={
-                location.find((loc) => loc.id === updatedId)?.locationName || ""
-              }
-              onSuccess={handleUpdateSuccess}
-            />
-          }
+      </Box>
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <DataGrid
+          rows={location}
+          columns={columns}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+          disableSelectionOnClick
+          rowHeight={40}
         />
-      </PaperWrapper>
-    </RightContent>
+      </div>
+      <PopupModals
+        isOpen={isAddOpen}
+        setIsOpen={setIsAddOpen}
+        title={"Add Location"}
+        modalBody={<LocationAdd />}
+      />
+      <PopupModals
+        isOpen={isEditOpen}
+        setIsOpen={setIsEditOpen}
+        title={"Edit Location"}
+        modalBody={
+          <LocationEdit
+            id={updatedId}
+            locationName={
+              location.find((loc) => loc.id === updatedId)?.locationName || ""
+            }
+            onSuccess={handleUpdateSuccess}
+          />
+        }
+      />
+    </PaperWrapper>
   );
 };
 
