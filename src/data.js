@@ -1,26 +1,18 @@
 // icons
 import MeetingRoomOutlinedIcon from "@mui/icons-material/MeetingRoomOutlined";
-import Groups2OutlinedIcon from "@mui/icons-material/Groups2Outlined";
-import EventNoteOutlinedIcon from "@mui/icons-material/EventNoteOutlined";
-import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
-import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import Diversity2Icon from "@mui/icons-material/Diversity2";
-import ChairOutlinedIcon from "@mui/icons-material/ChairOutlined";
-import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
-import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
-import RoomServiceOutlinedIcon from "@mui/icons-material/RoomServiceOutlined";
-import BeenhereOutlinedIcon from "@mui/icons-material/BeenhereOutlined";
-import roomImage from "./assets/Images/room.jpg";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import ChairIcon from "@mui/icons-material/Chair";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
+import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
+import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 
 export const adminSideBarData = [
   {
     id: 1,
-    name: "Dashboard",
-    icon: DashboardOutlinedIcon,
+    name: "Home",
+    icon: CalendarMonthOutlinedIcon,
     path: "/meeting-calendar",
   },
   {
@@ -59,13 +51,19 @@ export const adminSideBarData = [
     icon: HistoryOutlinedIcon,
     path: "/logs",
   },
+  {
+    id: 8,
+    name: "Report & Analytics",
+    icon: BarChartOutlinedIcon,
+    path: "/reports",
+  },
 ];
 
 export const userSideBarData = [
   {
     id: 1,
     name: "My Meeting", //MY Meetings
-    icon: DashboardOutlinedIcon,
+    icon: CalendarMonthOutlinedIcon,
     path: "/meeting-calendar",
   },
   {

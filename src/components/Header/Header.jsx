@@ -21,7 +21,6 @@ import {
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import MenuOutlined from "@mui/icons-material/MenuOutlined";
 import SearchBox from "../SearchBox/SearchBox";
-import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import FullscreenOutlinedIcon from "@mui/icons-material/FullscreenOutlined";
 import FullscreenExitOutlinedIcon from "@mui/icons-material/FullscreenExitOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
@@ -39,6 +38,9 @@ import { MyContext } from "../Layout/Layout";
 import NotificationsMenu from "../Notifications/NotificationsMenu";
 import { notifications } from "../../data";
 import { MaterialUISwitch } from "../../Style";
+import PopupModals from "../Common Components/Modals/Popup/PopupModals";
+import ProfilePage from "../../pages/ProfilePage/ProfilePage";
+import ResetPassword from "../../pages/ProfilePage/ResetPassword";
 
 const Header = () => {
   const context = useContext(MyContext);
@@ -47,7 +49,8 @@ const Header = () => {
   const [menuAnchor, setMenuAnchor] = useState(null);
   const [notificationsAnchor, setNotificationsAnchor] = useState(null);
   const [isFullScreen, setIsFullScreen] = useState(false);
-
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isResetPasswordOpen, setIsResetPasswordOpen] = useState(false);
   const navigate = useNavigate();
 
   // Common Function to Toggle Menus
@@ -99,6 +102,16 @@ const Header = () => {
     }
   };
 
+  // Edit Profile Handler
+  const handleEdit = () => {
+    setIsEditOpen(true);
+  };
+
+  // Reset Password Handler
+  const handleResetPassword = () => {
+    setIsResetPasswordOpen(true);
+  };
+
   return (
     <header>
       <div className="container-fluid w-100">
@@ -125,14 +138,9 @@ const Header = () => {
 
           {/* Action Buttons */}
           <div className="col-sm-7 col-xs-3 d-flex align-items-center justify-content-end gap-2">
-            {/* Light Mode Button */}
-            {/* <Button className="rounded-circle">
-              <LightModeOutlinedIcon />
-            </Button> */}
             <FormControlLabel
               control={<MaterialUISwitch sx={{ margin: 0 }} defaultChecked />}
             />
-            {/* Notifications Button */}
             <Button
               className="rounded-circle"
               onClick={handleMenuToggle(setNotificationsAnchor)}
@@ -142,7 +150,6 @@ const Header = () => {
               </Badge>
             </Button>
 
-            {/* Fullscreen Button */}
             <Button className="rounded-circle" onClick={handleFullScreen}>
               {isFullScreen ? (
                 <FullscreenExitOutlinedIcon />
@@ -151,7 +158,6 @@ const Header = () => {
               )}
             </Button>
 
-            {/* Profile Button */}
             <Button
               className="myAccWrapper"
               onClick={handleMenuToggle(setMenuAnchor)}
@@ -190,10 +196,7 @@ const Header = () => {
           component="li"
           sx={{ marginTop: "15px", marginBottom: "15px" }}
         />
-        <MenuItem
-          onClick={handleMenuToggle(setMenuAnchor)}
-          sx={{ color: "black" }}
-        >
+        <MenuItem onClick={handleEdit} sx={{ color: "black" }}>
           <ListItemIcon>
             <PersonOutlineOutlinedIcon
               fontSize="small"
@@ -202,10 +205,7 @@ const Header = () => {
           </ListItemIcon>
           Profile
         </MenuItem>
-        <MenuItem
-          onClick={handleMenuToggle(setMenuAnchor)}
-          sx={{ color: "black" }}
-        >
+        <MenuItem onClick={handleResetPassword} sx={{ color: "black" }}>
           <ListItemIcon>
             <KeyOutlinedIcon fontSize="small" sx={{ color: "black" }} />
           </ListItemIcon>
@@ -238,6 +238,20 @@ const Header = () => {
           onViewAll={() => alert("View All Notifications clicked!")}
         />
       </Popover>
+
+      <PopupModals
+        isOpen={isEditOpen}
+        setIsOpen={setIsEditOpen}
+        title={"Update My Profile"}
+        modalBody={<ProfilePage user={user} />}
+      />
+
+      <PopupModals
+        isOpen={isResetPasswordOpen}
+        setIsOpen={setIsResetPasswordOpen}
+        title={"Reset Password"}
+        modalBody={<ResetPassword user={user} />}
+      />
     </header>
   );
 };
