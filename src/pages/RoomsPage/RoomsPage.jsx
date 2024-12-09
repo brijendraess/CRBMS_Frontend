@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import axios from "axios";
 import toast from "react-hot-toast";
 import "./RoomsPage.css";
-import { MainContainer } from "../../Style";
+import { MainContainer, PaperWrapper } from "../../Style";
 import PopupModals from "../../components/Common Components/Modals/Popup/PopupModals";
 import AddRoomForm from "./AddRoomForm";
 import RoomFilter from "./RoomFilter";
@@ -32,13 +32,11 @@ const RoomsPage = () => {
   const [meetingStartTime, setMeetingStartTime] = useState(null); // For start time filter
   const [meetingEndingTime, setMeetingEndingTime] = useState(null); // For end time filter
   const { user } = useSelector((state) => state.user);
-  // Fetch room data
+
   const fetchRoomsData = async () => {
     try {
       const response = await axios.get("api/v1/rooms/all-rooms");
       setRoomsData(response.data.data.rooms);
-      // toast.success("Room Fetched Successfully");
-      // console.log(response.data.data.rooms);
     } catch (error) {
       toast.error("Something Went Wrong");
       console.error("Error fetching room data:", error);
@@ -74,8 +72,6 @@ const RoomsPage = () => {
     setSelectedAmenities(typeof value === "string" ? value.split(",") : value);
   };
 
-
-
   // Handle availability change
   const handleAvailabilityChange = (event) => {
     setIsAvailable(event.target.value);
@@ -103,8 +99,8 @@ const RoomsPage = () => {
   });
 
   return (
-    <div className="right-content w-100">
-      <DataGridWrapper>
+    <>
+      <PaperWrapper>
         <Box
           sx={{
             display: "flex",
@@ -147,20 +143,27 @@ const RoomsPage = () => {
                 className="col-xs-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 mb-4"
                 key={index}
               >
-                <RoomsCard room={room} setDeleteUpdateStatus={setDeleteUpdateStatus} />
+                <RoomsCard
+                  room={room}
+                  setDeleteUpdateStatus={setDeleteUpdateStatus}
+                />
               </div>
             ))}
           </div>
         </MainContainer>
-      </DataGridWrapper>
+      </PaperWrapper>
       <PopupModals
         isOpen={isAddOpen}
         setIsOpen={setIsAddOpen}
         title={"Add New Room"}
-        modalBody={<AddRoomForm setDeleteUpdateStatus={setDeleteUpdateStatus} setIsAddOpen={setIsAddOpen} />}
+        modalBody={
+          <AddRoomForm
+            setDeleteUpdateStatus={setDeleteUpdateStatus}
+            setIsAddOpen={setIsAddOpen}
+          />
+        }
       />
-     
-    </div>
+    </>
   );
 };
 

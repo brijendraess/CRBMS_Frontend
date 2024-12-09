@@ -7,11 +7,12 @@ import AreaChartBox from "../../components/Charts/AreaChartBox";
 import BarChartBox from "../../components/Charts/BarChartBox";
 import PieChartBox from "../../components/Charts/PieChartBox";
 import RadarChartBox from "../../components/Charts/RadarChartBox";
+import { PaperWrapper } from "../../Style";
 // LineChartBox
 
 const ReportPage = () => {
   return (
-    <div className="right-content w-100">
+    <PaperWrapper>
       <div className="row homePageWrapperRow">
         <div className="col-md-7">
           <div className="homePageWrapper d-flex">
@@ -72,7 +73,7 @@ const ReportPage = () => {
           <RadarChartBox color={["#bdc3c7  ", "#2c3e50"]} />
         </div>
       </div>
-    </div>
+    </PaperWrapper>
   );
 };
 

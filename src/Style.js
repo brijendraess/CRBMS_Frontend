@@ -13,14 +13,13 @@ export const ContentHeader = styled(Paper)(({ theme }) => ({
   alignItems: "center",
   zIndex: 10,
   gap: 3,
-  top: 80,
+  top: 0,
 }));
 
 export const MainContainer = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   width: "100%",
-  padding: "8px",
 }));
 
 export const RightContent = styled("div")(({ theme }) => ({
