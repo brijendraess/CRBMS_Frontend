@@ -1,5 +1,5 @@
 import React from "react";
-import "./HomePage.css";
+import "./ReportPage.css";
 import InfoCard from "../../components/InfoCard/InfoCard";
 import List from "../../components/List/List";
 import LineChartBox from "../../components/Charts/LineChartBox";
@@ -9,8 +9,7 @@ import PieChartBox from "../../components/Charts/PieChartBox";
 import RadarChartBox from "../../components/Charts/RadarChartBox";
 // LineChartBox
 
-const HomePage = () => {
-  
+const ReportPage = () => {
   return (
     <div className="right-content w-100">
       <div className="row homePageWrapperRow">
@@ -77,4 +76,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default ReportPage;

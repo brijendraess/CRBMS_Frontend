@@ -19,7 +19,6 @@ import CommitteeManagementMUI from "../../pages/CommitteePage/CommitteePage";
 import AddCommitteeForm from "../../pages/CommitteePage/AddCommitteeForm";
 import CommitteeMemberList from "../../pages/CommitteePage/CommitteeMemberList";
 import ViewMember from "../../pages/MembersPage/ViewMember";
-import MyCommitteePage from "../../pages/CommitteePage/MyCommitteePage";
 import MeetingForm from "../../pages/MeetingPage/MeetingForm";
 import TodaysMeetings from "../../pages/SinglePage/TodaysMeetings";
 

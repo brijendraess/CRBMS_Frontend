@@ -49,7 +49,6 @@ const RoomsCard = ({ room }) => {
   const handleRoomEdit = () => {
     setIsEditOpen(true);
   };
-  console.log(room);
   return (
     <>
       <Paper
