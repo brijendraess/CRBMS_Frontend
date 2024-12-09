@@ -30,7 +30,7 @@ const FormWrapper = styled(Paper)(({ theme }) => ({
   marginTop: "10px",
 }));
 
-const AddRoomForm = () => {
+const AddRoomForm = ({ setDeleteUpdateStatus, setIsAddOpen }) => {
   const [roomImagePreview, setRoomImagePreview] = useState(null);
   const [locationList, setLocationList] = useState([]);
   const [roomImageError, setRoomImageError] = useState("");
@@ -81,7 +81,7 @@ const AddRoomForm = () => {
       name: "",
       location: null,
       capacity: "",
-      tolerancePeriod:"",
+      tolerancePeriod: "",
       roomImage: "",
       // password: "",
       description: "",
@@ -98,10 +98,10 @@ const AddRoomForm = () => {
         .required("Capacity is required")
         .positive()
         .integer(),
-        tolerancePeriod: Yup.number()
+      tolerancePeriod: Yup.number()
         .required("Tolerance Period is required")
         .positive()
-        .integer(),   
+        .integer(),
       // password: Yup.string().required("Password is required"),
       description: Yup.string(),
     }),
@@ -111,7 +111,7 @@ const AddRoomForm = () => {
         const formData = new FormData();
         formData.append("name", values.name);
         formData.append("capacity", values.capacity);
-        formData.append("tolerancePeriod",values.tolerancePeriod);
+        formData.append("tolerancePeriod", values.tolerancePeriod);
         formData.append("description", values.description);
         formData.append("location", values.location.id);
         formData.append("sanitationStatus", formState.sanitationStatus);
@@ -124,6 +124,8 @@ const AddRoomForm = () => {
         toast.success("Room added successfully");
         resetForm();
         setRoomImagePreview(null);
+        setDeleteUpdateStatus(Math.random());
+        setIsAddOpen(false);
         setRoomImageError("");
       } catch (error) {
         toast.error(error.response?.data?.message || "An error occurred");
@@ -155,8 +157,8 @@ const AddRoomForm = () => {
     }
   };
 
-   // Handle change for the Switch
-   const handleSanitationStatusChange = (event) => {
+  // Handle change for the Switch
+  const handleSanitationStatusChange = (event) => {
     const { name, checked } = event.target;
     setFormState((prevState) => ({
       ...prevState,

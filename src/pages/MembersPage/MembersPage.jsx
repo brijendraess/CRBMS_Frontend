@@ -136,7 +136,7 @@ const MembersPage = () => {
       renderCell: (params) =>
         params.value ? (
           <img
-            src={`http://localhost:9000/${params.value}`}
+            src={`${import.meta.env.VITE_API_URL}/${params.value}`}
             alt="avatar"
             style={{ width: "35px", height: "35px", borderRadius: "50%" }}
           />

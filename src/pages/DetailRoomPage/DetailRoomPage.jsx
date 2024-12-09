@@ -161,7 +161,7 @@ const DetailRoomPage = () => {
           <div className="w-100 d-flex flex-row gap-5">
             <div className="imageWrapper flex-1">
               <img
-                src={`http://localhost:9000/${room.roomImagePath}`}
+                src={`${import.meta.env.VITE_API_URL}/${room.roomImagePath}`}
                 alt="Room"
               />
               <div className="infoWrapper d-flex flex-1">

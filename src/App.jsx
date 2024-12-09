@@ -36,7 +36,7 @@ import LocationPage from "./pages/LocationPage/LocationPage";
 import MeetingLogs from "./pages/MeetingLogs/MeetingLogs";
 import ReportPage from "./pages/ReportPage/ReportPage";
 
-axios.defaults.baseURL = "http://localhost:9000";
+axios.defaults.baseURL = import.meta.env.VITE_API_URL
 axios.defaults.withCredentials = true;
 
 function App() {
@@ -103,7 +103,7 @@ function App() {
           element={
             <PublicRoutes>
               <ResetPassword />
-            </PublicRoutes>
+            </PublicRoutes> 
           }
         />
 
