@@ -9,7 +9,7 @@ const PublicRoutes = ({ children }) => {
   const checkAuth = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:9000/api/v1/user/check-auth",
+        `${import.meta.env.VITE_API_URL}/api/v1/user/check-auth`,
         { withCredentials: true }
       );
       if (response.status === 200) {

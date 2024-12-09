@@ -123,7 +123,7 @@ const RoomsCard = ({ room,setDeleteUpdateStatus }) => {
         >
           <Box
             component="img"
-            src={`http://localhost:9000/${room.roomImagePath}`}
+            src={`${import.meta.env.VITE_API_URL}/${room.roomImagePath}`}
             alt={room.roomImagePath}
             sx={{
               width: "100%",

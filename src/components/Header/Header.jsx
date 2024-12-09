@@ -161,7 +161,7 @@ const Header = () => {
                   <img
                     src={
                       user?.avatarPath
-                        ? `http://localhost:9000/${user?.avatarPath}`
+                        ? `${import.meta.env.VITE_API_URL}/${user?.avatarPath}`
                         : unknownUser
                     }
                     alt="My Pic"

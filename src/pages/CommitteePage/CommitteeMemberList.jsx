@@ -74,7 +74,7 @@ const CommitteeMemberList = () => {
         <img
           src={
             params?.value
-              ? `http://localhost:9000/${params?.value}`
+              ? `${import.meta.env.VITE_API_URL}/${params?.value}`
               : unknownUser
           }
           alt="avatar"
