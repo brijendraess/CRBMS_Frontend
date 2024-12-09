@@ -34,10 +34,8 @@ const EditRoomForm = ({ room }) => {
   const [roomImagePreview, setRoomImagePreview] = useState(null);
   const [locationList, setLocationList] = useState([]);
   const [roomImageError, setRoomImageError] = useState("");
-  const [formState, setFormState] = useState({
-    sanitationStatus: false, // default value matches `defaultChecked`
-  });
-
+  const [sanitationStatus, setSanitationStatus] = useState(room.sanitationStatus);
+  const [isAvailable, setIsAvailable] = useState(room.isAvailable);
   const validateImage = (file) => {
     // Allowed image types
     const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
@@ -64,7 +62,7 @@ const EditRoomForm = ({ room }) => {
       try {
         const response = await axios.get("api/v1/location/activeLocations");
         const locations = response.data.data.result.map((location) => {
-          return { id: location.id, location: location.locationName };
+          return { id: location.id, label: location.locationName };
         });
         setLocationList(locations);
       } catch (error) {
@@ -76,25 +74,22 @@ const EditRoomForm = ({ room }) => {
     fetchLocation();
   }, []);
 
-
-
   const formik = useFormik({
     initialValues: {
       name: room.name,
-      location: room.Location.locationName,
+      location: { id: room.Location.id, label: room.Location.locationName },
       capacity: room.capacity,
       tolerancePeriod: room.tolerancePeriod,
       roomImage: room.roomImage,
-      // password: "",
       description: room.description,
-      sanitationStatus: room.sanitationStatus,
-      isAvailable: true,
+      sanitationStatus: sanitationStatus,
+      isAvailable: isAvailable,
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Room Name is required"),
       location: Yup.object({
         id: Yup.string().required("Id is required"),
-        location: Yup.string().required("location is required"),
+        label: Yup.string().required("label is required"),
       }),
       capacity: Yup.number()
         .required("Capacity is required")
@@ -116,17 +111,21 @@ const EditRoomForm = ({ room }) => {
         formData.append("tolerancePeriod", values.tolerancePeriod);
         formData.append("description", values.description);
         formData.append("location", values.location.id);
-        formData.append("sanitationStatus", formState.sanitationStatus);
+        formData.append("sanitationStatus", sanitationStatus);
+        formData.append("isAvailable", isAvailable);
         if (values.roomImage) formData.append("roomImage", values.roomImage);
 
-        const response = await axios.post("api/v1/rooms/add-room", formData, {
+        const response = await axios.put(`api/v1/rooms/edit-room/${room.id}`, formData, {
           withCredentials: true,
+          headers: {
+            "Content-Type": "application/json", // Explicitly set content type
+          },
         });
 
-        toast.success("Room added successfully");
+        toast.success("Room updated successfully");
         resetForm();
         setRoomImagePreview(null);
-      
+
         setRoomImageError("");
       } catch (error) {
         toast.error(error.response?.data?.message || "An error occurred");
@@ -134,8 +133,6 @@ const EditRoomForm = ({ room }) => {
       }
     },
   });
-
-  
 
   const handleRoomImageChange = (event) => {
     const file = event.currentTarget.files[0];
@@ -162,13 +159,15 @@ const EditRoomForm = ({ room }) => {
 
   // Handle change for the Switch
   const handleSanitationStatusChange = (event) => {
-    const { name, checked } = event.target;
-    setFormState((prevState) => ({
-      ...prevState,
-      [name]: checked, // Update state based on Switch value
-    }));
+    formik.setFieldValue("sanitationStatus", event.target.checked);
+    setSanitationStatus(event.target.checked);
   };
-console.log(room)
+
+   // Handle change for the Switch
+  const handleIsAvailableChange = (event) => {
+    formik.setFieldValue("isAvailable", event.target.checked);
+    setIsAvailable(event.target.checked);
+  }; 
   return (
     <div className="pop-content w-100">
       <FormWrapper>
@@ -192,7 +191,7 @@ console.log(room)
               size="small"
               margin="normal"
               options={locationList}
-              getOptionLabel={(locationList) => locationList.location}
+              getOptionLabel={(locationList) => locationList.label}
               value={formik.values.location}
               onChange={(_, newValue) =>
                 formik.setFieldValue("location", newValue)
@@ -202,9 +201,9 @@ console.log(room)
                   {...params}
                   label="Select Location"
                   error={
-                    formik.touched.location && Boolean(formik.errors.location)
+                    formik.touched.location?.id && Boolean(formik.errors.location)
                   }
-                  helperText={formik.touched.location && formik.errors.location}
+                  helperText={formik.touched.location?.id && formik.errors.location}
                 />
               )}
               disableCloseOnSelect
@@ -228,7 +227,7 @@ console.log(room)
               name="tolerancePeriod"
               margin="normal"
               type="number"
-             value={formik.values.tolerancePeriod}
+              value={formik.values.tolerancePeriod}
               onChange={formik.handleChange}
               // error={formik.touched.Sanitation Time && Boolean(formik.errors.Sanitation Time)}
               // helperText={formik.touched.Sanitation Time && formik.errors.Sanitation Time}
@@ -240,12 +239,22 @@ console.log(room)
             <FormControlLabel
               control={
                 <Switch
-                  checked={formik.values.sanitationStatus}
+                  checked={sanitationStatus}
                   name="sanitationStatus"
-                  onChange={handleSanitationStatusChange}
+                  onChange={(event)=>handleSanitationStatusChange(event)}
                 />
               }
               label="Sanitation status"
+            />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={isAvailable}
+                  name="isAvailable"
+                  onChange={(event)=>handleIsAvailableChange(event)}
+                />
+              }
+              label="Is Available"
             />
           </Box>
           <TextField
@@ -265,6 +274,20 @@ console.log(room)
             fullWidth
             style={{ marginBottom: 16 }}
           />
+          <Box display="flex" justifyContent="space-between">
+            <Box
+              component="img"
+              src={`${import.meta.env.VITE_API_URL}/${room.roomImagePath}`}
+              alt={room.roomImagePath}
+              sx={{
+                width: "10%",
+                height: "10%",
+                transformOrigin: "center",
+                transform: "scale(1.001)",
+                transition: "transform 0.4s ease-in-out",
+              }}
+            />
+          </Box>
 
           <Box
             display="flex"
@@ -305,7 +328,7 @@ console.log(room)
           )}
           <Box mt={2} display="flex" justifyContent="flex-end">
             <Button type="submit" variant="contained" color="primary">
-              Add Room
+              Save
             </Button>
           </Box>
         </Box>
