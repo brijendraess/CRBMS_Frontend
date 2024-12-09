@@ -91,7 +91,7 @@ const ViewMember = ({id}) => {
             mb={4}
           >
             <Avatar
-              src={`http://localhost:9000/${userData.avatarPath}`}
+              src={`${import.meta.env.VITE_API_URL}/${userData.avatarPath}`}
               alt={userData.fullname}
               sx={{
                 width: 150,

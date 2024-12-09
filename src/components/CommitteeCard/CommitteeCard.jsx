@@ -145,7 +145,7 @@ const CommitteeCard = ({ committee, onDelete }) => {
                   title={
                     <Box
                       component="img"
-                      src={`http://localhost:9000/${member?.avatarPath || "https://icon-library.com/images/no-image-available-icon/no-image-available-icon-2.jpg"}`}
+                      src={`${import.meta.env.VITE_API_URL}/${member?.avatarPath || "https://icon-library.com/images/no-image-available-icon/no-image-available-icon-2.jpg"}`}
                       alt={member?.fullname || "Unknown"}
                       sx={{
                         width: "100px",
