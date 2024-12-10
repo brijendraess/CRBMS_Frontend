@@ -79,7 +79,7 @@ const AddMemberForm = () => {
       email: Yup.string()
         .email("Invalid email format")
         .required("Email is required"),
-      role: Yup.string().required("Role is required"),
+      role: Yup.boolean().required("Role is required"),
       phoneNumber: Yup.string().required("Phone number is required"),
       password: Yup.string().required("Password is required"),
       committee: Yup.array()
@@ -99,14 +99,14 @@ const AddMemberForm = () => {
         if (values.avatar) {
           formData.append("avatar", values.avatar);
         }
-
+console.log("Brijendra",formData)
         await axios.post("/api/v1/user/register", formData, {
           withCredentials: true,
-        });
-
+        }).then(()=>{
         toast.success("User registered and added to committees successfully");
         resetForm();
         setAvatarPreview(null); // Clear avatar preview
+      })
       } catch (error) {
         toast.error(error.response?.data?.message || "An error occurred");
         console.error("Error during form submission:", error);
@@ -181,8 +181,8 @@ const AddMemberForm = () => {
             style={{ marginRight: 8, flex: 1 }}
             size="small"
           >
-            <MenuItem value="User">User</MenuItem>
-            <MenuItem value="Admin">Admin</MenuItem>
+            <MenuItem value="false">User</MenuItem>
+            <MenuItem value="true">Admin</MenuItem>
           </TextField>
           <TextField
             label="Phone Number"

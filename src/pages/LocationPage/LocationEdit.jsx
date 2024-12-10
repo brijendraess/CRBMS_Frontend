@@ -3,7 +3,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-const LocationEdit = ({ id, locationName, onSuccess }) => {
+const LocationEdit = ({ id, locationName, onSuccess,setRefreshPage,setIsEditOpen }) => {
   const [formData, setFormData] = useState({
     name: locationName || "",
   });
@@ -26,6 +26,8 @@ const LocationEdit = ({ id, locationName, onSuccess }) => {
         name: formData.name,
       });
       toast.success("Location Updated Successfully");
+      setRefreshPage(Math.random())
+      setIsEditOpen(false)
       if (onSuccess) {
         onSuccess(response.data.data.location);
       }

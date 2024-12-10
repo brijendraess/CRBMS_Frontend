@@ -58,7 +58,6 @@ const MyCommitteePage = () => {
     if (filter === "inactive") return committee.status === "inactive"; // Show only inactive committees
     return true; // Show all committees if "All" is selected
   });
-
   return (
     <RightContent>
       <ContentHeader elevation={20}>
