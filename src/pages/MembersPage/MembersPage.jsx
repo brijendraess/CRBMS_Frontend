@@ -20,10 +20,10 @@ import CustomButton from "../../components/Common Components/CustomButton/Custom
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { PaperWrapper, RightContent } from "../../Style";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 
 const MembersPage = () => {
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [showDeleted, setShowDeleted] = useState(true);
@@ -38,18 +38,16 @@ const MembersPage = () => {
 
   const fetchUsers = async () => {
     try {
-      setLoading(true);
+      showLoading();
       const response = await axios.get(`/api/v1/user/users?page=1&limit=10`);
-      console.log(response.data.data.users.rows);
 
       if (response.data.success) {
         setUsers(response.data.data.users.rows);
       }
+      hideLoading();
     } catch (error) {
       console.error("Error fetching users:", error);
-      toast.error("Failed to fetch users");
-    } finally {
-      setLoading(false);
+      hideLoading();
     }
   };
 
@@ -79,7 +77,7 @@ const MembersPage = () => {
 
   const handleDelete = async () => {
     try {
-      setLoading(true);
+      showLoading();
       const response = await axios.delete(
         `/api/v1/user/soft-delete/${deleteId}`
       );
@@ -90,19 +88,22 @@ const MembersPage = () => {
           prevUsers.filter((user) => user.id !== deleteId)
         );
       }
+      showLoading();
     } catch (error) {
       console.error("Error deleting user:", error);
       toast.error("Failed to delete user");
+      hideLoading();
     } finally {
       setLoading(false);
       handleClose(); // Close modal after delete
+      hideLoading();
     }
   };
 
   // Block/unblock user
   const handleBlockStatusChange = async (id, isBlocked) => {
     try {
-      setLoading(true);
+      showLoading();
       const response = await axios.post(
         `/api/v1/user/block-status`,
         { userId: id, isBlocked: !isBlocked },
@@ -118,15 +119,17 @@ const MembersPage = () => {
           )
         );
       }
+      hideLoading();
     } catch (error) {
       console.error("Failed to update block status:", error);
       toast.error("An error occurred while updating the block status");
+      hideLoading();
     } finally {
       setLoading(false);
+      hideLoading();
     }
   };
 
-  // Columns for DataGrid
   const columns = [
     // { field: "id", headerName: "ID", width: 90 },
     {
@@ -178,7 +181,6 @@ const MembersPage = () => {
               onClick={() =>
                 handleBlockStatusChange(params.row.id, params.row.isBlocked)
               }
-              disabled={loading}
             />
           </div>
         </div>
@@ -241,7 +243,6 @@ const MembersPage = () => {
             rows={filteredUsers}
             rowHeight={40}
             columns={[...columns]}
-            loading={loading}
             initialState={{
               pagination: {
                 paginationModel: {

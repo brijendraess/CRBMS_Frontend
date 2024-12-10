@@ -61,7 +61,7 @@ const AddCommitteeForm = ({ onAddCommittee, committeeId }) => {
           formData
         );
         toast.success("Committee updated successfully!");
-        onAddCommittee(response.data.data.committee); // Pass updated committee data
+        // onAddCommittee(response.data.data.committee); // Pass updated committee data
       } else {
         // Create new committee
         const response = await axios.post(

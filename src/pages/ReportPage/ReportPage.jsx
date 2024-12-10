@@ -1,7 +1,6 @@
 import React from "react";
 import "./ReportPage.css";
 import InfoCard from "../../components/InfoCard/InfoCard";
-import List from "../../components/List/List";
 import LineChartBox from "../../components/Charts/LineChartBox";
 import AreaChartBox from "../../components/Charts/AreaChartBox";
 import BarChartBox from "../../components/Charts/BarChartBox";
@@ -14,7 +13,7 @@ const ReportPage = () => {
   return (
     <PaperWrapper>
       <div className="row homePageWrapperRow">
-        <div className="col-md-7">
+        <div className="col-md-12">
           <div className="homePageWrapper d-flex">
             <InfoCard
               color={["#1da256", "#48d483"]}
@@ -48,11 +47,11 @@ const ReportPage = () => {
             />
           </div>
         </div>
-        <div className="col-md-5 ps-0">
+        {/* <div className="col-md-5 ps-0">
           <div className="box">
             <List color={["#1a50b5", "#2a6ff7"]} />
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="row chartWrapperRow">
         <div className="col-md-5">
