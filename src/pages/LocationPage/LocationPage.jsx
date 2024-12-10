@@ -17,6 +17,7 @@ const LocationPage = () => {
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [location, setLocation] = useState([]);
   const [updatedId, setUpdatedId] = useState(null);
+  const [refreshPage, setRefreshPage] = useState(0);
 
   // Fetch locations on mount
   useEffect(() => {
@@ -40,7 +41,7 @@ const LocationPage = () => {
     };
 
     fetchLocations();
-  }, []);
+  }, [refreshPage]);
 
   // Handle Edit Popup
   const handleEdit = (id) => {
@@ -166,7 +167,7 @@ const LocationPage = () => {
         isOpen={isAddOpen}
         setIsOpen={setIsAddOpen}
         title={"Add Location"}
-        modalBody={<LocationAdd />}
+        modalBody={<LocationAdd setRefreshPage={setRefreshPage} setIsAddOpen={setIsAddOpen} />}
       />
       <PopupModals
         isOpen={isEditOpen}
@@ -175,6 +176,8 @@ const LocationPage = () => {
         modalBody={
           <LocationEdit
             id={updatedId}
+            setRefreshPage={setRefreshPage}
+            setIsEditOpen={setIsEditOpen}
             locationName={
               location.find((loc) => loc.id === updatedId)?.locationName || ""
             }

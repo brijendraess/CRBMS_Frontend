@@ -42,6 +42,7 @@ const CommitteeManagementMUI = () => {
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState("all");
   const [isAddCommittee, setIsAddCommittee] = useState(false);
+  const [refreshPage, setRefreshPage] = useState(0);
 
   const fetchCommittee = async () => {
     try {
@@ -65,7 +66,7 @@ const CommitteeManagementMUI = () => {
 
   useEffect(() => {
     fetchCommittee();
-  }, []);
+  }, [refreshPage]);
 
   const filteredCommittees = committeeData.filter((committee) => {
     if (filter === "active") return committee.status === "active";
@@ -81,7 +82,7 @@ const CommitteeManagementMUI = () => {
     setCommitteeData((prev) => [...prev, newCommittee]); // Add new committee to the state
     setIsAddCommittee(false); // Close the modal
   };
-
+  
   return (
     <>
       <PaperWrapper>
@@ -173,6 +174,7 @@ const CommitteeManagementMUI = () => {
                   key={committee.id}
                   committee={committee}
                   onDelete={handleDeleteCommittee}
+                  setRefreshPage={setRefreshPage}
                 />
               ))
             ) : (
@@ -188,7 +190,7 @@ const CommitteeManagementMUI = () => {
         )}
       </PaperWrapper>
       <PopupModals
-        modalBody={<AddCommitteeForm onAddCommittee={handleAddCommittee} />}
+        modalBody={<AddCommitteeForm onAddCommittee={handleAddCommittee} setRefreshPage={setRefreshPage} />}
         isOpen={isAddCommittee}
         title={`Add Committee`}
         setIsOpen={setIsAddCommittee}

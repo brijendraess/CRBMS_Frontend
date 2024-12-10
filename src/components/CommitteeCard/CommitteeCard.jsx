@@ -27,7 +27,7 @@ import PopupModals from "../Common Components/Modals/Popup/PopupModals";
 import AddCommitteeForm from "../../pages/CommitteePage/AddCommitteeForm";
 import DeleteModal from "../Common Components/Modals/Delete/DeleteModal";
 
-const CommitteeCard = ({ committee, onDelete }) => {
+const CommitteeCard = ({ committee, onDelete,setRefreshPage }) => {
   const [hover, setHover] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [open, setOpen] = useState(false);
@@ -150,7 +150,7 @@ const CommitteeCard = ({ committee, onDelete }) => {
             }}
           >
             <AvatarGroup max={4}>
-              {(committee.members || []).map((member, index) => (
+              {(committee.CommitteeMembers || []).map((member, index) => (
                 <Tooltip
                   key={index}
                   title={
@@ -194,7 +194,7 @@ const CommitteeCard = ({ committee, onDelete }) => {
             </AvatarGroup>
             <Tooltip title="View all members">
               <Chip
-                label={`${committee.memberCount}`}
+                label={`${committee.CommitteeMembers?.length}`}
                 size="large"
                 color="success"
                 variant="outlined"
@@ -210,7 +210,7 @@ const CommitteeCard = ({ committee, onDelete }) => {
         isOpen={isEditOpen}
         setIsOpen={setIsEditOpen}
         title={"Edit Committee"}
-        modalBody={<AddCommitteeForm committeeId={committee.id} />}
+        modalBody={<AddCommitteeForm committeeId={committee.id} setRefreshPage={setRefreshPage} setIsEditOpen={setIsEditOpen} />}
       />
       <DeleteModal
         open={open}
