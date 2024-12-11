@@ -188,12 +188,7 @@ const MembersPage = () => {
               onClick={() =>
                 handleBlockStatusChange(params.row.id, params.row.isBlocked)
               }
-<<<<<<< HEAD
-              disabled={loading}
-            /> */}
-=======
             />
->>>>>>> 7d4dda6262378239f17cab27dff9af3f5c531025
           </div>
         </div>
       ),
