@@ -217,7 +217,7 @@ export default function RoomAmenities() {
   return (
     <Box
       sx={{
-        height: 500,
+        // height: 500,
         width: '100%',
         '& .actions': {
           color: 'text.secondary',

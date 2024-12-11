@@ -26,7 +26,7 @@ const MembersPage = () => {
   const [users, setUsers] = useState([]);
   const [open, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
-  const [showDeleted, setShowDeleted] = useState(true);
+  const [showDeleted, setShowDeleted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [updatedId, setUpdatedId] = useState("");
@@ -140,11 +140,11 @@ const MembersPage = () => {
       renderCell: (params) =>
         params.value ? (
           <>
-          <img
-            src={`${import.meta.env.VITE_API_URL}/${params.value}`}
-            alt="avatar"
-            style={{ width: "35px", height: "35px", borderRadius: "50%" }}
-          />
+            <img
+              src={`${import.meta.env.VITE_API_URL}/${params.value}`}
+              alt="avatar"
+              style={{ width: "35px", height: "35px", borderRadius: "50%" }}
+            />
           </>
         ) : (
           <AccountCircleRoundedIcon
@@ -179,13 +179,9 @@ const MembersPage = () => {
             />
           </div>
           <div className="delete">
-          <Switch
-            checked={params.row.isBlocked}
-            onChange={() => handleBlockStatusChange(params.row.id, params.row.isBlocked)}
-          />
-            {/* <BlockIcon
-              color={params.row.isBlocked ? "success" : "error"}
-              onClick={() =>
+            <Switch
+              checked={params.row.isBlocked}
+              onChange={() =>
                 handleBlockStatusChange(params.row.id, params.row.isBlocked)
               }
             />
@@ -297,14 +293,25 @@ const MembersPage = () => {
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         title={"Add New Member"}
-        modalBody={<AddMemberForm setRefreshPage={setRefreshPage} setIsOpen={setIsOpen} />}
+        modalBody={
+          <AddMemberForm
+            setRefreshPage={setRefreshPage}
+            setIsOpen={setIsOpen}
+          />
+        }
       />
 
       <PopupModals
         isOpen={isEditOpen}
         setIsOpen={setIsEditOpen}
         title={"Update Member Profile"}
-        modalBody={<UpdateMemberForm id={updatedId} setRefreshPage={setRefreshPage} setIsEditOpen={setIsEditOpen} />}
+        modalBody={
+          <UpdateMemberForm
+            id={updatedId}
+            setRefreshPage={setRefreshPage}
+            setIsEditOpen={setIsEditOpen}
+          />
+        }
       />
 
       <PopupModals

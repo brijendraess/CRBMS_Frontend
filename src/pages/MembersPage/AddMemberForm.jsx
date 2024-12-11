@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   TextField,
-  Typography,
   MenuItem,
   Avatar,
   IconButton,
@@ -20,17 +19,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { PopContent } from "../../Style";
 
-// Styled component for form container
-const FormWrapper = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  color: theme.palette.text.secondary,
-  borderRadius: "20px",
-  padding: "15px",
-  marginTop: "10px",
-  width: "100%",
-}));
 
-const AddMemberForm = ({setRefreshPage,setIsOpen}) => {
+const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
   const [avatarPreview, setAvatarPreview] = useState(null); // Avatar preview
   const [committees, setCommittees] = useState([]); // List of available committees
   const [showPassword, setShowPassword] = useState(false); // Password visibility toggle
@@ -88,7 +78,7 @@ const AddMemberForm = ({setRefreshPage,setIsOpen}) => {
     }),
     onSubmit: async (values, { resetForm }) => {
       try {
-        console.log("Submitted data : ",values)
+        console.log("Submitted data : ", values);
         const formData = new FormData();
         formData.append("fullname", values.fullname);
         formData.append("email", values.email);
@@ -96,26 +86,30 @@ const AddMemberForm = ({setRefreshPage,setIsOpen}) => {
         formData.append("phoneNumber", values.phoneNumber);
         formData.append("password", values.password);
         formData.append("committee", JSON.stringify(values.committee)); // Stringify the array
-        console.log(formData)
+        console.log(formData);
         if (values.avatar) {
           formData.append("avatar", values.avatar);
         }
-        await axios.post("/api/v1/user/register", formData, {
-          withCredentials: true,
-        }).then(()=>{
-        toast.success("User registered and added to committees successfully");
-        setRefreshPage(Math.random());
-        setIsOpen(false);
-        resetForm();
-        setAvatarPreview(null); // Clear avatar preview
-      })
+        await axios
+          .post("/api/v1/user/register", formData, {
+            withCredentials: true,
+          })
+          .then(() => {
+            toast.success(
+              "User registered and added to committees successfully"
+            );
+            setRefreshPage(Math.random());
+            setIsOpen(false);
+            resetForm();
+            setAvatarPreview(null); // Clear avatar preview
+          });
       } catch (error) {
         toast.error(error.response?.data?.message || "An error occurred");
         console.error("Error during form submission:", error);
       }
     },
   });
-console.log(committees)
+  console.log(committees);
   return (
     <PopContent>
       <Box component="form" onSubmit={formik.handleSubmit}>
@@ -207,18 +201,16 @@ console.log(committees)
           id="committee"
           options={committees}
           getOptionLabel={(option) => option.name || option.id}
-          value={
-            committees.filter((committee) =>
-              formik.values.committee.includes(committee.id)
-            ) // Match the selected IDs with options
-          }
+          value={committees.filter((committee) =>
+            formik.values.committee.includes(committee.id)
+          )}
           onChange={(_, selectedOptions) => {
             formik.setFieldValue(
               "committee",
-              selectedOptions.map((option) => option.id) // Extract only IDs
+              selectedOptions.map((option) => option.id)
             );
           }}
-          isOptionEqualToValue={(option, value) => option.id === value.id} // Ensure correct matching
+          isOptionEqualToValue={(option, value) => option.id === value.id}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -227,7 +219,25 @@ console.log(committees)
                 formik.touched.committee && Boolean(formik.errors.committee)
               }
               helperText={formik.touched.committee && formik.errors.committee}
+              sx={{ maxHeight: "50px" }}
             />
+          )}
+          renderTags={(tagValue, getTagProps) => {
+            if (tagValue.length === 0) {
+              return null;
+            }
+            return <span>{tagValue.length} selected</span>;
+          }}
+          renderOption={(props, option, { selected }) => (
+            <li
+              {...props}
+              style={{
+                backgroundColor: selected ? "#e0f7fa" : "inherit", // Change the color when selected
+                fontWeight: selected ? "bold" : "normal", // Optional: Make text bold when selected
+              }}
+            >
+              {option.name}
+            </li>
           )}
           style={{ marginBottom: 16 }}
         />

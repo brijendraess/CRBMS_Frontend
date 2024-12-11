@@ -14,14 +14,14 @@ export default function RoomGallery({ room }) {
   const [files, setFiles] = useState([]);
 
   const { user } = useSelector((state) => state.user);
-console.log(user)
+  console.log(user);
   const handleFileChange = (event) => {
     setFiles(event.target.files); // Store the selected files
-    handleUpload()
+    handleUpload();
   };
 
   const handleUpload = async () => {
-      const formData = new FormData();
+    const formData = new FormData();
     // Append each file to the FormData object
     Array.from(files).forEach((file) => {
       formData.append("images", file);
@@ -30,12 +30,16 @@ console.log(user)
       formData.append("status", true);
     });
 
-      const response = await axios.post("api/v1/rooms/add-room-gallery", formData, {
+    const response = await axios.post(
+      "api/v1/rooms/add-room-gallery",
+      formData,
+      {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      });
-      console.log("Response:", response.data);
+      }
+    );
+    console.log("Response:", response.data);
   };
 
   return (
@@ -47,6 +51,7 @@ console.log(user)
         mt={2}
         mb={2}
         sx={{ backgroundColor: "#bdbdbd", width: "50%", margin: "auto" }}
+        overflow={"hidden"}
       >
         <input
           accept="image/*"
@@ -54,18 +59,22 @@ console.log(user)
           id="room-image-upload"
           type="file"
           multiple
-           onChange={handleFileChange}
+          onChange={handleFileChange}
         />
         <label htmlFor="room-image-upload">
           <IconButton component="span">
-            
-              <PhotoCameraIcon fontSize="medium" />
+            <PhotoCameraIcon fontSize="medium" />
           </IconButton>
         </label>
       </Box>
 
       <ImageList
-        sx={{ width: 500, height: 450, margin: "10px 0", paddingRight: "20px" }}
+        sx={{
+          width: 500,
+          height: 400,
+          marginTop: "10px",
+          paddingRight: "20px", 
+        }}
       >
         {itemData.map((item) => (
           <ImageListItem key={item.img}>

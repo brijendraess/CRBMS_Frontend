@@ -3,8 +3,14 @@ import axios from "axios";
 import { TextField, Button, Typography, Box } from "@mui/material";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
+import { PopContent } from "../../Style";
 
-const AddCommitteeForm = ({ onAddCommittee, committeeId ,setRefreshPage,setIsEditOpen}) => {
+const AddCommitteeForm = ({
+  onAddCommittee,
+  committeeId,
+  setRefreshPage,
+  setIsEditOpen,
+}) => {
   const { user } = useSelector((state) => state.user);
 
   const [formData, setFormData] = useState({
@@ -61,8 +67,8 @@ const AddCommitteeForm = ({ onAddCommittee, committeeId ,setRefreshPage,setIsEdi
           formData
         );
         toast.success("Committee updated successfully!");
-        setIsEditOpen(false)
-       // onAddCommittee(response.data.data.committee); // Pass updated committee data
+        setIsEditOpen(false);
+        // onAddCommittee(response.data.data.committee); // Pass updated committee data
       } else {
         // Create new committee
         const response = await axios.post(
@@ -75,7 +81,6 @@ const AddCommitteeForm = ({ onAddCommittee, committeeId ,setRefreshPage,setIsEdi
       // Reset form after submission
       setFormData({ name: "", description: "", createdByUserId: user.id });
       setRefreshPage(Math.random());
-
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to save committee.");
       console.error("Error saving committee:", err);
@@ -83,48 +88,42 @@ const AddCommitteeForm = ({ onAddCommittee, committeeId ,setRefreshPage,setIsEdi
   };
 
   return (
-    <div className="pop-content w-100">
-      {isLoading ? (
-        <Typography variant="body1" sx={{ textAlign: "center", mt: 2 }}>
-          Loading committee details...
-        </Typography>
-      ) : (
-        <>
-          <TextField
-            label="Committee Name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            fullWidth
-            required
-            margin="normal"
-            size="small"
-          />
-          <TextField
-            label="Description"
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            fullWidth
-            required
-            margin="normal"
-            multiline
-            rows={4}
-          />
+    <PopContent>
+      <>
+        <TextField
+          label="Committee Name"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          fullWidth
+          required
+          margin="normal"
+          size="small"
+        />
+        <TextField
+          label="Description"
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+          fullWidth
+          required
+          margin="normal"
+          multiline
+          rows={4}
+        />
 
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
-            sx={{ mt: 2 }}
-            onClick={handleSubmit}
-          >
-            {committeeId ? "Update Committee" : "Add Committee"}
-          </Button>
-        </>
-      )}
-    </div>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          fullWidth
+          sx={{ mt: 2 }}
+          onClick={handleSubmit}
+        >
+          {committeeId ? "Update Committee" : "Add Committee"}
+        </Button>
+      </>
+    </PopContent>
   );
 };
 
