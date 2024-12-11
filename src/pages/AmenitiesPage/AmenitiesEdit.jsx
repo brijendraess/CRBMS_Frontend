@@ -22,7 +22,7 @@ const AmenitiesEdit = ({ id, setRefreshPage, setIsEditOpen }) => {
             `/api/v1/amenity/get-single-amenity/${id}`
           );
           const amenity = response.data.data.roomAmenity;
-
+console.log(amenity)
           setFormData({
             name: amenity.name,
             description: amenity.description,

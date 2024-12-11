@@ -45,7 +45,6 @@ const AmenitiesList = () => {
             serial: index + 1, // Serial number starts at 1
           })
         );
-
         setAmenities(amenitiesWithSerial); //
       } catch (error) {
         toast.error("Something went wrong");
@@ -169,9 +168,9 @@ const AmenitiesList = () => {
           />
         </Box>
         <div style={{ display: "flex", flexDirection: "column" }}>
-          {/* <DataGrid
-            // rows={amenities}
-            // columns={columns}
+          <DataGrid
+            rows={amenities}
+            columns={columns}
             pageSize={5}
             rowHeight={40}
             rowsPerPageOptions={[7]}
@@ -183,7 +182,7 @@ const AmenitiesList = () => {
             }}
             showCellVerticalBorder
             showColumnVerticalBorder
-          /> */}
+          />
         </div>
         <PopupModals
           isOpen={isAddOpen}
