@@ -41,6 +41,7 @@ import { MaterialUISwitch } from "../../Style";
 import PopupModals from "../Common Components/Modals/Popup/PopupModals";
 import ProfilePage from "../../pages/ProfilePage/ProfilePage";
 import ResetPassword from "../../pages/ProfilePage/ResetPassword";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 
 const Header = () => {
   const context = useContext(MyContext);
@@ -85,6 +86,7 @@ const Header = () => {
   // Logout Handler
   const handleLogout = async () => {
     try {
+      showLoading();
       const response = await axios.post(
         `/api/v1/user/logout`,
         {},
@@ -96,9 +98,11 @@ const Header = () => {
       } else {
         toast.error("Logout Failed");
       }
+      hideLoading();
     } catch (error) {
       toast.error(error.response?.data?.message || "An error occurred");
       console.error(error);
+      hideLoading();
     }
   };
 
@@ -133,14 +137,10 @@ const Header = () => {
             >
               {context.isSidebarVisible ? <MenuOpenIcon /> : <MenuOutlined />}
             </Button>
-            <SearchBox />
           </div>
 
           {/* Action Buttons */}
           <div className="col-sm-7 col-xs-3 d-flex align-items-center justify-content-end gap-2">
-            <FormControlLabel
-              control={<MaterialUISwitch sx={{ margin: 0 }} defaultChecked />}
-            />
             <Button
               className="rounded-circle"
               onClick={handleMenuToggle(setNotificationsAnchor)}

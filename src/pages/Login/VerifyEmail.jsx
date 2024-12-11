@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import toast from "react-hot-toast";
-import FloatingShapes from "../../components/FloatingShapes/FloatingShapes";
 import ebizLogo from "../../assets/Images/ebizlogo.png";
 import "./Login.css";
 
@@ -154,31 +153,6 @@ const VerifyEmail = () => {
 
   return (
     <div className="authWrapper">
-      <FloatingShapes
-        color="rgb(34 197 94)"
-        width="256px"
-        height="256px"
-        top="-5%"
-        left="10%"
-        delay={0}
-      />
-      <FloatingShapes
-        color="rgb(16 185 129)"
-        width="192px"
-        height="192px"
-        top="70%"
-        left="80%"
-        delay={5}
-      />
-      <FloatingShapes
-        color="rgb(132 204 22)"
-        width="128px"
-        height="128px"
-        top="40%"
-        left="-10%"
-        delay={2}
-      />
-
       <motion.div
         className="userLogin"
         initial={{ opacity: 0, y: -50 }}
