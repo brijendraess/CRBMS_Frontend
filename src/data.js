@@ -45,12 +45,7 @@ export const adminSideBarData = [
     icon: LocationOnOutlinedIcon,
     path: "/location",
   },
-  {
-    id: 7,
-    name: "Meeting Logs",
-    icon: HistoryOutlinedIcon,
-    path: "/logs",
-  },
+  
   {
     id: 8,
     name: "Report & Analytics",
@@ -77,6 +72,12 @@ export const userSideBarData = [
     name: "My Committee",
     icon: Diversity2Icon,
     path: "/my-committee",
+  },
+  {
+    id: 7,
+    name: "Meeting Logs",
+    icon: HistoryOutlinedIcon,
+    path: "/logs",
   },
 ];
 

@@ -30,7 +30,7 @@ const FormWrapper = styled(Paper)(({ theme }) => ({
   width: "100%",
 }));
 
-const AddMemberForm = () => {
+const AddMemberForm = ({setRefreshPage,setIsOpen}) => {
   const [avatarPreview, setAvatarPreview] = useState(null); // Avatar preview
   const [committees, setCommittees] = useState([]); // List of available committees
   const [showPassword, setShowPassword] = useState(false); // Password visibility toggle
@@ -68,7 +68,7 @@ const AddMemberForm = () => {
     initialValues: {
       fullname: "",
       email: "",
-      role: "User",
+      role: true,
       phoneNumber: "",
       committee: [], // Array of committee IDs
       avatar: "",
@@ -88,6 +88,7 @@ const AddMemberForm = () => {
     }),
     onSubmit: async (values, { resetForm }) => {
       try {
+        console.log("Submitted data : ",values)
         const formData = new FormData();
         formData.append("fullname", values.fullname);
         formData.append("email", values.email);
@@ -95,15 +96,16 @@ const AddMemberForm = () => {
         formData.append("phoneNumber", values.phoneNumber);
         formData.append("password", values.password);
         formData.append("committee", JSON.stringify(values.committee)); // Stringify the array
-
+        console.log(formData)
         if (values.avatar) {
           formData.append("avatar", values.avatar);
         }
-console.log("Brijendra",formData)
         await axios.post("/api/v1/user/register", formData, {
           withCredentials: true,
         }).then(()=>{
         toast.success("User registered and added to committees successfully");
+        setRefreshPage(Math.random());
+        setIsOpen(false);
         resetForm();
         setAvatarPreview(null); // Clear avatar preview
       })
@@ -113,7 +115,7 @@ console.log("Brijendra",formData)
       }
     },
   });
-
+console.log(committees)
   return (
     <PopContent>
       <Box component="form" onSubmit={formik.handleSubmit}>

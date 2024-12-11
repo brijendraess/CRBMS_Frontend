@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Paper, styled, Button, Typography } from "@mui/material";
+import { Box, Paper, styled, Button, Typography, Switch } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
@@ -16,7 +16,7 @@ import AddMemberForm from "./AddMemberForm";
 import UpdateMemberForm from "./UpdateMemberForm";
 import ViewMember from "./ViewMember";
 import CustomButton from "../../components/Common Components/CustomButton/CustomButton";
-
+import { checkFileExists } from "../../utils/utils";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { PaperWrapper, RightContent } from "../../Style";
@@ -32,6 +32,7 @@ const MembersPage = () => {
   const [updatedId, setUpdatedId] = useState("");
   const [isViewOpen, setIsViewOpen] = useState(false);
   const [viewId, setViewId] = useState("");
+  const [refreshPage, setRefreshPage] = useState(0);
   const filteredUsers = users.filter((user) =>
     showDeleted ? true : !user.deletedAt
   );
@@ -53,7 +54,7 @@ const MembersPage = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [refreshPage]);
 
   const handleOpen = (id) => {
     setDeleteId(id);
@@ -138,11 +139,13 @@ const MembersPage = () => {
       flex: 0.25,
       renderCell: (params) =>
         params.value ? (
+          <>
           <img
             src={`${import.meta.env.VITE_API_URL}/${params.value}`}
             alt="avatar"
             style={{ width: "35px", height: "35px", borderRadius: "50%" }}
           />
+          </>
         ) : (
           <AccountCircleRoundedIcon
             style={{ width: "35px", height: "35px", borderRadius: "50%" }}
@@ -150,7 +153,7 @@ const MembersPage = () => {
         ),
     },
     { field: "fullname", headerName: "Full Name", flex: 1 },
-    { field: "email", headerName: "Email", flex: 1.5 },
+    { field: "email", headerName: "Email", flex: 1 },
     { field: "phoneNumber", headerName: "Phone Number", flex: 1 },
     {
       field: "action",
@@ -176,7 +179,11 @@ const MembersPage = () => {
             />
           </div>
           <div className="delete">
-            <BlockIcon
+          <Switch
+            checked={params.row.isBlocked}
+            onChange={() => handleBlockStatusChange(params.row.id, params.row.isBlocked)}
+          />
+            {/* <BlockIcon
               color={params.row.isBlocked ? "success" : "error"}
               onClick={() =>
                 handleBlockStatusChange(params.row.id, params.row.isBlocked)
@@ -290,14 +297,14 @@ const MembersPage = () => {
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         title={"Add New Member"}
-        modalBody={<AddMemberForm />}
+        modalBody={<AddMemberForm setRefreshPage={setRefreshPage} setIsOpen={setIsOpen} />}
       />
 
       <PopupModals
         isOpen={isEditOpen}
         setIsOpen={setIsEditOpen}
         title={"Update Member Profile"}
-        modalBody={<UpdateMemberForm id={updatedId} />}
+        modalBody={<UpdateMemberForm id={updatedId} setRefreshPage={setRefreshPage} setIsEditOpen={setIsEditOpen} />}
       />
 
       <PopupModals
