@@ -7,6 +7,7 @@ import { Box, Avatar, IconButton } from "@mui/material";
 import { DeleteOutlineOutlined as DeleteIcon } from "@mui/icons-material";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
 export default function RoomGallery({ room }) {
   console.log(room);
@@ -20,26 +21,21 @@ console.log(user)
   };
 
   const handleUpload = async () => {
-    const formData = new FormData();
+      const formData = new FormData();
     // Append each file to the FormData object
     Array.from(files).forEach((file) => {
       formData.append("images", file);
       formData.append("roomId", room.id);
       formData.append("userId", user.id);
       formData.append("status", true);
-
     });
 
-    try {
-      const response = await axios.post("http://localhost:5000/upload", formData, {
+      const response = await axios.post("api/v1/rooms/add-room-gallery", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
       console.log("Response:", response.data);
-    } catch (error) {
-      console.error("Error uploading files:", error);
-    }
   };
 
   return (

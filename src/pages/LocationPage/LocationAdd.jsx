@@ -3,7 +3,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
-const LocationAdd = () => {
+const LocationAdd = ({setRefreshPage,setIsAddOpen}) => {
   const [formData, setFormData] = useState({
     name: "", // Key must match the name attribute of the TextField
   });
@@ -21,6 +21,8 @@ const LocationAdd = () => {
       const response = await axios.post("api/v1/location/locations", formData);
       toast.success("Location added Successfully");
       setFormData({ name: "" }); // Reset formData after submission
+      setRefreshPage(Math.random());
+      setIsAddOpen(false)
     } catch (err) {
       toast.error(err.response?.data?.message || "An error occurred");
       console.error("Error adding location:", err);

@@ -32,6 +32,7 @@ const AmenitiesList = () => {
   const [open, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [status, setStatus] = useState(false);
+  const [refreshPage, setRefreshPage] = useState(0);
 
   useEffect(() => {
     const fetchAmenities = async () => {
@@ -53,7 +54,7 @@ const AmenitiesList = () => {
     };
 
     fetchAmenities();
-  }, []);
+  }, [refreshPage]);
 
   const handleClose = () => {
     setOpen(false);
@@ -76,6 +77,7 @@ const AmenitiesList = () => {
       setAmenities((prevAmenities) =>
         prevAmenities.filter((amenity) => amenity.id !== deleteId)
       );
+      handleClose(false)
       toast.success("Amenity deleted successfully!");
     } catch (error) {
       toast.error("Failed to delete amenity!");
@@ -170,19 +172,20 @@ const AmenitiesList = () => {
           isOpen={isAddOpen}
           setIsOpen={setIsAddOpen}
           title={"Add Amenity"}
-          modalBody={<AmenitiesAdd />}
+          modalBody={<AmenitiesAdd setRefreshPage={setRefreshPage} setIsAddOpen={setIsAddOpen} />}
         />
 
         <PopupModals
           isOpen={isEditOpen}
           setIsOpen={setIsEditOpen}
           title={"Edit Amenities"}
-          modalBody={<AmenitiesEdit id={updatedId} />}
+          modalBody={<AmenitiesEdit id={updatedId} setRefreshPage={setRefreshPage} setIsEditOpen={setIsEditOpen} />}
         />
         <DeleteModal
           open={open}
           onClose={handleClose}
           onDeleteConfirm={handleDelete}
+          button={"Delete"}
         />
       </PaperWrapper>
     </RightContent>

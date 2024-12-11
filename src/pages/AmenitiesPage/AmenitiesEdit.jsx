@@ -4,7 +4,7 @@ import { TextField, Button, Box, Paper, styled } from "@mui/material";
 import toast from "react-hot-toast";
 import { PopContent } from "../../Style";
 
-const AmenitiesEdit = ({ id }) => {
+const AmenitiesEdit = ({ id, setRefreshPage, setIsEditOpen }) => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -29,8 +29,10 @@ const AmenitiesEdit = ({ id }) => {
     e.preventDefault();
     try {
       const response = await axios.post("api/v1/amenity/add-amenity", formData);
-      toast.success("Amenity added Successfully");
+      toast.success("Amenity edited Successfully");
       setFormData({ name: "", description: "", quantity: 1 });
+      setRefreshPage(Math.random());
+      setIsEditOpen(false);
     } catch (err) {
       toast.error(err.response?.data?.message);
       console.error("Error adding amenity:", err);

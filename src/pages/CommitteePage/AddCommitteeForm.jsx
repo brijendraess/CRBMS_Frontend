@@ -4,7 +4,7 @@ import { TextField, Button, Typography, Box } from "@mui/material";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 
-const AddCommitteeForm = ({ onAddCommittee, committeeId }) => {
+const AddCommitteeForm = ({ onAddCommittee, committeeId ,setRefreshPage,setIsEditOpen}) => {
   const { user } = useSelector((state) => state.user);
 
   const [formData, setFormData] = useState({
@@ -61,7 +61,8 @@ const AddCommitteeForm = ({ onAddCommittee, committeeId }) => {
           formData
         );
         toast.success("Committee updated successfully!");
-        // onAddCommittee(response.data.data.committee); // Pass updated committee data
+        setIsEditOpen(false)
+       // onAddCommittee(response.data.data.committee); // Pass updated committee data
       } else {
         // Create new committee
         const response = await axios.post(
@@ -73,6 +74,8 @@ const AddCommitteeForm = ({ onAddCommittee, committeeId }) => {
       }
       // Reset form after submission
       setFormData({ name: "", description: "", createdByUserId: user.id });
+      setRefreshPage(Math.random());
+
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to save committee.");
       console.error("Error saving committee:", err);
