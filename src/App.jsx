@@ -41,7 +41,6 @@ axios.defaults.withCredentials = true;
 
 function App() {
   const { loading } = useSelector((state) => state.alerts);
-  // const [loading, setLoading] = useState(true);
   const { user } = useSelector((state) => state.user);
   const isAdmin = user?.isAdmin;
   return (
@@ -51,7 +50,6 @@ function App() {
         position="top-center"
         reverseOrder={false}
         toastOptions={{
-          // Define default options
           className: "",
           duration: 5000,
           style: {

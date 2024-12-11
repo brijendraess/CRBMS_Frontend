@@ -1,10 +1,8 @@
 import React, { useContext, useState } from "react";
 import "./Sidebar.css";
-import { Button, styled, Tooltip } from "@mui/material";
+import { Tooltip } from "@mui/material";
 import { adminSideBarData, userSideBarData } from "../../data";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
-import axios from "axios";
+import { NavLink, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { MyContext } from "../Layout/Layout";
 

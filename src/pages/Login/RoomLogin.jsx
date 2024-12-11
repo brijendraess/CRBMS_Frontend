@@ -5,7 +5,6 @@ import { Lock, Mail } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import Input from "../../components/Common Components/Input/Input";
-import FloatingShapes from "../../components/FloatingShapes/FloatingShapes";
 
 const RoomLogin = () => {
   const [room, setRoom] = useState("");
@@ -19,30 +18,6 @@ const RoomLogin = () => {
   };
   return (
     <div className="authWrapper">
-      <FloatingShapes
-        color={"rgb(34 197 94)"}
-        width={"256px"}
-        height={"256px"}
-        top={"-5%"}
-        left={"10%"}
-        delay={0}
-      />
-      <FloatingShapes
-        color={"rgb(16 185 129)"}
-        width={"192px"}
-        height={"192px"}
-        top={"70%"}
-        left={"80%"}
-        delay={5}
-      />
-      <FloatingShapes
-        color={"rgb(132 204 22)"}
-        width={"128px"}
-        height={"128px"}
-        top={"40%"}
-        left={"-10%"}
-        delay={2}
-      />
       <motion.div
         className="userLogin"
         initial={{ opacity: 0, y: 20 }}

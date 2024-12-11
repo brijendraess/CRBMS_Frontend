@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Button, IconButton, Toolbar, Tooltip } from "@mui/material";
-import { red } from "@mui/material/colors";
+import { IconButton, Tooltip } from "@mui/material";
 
 const CustomButton = ({
   onClick,

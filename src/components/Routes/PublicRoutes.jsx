@@ -26,10 +26,6 @@ const PublicRoutes = ({ children }) => {
     checkAuth();
   }, []);
 
-  if (loading) {
-    return <div>Loading...</div>; // Optionally show a loader
-  }
-
   return isAuthenticated ? <Navigate to="/home" /> : children;
 };
 
