@@ -25,7 +25,6 @@ const LocationPage = () => {
       try {
         const response = await axios.get("/api/v1/location/locations");
 
-        // Add serial numbers to the fetched data
         const locationsWithSerial = response.data.data.locations.map(
           (location, index) => ({
             ...location,
@@ -34,8 +33,8 @@ const LocationPage = () => {
         );
 
         setLocation(locationsWithSerial);
-        toast.success("Locations Fetched Successfully");
       } catch (error) {
+        toast.success("Something Went Wrong");
         console.error("Error fetching locations:", error);
       }
     };
@@ -80,7 +79,6 @@ const LocationPage = () => {
     }
   };
 
-  // DataGrid Columns
   const columns = [
     {
       field: "serial",
@@ -167,7 +165,12 @@ const LocationPage = () => {
         isOpen={isAddOpen}
         setIsOpen={setIsAddOpen}
         title={"Add Location"}
-        modalBody={<LocationAdd setRefreshPage={setRefreshPage} setIsAddOpen={setIsAddOpen} />}
+        modalBody={
+          <LocationAdd
+            setRefreshPage={setRefreshPage}
+            setIsAddOpen={setIsAddOpen}
+          />
+        }
       />
       <PopupModals
         isOpen={isEditOpen}

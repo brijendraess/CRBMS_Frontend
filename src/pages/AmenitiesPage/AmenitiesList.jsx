@@ -48,7 +48,7 @@ const AmenitiesList = () => {
 
         setAmenities(amenitiesWithSerial); //
       } catch (error) {
-        toast.error("Failed to fetch amenities!");
+        toast.error("Something went wrong");
         console.error("Error fetching amenities:", error);
       }
     };
@@ -77,7 +77,7 @@ const AmenitiesList = () => {
       setAmenities((prevAmenities) =>
         prevAmenities.filter((amenity) => amenity.id !== deleteId)
       );
-      handleClose(false)
+      handleClose(false);
       toast.success("Amenity deleted successfully!");
     } catch (error) {
       toast.error("Failed to delete amenity!");
@@ -152,9 +152,9 @@ const AmenitiesList = () => {
           />
         </Box>
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <DataGrid
-            rows={amenities}
-            columns={columns}
+          {/* <DataGrid
+            // rows={amenities}
+            // columns={columns}
             pageSize={5}
             rowHeight={40}
             rowsPerPageOptions={[7]}
@@ -166,20 +166,31 @@ const AmenitiesList = () => {
             }}
             showCellVerticalBorder
             showColumnVerticalBorder
-          />
+          /> */}
         </div>
         <PopupModals
           isOpen={isAddOpen}
           setIsOpen={setIsAddOpen}
           title={"Add Amenity"}
-          modalBody={<AmenitiesAdd setRefreshPage={setRefreshPage} setIsAddOpen={setIsAddOpen} />}
+          modalBody={
+            <AmenitiesAdd
+              setRefreshPage={setRefreshPage}
+              setIsAddOpen={setIsAddOpen}
+            />
+          }
         />
 
         <PopupModals
           isOpen={isEditOpen}
           setIsOpen={setIsEditOpen}
           title={"Edit Amenities"}
-          modalBody={<AmenitiesEdit id={updatedId} setRefreshPage={setRefreshPage} setIsEditOpen={setIsEditOpen} />}
+          modalBody={
+            <AmenitiesEdit
+              id={updatedId}
+              setRefreshPage={setRefreshPage}
+              setIsEditOpen={setIsEditOpen}
+            />
+          }
         />
         <DeleteModal
           open={open}
