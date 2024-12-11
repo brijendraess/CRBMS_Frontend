@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 
 // Material UI IMPORTS
 import { DataGrid } from "@mui/x-data-grid";
-import { Button, Box, Typography, Switch } from "@mui/material";
+import { Button, Box, Typography, Switch, Tooltip } from "@mui/material";
 import {
   DeleteOutlineOutlined as DeleteIcon,
   VisibilityOutlined as ViewIcon,
@@ -115,20 +115,26 @@ const AmenitiesList = () => {
       flex: 0.5,
       renderCell: (params) => (
         <Box height={"40px"} display="flex" alignItems="center" gap={2}>
+          <Tooltip title="Edit">
           <EditOutlinedIcon
             style={{ cursor: "pointer" }}
             color="success"
             onClick={() => handleEdit(params.id)}
           />
+          </Tooltip>
+          <Tooltip title="Delete">
           <DeleteIcon
             color="error"
             onClick={() => handleOpen(params.id)}
             style={{ cursor: "pointer" }}
           />
+          </Tooltip>
+          <Tooltip title="Change Status">
           <Switch
             checked={params.row.status}
             onChange={() => handleStatusChange(params.row.id)}
           />
+          </Tooltip>
         </Box>
       ),
     },

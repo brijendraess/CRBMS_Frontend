@@ -123,7 +123,7 @@ const CommitteeCard = ({ committee, onDelete,setRefreshPage }) => {
                 <Tooltip title="Change Status">
                   <Switch size="small" defaultChecked />
                 </Tooltip>
-                <Tooltip title="Delete Committee">
+                <Tooltip title="Delete">
                   <DeleteOutline
                     onClick={handleOpen}
                     sx={{ cursor: "pointer" }}
@@ -131,7 +131,7 @@ const CommitteeCard = ({ committee, onDelete,setRefreshPage }) => {
                     color="error"
                   />
                 </Tooltip>
-                <Tooltip title="Edit Committee">
+                <Tooltip title="Edit">
                   <EditOutlinedIcon
                     color="success"
                     onClick={() => setIsEditOpen(true)}

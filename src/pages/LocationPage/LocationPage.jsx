@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { PaperWrapper } from "../../Style";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import { Box, Switch, Typography } from "@mui/material";
+import { Box, Switch, Tooltip, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import PopupModals from "../../components/Common Components/Modals/Popup/PopupModals";
 import LocationAdd from "./LocationAdd";
@@ -59,10 +59,10 @@ const LocationPage = () => {
   const handleDelete = async () => {
     try {
       await axios.delete(`/api/v1/location/locations/delete/${deleteId}`);
-     
-      handleClose(false)
-      setRefreshPage(Math.random())
-      toast.success("Location deleted successfully!"); 
+
+      handleClose(false);
+      setRefreshPage(Math.random());
+      toast.success("Location deleted successfully!");
     } catch (error) {
       toast.error("Failed to delete location!");
       console.error("Error deleting location:", error);
@@ -77,7 +77,7 @@ const LocationPage = () => {
     setIsEditOpen(false);
   };
 
-  // Handle open 
+  // Handle open
   const handleOpen = (id) => {
     setDeleteId(id);
     setOpen(true);
@@ -125,22 +125,27 @@ const LocationPage = () => {
 
       renderCell: (params) => (
         <Box display="flex" alignItems="center" gap={1}>
-          <EditOutlinedIcon
-            className="cursor"
-            color="success"
-            onClick={() => handleEdit(params.row.id)}
-            style={{ cursor: "pointer" }}
-          />
-          <DeleteIcon
-            color="error"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleOpen(params.row.id)}
-          />
-
-          <Switch
-            checked={params.row.status}
-            onChange={() => handleStatusChange(params.row.id)}
-          />
+          <Tooltip title="Edit">
+            <EditOutlinedIcon
+              className="cursor"
+              color="success"
+              onClick={() => handleEdit(params.row.id)}
+              style={{ cursor: "pointer" }}
+            />
+          </Tooltip>
+          <Tooltip title="Delete">
+            <DeleteIcon
+              color="error"
+              style={{ cursor: "pointer" }}
+              onClick={() => handleOpen(params.row.id)}
+            />
+          </Tooltip>
+          <Tooltip title="Change Status">
+            <Switch
+              checked={params.row.status}
+              onChange={() => handleStatusChange(params.row.id)}
+            />
+          </Tooltip>
         </Box>
       ),
     },
@@ -215,12 +220,12 @@ const LocationPage = () => {
           />
         }
       />
-       <DeleteModal 
-          open={open}
-          onClose={handleClose}
-          onDeleteConfirm={handleDelete} 
-          button={"Delete"}
-        />
+      <DeleteModal
+        open={open}
+        onClose={handleClose}
+        onDeleteConfirm={handleDelete}
+        button={"Delete"}
+      />
     </PaperWrapper>
   );
 };
