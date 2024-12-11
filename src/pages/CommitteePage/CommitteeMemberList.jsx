@@ -112,7 +112,7 @@ const CommitteeMemberList = () => {
       ),
     },
   ];
-
+console.log(members)
   return (
     <>
       <DataGridWrapper>

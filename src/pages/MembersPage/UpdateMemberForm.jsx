@@ -26,7 +26,7 @@ const FormWrapper = styled(Paper)(({ theme }) => ({
   marginTop: "10px",
 }));
 
-const UpdateMemberForm = ({ id }) => {
+const UpdateMemberForm = ({ id,setRefreshPage,setIsEditOpen }) => {
   //const { id } = useParams();
   const [availableCommittees, setAvailableCommittees] = useState([]);
   const [userCommittees, setUserCommittees] = useState([]);
@@ -115,6 +115,8 @@ const UpdateMemberForm = ({ id }) => {
 
         console.log("Response:", response.data);
         toast.success("Profile updated successfully!");
+        setRefreshPage(Math.random());
+        setIsEditOpen(false);
       } catch (error) {
         toast.error("Failed to update profile.");
         console.error("Error updating profile:", error);
