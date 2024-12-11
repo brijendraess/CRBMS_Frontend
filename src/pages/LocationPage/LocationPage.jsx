@@ -11,12 +11,15 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import LocationEdit from "./LocationEdit";
 import CustomButton from "../../components/Common Components/CustomButton/CustomButton";
+import DeleteModal from "../../components/Common Components/Modals/Delete/DeleteModal";
 
 const LocationPage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [location, setLocation] = useState([]);
   const [updatedId, setUpdatedId] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
   const [refreshPage, setRefreshPage] = useState(0);
 
   // Fetch locations on mount
@@ -34,7 +37,6 @@ const LocationPage = () => {
         );
 
         setLocation(locationsWithSerial);
-        toast.success("Locations Fetched Successfully");
       } catch (error) {
         console.error("Error fetching locations:", error);
       }
@@ -49,12 +51,36 @@ const LocationPage = () => {
     setIsEditOpen(true);
   };
 
+  const handleClose = () => {
+    setOpen(false);
+    setDeleteId(null);
+  };
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`/api/v1/location/locations/delete/${deleteId}`);
+     
+      handleClose(false)
+      setRefreshPage(Math.random())
+      toast.success("Location deleted successfully!"); 
+    } catch (error) {
+      toast.error("Failed to delete location!");
+      console.error("Error deleting location:", error);
+    }
+  };
+
   // Handle Successful Update
   const handleUpdateSuccess = (updatedLocation) => {
     setLocation((prev) =>
       prev.map((loc) => (loc.id === updatedLocation.id ? updatedLocation : loc))
     );
     setIsEditOpen(false);
+  };
+
+  // Handle open 
+  const handleOpen = (id) => {
+    setDeleteId(id);
+    setOpen(true);
   };
 
   // Handle Status Change
@@ -109,7 +135,7 @@ const LocationPage = () => {
           <DeleteIcon
             color="error"
             style={{ cursor: "pointer" }}
-            onClick={() => console.log("Handle delete here")}
+            onClick={() => handleOpen(params.row.id)}
           />
 
           <Switch
@@ -185,6 +211,12 @@ const LocationPage = () => {
           />
         }
       />
+       <DeleteModal 
+          open={open}
+          onClose={handleClose}
+          onDeleteConfirm={handleDelete} 
+          button={"Delete"}
+        />
     </PaperWrapper>
   );
 };

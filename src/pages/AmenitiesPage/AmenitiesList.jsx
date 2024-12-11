@@ -85,8 +85,25 @@ const AmenitiesList = () => {
     }
   };
 
-  const handleStatusChange = () => {
-    setStatus((prevStatus) => !prevStatus);
+  const handleStatusChange = async(id) => {
+    try {
+      const response = await axios.patch(
+        `/api/v1/amenity/amenities/${id}/status`
+      );
+      const updatedRoomAmenity = response.data.data.roomAmenity;
+      setRefreshPage(Math.random())
+      setAmenities((prev) =>
+        prev.map((amenity) =>
+          amenity.id === id ? { ...amenity, status: updatedRoomAmenity.status } : amenity
+        )
+      );
+      toast.success(
+        `Amenity status changed to ${updatedRoomAmenity.status ? "Active" : "Inactive"}`
+      );
+    } catch (error) {
+      console.error("Error changing status:", error);
+      toast.error("Failed to change Amenity status!");
+    }
   };
 
   const columns = [
