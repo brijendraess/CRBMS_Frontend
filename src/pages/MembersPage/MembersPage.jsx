@@ -183,12 +183,12 @@ const MembersPage = () => {
             checked={params.row.isBlocked}
             onChange={() => handleBlockStatusChange(params.row.id, params.row.isBlocked)}
           />
-            {/* <BlockIcon
+             {/* <BlockIcon
               color={params.row.isBlocked ? "success" : "error"}
               onClick={() =>
                 handleBlockStatusChange(params.row.id, params.row.isBlocked)
               }
-            />
+            /> */}
           </div>
         </div>
       ),
