@@ -179,22 +179,12 @@ const MembersPage = () => {
             />
           </div>
           <div className="delete">
-<<<<<<< HEAD
             <Switch
               checked={params.row.isBlocked}
               onChange={() =>
-=======
-          <Switch
-            checked={params.row.isBlocked}
-            onChange={() => handleBlockStatusChange(params.row.id, params.row.isBlocked)}
-          />
-             {/* <BlockIcon
-              color={params.row.isBlocked ? "success" : "error"}
-              onClick={() =>
->>>>>>> 830ecdcc986d539dbee57bcc7fe11348871921b3
                 handleBlockStatusChange(params.row.id, params.row.isBlocked)
               }
-            /> */}
+            />
           </div>
         </div>
       ),
