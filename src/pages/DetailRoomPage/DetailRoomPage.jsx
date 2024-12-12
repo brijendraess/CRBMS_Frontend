@@ -16,6 +16,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { meetings } from "../../data";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
+import Carousel from "../../components/Carousel/Carousel";
 
 const ContentWrapper = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -148,58 +149,55 @@ const DetailRoomPage = () => {
 
   return (
     <ContentWrapper>
-      <div className="wrapper">
-        <div className="w-100 d-flex flex-row gap-5">
-          <div className="imageWrapper flex-1">
-            <img
-              src={`${import.meta.env.VITE_API_URL}/${room.roomImagePath}`}
-              alt="Room"
-            />
-            <div className="infoWrapper d-flex flex-1">
-              <h2>{room.name}</h2>
-              <Divider textAlign="left" variant="fullWidth">
-                <Chip
-                  label={`Capacity: ${room.capacity} People`}
-                  size="large"
-                />
-              </Divider>
-              <h4></h4>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: 1,
-                }}
-              >
-                {amenitiesList.length > 0 ? (
-                  amenitiesList.map((amenity, index) => (
-                    <Chip key={index} label={amenity.trim()} size="medium" />
-                  ))
-                ) : (
-                  <Chip label={"No amenities listed"} size="large" />
-                )}
-              </Box>
-            </div>
-          </div>
-          <div className="imageWrapper flex-1">
-            <Box sx={{ height: 400, width: "100%" }}>
-              <DataGrid
-                rows={meetings}
-                columns={columns}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
-              />
-            </Box>
-          </div>
-        </div>
-      </div>
-      <Box sx={{ width: "100%", display: "flex", alignItems: "flex-end" }}>
-        <Button variant="contained" sx={{ marginTop: "50px" }}>
-          Request Room
-        </Button>
-      </Box>
+      <Carousel />
     </ContentWrapper>
   );
 };
 
 export default DetailRoomPage;
+// <Box sx={{ width: "100%", display: "flex", alignItems: "flex-end" }}>
+//   <Button variant="contained" sx={{ marginTop: "50px" }}>
+//     Request Room
+//   </Button>
+// </Box>
+{
+  /* <div className="wrapper">
+  <div className="w-100 d-flex flex-row gap-5">
+    <div className="imageWrapper flex-1">
+      <Carousel />
+      <div className="infoWrapper d-flex flex-1">
+        <h2>{room.name}</h2>
+        <Divider textAlign="left" variant="fullWidth">
+          <Chip label={`Capacity: ${room.capacity} People`} size="large" />
+        </Divider>
+        <h4></h4>
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 1,
+          }}
+        >
+          {amenitiesList.length > 0 ? (
+            amenitiesList.map((amenity, index) => (
+              <Chip key={index} label={amenity.trim()} size="medium" />
+            ))
+          ) : (
+            <Chip label={"No amenities listed"} size="large" />
+          )}
+        </Box>
+      </div>
+    </div>
+    <div className="imageWrapper flex-1">
+      <Box sx={{ height: 400, width: "100%" }}>
+        <DataGrid
+          rows={meetings}
+          columns={columns}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+        />
+      </Box>
+    </div>
+  </div>
+</div>; */
+}
