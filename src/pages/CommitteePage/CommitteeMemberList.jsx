@@ -3,7 +3,7 @@ import axios from "axios";
 import { DataGrid } from "@mui/x-data-grid";
 import { toast } from "react-hot-toast";
 import { useLocation, useParams } from "react-router-dom";
-import { Box, Button, Paper, styled, Typography } from "@mui/material";
+import { Box, Button, Paper, styled, Switch, Tooltip, Typography } from "@mui/material";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
 import PopupModals from "../../components/Common Components/Modals/Popup/PopupModals";
 import AddMembersToCommittee from "./AddMembersToCommittee";
@@ -20,7 +20,7 @@ const DataGridWrapper = styled(Paper)(({ theme }) => ({
 }));
 
 const CommitteeMemberList = () => {
-  const [members, setMembers] = useState([]);
+  const [data, setData] = useState([]);
   const { committeeId } = useParams();
   const location = useLocation();
   const { committee } = location.state || {};
@@ -32,31 +32,32 @@ const CommitteeMemberList = () => {
         const response = await axios.get(
           `/api/v1/committee/committees/${committeeId}/members`
         );
-        setMembers(response.data.data.members);
-        console.log(response.data.data.members);
-        toast.success("Members loaded successfully!");
+        const members = response.data?.data?.members || [];
+        const formattedData = members.map((member) => ({
+          ...member.User,
+          committeeId: member.committeeId, // Preserve committeeId for removal logic
+        }));
+        setData(formattedData);
       } catch (error) {
-        toast.error("Failed to fetch committee members!");
-        console.error("Error:", error);
+        toast.error("Failed to fetch members. Please try again.");
+        console.error("Error fetching members:", error);
       }
     };
 
     fetchMembers();
   }, [committeeId]);
 
-  const removeUserFromCommittee = async (id) => {
+  const removeUserFromCommittee = async (userId) => {
     try {
       const response = await axios.delete(
-        `/api/v1/committee/committees/${committeeId}/members/${id}`
+        `/api/v1/committee/committees/${committeeId}/members/${userId}`
       );
       if (response.status === 200) {
         toast.success("User removed from committee successfully");
-        setMembers((prevUsers) =>
-          prevUsers.filter((user) => user.committeeId !== committeeId)
-        );
+        setData((prevData) => prevData.filter((user) => user.id !== userId));
       }
     } catch (error) {
-      if (error.response && error.response.status === 404) {
+      if (error.response?.status === 404) {
         toast.error("User is not a member of this committee");
       } else {
         toast.error("Failed to remove user from committee");
@@ -102,17 +103,16 @@ const CommitteeMemberList = () => {
       headerName: "Action",
       flex: 0.3,
       renderCell: (params) => (
-        <>
-          <RemoveCircleOutlinedIcon
-            onClick={() => removeUserFromCommittee(params.row.memberid)}
-            sx={{ cursor: "pointer", color: "error.light" }}
-            fontSize="medium"
+        <Tooltip title="Remove User">
+          <Switch
+            checked={params.row.id}
+            onChange={() => removeUserFromCommittee(params.row.id)}
           />
-        </>
+        </Tooltip>
       ),
     },
   ];
-console.log(members)
+
   return (
     <>
       <DataGridWrapper>
@@ -125,7 +125,9 @@ console.log(members)
           }}
         >
           <Typography variant="h5" component="h5" sx={{ marginRight: "20px" }}>
-            {committee.name + " Members" || "Committee Members"}
+            {committee?.name
+              ? `${committee.name} Members`
+              : "Committee Members"}
           </Typography>
           <Button
             variant="contained"
@@ -136,19 +138,18 @@ console.log(members)
           </Button>
         </Box>
         <DataGrid
-          rows={members}
+          rows={data}
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
           rowHeight={40}
           disableSelectionOnClick
-          getRowId={(row) => row.memberid}
+          getRowId={(row) => row.id} // Use `id` from User as the unique row identifier
         />
       </DataGridWrapper>
       <PopupModals
-        modalBody={<AddMembersToCommittee members={members} id={committeeId} />}
+        modalBody={<AddMembersToCommittee members={data} id={committeeId} />}
         isOpen={isAddMemberOpen}
-        // title={`Add Members to ${committee.name || "Committee"}`}
         title={`Add New Members`}
         setIsOpen={setIsAddMemberOpen}
         width={500}

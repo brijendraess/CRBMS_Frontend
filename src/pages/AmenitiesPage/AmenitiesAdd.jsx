@@ -3,7 +3,7 @@ import axios from "axios";
 import { TextField, Button, Box, Paper, styled } from "@mui/material";
 import toast from "react-hot-toast";
 
-const AmenitiesAdd = ({setRefreshPage,setIsAddOpen}) => {
+const AmenitiesAdd = ({ setIsRefreshed, setIsAddOpen, isRefreshed }) => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -30,7 +30,7 @@ const AmenitiesAdd = ({setRefreshPage,setIsAddOpen}) => {
       const response = await axios.post("api/v1/amenity/add-amenity", formData);
       toast.success("Amenity added Successfully");
       setFormData({ name: "", description: "", quantity: 1 });
-      setRefreshPage(Math.random());
+      setIsRefreshed(!isRefreshed);
       setIsAddOpen(false);
     } catch (err) {
       toast.error(err.response?.data?.message);

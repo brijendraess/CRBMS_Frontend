@@ -27,7 +27,7 @@ const VerifyEmail = () => {
       if (savedEmail) {
         dispatch(setLoginEmail(savedEmail));
       } else {
-        navigate("/login");
+        navigate("/meeting-calendar");
         toast.error("Please login first");
       }
     }

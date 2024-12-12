@@ -11,55 +11,47 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import {
-  PersonAdd as PersonAddIcon,
-  DeleteOutline,
-  People as PeopleIcon,
-} from "@mui/icons-material";
+import { DeleteOutline, People as PeopleIcon } from "@mui/icons-material";
 import React, { useState } from "react";
-import toast from "react-hot-toast";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import PopupModals from "../Common Components/Modals/Popup/PopupModals";
 import AddCommitteeForm from "../../pages/CommitteePage/AddCommitteeForm";
 import DeleteModal from "../Common Components/Modals/Delete/DeleteModal";
 
-const CommitteeCard = ({ committee, onDelete,setRefreshPage }) => {
+const CommitteeCard = ({ committee, onDelete, setRefreshPage }) => {
   const [hover, setHover] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
 
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.user);
+
+  // Delete confirmation modal handlers
   const handleOpen = (id) => {
     setDeleteId(id);
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
     setDeleteId(null);
   };
 
-  const navigate = useNavigate();
-  const { user } = useSelector((state) => state.user);
-
+  // Delete request
   const handleDelete = async () => {
     try {
-      showLoading();
-      await axios.delete(`/api/v1/committee/committees/${committee.id}`);
+      // Call API to delete committee
       onDelete(committee.id);
       toast.success("Committee deleted successfully!");
-      hideLoading();
     } catch (error) {
       console.error("Error deleting committee:", error);
       toast.error("Failed to delete committee. Please try again.");
-      hideLoading();
     }
   };
 
+  // Navigate to view committee
   const handleView = () => {
     navigate(`/view-committee/${committee.id}`, { state: { committee } });
   };
@@ -70,7 +62,7 @@ const CommitteeCard = ({ committee, onDelete,setRefreshPage }) => {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       sx={{
-        height: "400",
+        height: "auto",
         display: "flex",
         flexDirection: "column",
         width: "32%",
@@ -90,12 +82,13 @@ const CommitteeCard = ({ committee, onDelete,setRefreshPage }) => {
             justifyContent: "space-evenly",
           }}
         >
+          {/* Card Header */}
           <Box
             sx={{
               display: "flex",
               justifyContent: "space-between",
               alignItems: "flex-start",
-              marginBottom: "2px",
+              marginBottom: "10px",
               gap: "10px",
             }}
           >
@@ -125,7 +118,7 @@ const CommitteeCard = ({ committee, onDelete,setRefreshPage }) => {
                 </Tooltip>
                 <Tooltip title="Delete">
                   <DeleteOutline
-                    onClick={handleOpen}
+                    onClick={() => handleOpen(committee.id)}
                     sx={{ cursor: "pointer" }}
                     fontSize="medium"
                     color="error"
@@ -135,14 +128,19 @@ const CommitteeCard = ({ committee, onDelete,setRefreshPage }) => {
                   <EditOutlinedIcon
                     color="success"
                     onClick={() => setIsEditOpen(true)}
+                    sx={{ cursor: "pointer" }}
                   />
                 </Tooltip>
               </Box>
             )}
           </Box>
+
+          {/* Description */}
           <Typography color="text.secondary" variant="body2" sx={{ mb: 2 }}>
             {committee.description}
           </Typography>
+
+          {/* Avatar Group and Member Count */}
           <Box
             sx={{
               display: "flex",
@@ -154,48 +152,34 @@ const CommitteeCard = ({ committee, onDelete,setRefreshPage }) => {
               {(committee.CommitteeMembers || []).map((member, index) => (
                 <Tooltip
                   key={index}
-                  title={
-                    <Box
-                      component="img"
-                      src={`${import.meta.env.VITE_API_URL}/${member?.avatarPath || "https://icon-library.com/images/no-image-available-icon/no-image-available-icon-2.jpg"}`}
-                      alt={member?.fullname || "Unknown"}
-                      sx={{
-                        width: "100px",
-                        height: "100px",
-                        objectFit: "cover",
-                        boxShadow: "0 0 8px rgba(0,0,0,0.3)",
-                      }}
-                    />
-                  }
-                  slotProps={{
-                    tooltip: {
-                      sx: {
-                        padding: 0,
-                        bgcolor: "transparent",
-                        boxShadow: "none",
-                      },
-                    },
-                  }}
-                  placement="top"
+                  title={member.User?.fullname || "Unknown"}
                   arrow
                 >
                   <Avatar
-                    alt={member?.fullname || "Unknown"}
-                    src={member?.avatar || ""}
+                    alt={member.User?.fullname || "Unknown"}
+                    src={
+                      member.User?.avatarPath
+                        ? `${import.meta.env.VITE_API_URL}/${member.User.avatarPath}`
+                        : "https://icon-library.com/images/no-image-available-icon/no-image-available-icon-2.jpg"
+                    }
                     sx={{
                       bgcolor: "primary.main",
                       width: "30px",
                       height: "30px",
                     }}
                   >
-                    {member?.fullname ? member.fullname.charAt(0) : "?"}
+                    {member.User?.fullname
+                      ? member.User.fullname.charAt(0)
+                      : "?"}
                   </Avatar>
                 </Tooltip>
               ))}
             </AvatarGroup>
+
+            {/* View All Members Button */}
             <Tooltip title="View all members">
               <Chip
-                label={`${committee.CommitteeMembers?.length}`}
+                label={`${committee.CommitteeMembers?.length || 0}`}
                 size="large"
                 color="success"
                 variant="outlined"
@@ -207,12 +191,22 @@ const CommitteeCard = ({ committee, onDelete,setRefreshPage }) => {
           </Box>
         </CardContent>
       </CardActionArea>
+
+      {/* Edit Modal */}
       <PopupModals
         isOpen={isEditOpen}
         setIsOpen={setIsEditOpen}
         title={"Edit Committee"}
-        modalBody={<AddCommitteeForm committeeId={committee.id} setRefreshPage={setRefreshPage} setIsEditOpen={setIsEditOpen} />}
+        modalBody={
+          <AddCommitteeForm
+            committeeId={committee.id}
+            setRefreshPage={setRefreshPage}
+            setIsEditOpen={setIsEditOpen}
+          />
+        }
       />
+
+      {/* Delete Modal */}
       <DeleteModal
         open={open}
         onClose={handleClose}

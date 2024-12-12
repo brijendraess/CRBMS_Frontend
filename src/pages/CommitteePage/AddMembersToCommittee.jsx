@@ -34,17 +34,6 @@ const AddMembersToCommittee = ({ id, members }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // console.log("Selected User IDs:", selectedUserIds);
-    // try {
-    //   const response = await axios.post(`/api/v1/committees/${id}/members`, {
-    //     userIds: selectedUserIds,
-    //   });
-    //   toast.success("Members added successfully");
-    // } catch (error) {
-    //   console.error("Error adding members:", error);
-    //   toast.error("Failed to add members");
-    // }
-
     toast.success("Check Console");
     console.log(selectedUserIds);
   };

@@ -22,20 +22,17 @@ const LocationPage = () => {
   const [deleteId, setDeleteId] = useState(null);
   const [refreshPage, setRefreshPage] = useState(0);
 
-  // Fetch locations on mount
   useEffect(() => {
     const fetchLocations = async () => {
       try {
         const response = await axios.get("/api/v1/location/locations");
-
-        const locationsWithSerial = response.data.data.locations.map(
+        const locationWithSerial = response.data.data.locations.map(
           (location, index) => ({
             ...location,
-            serial: index + 1, // Serial number starts at 1
+            serialNo: index + 1,
           })
         );
-
-        setLocation(locationsWithSerial);
+        setLocation(locationWithSerial);
       } catch (error) {
         toast.success("Something Went Wrong");
         console.error("Error fetching locations:", error);
@@ -45,7 +42,6 @@ const LocationPage = () => {
     fetchLocations();
   }, [refreshPage]);
 
-  // Handle Edit Popup
   const handleEdit = (id) => {
     setUpdatedId(id);
     setIsEditOpen(true);
@@ -69,7 +65,6 @@ const LocationPage = () => {
     }
   };
 
-  // Handle Successful Update
   const handleUpdateSuccess = (updatedLocation) => {
     setLocation((prev) =>
       prev.map((loc) => (loc.id === updatedLocation.id ? updatedLocation : loc))
@@ -77,13 +72,11 @@ const LocationPage = () => {
     setIsEditOpen(false);
   };
 
-  // Handle open
   const handleOpen = (id) => {
     setDeleteId(id);
     setOpen(true);
   };
 
-  // Handle Status Change
   const handleStatusChange = async (id) => {
     try {
       const response = await axios.patch(
@@ -107,21 +100,16 @@ const LocationPage = () => {
   };
 
   const columns = [
-    {
-      field: "serial",
-      headerName: "No.",
-      width: 70,
-    },
+    { field: "serialNo", headerName: "#", width: 150 },
     {
       field: "locationName",
       headerName: "Name",
-      flex: 1,
-      minWidth: 150,
+      width: 900,
     },
     {
       field: "action",
       headerName: "Action",
-      flex: 0.5,
+      width: 150,
 
       renderCell: (params) => (
         <Box display="flex" alignItems="center" gap={1}>

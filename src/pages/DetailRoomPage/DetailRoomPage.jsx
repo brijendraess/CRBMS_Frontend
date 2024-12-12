@@ -17,31 +17,26 @@ import { meetings } from "../../data";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
 
-// Styling for the content wrapper
 const ContentWrapper = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   color: theme.palette.text.secondary,
   height: "100vh",
   width: "100%",
   lineHeight: "60px",
-  borderRadius: "20px",
   padding: "10px",
 }));
 
-// Column definitions for the DataGrid
 const columns = [
   { field: "title", headerName: "Title", width: 200 },
   {
     field: "startTime",
     headerName: "Start Time",
     width: 125,
-    // valueFormatter: ({ startTime }) => dayjs(startTime).format("hh:mm A"), // Convert to AM/PM format
   },
   {
     field: "endTime",
     headerName: "End Time",
     width: 125,
-    // valueFormatter: ({ value }) => dayjs(value).format("hh:mm A"), // Convert to AM/PM format
   },
   { field: "organizerName", headerName: "Organizer", width: 200 },
   {
@@ -52,7 +47,6 @@ const columns = [
   },
 ];
 
-// Function to render the progress bar with percentage text inside it
 const renderProgressBar = (params) => {
   const status = params.value;
   let progress = 0;
@@ -117,7 +111,6 @@ const renderProgressBar = (params) => {
 const DetailRoomPage = () => {
   const { id } = useParams();
   const [room, setRoom] = useState(null);
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const { user } = useSelector((state) => state.user);
@@ -128,7 +121,6 @@ const DetailRoomPage = () => {
       setRoom(response.data.data.room);
       console.log(response.data.data.room);
     } catch (error) {
-      setError("Failed to fetch room data.");
       console.error(error);
     }
   };
@@ -155,60 +147,58 @@ const DetailRoomPage = () => {
   };
 
   return (
-    <div className="right-content w-100">
-      <ContentWrapper>
-        <div className="wrapper">
-          <div className="w-100 d-flex flex-row gap-5">
-            <div className="imageWrapper flex-1">
-              <img
-                src={`${import.meta.env.VITE_API_URL}/${room.roomImagePath}`}
-                alt="Room"
-              />
-              <div className="infoWrapper d-flex flex-1">
-                <h2>{room.name}</h2>
-                <Divider textAlign="left" variant="fullWidth">
-                  <Chip
-                    label={`Capacity: ${room.capacity} People`}
-                    size="large"
-                  />
-                </Divider>
-                <h4></h4>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: 1,
-                  }}
-                >
-                  {amenitiesList.length > 0 ? (
-                    amenitiesList.map((amenity, index) => (
-                      <Chip key={index} label={amenity.trim()} size="medium" />
-                    ))
-                  ) : (
-                    <Chip label={"No amenities listed"} size="large" />
-                  )}
-                </Box>
-              </div>
-            </div>
-            <div className="imageWrapper flex-1">
-              <Box sx={{ height: 400, width: "100%" }}>
-                <DataGrid
-                  rows={meetings}
-                  columns={columns}
-                  pageSize={5}
-                  rowsPerPageOptions={[5]}
+    <ContentWrapper>
+      <div className="wrapper">
+        <div className="w-100 d-flex flex-row gap-5">
+          <div className="imageWrapper flex-1">
+            <img
+              src={`${import.meta.env.VITE_API_URL}/${room.roomImagePath}`}
+              alt="Room"
+            />
+            <div className="infoWrapper d-flex flex-1">
+              <h2>{room.name}</h2>
+              <Divider textAlign="left" variant="fullWidth">
+                <Chip
+                  label={`Capacity: ${room.capacity} People`}
+                  size="large"
                 />
+              </Divider>
+              <h4></h4>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: 1,
+                }}
+              >
+                {amenitiesList.length > 0 ? (
+                  amenitiesList.map((amenity, index) => (
+                    <Chip key={index} label={amenity.trim()} size="medium" />
+                  ))
+                ) : (
+                  <Chip label={"No amenities listed"} size="large" />
+                )}
               </Box>
             </div>
           </div>
+          <div className="imageWrapper flex-1">
+            <Box sx={{ height: 400, width: "100%" }}>
+              <DataGrid
+                rows={meetings}
+                columns={columns}
+                pageSize={5}
+                rowsPerPageOptions={[5]}
+              />
+            </Box>
+          </div>
         </div>
-        <Box sx={{ width: "100%", display: "flex", alignItems: "flex-end" }}>
-          <Button variant="contained" sx={{ marginTop: "50px" }}>
-            Request Room
-          </Button>
-        </Box>
-      </ContentWrapper>
-    </div>
+      </div>
+      <Box sx={{ width: "100%", display: "flex", alignItems: "flex-end" }}>
+        <Button variant="contained" sx={{ marginTop: "50px" }}>
+          Request Room
+        </Button>
+      </Box>
+    </ContentWrapper>
   );
 };
 
