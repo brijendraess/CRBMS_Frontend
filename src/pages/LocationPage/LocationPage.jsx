@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { PaperWrapper } from "../../Style";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import { Box, Switch, Typography } from "@mui/material";
+import { Box, Switch, Tooltip, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import PopupModals from "../../components/Common Components/Modals/Popup/PopupModals";
 import LocationAdd from "./LocationAdd";
@@ -11,12 +11,15 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import LocationEdit from "./LocationEdit";
 import CustomButton from "../../components/Common Components/CustomButton/CustomButton";
+import DeleteModal from "../../components/Common Components/Modals/Delete/DeleteModal";
 
 const LocationPage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [location, setLocation] = useState([]);
   const [updatedId, setUpdatedId] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
   const [refreshPage, setRefreshPage] = useState(0);
 
   // Fetch locations on mount
@@ -48,12 +51,36 @@ const LocationPage = () => {
     setIsEditOpen(true);
   };
 
+  const handleClose = () => {
+    setOpen(false);
+    setDeleteId(null);
+  };
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`/api/v1/location/locations/delete/${deleteId}`);
+
+      handleClose(false);
+      setRefreshPage(Math.random());
+      toast.success("Location deleted successfully!");
+    } catch (error) {
+      toast.error("Failed to delete location!");
+      console.error("Error deleting location:", error);
+    }
+  };
+
   // Handle Successful Update
   const handleUpdateSuccess = (updatedLocation) => {
     setLocation((prev) =>
       prev.map((loc) => (loc.id === updatedLocation.id ? updatedLocation : loc))
     );
     setIsEditOpen(false);
+  };
+
+  // Handle open
+  const handleOpen = (id) => {
+    setDeleteId(id);
+    setOpen(true);
   };
 
   // Handle Status Change
@@ -98,22 +125,27 @@ const LocationPage = () => {
 
       renderCell: (params) => (
         <Box display="flex" alignItems="center" gap={1}>
-          <EditOutlinedIcon
-            className="cursor"
-            color="success"
-            onClick={() => handleEdit(params.row.id)}
-            style={{ cursor: "pointer" }}
-          />
-          <DeleteIcon
-            color="error"
-            style={{ cursor: "pointer" }}
-            onClick={() => console.log("Handle delete here")}
-          />
-
-          <Switch
-            checked={params.row.status}
-            onChange={() => handleStatusChange(params.row.id)}
-          />
+          <Tooltip title="Edit">
+            <EditOutlinedIcon
+              className="cursor"
+              color="success"
+              onClick={() => handleEdit(params.row.id)}
+              style={{ cursor: "pointer" }}
+            />
+          </Tooltip>
+          <Tooltip title="Delete">
+            <DeleteIcon
+              color="error"
+              style={{ cursor: "pointer" }}
+              onClick={() => handleOpen(params.row.id)}
+            />
+          </Tooltip>
+          <Tooltip title="Change Status">
+            <Switch
+              checked={params.row.status}
+              onChange={() => handleStatusChange(params.row.id)}
+            />
+          </Tooltip>
         </Box>
       ),
     },
@@ -187,6 +219,12 @@ const LocationPage = () => {
             onSuccess={handleUpdateSuccess}
           />
         }
+      />
+      <DeleteModal
+        open={open}
+        onClose={handleClose}
+        onDeleteConfirm={handleDelete}
+        button={"Delete"}
       />
     </PaperWrapper>
   );

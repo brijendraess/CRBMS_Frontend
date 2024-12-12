@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { TextField, Button, Box, Paper, styled } from "@mui/material";
 import toast from "react-hot-toast";
@@ -10,6 +10,34 @@ const AmenitiesEdit = ({ id, setRefreshPage, setIsEditOpen }) => {
     description: "",
     quantity: 1,
   });
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Fetch committee data when `committeeId` is available
+  useEffect(() => {
+    const fetchAmenities = async () => {
+      if (id) {
+        setIsLoading(true);
+        try {
+          const response = await axios.get(
+            `/api/v1/amenity/get-single-amenity/${id}`
+          );
+          const amenity = response.data.data.roomAmenity;
+console.log(amenity)
+          setFormData({
+            name: amenity.name,
+            description: amenity.description,
+          });
+        } catch (err) {
+          toast.error("Failed to fetch amenity details.");
+          console.error("Error fetching amenity:", err);
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    fetchAmenities();
+  }, [id]);
 
   const handleChange = (e) => {
     setFormData({
@@ -28,7 +56,7 @@ const AmenitiesEdit = ({ id, setRefreshPage, setIsEditOpen }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("api/v1/amenity/add-amenity", formData);
+      const response = await axios.put(`api/v1/amenity/update-amenity/${id}`, formData);
       toast.success("Amenity edited Successfully");
       setFormData({ name: "", description: "", quantity: 1 });
       setRefreshPage(Math.random());
@@ -36,7 +64,7 @@ const AmenitiesEdit = ({ id, setRefreshPage, setIsEditOpen }) => {
     } catch (err) {
       toast.error(err.response?.data?.message);
       console.error("Error adding amenity:", err);
-    }
+    }  
   };
 
   return (

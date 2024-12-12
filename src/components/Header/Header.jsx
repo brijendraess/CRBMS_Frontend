@@ -15,6 +15,7 @@ import {
   Menu,
   MenuItem,
   Popover,
+  Tooltip,
 } from "@mui/material";
 
 // ICONS
@@ -129,6 +130,7 @@ const Header = () => {
 
           {/* Sidebar and Search */}
           <div className="col-sm-3 col-xs-3 d-flex align-items-center gap-5 part2">
+          <Tooltip title="Menu Bar">
             <Button
               className="rounded-circle"
               onClick={() =>
@@ -137,6 +139,7 @@ const Header = () => {
             >
               {context.isSidebarVisible ? <MenuOpenIcon /> : <MenuOutlined />}
             </Button>
+            </Tooltip>
           </div>
 
           {/* Action Buttons */}
@@ -145,23 +148,28 @@ const Header = () => {
               className="rounded-circle"
               onClick={handleMenuToggle(setNotificationsAnchor)}
             >
+              <Tooltip title="Notification">
               <Badge badgeContent={4} color="error">
                 <NotificationsOutlinedIcon />
               </Badge>
+              </Tooltip>
             </Button>
 
             <Button className="rounded-circle" onClick={handleFullScreen}>
+            <Tooltip title="Full Screen">
               {isFullScreen ? (
                 <FullscreenExitOutlinedIcon />
               ) : (
                 <FullscreenOutlinedIcon />
               )}
+              </Tooltip>
             </Button>
 
             <Button
               className="myAccWrapper"
               onClick={handleMenuToggle(setMenuAnchor)}
             >
+              <Tooltip title="My Account">
               <div className="profileImage">
                 <span className="profilePhoto">
                   <img
@@ -174,6 +182,7 @@ const Header = () => {
                   />
                 </span>
               </div>
+              </Tooltip>
             </Button>
           </div>
         </div>

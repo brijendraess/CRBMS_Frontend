@@ -7,13 +7,14 @@ import { useSelector } from "react-redux";
 import { MyContext } from "../Layout/Layout";
 
 const Sidebar = () => {
+
+  const userIsAdmin = useLocation();
   const { isSidebarVisible, setIsSidebarVisible } = useContext(MyContext);
   const { user } = useSelector((state) => state.user);
-  const isAdmin = user?.isAdmin;
-
+  const { state } = userIsAdmin; // Access state data;
+  const isAdmin = state?state:user?.isAdmin
   const menuToBeRendered = isAdmin ? adminSideBarData : userSideBarData;
 
-  const location = useLocation();
   return (
     <div className={`sidebar ${isSidebarVisible ? "close" : ""}`}>
       <ul className="menu-item">

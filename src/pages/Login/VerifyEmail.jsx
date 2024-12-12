@@ -92,10 +92,9 @@ const VerifyEmail = () => {
 
       if (response.data.success) {
         const fullname = response.data.data?.user?.fullname || "User";
-        navigate("/home");
+        navigate("/home",{ state: response.data?.data?.user?.isAdmin });
         // toast.success(`Welcome Back, ${fullname}`);
         toast.success(`${fullname}, You Have 4 New Meeting Notifications`);
-        console.log(response);
         // Clear stored email after successful verification
         localStorage.removeItem("verifyLoginEmail");
       }

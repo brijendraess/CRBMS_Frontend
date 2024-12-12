@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Box, Paper, styled, Button, Typography, Switch } from "@mui/material";
+import {
+  Box,
+  Paper,
+  styled,
+  Button,
+  Typography,
+  Switch,
+  Tooltip,
+} from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
@@ -161,30 +169,38 @@ const MembersPage = () => {
       headerName: "Action",
       renderCell: (params) => (
         <div style={{ display: "flex", gap: "10px" }}>
-          <EditOutlinedIcon
-            className="cursor"
-            color="success"
-            onClick={() => handleEdit(params.id)}
-          />
-
-          <VisibilityOutlinedIcon
-            color="secondary"
-            className="cursor"
-            onClick={() => handleView(params.id)}
-          />
-          <div className="delete">
-            <DeleteOutlineOutlinedIcon
-              color="error"
-              onClick={() => handleOpen(params.id)}
+          <Tooltip title="Edit">
+            <EditOutlinedIcon
+              className="cursor"
+              color="success"
+              title="Edit"
+              onClick={() => handleEdit(params.id)}
             />
+          </Tooltip>
+          <Tooltip title="View">
+            <VisibilityOutlinedIcon
+              color="secondary"
+              className="cursor"
+              onClick={() => handleView(params.id)}
+            />
+          </Tooltip>
+          <div className="delete">
+            <Tooltip title="Delete">
+              <DeleteOutlineOutlinedIcon
+                color="error"
+                onClick={() => handleOpen(params.id)}
+              />
+            </Tooltip>
           </div>
           <div className="delete">
-            <Switch
-              checked={params.row.isBlocked}
-              onChange={() =>
-                handleBlockStatusChange(params.row.id, params.row.isBlocked)
-              }
-            />
+            <Tooltip title="Change Status">
+              <Switch
+                checked={params.row.isBlocked}
+                onChange={() =>
+                  handleBlockStatusChange(params.row.id, params.row.isBlocked)
+                }
+              />
+            </Tooltip>
           </div>
         </div>
       ),

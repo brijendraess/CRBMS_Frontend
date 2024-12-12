@@ -19,7 +19,7 @@ import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { setLoginEmail } from "../../Redux/verifyEmailSlicer";
 import Input from "../../components/Common Components/Input/Input";
 
-// Assests Import
+// Assets Import
 import ebizLogo from "../../assets/Images/ebizlogo.png";
 
 const UserLogin = () => {

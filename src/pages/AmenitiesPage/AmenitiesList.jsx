@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 
 // Material UI IMPORTS
 import { DataGrid } from "@mui/x-data-grid";
-import { Button, Box, Typography, Switch } from "@mui/material";
+import { Button, Box, Typography, Switch, Tooltip } from "@mui/material";
 import {
   DeleteOutlineOutlined as DeleteIcon,
   VisibilityOutlined as ViewIcon,
@@ -45,7 +45,6 @@ const AmenitiesList = () => {
             serial: index + 1, // Serial number starts at 1
           })
         );
-
         setAmenities(amenitiesWithSerial); //
       } catch (error) {
         toast.error("Something went wrong");
@@ -85,8 +84,25 @@ const AmenitiesList = () => {
     }
   };
 
-  const handleStatusChange = () => {
-    setStatus((prevStatus) => !prevStatus);
+  const handleStatusChange = async(id) => {
+    try {
+      const response = await axios.patch(
+        `/api/v1/amenity/amenities/${id}/status`
+      );
+      const updatedRoomAmenity = response.data.data.roomAmenity;
+      setRefreshPage(Math.random())
+      setAmenities((prev) =>
+        prev.map((amenity) =>
+          amenity.id === id ? { ...amenity, status: updatedRoomAmenity.status } : amenity
+        )
+      );
+      toast.success(
+        `Amenity status changed to ${updatedRoomAmenity.status ? "Active" : "Inactive"}`
+      );
+    } catch (error) {
+      console.error("Error changing status:", error);
+      toast.error("Failed to change Amenity status!");
+    }
   };
 
   const columns = [
@@ -99,20 +115,26 @@ const AmenitiesList = () => {
       flex: 0.5,
       renderCell: (params) => (
         <Box height={"40px"} display="flex" alignItems="center" gap={2}>
+          <Tooltip title="Edit">
           <EditOutlinedIcon
             style={{ cursor: "pointer" }}
             color="success"
             onClick={() => handleEdit(params.id)}
           />
+          </Tooltip>
+          <Tooltip title="Delete">
           <DeleteIcon
             color="error"
             onClick={() => handleOpen(params.id)}
             style={{ cursor: "pointer" }}
           />
+          </Tooltip>
+          <Tooltip title="Change Status">
           <Switch
             checked={params.row.status}
             onChange={() => handleStatusChange(params.row.id)}
           />
+          </Tooltip>
         </Box>
       ),
     },
@@ -152,9 +174,9 @@ const AmenitiesList = () => {
           />
         </Box>
         <div style={{ display: "flex", flexDirection: "column" }}>
-          {/* <DataGrid
-            // rows={amenities}
-            // columns={columns}
+          <DataGrid
+            rows={amenities}
+            columns={columns}
             pageSize={5}
             rowHeight={40}
             rowsPerPageOptions={[7]}
@@ -166,7 +188,7 @@ const AmenitiesList = () => {
             }}
             showCellVerticalBorder
             showColumnVerticalBorder
-          /> */}
+          />
         </div>
         <PopupModals
           isOpen={isAddOpen}
