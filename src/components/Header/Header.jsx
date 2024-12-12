@@ -122,7 +122,7 @@ const Header = () => {
       <div className="container-fluid w-100">
         <div className="row d-flex flex-row align-items-center">
           <div className="col-sm-2 col-xs-3 part1">
-            <Link to={"/home"} className="d-flex align-items-center logo gap-2">
+            <Link to={"/meeting-calendar"} className="d-flex align-items-center logo gap-2">
               <img src={logo} alt="logo" />
               <span>Harambee</span>
             </Link>

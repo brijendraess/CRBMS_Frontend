@@ -26,7 +26,7 @@ const FormWrapper = styled(Paper)(({ theme }) => ({
   marginTop: "10px",
 }));
 
-const UpdateMemberForm = ({ id,setRefreshPage,setIsEditOpen }) => {
+const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
   //const { id } = useParams();
   const [availableCommittees, setAvailableCommittees] = useState([]);
   const [userCommittees, setUserCommittees] = useState([]);
@@ -163,6 +163,7 @@ const UpdateMemberForm = ({ id,setRefreshPage,setIsEditOpen }) => {
       />
 
       <Autocomplete
+        disableCloseOnSelect
         multiple
         id="committees"
         options={availableCommittees}
@@ -183,7 +184,6 @@ const UpdateMemberForm = ({ id,setRefreshPage,setIsEditOpen }) => {
             helperText={formik.touched.committees && formik.errors.committees}
           />
         )}
-        disableCloseOnSelect
         slotProps={{
           listbox: {
             style: { maxHeight: 100, overflowY: "scroll" }, // Scrollable dropdown
@@ -193,11 +193,11 @@ const UpdateMemberForm = ({ id,setRefreshPage,setIsEditOpen }) => {
         renderTags={(selected, getTagProps) => (
           <div
             style={{
-              maxHeight: "100px", // Limit the height of the selected items container
-              overflowY: "auto", // Enable scroll
+              maxHeight: "100px",
+              overflowY: "auto",
               padding: "5px",
-              border: "1px solid #ccc", // Optional: Visual boundary
-              borderRadius: "4px", // Optional: Rounded edges
+              border: "1px solid #ccc",
+              borderRadius: "4px",
             }}
           >
             {selected.map((option, index) => (
@@ -205,10 +205,21 @@ const UpdateMemberForm = ({ id,setRefreshPage,setIsEditOpen }) => {
                 key={option.id}
                 label={option.name}
                 {...getTagProps({ index })}
-                style={{ fontSize: "0.875rem" }} // Adjust text size for chips
+                size="medium"
               />
             ))}
           </div>
+        )}
+        renderOption={(props, option, { selected }) => (
+          <li
+            {...props}
+            style={{
+              backgroundColor: selected ? "#e0f7fa" : "inherit", // Change the color when selected
+              fontWeight: selected ? "bold" : "normal", // Optional: Make text bold when selected
+            }}
+          >
+            {option.name}
+          </li>
         )}
       />
 

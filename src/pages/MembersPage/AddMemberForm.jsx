@@ -19,7 +19,6 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { PopContent } from "../../Style";
 
-
 const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
   const [avatarPreview, setAvatarPreview] = useState(null); // Avatar preview
   const [committees, setCommittees] = useState([]); // List of available committees
@@ -200,10 +199,10 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
           multiple
           id="committee"
           options={committees}
-          getOptionLabel={(option) => option.name || option.id}
           value={committees.filter((committee) =>
             formik.values.committee.includes(committee.id)
           )}
+          getOptionLabel={(option) => option.name || option.id}
           onChange={(_, selectedOptions) => {
             formik.setFieldValue(
               "committee",

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-// Material UI IMPORTS
+// Material UI Imports
 import { DataGrid } from "@mui/x-data-grid";
 import { Button, Box, Typography, Switch, Tooltip } from "@mui/material";
 import {
@@ -31,21 +31,19 @@ const AmenitiesList = () => {
   const [updatedId, setUpdatedId] = useState("");
   const [open, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
-  const [status, setStatus] = useState(false);
-  const [refreshPage, setRefreshPage] = useState(0);
 
+  // Fetch amenities only when component mounts
   useEffect(() => {
     const fetchAmenities = async () => {
       try {
         const response = await axios.get("/api/v1/amenity/get-all-amenities");
-
         const amenitiesWithSerial = response.data.data.roomAmenities.map(
           (amenity, index) => ({
             ...amenity,
-            serial: index + 1, // Serial number starts at 1
+            serialNo: index + 1, // Add serial number to each row
           })
         );
-        setAmenities(amenitiesWithSerial); //
+        setAmenities(amenitiesWithSerial);
       } catch (error) {
         toast.error("Something went wrong");
         console.error("Error fetching amenities:", error);
@@ -53,19 +51,23 @@ const AmenitiesList = () => {
     };
 
     fetchAmenities();
-  }, [refreshPage]);
+  }, []);
 
   const handleClose = () => {
+    console.log("Error");
+
     setOpen(false);
     setDeleteId(null);
   };
 
   const handleOpen = (id) => {
+    console.log("Error");
     setDeleteId(id);
     setOpen(true);
   };
 
   const handleEdit = (id) => {
+    console.log("Error");
     setUpdatedId(id);
     setIsEditOpen(true);
   };
@@ -73,10 +75,12 @@ const AmenitiesList = () => {
   const handleDelete = async () => {
     try {
       await axios.delete(`/api/v1/amenity/delete/${deleteId}`);
+      // Directly remove the deleted amenity from the state
       setAmenities((prevAmenities) =>
         prevAmenities.filter((amenity) => amenity.id !== deleteId)
       );
-      handleClose(false);
+      handleClose();
+      console.log("Error");
       toast.success("Amenity deleted successfully!");
     } catch (error) {
       toast.error("Failed to delete amenity!");
@@ -84,18 +88,21 @@ const AmenitiesList = () => {
     }
   };
 
-  const handleStatusChange = async(id) => {
+  const handleStatusChange = async (id) => {
     try {
       const response = await axios.patch(
         `/api/v1/amenity/amenities/${id}/status`
       );
       const updatedRoomAmenity = response.data.data.roomAmenity;
-      setRefreshPage(Math.random())
+
       setAmenities((prev) =>
         prev.map((amenity) =>
-          amenity.id === id ? { ...amenity, status: updatedRoomAmenity.status } : amenity
+          amenity.id === id
+            ? { ...amenity, status: updatedRoomAmenity.status }
+            : amenity
         )
       );
+
       toast.success(
         `Amenity status changed to ${updatedRoomAmenity.status ? "Active" : "Inactive"}`
       );
@@ -106,34 +113,34 @@ const AmenitiesList = () => {
   };
 
   const columns = [
-    { field: "serial", headerName: "#", flex: 0.3 },
-    { field: "name", headerName: "Amenity Name", flex: 1 },
-    { field: "description", headerName: "Description", flex: 1.5 },
+    { field: "serialNo", headerName: "#", width: 50 },
+    { field: "name", headerName: "Amenity Name", width: 350 },
+    { field: "description", headerName: "Description", width: 800 },
     {
       field: "action",
       headerName: "Action",
-      flex: 0.5,
+      width: 150,
       renderCell: (params) => (
         <Box height={"40px"} display="flex" alignItems="center" gap={2}>
           <Tooltip title="Edit">
-          <EditOutlinedIcon
-            style={{ cursor: "pointer" }}
-            color="success"
-            onClick={() => handleEdit(params.id)}
-          />
+            <EditOutlinedIcon
+              style={{ cursor: "pointer" }}
+              color="success"
+              onClick={() => handleEdit(params.id)}
+            />
           </Tooltip>
           <Tooltip title="Delete">
-          <DeleteIcon
-            color="error"
-            onClick={() => handleOpen(params.id)}
-            style={{ cursor: "pointer" }}
-          />
+            <DeleteIcon
+              color="error"
+              onClick={() => handleOpen(params.id)}
+              style={{ cursor: "pointer" }}
+            />
           </Tooltip>
           <Tooltip title="Change Status">
-          <Switch
-            checked={params.row.status}
-            onChange={() => handleStatusChange(params.row.id)}
-          />
+            <Switch
+              checked={params.row.status}
+              onChange={() => handleStatusChange(params.row.id)}
+            />
           </Tooltip>
         </Box>
       ),
@@ -190,14 +197,15 @@ const AmenitiesList = () => {
             showColumnVerticalBorder
           />
         </div>
+
         <PopupModals
           isOpen={isAddOpen}
           setIsOpen={setIsAddOpen}
           title={"Add Amenity"}
           modalBody={
             <AmenitiesAdd
-              setRefreshPage={setRefreshPage}
               setIsAddOpen={setIsAddOpen}
+              setAmenities={setAmenities} // Passing function to update amenities directly after adding
             />
           }
         />
@@ -209,11 +217,12 @@ const AmenitiesList = () => {
           modalBody={
             <AmenitiesEdit
               id={updatedId}
-              setRefreshPage={setRefreshPage}
               setIsEditOpen={setIsEditOpen}
+              setAmenities={setAmenities} // Passing function to update amenities directly after editing
             />
           }
         />
+
         <DeleteModal
           open={open}
           onClose={handleClose}

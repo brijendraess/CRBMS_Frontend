@@ -19,22 +19,6 @@ import PopupModals from "../../components/Common Components/Modals/Popup/PopupMo
 import AddCommitteeForm from "./AddCommitteeForm";
 import CustomButton from "../../components/Common Components/CustomButton/CustomButton";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import DeleteModal from "../../components/Common Components/Modals/Delete/DeleteModal";
-
-// Styled component for the card wrapper
-const CardWrapper = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  color: theme.palette.text.secondary,
-  width: "100%",
-  height: "100%",
-  lineHeight: "60px",
-  boxShadow: theme.shadows[1],
-  transition: "box-shadow 0.3s ease-in-out",
-  cursor: "pointer",
-  "&:hover": {
-    boxShadow: theme.shadows[15],
-  },
-}));
 
 const CommitteeManagementMUI = () => {
   const [committeeData, setCommitteeData] = useState([]);
@@ -82,11 +66,10 @@ const CommitteeManagementMUI = () => {
     setCommitteeData((prev) => [...prev, newCommittee]); // Add new committee to the state
     setIsAddCommittee(false); // Close the modal
   };
-  
+
   return (
     <>
       <PaperWrapper>
-        {" "}
         <Box
           sx={{
             display: "flex",
@@ -139,58 +122,33 @@ const CommitteeManagementMUI = () => {
             />
           </Box>
         </Box>
-        {loading ? (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="50vh"
-          >
-            <CircularProgress />
-          </Box>
-        ) : error ? (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="50vh"
-          >
-            <Typography color="error">{error}</Typography>
-          </Box>
-        ) : (
-          <Grid2
-            container
-            columnSpacing={3}
-            rowSpacing={3}
-            sx={{
-              borderRadius: "20px",
-              position: "relative",
-              top: "10px",
-            }}
-          >
-            {filteredCommittees.length > 0 ? (
-              filteredCommittees.map((committee) => (
-                <CommitteeCard
-                  key={committee.id}
-                  committee={committee}
-                  onDelete={handleDeleteCommittee}
-                  setRefreshPage={setRefreshPage}
-                />
-              ))
-            ) : (
-              <Grid2 item xs={12}>
-                <Box display="flex" justifyContent="center" width="100%" p={3}>
-                  <Typography variant="h6" color="textSecondary">
-                    No committees found.
-                  </Typography>
-                </Box>
-              </Grid2>
-            )}
-          </Grid2>
-        )}
+        <Grid2
+          container
+          columnSpacing={3}
+          rowSpacing={3}
+          sx={{
+            borderRadius: "20px",
+            position: "relative",
+            top: "10px",
+          }}
+        >
+          {filteredCommittees.map((committee) => (
+            <CommitteeCard
+              key={committee.id}
+              committee={committee}
+              onDelete={handleDeleteCommittee}
+              setRefreshPage={setRefreshPage}
+            />
+          ))}
+        </Grid2>
       </PaperWrapper>
       <PopupModals
-        modalBody={<AddCommitteeForm onAddCommittee={handleAddCommittee} setRefreshPage={setRefreshPage} />}
+        modalBody={
+          <AddCommitteeForm
+            onAddCommittee={handleAddCommittee}
+            setRefreshPage={setRefreshPage}
+          />
+        }
         isOpen={isAddCommittee}
         title={`Add Committee`}
         setIsOpen={setIsAddCommittee}
