@@ -89,6 +89,7 @@ const MembersPage = () => {
           prevUsers.filter((user) => user.id !== deleteId)
         );
       }
+      handleClose(false)
       showLoading();
     } catch (error) {
       console.error("Error deleting user:", error);

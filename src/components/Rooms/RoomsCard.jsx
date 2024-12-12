@@ -245,6 +245,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus }) => {
                   background: "white",
                   color: "black",
                   flex: 1,
+                  minWidth:"47px",
                 }}
                 size="small"
               >
@@ -259,6 +260,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus }) => {
                   background: "white",
                   color: "black",
                   flex: 1,
+                  minWidth:"47px",
                 }}
                 size="small"
               >
@@ -272,6 +274,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus }) => {
                   background: "white",
                   color: "black",
                   flex: 1,
+                  minWidth:"47px",
                 }}
                 size="small"
               >
