@@ -1,245 +1,84 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import SaveIcon from '@mui/icons-material/Save';
-import CancelIcon from '@mui/icons-material/Close';
-import {
-  GridRowModes,
-  DataGrid,
-  GridToolbarContainer,
-  GridActionsCellItem,
-  GridRowEditStopReasons,
-} from '@mui/x-data-grid';
-import {
-  randomCreatedDate,
-  randomTraderName,
-  randomId,
-  randomArrayItem,
-} from '@mui/x-data-grid-generator';
-import { useState } from 'react';
-import axios from 'axios';
-import { useEffect } from 'react';
-
-const roles = ['Market', 'Finance', 'Development'];
-const randomRole = () => {
-  return randomArrayItem(roles);
-};
+import React, { useState } from "react";
+import { DataGrid } from "@mui/x-data-grid";
+import { IconButton, Box } from "@mui/material";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import { DeleteOutlineOutlined as DeleteIcon } from "@mui/icons-material";
+import CustomButton from "../Common Components/CustomButton/CustomButton";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import PopupModals from "../Common Components/Modals/Popup/PopupModals";
+import AddRoomAmenities from "./AddRoomAmenities";
 
 const initialRows = [
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    quantity: 25,
-    
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    quantity: 36,
-   
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    quantity: 19,
-   
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    quantity: 28,
-   
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    quantity: 23,
-    
-  },
+  { id: 1, name: "John Doe", quantity: 25 },
+  { id: 2, name: "Jane Smith", quantity: 30 },
+  { id: 3, name: "Alex Johnson", quantity: 35 },
 ];
 
-function EditToolbar(props) {
-  const { setRows, setRowModesModel } = props;
-
-  const handleClick = () => {
-    const id = randomId();
-    setRows((oldRows) => [
-      ...oldRows,
-      { id, name: '', quantity: '', isNew: true },
-    ]);
-    setRowModesModel((oldModel) => ({
-      ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
-    }));
-  };
-
-  return (
-    <GridToolbarContainer sx={{marginLeft:"auto",paddingRight:"10px"}}>
-      <Button variant="contained"
-                color="success" startIcon={<AddIcon />} onClick={handleClick}>
-        Add Quantity
-      </Button>
-    </GridToolbarContainer>
-  );
-}
-
-export default function RoomAmenities() {
+const RoomAmenities = ({room,setIsAmenitiesOpen}) => {
   const [rows, setRows] = useState(initialRows);
-  const [rowModesModel, setRowModesModel] = useState({});
-  const [amenitiesList, setAmenitiesList] = useState([]);
+  const [isAmenityQuantityOpen, setIsAmenityQuantityOpen] = useState(false);
+  const handleEdit = (id) => {
+    alert(`Edit row with ID: ${id}`);
+    // Add your edit logic here
+  };
 
-  const handleRowEditStop = (params, event) => {
-    if (params.reason === GridRowEditStopReasons.rowFocusOut) {
-      event.defaultMuiPrevented = true;
+  const handleRoomAmenities = () => {
+    setIsAmenityQuantityOpen(true);
+    setIsAmenitiesOpen(false);
+  };
+
+  const handleDelete = (id) => {
+    const confirm = window.confirm("Are you sure you want to delete this row?");
+    if (confirm) {
+      setRows(rows.filter((row) => row.id !== id)); // Remove the row
     }
-  };
-
-  useEffect(() => {
-    const fetchAmenities = async () => {
-      try {
-        const response = await axios.get("api/v1/amenity/get-all-amenities");
-        const amenities = response.data.data.roomAmenities.map(
-          (amenity) => amenity.name
-        );
-        setAmenitiesList(amenities);
-      } catch (error) {
-        toast.error("Failed to load amenities");
-        console.error("Error fetching amenities:", error);
-      }
-    };
-
-    fetchAmenities();
-  }, []);
-
-  const handleEditClick = (id) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
-  };
-
-  const handleSaveClick = (id) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-  };
-
-  const handleDeleteClick = (id) => () => {
-    setRows(rows.filter((row) => row.id !== id));
-  };
-
-  const handleCancelClick = (id) => () => {
-    setRowModesModel({
-      ...rowModesModel,
-      [id]: { mode: GridRowModes.View, ignoreModifications: true },
-    });
-
-    const editedRow = rows.find((row) => row.id === id);
-    if (editedRow.isNew) {
-      setRows(rows.filter((row) => row.id !== id));
-    }
-  };
-
-  const processRowUpdate = (newRow) => {
-    const updatedRow = { ...newRow, isNew: false };
-    setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
-    return updatedRow;
-  };
-
-  const handleRowModesModelChange = (newRowModesModel) => {
-    setRowModesModel(newRowModesModel);
   };
 
   const columns = [
+    { field: "id", headerName: "S No.", width: 60 },
+    { field: "name", headerName: "Name", width: 100 },
+    { field: "age", headerName: "Quantity", width: 100 },
     {
-        field: 'name', 
-        headerName: 'Name', 
-        type:'singleSelect',
-        flex:1, 
-        editable: true,
-        valueOptions: amenitiesList, },
-    {
-      field: 'quantity',
-      headerName: 'Quantity',
-      type: 'number',
-      flex:1,
-      align: 'left',
-      headerAlign: 'left',
-      editable: true,
-    },
-    
-    {
-      field: 'actions',
-      type: 'actions',
-      headerName: 'Actions',
-      width: 100,
-      cellClassName: 'actions',
-      getActions: ({ id }) => {
-        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
-
-        if (isInEditMode) {
-          return [
-            <GridActionsCellItem
-              icon={<SaveIcon />}
-              label="Save"
-              sx={{
-                color: 'primary.main',
-              }}
-              onClick={handleSaveClick(id)}
-            />,
-            <GridActionsCellItem
-              icon={<CancelIcon />}
-              label="Cancel"
-              className="textPrimary"
-              onClick={handleCancelClick(id)}
-              color="inherit"
-            />,
-          ];
-        }
-
-        return [
-          <GridActionsCellItem
-            icon={<EditIcon />}
-            label="Edit"
-            className="textPrimary"
-            onClick={handleEditClick(id)}
-            color="inherit"
-          />,
-          <GridActionsCellItem
-            icon={<DeleteIcon />}
-            label="Delete"
-            onClick={handleDeleteClick(id)}
-            color="inherit"
-          />,
-        ];
-      },
+      field: "actions",
+      headerName: "Actions",
+      width: 150,
+      sortable: false,
+      renderCell: (params) => (
+        <Box>
+          <IconButton color="primary" onClick={() => handleEdit(params.row.id)}>
+            <EditOutlinedIcon />
+          </IconButton>
+          <IconButton color="error" onClick={() => handleDelete(params.row.id)}>
+            <DeleteIcon />
+          </IconButton>
+        </Box>
+      ),
     },
   ];
 
   return (
-    <Box
-      sx={{
-        // height: 500,
-        width: '100%',
-        '& .actions': {
-          color: 'text.secondary',
-        },
-        '& .textPrimary': {
-          color: 'text.primary',
-        },
-      }}
-    >
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        editMode="row"
-        rowModesModel={rowModesModel}
-        onRowModesModelChange={handleRowModesModelChange}
-        onRowEditStop={handleRowEditStop}
-        processRowUpdate={processRowUpdate}
-        slots={{ toolbar: EditToolbar }}
-        slotProps={{
-          toolbar: { setRows, setRowModesModel },
-        }}
+    <>
+      <Box sx={{width:"100%",display:"flex", marginBottom:"5px", justifyContent:"flex-end"}}>
+        <CustomButton
+          title={"Add New Amenity Quantity"}
+          placement={"left"}
+          onClick={handleRoomAmenities}
+          Icon={AddOutlinedIcon}
+          fontSize={"medium"}
+          background={"rgba(3, 176, 48, 0.68)"}
+        />
+      </Box>
+      <Box sx={{ minHeight: 400, width: "100%" }}>
+        <DataGrid rows={rows} columns={columns} pageSize={20} />
+      </Box>
+      <PopupModals
+        isOpen={isAmenityQuantityOpen}
+        setIsOpen={setIsAmenityQuantityOpen}
+        title={"Add New Room Amenity"}
+        modalBody={<AddRoomAmenities room={room} />}
       />
-    </Box>
+    </>
   );
-}
+};
+
+export default RoomAmenities;
