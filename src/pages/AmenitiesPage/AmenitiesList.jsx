@@ -31,6 +31,7 @@ const AmenitiesList = () => {
   const [updatedId, setUpdatedId] = useState("");
   const [open, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const [isRefreshed, setIsRefreshed] = useState(0);
 
   // Fetch amenities only when component mounts
   useEffect(() => {
@@ -51,7 +52,7 @@ const AmenitiesList = () => {
     };
 
     fetchAmenities();
-  }, []);
+  }, [isRefreshed]);
 
   const handleClose = () => {
     console.log("Error");
@@ -114,8 +115,8 @@ const AmenitiesList = () => {
 
   const columns = [
     { field: "serialNo", headerName: "#", width: 50 },
-    { field: "name", headerName: "Amenity Name", width: 350 },
-    { field: "description", headerName: "Description", width: 800 },
+    { field: "name", headerName: "Amenity Name", width: 300 },
+    { field: "description", headerName: "Description", width: 700 },
     {
       field: "action",
       headerName: "Action",
@@ -206,6 +207,7 @@ const AmenitiesList = () => {
             <AmenitiesAdd
               setIsAddOpen={setIsAddOpen}
               setAmenities={setAmenities} // Passing function to update amenities directly after adding
+              setIsRefreshed={setIsRefreshed}
             />
           }
         />
@@ -219,6 +221,7 @@ const AmenitiesList = () => {
               id={updatedId}
               setIsEditOpen={setIsEditOpen}
               setAmenities={setAmenities} // Passing function to update amenities directly after editing
+              setIsRefreshed={setIsRefreshed}
             />
           }
         />

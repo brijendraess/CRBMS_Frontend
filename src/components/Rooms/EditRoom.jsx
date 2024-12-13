@@ -19,7 +19,7 @@ import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const EditRoomForm = ({ room }) => {
+const EditRoomForm = ({ room, setRefreshPage, setIsEditOpen }) => {
   const [roomImagePreview, setRoomImagePreview] = useState(null);
   const [locationList, setLocationList] = useState([]);
   const [roomImageError, setRoomImageError] = useState("");
@@ -75,6 +75,7 @@ const EditRoomForm = ({ room }) => {
       location: { id: room.Location.id, label: room.Location.locationName },
       capacity: room.capacity,
       tolerancePeriod: room.tolerancePeriod,
+      sanitationPeriod: room.sanitationPeriod,
       roomImage: room.roomImage,
       description: room.description,
       sanitationStatus: sanitationStatus,
@@ -94,6 +95,10 @@ const EditRoomForm = ({ room }) => {
         .required("Tolerance Period is required")
         .positive()
         .integer(),
+      sanitationPeriod: Yup.number()
+        .required("Tolerance Period is required")
+        .positive()
+        .integer(),
       // password: Yup.string().required("Password is required"),
       description: Yup.string(),
     }),
@@ -104,6 +109,7 @@ const EditRoomForm = ({ room }) => {
         formData.append("name", values.name);
         formData.append("capacity", values.capacity);
         formData.append("tolerancePeriod", values.tolerancePeriod);
+        formData.append("sanitationPeriod", values.sanitationPeriod);
         formData.append("description", values.description);
         formData.append("location", values.location.id);
         formData.append("sanitationStatus", sanitationStatus);
@@ -124,7 +130,8 @@ const EditRoomForm = ({ room }) => {
         toast.success("Room updated successfully");
         resetForm();
         setRoomImagePreview(null);
-
+        setRefreshPage(Math.random());
+        setIsEditOpen(false);
         setRoomImageError("");
       } catch (error) {
         toast.error(error.response?.data?.message || "An error occurred");
@@ -180,6 +187,25 @@ const EditRoomForm = ({ room }) => {
           helperText={formik.touched.name && formik.errors.name}
           style={{ marginRight: 8, flex: 1 }}
           size="small"
+        />
+      </Box>
+      <Box display="flex" justifyContent="space-between">
+        <TextField
+          label="Sanitation Period"
+          name="sanitationPeriod"
+          margin="normal"
+          type="number"
+          value={formik.values.sanitationPeriod}
+          onChange={formik.handleChange}
+          error={
+            formik.touched.sanitationPeriod &&
+            Boolean(formik.errors.sanitationPeriod)
+          }
+          helperText={
+            formik.touched.sanitationPeriod && formik.errors.sanitationPeriod
+          }
+          size="small"
+          style={{ marginRight: 8, flex: 1 }}
         />
         <Autocomplete
           id="location"

@@ -37,7 +37,7 @@ import { MyContext } from "../Layout/Layout";
 
 // Notifications Menu Component
 import NotificationsMenu from "../Notifications/NotificationsMenu";
-import { notifications } from "../../data";
+import { notifications } from "../../LeftPaneldata";
 import { MaterialUISwitch } from "../../Style";
 import PopupModals from "../Common Components/Modals/Popup/PopupModals";
 import ProfilePage from "../../pages/ProfilePage/ProfilePage";

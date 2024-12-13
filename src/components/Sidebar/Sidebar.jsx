@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import "./Sidebar.css";
 import { Tooltip } from "@mui/material";
-import { adminSideBarData, userSideBarData } from "../../data";
+import { adminSideBarData, userSideBarData } from "../../LeftPaneldata";
 import { NavLink, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { MyContext } from "../Layout/Layout";
