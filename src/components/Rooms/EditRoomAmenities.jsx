@@ -4,14 +4,14 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 
-const AddRoomAmenities = ({ room ,setRefreshPage,setIsAmenityQuantityOpen}) => {
+const EditRoomAmenities = ({ room ,setRefreshPage,setOpenEdit,editId,editInfo}) => {
   const { user } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
-    amenityId: "", 
-    quantity: "",
+    amenityId: editInfo?.amenityId, 
+    quantity: editInfo?.quantity,
     roomId:room.id,
     status:true,
-    createdBy:user.id
+    updatedBy:user.id
   });
   const [amenitiesList, setAmenitiesList] = useState([]);
 
@@ -26,15 +26,15 @@ const AddRoomAmenities = ({ room ,setRefreshPage,setIsAmenityQuantityOpen}) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("api/v1/rooms/add-amenity-quantity", formData);
-      toast.success("Quantity added Successfully");
+      const response = await axios.put(`api/v1/rooms/edit-amenity-quantity/${editId}`, formData);
+      toast.success("Quantity updated Successfully");
       setRefreshPage(Math.random());
     } catch (err) {
       toast.error(err.response?.data?.message || "An error occurred");
       console.error("Error adding location:", err);
     }
     finally{
-      setIsAmenityQuantityOpen(false);
+        setOpenEdit(false);
 
     }
   };
@@ -57,7 +57,7 @@ const AddRoomAmenities = ({ room ,setRefreshPage,setIsAmenityQuantityOpen}) => {
 
     fetchAmenities();
   }, []);
-  
+
   return (
     <div className="pop-content w-100">
       <Box
@@ -102,7 +102,7 @@ const AddRoomAmenities = ({ room ,setRefreshPage,setIsAmenityQuantityOpen}) => {
           fullWidth
           sx={{ mt: 2 }}
         >
-          Add Quantity
+          Save
         </Button>
         </FormControl>
       </Box>
@@ -110,4 +110,4 @@ const AddRoomAmenities = ({ room ,setRefreshPage,setIsAmenityQuantityOpen}) => {
   );
 };
 
-export default AddRoomAmenities;
+export default EditRoomAmenities;
