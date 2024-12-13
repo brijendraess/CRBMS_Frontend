@@ -29,6 +29,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { PaperWrapper, RightContent } from "../../Style";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import UserCard from "../../components/Cards/UserCard";
 
 const MembersPage = () => {
   const [users, setUsers] = useState([]);
@@ -97,7 +98,7 @@ const MembersPage = () => {
           prevUsers.filter((user) => user.id !== deleteId)
         );
       }
-      handleClose(false)
+      handleClose(false);
       showLoading();
     } catch (error) {
       console.error("Error deleting user:", error);
@@ -255,7 +256,7 @@ const MembersPage = () => {
             />
           </div>
         </Box>
-        <Box sx={{ width: "100%", height: "70vh" }}>
+        {/* <Box sx={{ width: "100%", height: "70vh" }}>
           <DataGrid
             autoPageSize
             showCellVerticalBorder
@@ -287,6 +288,7 @@ const MembersPage = () => {
               return "";
             }}
           />
+
         </Box>
         <div className="legends">
           <div className="legendAdmin">
@@ -297,7 +299,10 @@ const MembersPage = () => {
             <CircleRounded color="error" />
             <p className="legendText">Deleted Members</p>
           </div>
-        </div>
+        </div> */}
+        {filteredUsers.map((user) => (
+          <UserCard user={user} />
+        ))}
       </PaperWrapper>
       <DeleteModal
         open={open}

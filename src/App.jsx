@@ -35,6 +35,7 @@ import Layout from "./components/Layout/Layout";
 import LocationPage from "./pages/LocationPage/LocationPage";
 import MeetingLogs from "./pages/MeetingLogs/MeetingLogs";
 import ReportPage from "./pages/ReportPage/ReportPage";
+import UserCard from "./components/Cards/UserCard";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 axios.defaults.withCredentials = true;
@@ -131,6 +132,8 @@ function App() {
             element={<CommitteeMemberList />}
           />
           <Route path="/view/:id" element={<ViewMember />} />
+          {/* Temp route */}
+          <Route path="/user-card" element={<UserCard />} />
         </Route>
       </Routes>
     </BrowserRouter>
