@@ -26,7 +26,7 @@ import DeleteModal from "../Common Components/Modals/Delete/DeleteModal";
 import axios from "axios";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 
-const RoomsCard = ({ room, setDeleteUpdateStatus }) => {
+const RoomsCard = ({ room, setDeleteUpdateStatus,setRefreshPage }) => {
   const navigate = useNavigate();
   const [hover, setHover] = useState(false);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
@@ -337,7 +337,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus }) => {
         isOpen={isEditOpen}
         setIsOpen={setIsEditOpen}
         title={"Room Edit"}
-        modalBody={<EditRoomForm room={room} />}
+        modalBody={<EditRoomForm room={room} setRefreshPage={setRefreshPage} setIsEditOpen={setIsEditOpen} />}
       />
       <PopupModals
         isOpen={isBookNowOpen}

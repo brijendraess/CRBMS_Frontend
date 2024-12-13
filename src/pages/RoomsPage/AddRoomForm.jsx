@@ -25,6 +25,7 @@ const AddRoomForm = ({ setDeleteUpdateStatus, setIsAddOpen }) => {
   const [roomImageError, setRoomImageError] = useState("");
   const [formState, setFormState] = useState({
     sanitationStatus: false, // default value matches `defaultChecked`
+    isAvailable: true, // default value matches `defaultChecked`
   });
 
   const validateImage = (file) => {
@@ -71,6 +72,7 @@ const AddRoomForm = ({ setDeleteUpdateStatus, setIsAddOpen }) => {
       location: null,
       capacity: "",
       tolerancePeriod: "",
+      sanitationPeriod: "",
       roomImage: "",
       // password: "",
       description: "",
@@ -91,6 +93,10 @@ const AddRoomForm = ({ setDeleteUpdateStatus, setIsAddOpen }) => {
         .required("Tolerance Period is required")
         .positive()
         .integer(),
+        sanitationPeriod: Yup.number()
+        .required("Tolerance Period is required")
+        .positive()
+        .integer(),
       // password: Yup.string().required("Password is required"),
       description: Yup.string(),
     }),
@@ -101,9 +107,11 @@ const AddRoomForm = ({ setDeleteUpdateStatus, setIsAddOpen }) => {
         formData.append("name", values.name);
         formData.append("capacity", values.capacity);
         formData.append("tolerancePeriod", values.tolerancePeriod);
+        formData.append("sanitationPeriod", values.sanitationPeriod);
         formData.append("description", values.description);
         formData.append("location", values.location.id);
         formData.append("sanitationStatus", formState.sanitationStatus);
+         formData.append("isAvailable", formState.isAvailable);
         if (values.roomImage) formData.append("roomImage", values.roomImage);
 
         const response = await axios.post("api/v1/rooms/add-room", formData, {
@@ -157,7 +165,7 @@ const AddRoomForm = ({ setDeleteUpdateStatus, setIsAddOpen }) => {
 
   return (
     <Box component="form" onSubmit={formik.handleSubmit}>
-      <Box display="flex" justifyContent="space-between">
+        <Box display="flex" justifyContent="space-between">
         <TextField
           label="Room Name"
           name="name"
@@ -168,6 +176,20 @@ const AddRoomForm = ({ setDeleteUpdateStatus, setIsAddOpen }) => {
           helperText={formik.touched.name && formik.errors.name}
           style={{ marginRight: 8, flex: 1 }}
           size="small"
+        />
+      </Box>
+      <Box display="flex" justifyContent="space-between">
+      <TextField
+          label="Sanitation Period"
+          name="sanitationPeriod"
+          margin="normal"
+          type="number"
+          // value={formik.values.Sanitation Time}
+          onChange={formik.handleChange}
+          // error={formik.touched.Sanitation Time && Boolean(formik.errors.Sanitation Time)}
+          // helperText={formik.touched.Sanitation Time && formik.errors.Sanitation Time}
+          size="small"
+          style={{ marginRight: 8, flex: 1 }}
         />
         <Autocomplete
           id="location"
@@ -221,10 +243,22 @@ const AddRoomForm = ({ setDeleteUpdateStatus, setIsAddOpen }) => {
             <Switch
               checked={formState.sanitationStatus}
               name="sanitationStatus"
+              size="small"
               onChange={handleSanitationStatusChange}
             />
           }
           label="Sanitation status"
+        />
+
+        <FormControlLabel
+          control={
+            <Switch
+              checked={formState.isAvailable}
+              name="isAvailable"
+              onChange={(event) => handleIsAvailableChange(event)}
+            />
+          }
+          label="Is Available"
         />
       </Box>
       <TextField

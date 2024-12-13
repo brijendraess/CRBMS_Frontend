@@ -13,7 +13,7 @@ import {
   Button,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { meetings } from "../../data";
+import { meetings } from "../../LeftPaneldata";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
 import Carousel from "../../components/Carousel/Carousel";
