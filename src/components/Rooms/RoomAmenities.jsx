@@ -114,7 +114,14 @@ const RoomAmenities = ({room}) => {
   console.log(editInfo)
   return (
     <>
-      <Box sx={{width:"100%",display:"flex", marginBottom:"5px", justifyContent:"flex-end"}}>
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          marginBottom: "5px",
+          justifyContent: "flex-end",
+        }}
+      >
         <CustomButton
           title={"Add New Amenity Quantity"}
           placement={"left"}
