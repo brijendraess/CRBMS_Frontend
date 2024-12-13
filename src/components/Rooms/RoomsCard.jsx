@@ -331,7 +331,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus }) => {
         isOpen={isAmenitiesOpen}
         setIsOpen={setIsAmenitiesOpen}
         title={"Room Amenities"}
-        modalBody={<RoomAmenities room={room} setIsAmenitiesOpen={setIsAmenitiesOpen} />}
+        modalBody={<RoomAmenities room={room} />}
       />
       <PopupModals
         isOpen={isEditOpen}
