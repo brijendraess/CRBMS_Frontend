@@ -42,7 +42,6 @@ const RoomAmenities = ({room}) => {
     const fetchAmenityQuantity = async () => {
       try {
         const response = await axios.get(`/api/v1/rooms/amenity-quantity-all/${room.id}`);
-        console.log(response.data.data)
         const amenityWithSerial = response.data.data.result.map(
           (amenity, index) => ({
             id: index + 1,
@@ -111,7 +110,7 @@ const RoomAmenities = ({room}) => {
       ),
     },
   ];
-  console.log(editInfo)
+
   return (
     <>
       <Box sx={{width:"100%",display:"flex", marginBottom:"5px", justifyContent:"flex-end"}}>

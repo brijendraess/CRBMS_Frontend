@@ -4,7 +4,7 @@ import { TextField, Button, Box, Paper, styled } from "@mui/material";
 import toast from "react-hot-toast";
 import { PopContent } from "../../Style";
 
-const AmenitiesEdit = ({ id, setRefreshPage, setIsEditOpen }) => {
+const AmenitiesEdit = ({ id, setRefreshPage, setIsEditOpen,setIsRefreshed }) => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -59,7 +59,7 @@ console.log(amenity)
       const response = await axios.put(`api/v1/amenity/update-amenity/${id}`, formData);
       toast.success("Amenity edited Successfully");
       setFormData({ name: "", description: "", quantity: 1 });
-      setRefreshPage(Math.random());
+      setIsRefreshed(Math.random());
       setIsEditOpen(false);
     } catch (err) {
       toast.error(err.response?.data?.message);

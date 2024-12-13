@@ -4,13 +4,10 @@ import {
   Button,
   TextField,
   Typography,
-  MenuItem,
   Autocomplete,
   RadioGroup,
   FormControlLabel,
   Radio,
-  styled,
-  Paper,
   Chip,
 } from "@mui/material";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
@@ -18,13 +15,10 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useParams } from "react-router-dom";
 
-const MeetingForm = () => {
+const MeetingForm = ({room}) => {
   const [emailsList, setEmailsList] = useState([]);
-  const { id } = useParams(); // Room id
-  console.log(id);
-
+ 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -35,30 +29,30 @@ const MeetingForm = () => {
           name: user.fullname,
         }));
         setEmailsList(emails);
-        // console.log(response.data.data.users.rows);
+         console.log(response.data.data.users.rows);
       } catch (error) {
         toast.error("Failed to load users");
         console.error("Error fetching users:", error);
       }
     };
-
     fetchUsers();
   }, []);
 
   const formik = useFormik({
     initialValues: {
-      roomId: id,
-      title: "",
+      roomId: room.id,
+      subject: "",
       agenda: "",
       startTime: null,
       endTime: null,
       date: null,
       attendees: [],
-      description: "",
+      notes: "",
+      additionalEquipment: "",
       isPrivate: false,
     },
     validationSchema: Yup.object({
-      title: Yup.string().required("Meeting Title is required"),
+      subject: Yup.string().required("Meeting Title is required"),
       agenda: Yup.string().required("Agenda is required"),
       startTime: Yup.date().required("Start Time is required"),
       endTime: Yup.date()
@@ -66,7 +60,8 @@ const MeetingForm = () => {
         .min(Yup.ref("startTime"), "End Time must be after Start Time"),
       date: Yup.date().required("Meeting Date is required"),
       attendees: Yup.array().min(1, "At least one attendee must be selected"),
-      description: Yup.string(),
+      notes: Yup.string(),
+      additionalEquipment: Yup.string(),
     }),
     onSubmit: async (values, { resetForm }) => {
       console.log("Form Submitted:", values);
@@ -93,46 +88,17 @@ const MeetingForm = () => {
       }
     },
   });
-
+console.log("formik.values =============",formik.values)
   return (
     <Box component="form" onSubmit={formik.handleSubmit}>
-      <Box display="flex" justifyContent="space-between">
-        {/* Meeting Title */}
-        <TextField
-          label="Meeting Title"
-          name="title"
-          margin="normal"
-          fullWidth
-          value={formik.values.title}
-          onChange={formik.handleChange}
-          error={formik.touched.title && Boolean(formik.errors.title)}
-          helperText={formik.touched.title && formik.errors.title}
-          size="small"
-          style={{ marginRight: 8 }}
-        />
-        {/* Agenda */}
-        <TextField
-          label="Agenda"
-          name="agenda"
-          margin="normal"
-          fullWidth
-          value={formik.values.agenda}
-          onChange={formik.handleChange}
-          error={formik.touched.agenda && Boolean(formik.errors.agenda)}
-          helperText={formik.touched.agenda && formik.errors.agenda}
-          size="small"
-        />
-      </Box>
       {/* Date */}
       <Box
         display="flex"
         justifyContent="space-between"
-        marginTop={1}
-        marginBottom={3}
-        gap={5}
+        gap={1}
       >
         <DatePicker
-          label="Meeting Date"
+          label="Date"
           value={formik.values.date}
           onChange={(value) => formik.setFieldValue("date", value)}
           renderInput={(params) => (
@@ -183,8 +149,53 @@ const MeetingForm = () => {
             )}
           />
         </Box>
+        <Box
+          justifyContent="space-around"
+          gap={1}
+          sx={{
+            background: "#fd7e14",
+            color: "#fff",
+            padding: "5px",
+            borderRadius: 1,
+          }}
+        >
+          <Typography variant="subtitle2" component="p">
+            Duration
+          </Typography>
+          <Typography variant="body2" component="p">
+            02h 15m
+          </Typography>
+        </Box>
       </Box>
-
+      <Box display="flex" justifyContent="space-between">
+        {/* Meeting Title */}
+        <TextField
+          label="Subject"
+          name="subject"
+          margin="normal"
+          fullWidth
+          value={formik.values.subject}
+          onChange={formik.handleChange}
+          error={formik.touched.subject && Boolean(formik.errors.subject)}
+          helperText={formik.touched.subject && formik.errors.subject}
+          size="small"
+          required
+          style={{ marginRight: 8 }}
+        />
+        {/* Agenda */}
+        <TextField
+          label="Agenda"
+          name="agenda"
+          margin="normal"
+          fullWidth
+          value={formik.values.agenda}
+          onChange={formik.handleChange}
+          error={formik.touched.agenda && Boolean(formik.errors.agenda)}
+          helperText={formik.touched.agenda && formik.errors.agenda}
+          required
+          size="small"
+        />
+      </Box>
       {/* Attendees */}
       <Autocomplete
         multiple
@@ -231,22 +242,41 @@ const MeetingForm = () => {
         disableCloseOnSelect
         isOptionEqualToValue={(option, value) => option.id === value.id}
       />
+      <Box display="flex" gap={1} justifyContent="space-between">
+        {/* Description */}
+        <TextField
+          label="Notes"
+          name="notes"
+          margin="normal"
+          fullWidth
+          multiline
+          rows={3}
+          value={formik.values.notes}
+          onChange={formik.handleChange}
+          error={
+            formik.touched.notes && Boolean(formik.errors.notes)
+          }
+          helperText={formik.touched.notes && formik.errors.notes}
+          size="small"
+        />
 
-      {/* Description */}
-      <TextField
-        label="Description"
-        name="description"
-        margin="normal"
-        fullWidth
-        multiline
-        rows={3}
-        value={formik.values.description}
-        onChange={formik.handleChange}
-        error={formik.touched.description && Boolean(formik.errors.description)}
-        helperText={formik.touched.description && formik.errors.description}
-        size="small"
-      />
-
+        {/* Description */}
+        <TextField
+          label="Additional Equipment Needed"
+          name="additionalEquipment"
+          margin="normal"
+          fullWidth
+          multiline
+          rows={3}
+          value={formik.values.additionalEquipment}
+          onChange={formik.handleChange}
+          error={
+            formik.touched.additionalEquipment && Boolean(formik.errors.additionalEquipment)
+          }
+          helperText={formik.touched.additionalEquipment && formik.errors.additionalEquipment}
+          size="small"
+        />
+      </Box>
       {/* Private Meeting */}
       <Typography variant="subtitle1" component="p" sx={{ mt: 2 }}>
         Is this a private meeting?

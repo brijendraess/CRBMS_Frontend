@@ -31,6 +31,7 @@ const RoomsPage = () => {
   const [deleteUpdateStatus, setDeleteUpdateStatus] = useState("");
   const [meetingStartTime, setMeetingStartTime] = useState(null); // For start time filter
   const [meetingEndingTime, setMeetingEndingTime] = useState(null); // For end time filter
+  const [refreshPage, setRefreshPage] = useState(0);
   const { user } = useSelector((state) => state.user);
 
   const fetchRoomsData = async () => {
@@ -57,7 +58,7 @@ const RoomsPage = () => {
   useEffect(() => {
     fetchRoomsData();
     fetchAmenitiesData();
-  }, [deleteUpdateStatus]);
+  }, [deleteUpdateStatus,refreshPage]);
 
   // Handle capacity change
   const handleChangeCapacity = (event) => {
@@ -145,6 +146,7 @@ const RoomsPage = () => {
               >
                 <RoomsCard
                   room={room}
+                  setRefreshPage={setRefreshPage}
                   setDeleteUpdateStatus={setDeleteUpdateStatus}
                 />
               </div>
