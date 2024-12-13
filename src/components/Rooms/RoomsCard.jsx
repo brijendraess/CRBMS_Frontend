@@ -245,7 +245,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus }) => {
                   background: "white",
                   color: "black",
                   flex: 1,
-                  minWidth:"47px",
+                  minWidth: "47px",
                 }}
                 size="small"
               >
@@ -260,7 +260,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus }) => {
                   background: "white",
                   color: "black",
                   flex: 1,
-                  minWidth:"47px",
+                  minWidth: "47px",
                 }}
                 size="small"
               >
@@ -274,7 +274,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus }) => {
                   background: "white",
                   color: "black",
                   flex: 1,
-                  minWidth:"47px",
+                  minWidth: "47px",
                 }}
                 size="small"
               >
@@ -331,7 +331,9 @@ const RoomsCard = ({ room, setDeleteUpdateStatus }) => {
         isOpen={isAmenitiesOpen}
         setIsOpen={setIsAmenitiesOpen}
         title={"Room Amenities"}
-        modalBody={<RoomAmenities room={room} setIsAmenitiesOpen={setIsAmenitiesOpen} />}
+        modalBody={
+          <RoomAmenities room={room} setIsAmenitiesOpen={setIsAmenitiesOpen} />
+        }
       />
       <PopupModals
         isOpen={isEditOpen}

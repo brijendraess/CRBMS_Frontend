@@ -14,17 +14,18 @@ const initialRows = [
   { id: 3, name: "Alex Johnson", quantity: 35 },
 ];
 
-const RoomAmenities = ({room,setIsAmenitiesOpen}) => {
+const RoomAmenities = ({ room, setIsAmenitiesOpen }) => {
   const [rows, setRows] = useState(initialRows);
   const [isAmenityQuantityOpen, setIsAmenityQuantityOpen] = useState(false);
   const handleEdit = (id) => {
     alert(`Edit row with ID: ${id}`);
-    // Add your edit logic here
   };
 
   const handleRoomAmenities = () => {
-    setIsAmenityQuantityOpen(true);
     setIsAmenitiesOpen(false);
+    setTimeout(() => {
+      setIsAmenityQuantityOpen(true);
+    }, 300);
   };
 
   const handleDelete = (id) => {
@@ -58,7 +59,14 @@ const RoomAmenities = ({room,setIsAmenitiesOpen}) => {
 
   return (
     <>
-      <Box sx={{width:"100%",display:"flex", marginBottom:"5px", justifyContent:"flex-end"}}>
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          marginBottom: "5px",
+          justifyContent: "flex-end",
+        }}
+      >
         <CustomButton
           title={"Add New Amenity Quantity"}
           placement={"left"}
