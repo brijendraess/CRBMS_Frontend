@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Chip,
   FormControl,
@@ -14,35 +14,7 @@ import { DatePicker, TimePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import "./RoomsPage.css";
 import { ContentHeader } from "../../Style";
-const RoomFilter = () => {
-  const [selectedDate, setSelectedDate] = useState(dayjs()); // For date filter
-  const [meetingStartTime, setMeetingStartTime] = useState(null); // For start time filter
-  const [meetingEndingTime, setMeetingEndingTime] = useState(null); // For end time filter
-  const [selectedAmenities, setSelectedAmenities] = useState([]);
-  const [amenitiesList, setAmenitiesList] = useState([]);
-  const [capacity, setCapacity] = useState("");
-
-  // Handle Start Time Change
-  const handleStartTimeChange = (newStartTime) => {
-    setMeetingStartTime(newStartTime);
-
-    // Auto-select one hour later for ending time
-    const autoEndTime = newStartTime.add(1, "hour");
-    setMeetingEndingTime(autoEndTime);
-  };
-
-  // Handle amenities change
-  const handleChangeAmenities = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setSelectedAmenities(typeof value === "string" ? value.split(",") : value);
-  };
-
-  // Handle capacity change
-  const handleChangeCapacity = (event) => {
-    setCapacity(event.target.value);
-  };
+const RoomFilter = ({handleChangeAmenities,selectedAmenities,amenitiesList,handleStartTimeChange,meetingStartTime,setMeetingEndingTime,meetingEndingTime,handleChangeCapacity,selectedDate,setSelectedDate,capacity }) => {
 
   return (
     <ContentHeader

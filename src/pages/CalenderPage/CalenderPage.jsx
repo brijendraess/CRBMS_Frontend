@@ -30,9 +30,11 @@ const CalenderPage = () => {
     const fetchMeetings = async () => {
       try {
         showLoading();
-        const endpoint = user?.isAdmin
-          ? "/api/v1/meeting/get-all-meeting"
-          : "/api/v1/meeting/get-all-my-meeting";
+        // const endpoint = user?.isAdmin
+        //   ? "/api/v1/meeting/get-all-meeting"
+        //   : "/api/v1/meeting/get-all-my-meeting";
+
+        const endpoint ="/api/v1/meeting/get-all-my-meeting";
 
         const response = await axios.get(endpoint, {
           withCredentials: true,
@@ -50,12 +52,13 @@ const CalenderPage = () => {
           );
 
           return {
-            title: meeting.title,
+            title: meeting.subject,
             start: startDateTime,
             end: endDateTime,
-            description: meeting.description || "",
-            location: meeting.roomLocation || "",
-            organizer: meeting.organizerName || "N/A",
+            description: meeting.notes || "",
+            location: meeting.Room.Location.locationName || "",
+            organizer: meeting.User.fullname || "N/A",
+            organizerId: meeting.organizerId
           };
         });
 
@@ -82,7 +85,6 @@ const CalenderPage = () => {
   const handleCloseModal = () => {
     setSelectedEvent(null);
   };
-
   return (
     <PaperWrapper>
       <Calendar
@@ -154,14 +156,14 @@ const CalenderPage = () => {
               >
                 Postpone
               </Button>
-              <Button
+              {user?.isAdmin &&<Button
                 onClick={handleCloseModal}
                 variant="contained"
                 color="primary"
                 sx={{ mt: 2 }}
               >
                 Edit
-              </Button>
+              </Button>}
             </Box>
           </DialogContent>
         </Dialog>
