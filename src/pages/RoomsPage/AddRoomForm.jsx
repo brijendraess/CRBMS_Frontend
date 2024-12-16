@@ -15,9 +15,9 @@ import {
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { PhotoCameraIcon } from "../../components/Common Components/CustomButton/CustomIcon";
 
 const AddRoomForm = ({ setDeleteUpdateStatus, setIsAddOpen }) => {
   const [roomImagePreview, setRoomImagePreview] = useState(null);

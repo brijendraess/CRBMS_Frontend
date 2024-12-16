@@ -7,9 +7,9 @@ import {
   LinearProgress,
   Typography,
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { VisibilityOff,Visibility } from "@mui/icons-material";
 
 const ResetPassword = () => {
   const [showPassword, setShowPassword] = useState(false);

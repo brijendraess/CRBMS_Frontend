@@ -6,16 +6,11 @@ import {
   Button,
   CardActions,
   Chip,
+  Tooltip
 } from "@mui/material";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
-import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import CollectionsIcon from "@mui/icons-material/Collections";
-import Groups2OutlinedIcon from "@mui/icons-material/Groups2Outlined";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import DeleteIcon from "@mui/icons-material/Delete";
 import PopupModals from "../Common Components/Modals/Popup/PopupModals";
 import RoomGallery from "./RoomGallery";
 import RoomAmenities from "./RoomAmenities";
@@ -25,6 +20,7 @@ import MeetingForm from "../../pages/MeetingPage/MeetingForm";
 import DeleteModal from "../Common Components/Modals/Delete/DeleteModal";
 import axios from "axios";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import { CleaningServicesIcon, CollectionsIcon, DeleteIcon, EditOutlinedIcon, ExtensionIcon, Groups2OutlinedIcon, GroupsOutlinedIcon, LocationOnOutlinedIcon, VisibilityOutlinedIcon } from "../Common Components/CustomButton/CustomIcon";
 
 const RoomsCard = ({ room, setDeleteUpdateStatus,setRefreshPage }) => {
   const navigate = useNavigate();
@@ -140,7 +136,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus,setRefreshPage }) => {
             flexDirection: "column",
             // justifyContent: "space-between"
             gap: 1,
-            height: "250px",
+            minHeight: "200px",
           }}
         >
           <Typography
@@ -165,7 +161,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus,setRefreshPage }) => {
               gap: 1,
             }}
           >
-            <GroupsOutlinedIcon />
+            <Tooltip title="Capacity"><GroupsOutlinedIcon /></Tooltip>
             {room.capacity} People
           </Typography>
 
@@ -178,7 +174,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus,setRefreshPage }) => {
               gap: 1,
             }}
           >
-            <LocationOnOutlinedIcon />
+            <Tooltip title="Location"><LocationOnOutlinedIcon /></Tooltip>
             {room.Location.locationName || "Unknown Location"}
           </Typography>
           <Typography
@@ -190,8 +186,9 @@ const RoomsCard = ({ room, setDeleteUpdateStatus,setRefreshPage }) => {
               textTransform: "capitalize",
             }}
           >
-            sanitationStatus:{room.sanitationStatus ? "Yes" : "No"}
+           <Tooltip title="Sanitation Status"><CleaningServicesIcon /></Tooltip> {room.sanitationStatus ? "Yes" : "No"}
           </Typography>
+          
           <Typography
             variant="body2"
             sx={{
@@ -201,19 +198,8 @@ const RoomsCard = ({ room, setDeleteUpdateStatus,setRefreshPage }) => {
               textTransform: "capitalize",
             }}
           >
-            Capacity:{room.capacity}
-          </Typography>
-          <Typography
-            variant="body2"
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
-              textTransform: "capitalize",
-            }}
-          >
-            Tolerance Period:{room.tolerancePeriod}
-          </Typography>
+            <Tooltip title="Tolerance Period"><ExtensionIcon /></Tooltip> {room.tolerancePeriod} minutes
+                      </Typography>
         </Box>
         <CardActions sx={{ p: 0 }}>
           {user?.isAdmin ? (
