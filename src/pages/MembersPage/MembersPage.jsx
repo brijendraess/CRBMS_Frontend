@@ -7,6 +7,8 @@ import {
   Typography,
   Switch,
   Tooltip,
+  Grid2,
+  useMediaQuery,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -29,6 +31,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { PaperWrapper, RightContent } from "../../Style";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import UserCard from "../../components/Cards/UserCard";
 
 const MembersPage = () => {
   const [users, setUsers] = useState([]);
@@ -45,6 +48,7 @@ const MembersPage = () => {
     showDeleted ? true : !user.deletedAt
   );
 
+  const isSmallScreen = useMediaQuery("(max-width: 426px)");
   const fetchUsers = async () => {
     try {
       showLoading();
@@ -97,7 +101,7 @@ const MembersPage = () => {
           prevUsers.filter((user) => user.id !== deleteId)
         );
       }
-      handleClose(false)
+      handleClose(false);
       showLoading();
     } catch (error) {
       console.error("Error deleting user:", error);
@@ -255,49 +259,66 @@ const MembersPage = () => {
             />
           </div>
         </Box>
-        <Box sx={{ width: "100%", height: "70vh" }}>
-          <DataGrid
-            autoPageSize
-            showCellVerticalBorder
-            showColumnVerticalBorder
-            rows={filteredUsers}
-            rowHeight={40}
-            columns={[...columns]}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 10,
-                },
-              },
-            }}
-            pageSizeOptions={[10]}
-            height="100%"
+
+        {isSmallScreen ? (
+          <Grid2
+            container
+            spacing={2}
             sx={{
-              "& .MuiDataGrid-cell:focus": {
-                outline: "none",
-              },
+              borderRadius: "20px",
+              position: "relative",
+              top: "10px",
             }}
-            getRowClassName={(params) => {
-              if (params.row.deletedAt) {
-                return "delete-row";
-              }
-              if (params.row.isAdmin) {
-                return "admin-row";
-              }
-              return "";
-            }}
-          />
-        </Box>
-        <div className="legends">
-          <div className="legendAdmin">
-            <CircleRounded color="success" />
-            <p className="legendText">Admins</p>
-          </div>
-          <div className="legendDeleted">
-            <CircleRounded color="error" />
-            <p className="legendText">Deleted Members</p>
-          </div>
-        </div>
+          >
+            {filteredUsers.length > 0 ? (
+              filteredUsers.map((user) => (
+                <UserCard user={user} key={user.id} />
+              ))
+            ) : (
+              <Grid2 item xs={12}>
+                <Box display="flex" justifyContent="center" width="100%" p={3}>
+                  <Typography variant="h6" color="textSecondary">
+                    No User found.
+                  </Typography>
+                </Box>
+              </Grid2>
+            )}
+          </Grid2>
+        ) : (
+          <Box sx={{ width: "100%", height: "70vh" }}>
+            <DataGrid
+              autoPageSize
+              showCellVerticalBorder
+              showColumnVerticalBorder
+              rows={filteredUsers}
+              rowHeight={40}
+              columns={[...columns]}
+              initialState={{
+                pagination: {
+                  paginationModel: {
+                    pageSize: 10,
+                  },
+                },
+              }}
+              pageSizeOptions={[10]}
+              height="100%"
+              sx={{
+                "& .MuiDataGrid-cell:focus": {
+                  outline: "none",
+                },
+              }}
+              getRowClassName={(params) => {
+                if (params.row.deletedAt) {
+                  return "delete-row";
+                }
+                if (params.row.isAdmin) {
+                  return "admin-row";
+                }
+                return "";
+              }}
+            />
+          </Box>
+        )}
       </PaperWrapper>
       <DeleteModal
         open={open}

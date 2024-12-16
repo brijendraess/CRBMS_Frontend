@@ -22,7 +22,7 @@ const AmenitiesEdit = ({ id, setRefreshPage, setIsEditOpen,setIsRefreshed }) => 
             `/api/v1/amenity/get-single-amenity/${id}`
           );
           const amenity = response.data.data.roomAmenity;
-console.log(amenity)
+          console.log(amenity);
           setFormData({
             name: amenity.name,
             description: amenity.description,
@@ -56,7 +56,10 @@ console.log(amenity)
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put(`api/v1/amenity/update-amenity/${id}`, formData);
+      const response = await axios.put(
+        `api/v1/amenity/update-amenity/${id}`,
+        formData
+      );
       toast.success("Amenity edited Successfully");
       setFormData({ name: "", description: "", quantity: 1 });
       setIsRefreshed(Math.random());
@@ -64,7 +67,7 @@ console.log(amenity)
     } catch (err) {
       toast.error(err.response?.data?.message);
       console.error("Error adding amenity:", err);
-    }  
+    }
   };
 
   return (
