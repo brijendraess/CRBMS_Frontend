@@ -27,6 +27,7 @@ const RoomsPage = () => {
   const [capacity, setCapacity] = useState("");
   const [isAvailable, setIsAvailable] = useState("all"); // Default to 'all'
   const [selectedAmenities, setSelectedAmenities] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(dayjs()); // For date filter
   const [amenitiesList, setAmenitiesList] = useState([]);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [deleteUpdateStatus, setDeleteUpdateStatus] = useState("");
@@ -43,6 +44,15 @@ const RoomsPage = () => {
       toast.error("Something Went Wrong");
       console.error("Error fetching room data:", error);
     }
+  };
+  
+  // Handle Start Time Change
+  const handleStartTimeChange = (newStartTime) => {
+    setMeetingStartTime(newStartTime);
+
+    // Auto-select one hour later for ending time
+    const autoEndTime = newStartTime.add(1, "hour");
+    setMeetingEndingTime(autoEndTime);
   };
 
   // Fetch amenities data
@@ -99,7 +109,7 @@ const RoomsPage = () => {
 
     return availabilityFilter && capacityFilter && timeFilter;
   });
-
+  
   return (
     <>
       <PaperWrapper>
@@ -138,7 +148,19 @@ const RoomsPage = () => {
           )}
         </Box>
         <MainContainer>
-          <RoomFilter />
+          <RoomFilter 
+          handleChangeAmenities={handleChangeAmenities} 
+          selectedAmenities={selectedAmenities}
+          amenitiesList={amenitiesList}
+          handleStartTimeChange={handleStartTimeChange}
+          meetingStartTime={meetingStartTime}
+          setMeetingEndingTime={setMeetingEndingTime}
+          meetingEndingTime={meetingEndingTime}
+          handleChangeCapacity={handleChangeCapacity}
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+          capacity={capacity}
+           />
           <div className="cardBox row w-100">
             {filteredRooms.map((room, index) => (
               <div
@@ -158,7 +180,7 @@ const RoomsPage = () => {
       <PopupModals
         isOpen={isAddOpen}
         setIsOpen={setIsAddOpen}
-        title={"Add New Room"}
+        title={"Add Room"}
         modalBody={
           <AddRoomForm
             setDeleteUpdateStatus={setDeleteUpdateStatus}

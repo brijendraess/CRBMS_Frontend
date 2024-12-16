@@ -11,9 +11,9 @@ const MeetingLogs = () => {
   const [events, setEvents] = useState([]);
 
   const columns = [
-    { field: "id", headerName: "ID", width: 90 },
-    { field: "title", headerName: "Title", width: 200 },
-    { field: "description", headerName: "Description", width: 300 },
+    { field: "subject", headerName: "Subject", width: 90 },
+    { field: "agenda", headerName: "Agenda", width: 100 },
+    { field: "notes", headerName: "Notes", width: 200 },
     { field: "startTime", headerName: "Start Time", width: 150 },
     { field: "endTime", headerName: "End Time", width: 150 },
     { field: "meetingDate", headerName: "Meeting Date", width: 150 },
@@ -27,22 +27,22 @@ const MeetingLogs = () => {
         const endpoint = user?.isAdmin
           ? "/api/v1/meeting/get-all-meeting"
           : "/api/v1/meeting/get-all-my-meeting";
-
+console.log(endpoint)
         const response = await axios.get(endpoint, { withCredentials: true });
 
         const meetings =
           response.data.data.myMeetings || response.data.data.meetings;
-
         // Format the data for DataGrid
         const formattedMeetings = meetings.map((meeting) => ({
-          id: meeting.meetingId,
-          title: meeting.title,
-          description: meeting.description || "",
+          id: meeting.id,
+          subject: meeting.subject,
+          agenda: meeting.agenda,
+          notes: meeting.notes || "",
           startTime: meeting.startTime,
           endTime: meeting.endTime,
           meetingDate: meeting.meetingDate,
-          roomLocation: meeting.roomLocation || "N/A",
-          organizerName: meeting.organizerName || "N/A",
+          roomLocation: meeting.Room.Location.locationName || "N/A",
+          organizerName: meeting.User.fullname || "N/A",
         }));
 
         setEvents(formattedMeetings);

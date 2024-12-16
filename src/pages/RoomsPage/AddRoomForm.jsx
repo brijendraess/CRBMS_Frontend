@@ -180,7 +180,7 @@ const AddRoomForm = ({ setDeleteUpdateStatus, setIsAddOpen }) => {
       </Box>
       <Box display="flex" justifyContent="space-between">
       <TextField
-          label="Sanitation Period"
+          label="Sanitation Period (in min.)"
           name="sanitationPeriod"
           margin="normal"
           type="number"
@@ -225,7 +225,7 @@ const AddRoomForm = ({ setDeleteUpdateStatus, setIsAddOpen }) => {
           style={{ marginRight: 8, flex: 1 }}
         />
         <TextField
-          label="Tolerance Period"
+          label="Tolerance Period  (in min.)"
           name="tolerancePeriod"
           margin="normal"
           type="number"

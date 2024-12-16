@@ -10,15 +10,21 @@ import {
   Radio,
   Chip,
 } from "@mui/material";
+import { useSelector } from "react-redux";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const MeetingForm = ({room}) => {
+const MeetingForm = ({ room }) => {
   const [emailsList, setEmailsList] = useState([]);
- 
+
+  const [startTime, setStartTime] = useState(""); // Example start time
+  const [endTime, setEndTime] = useState(""); // Example end time
+  const [difference, setDifference] = useState("");
+
+  const { user } = useSelector((state) => state.user);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -29,7 +35,7 @@ const MeetingForm = ({room}) => {
           name: user.fullname,
         }));
         setEmailsList(emails);
-         console.log(response.data.data.users.rows);
+        console.log(response.data.data.users.rows);
       } catch (error) {
         toast.error("Failed to load users");
         console.error("Error fetching users:", error);
@@ -41,6 +47,7 @@ const MeetingForm = ({room}) => {
   const formik = useFormik({
     initialValues: {
       roomId: room.id,
+      organizerId: user.id,
       subject: "",
       agenda: "",
       startTime: null,
@@ -71,7 +78,7 @@ const MeetingForm = ({room}) => {
           ...values,
           attendees: values.attendees.map((attendee) => attendee.id), // Only send user IDs
         };
-
+        console.log("payload", payload);
         const response = await axios.post(
           "/api/v1/meeting/add-meeting",
           payload,
@@ -88,15 +95,36 @@ const MeetingForm = ({room}) => {
       }
     },
   });
-console.log("formik.values =============",formik.values)
+
+  const calculateDifference = () => {
+    // Parse times into Date objects (using today's date)
+    const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD
+    const start = new Date(`${today}T${startTime}`);
+    const end = new Date(`${today}T${endTime}`);
+
+    // Calculate the difference in milliseconds
+    const diffMs = end - start;
+
+    // Convert milliseconds to hours, minutes, and seconds
+    const hours = Math.floor(diffMs / (1000 * 60 * 60));
+    const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+
+    setDifference(`${hours}h ${minutes}m`);
+  };
+
+  useEffect(() => {
+    setStartTime(
+      new Date(formik.values.startTime).toTimeString().split(" ")[0]
+    );
+    setEndTime(new Date(formik.values.endTime).toTimeString().split(" ")[0]);
+    calculateDifference();
+  }, [formik]);
+
   return (
     <Box component="form" onSubmit={formik.handleSubmit}>
       {/* Date */}
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        gap={1}
-      >
+      <Box display="flex" justifyContent="space-between" gap={1}>
         <DatePicker
           label="Date"
           value={formik.values.date}
@@ -163,7 +191,7 @@ console.log("formik.values =============",formik.values)
             Duration
           </Typography>
           <Typography variant="body2" component="p">
-            02h 15m
+            {difference}
           </Typography>
         </Box>
       </Box>
@@ -221,13 +249,10 @@ console.log("formik.values =============",formik.values)
               {/* Render the attendee's name */}
               <span>{option.name}</span>
             </div>
-            <div>
+            <div sx={{width:"100%",float:"right"}}>
               {/* Render a hardcoded Chip for availability */}
-              {option.id === "15b8126b-8ce7-443c-a231-007179da901a" ? ( // Example: Render based on id for hardcoded logic
-                <Chip label="Unavailable" color="error" size="small" />
-              ) : (
-                <Chip label="Available" color="success" size="small" />
-              )}
+                <Chip label={option.id === "15b8126b-8ce7-443c-a231-007179da901a"?"Unavailable":"Available"} color={option.id === "15b8126b-8ce7-443c-a231-007179da901a"?"error":"success"} size="small" />
+             
             </div>
           </Box>
         )}
@@ -253,9 +278,7 @@ console.log("formik.values =============",formik.values)
           rows={3}
           value={formik.values.notes}
           onChange={formik.handleChange}
-          error={
-            formik.touched.notes && Boolean(formik.errors.notes)
-          }
+          error={formik.touched.notes && Boolean(formik.errors.notes)}
           helperText={formik.touched.notes && formik.errors.notes}
           size="small"
         />
@@ -271,9 +294,13 @@ console.log("formik.values =============",formik.values)
           value={formik.values.additionalEquipment}
           onChange={formik.handleChange}
           error={
-            formik.touched.additionalEquipment && Boolean(formik.errors.additionalEquipment)
+            formik.touched.additionalEquipment &&
+            Boolean(formik.errors.additionalEquipment)
           }
-          helperText={formik.touched.additionalEquipment && formik.errors.additionalEquipment}
+          helperText={
+            formik.touched.additionalEquipment &&
+            formik.errors.additionalEquipment
+          }
           size="small"
         />
       </Box>
