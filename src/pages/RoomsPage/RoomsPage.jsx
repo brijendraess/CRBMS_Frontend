@@ -10,8 +10,9 @@ import PopupModals from "../../components/Common Components/Modals/Popup/PopupMo
 import AddRoomForm from "./AddRoomForm";
 import RoomFilter from "./RoomFilter";
 import CustomButton from "../../components/Common Components/CustomButton/CustomButton";
-import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+
 import { useSelector } from "react-redux";
+import { AddOutlinedIcon } from "../../components/Common Components/CustomButton/CustomIcon";
 
 const DataGridWrapper = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
