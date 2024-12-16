@@ -13,7 +13,11 @@
   z-index: 999;
   transition: all 0.3s ease-in-out;
 }
-
+@media (max-width: 768px) {
+  .sidebar {
+    width: 0;
+  }
+}
 .close {
   width: 60px;
   transition: all 0.3s ease-in-out;
@@ -34,7 +38,7 @@
   padding: 4px;
   display: flex;
   align-items: center;
-  transition: all 0.3s ease-in-out;  
+  transition: all 0.3s ease-in-out;
 }
 
 .sidebar .menu-item li.active {
@@ -92,7 +96,7 @@
 
 .sidebar .menu-item li.active a {
   color: rgb(255, 255, 255);
-  background-color: #EB9D2F;
+  background-color: #eb9d2f;
 }
 
 .sidebar.close .menu-item li a .text {

@@ -16,6 +16,7 @@ import {
   MenuItem,
   Popover,
   Tooltip,
+  Typography,
 } from "@mui/material";
 
 // ICONS
@@ -120,25 +121,26 @@ const Header = () => {
   return (
     <header>
       <div className="container-fluid w-100">
-        <div className="row d-flex flex-row align-items-center">
+        <div className="headerWrapper">
           <div className="col-sm-2 col-xs-3 part1">
-            <Link to={"/meeting-calendar"} className="d-flex align-items-center logo gap-2">
+            <Link
+              to={"/meeting-calendar"}
+              className="d-flex align-items-center logo gap-2"
+            >
               <img src={logo} alt="logo" />
               <span>Harambee</span>
             </Link>
           </div>
-
-          {/* Sidebar and Search */}
-          <div className="col-sm-3 col-xs-3 d-flex align-items-center gap-5 part2">
-          <Tooltip title="Menu Bar">
-            <Button
-              className="rounded-circle"
-              onClick={() =>
-                context.setIsSidebarVisible(!context.isSidebarVisible)
-              }
-            >
-              {context.isSidebarVisible ? <MenuOpenIcon /> : <MenuOutlined />}
-            </Button>
+          <div className="part2 col-sm-3 col-xs-3">
+            <Tooltip title="Menu Bar">
+              <Button
+                className="rounded-circle"
+                onClick={() =>
+                  context.setIsSidebarVisible(!context.isSidebarVisible)
+                }
+              >
+                {context.isSidebarVisible ? <MenuOpenIcon /> : <MenuOutlined />}
+              </Button>
             </Tooltip>
           </div>
 
@@ -149,41 +151,42 @@ const Header = () => {
               onClick={handleMenuToggle(setNotificationsAnchor)}
             >
               <Tooltip title="Notification">
-              <Badge badgeContent={4} color="error">
-                <NotificationsOutlinedIcon />
-              </Badge>
+                <Badge badgeContent={4} color="error">
+                  <NotificationsOutlinedIcon />
+                </Badge>
               </Tooltip>
             </Button>
-
             <Button className="rounded-circle" onClick={handleFullScreen}>
-            <Tooltip title="Full Screen">
-              {isFullScreen ? (
-                <FullscreenExitOutlinedIcon />
-              ) : (
-                <FullscreenOutlinedIcon />
-              )}
+              <Tooltip title="Full Screen">
+                {isFullScreen ? (
+                  <FullscreenExitOutlinedIcon />
+                ) : (
+                  <FullscreenOutlinedIcon />
+                )}
               </Tooltip>
             </Button>
-
             <Button
               className="myAccWrapper"
               onClick={handleMenuToggle(setMenuAnchor)}
             >
               <Tooltip title="My Account">
-              <div className="profileImage">
-                <span className="profilePhoto">
-                  <img
-                    src={
-                      user?.avatarPath
-                        ? `${import.meta.env.VITE_API_URL}/${user?.avatarPath}`
-                        : unknownUser
-                    }
-                    alt="My Pic"
-                  />
-                </span>
-              </div>
+                <div className="profileImage">
+                  <span className="profilePhoto">
+                    <img
+                      src={
+                        user?.avatarPath
+                          ? `${import.meta.env.VITE_API_URL}/${user?.avatarPath}`
+                          : unknownUser
+                      }
+                      alt="My Pic"
+                    />
+                  </span>
+                </div>
               </Tooltip>
             </Button>
+            <Typography className="heading" sx={{ display: "none" }}>
+              Harambee
+            </Typography>
           </div>
         </div>
       </div>
