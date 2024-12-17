@@ -36,7 +36,6 @@ const RoomFilter = ({handleChangeAmenities,selectedAmenities,amenitiesList,handl
       <TimePicker
         value={meetingStartTime}
         onChange={handleStartTimeChange}
-        defaultValue={dayjs(Date.now())}
         sx={{
           "& .MuiInputBase-root": {
             fontSize: "16px",

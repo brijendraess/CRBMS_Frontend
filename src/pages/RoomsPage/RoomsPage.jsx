@@ -27,7 +27,7 @@ const RoomsPage = () => {
   const [capacity, setCapacity] = useState("");
   const [isAvailable, setIsAvailable] = useState("all"); // Default to 'all'
   const [selectedAmenities, setSelectedAmenities] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(dayjs()); // For date filter
+  const [selectedDate, setSelectedDate] = useState(); // For date filter
   const [amenitiesList, setAmenitiesList] = useState([]);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [deleteUpdateStatus, setDeleteUpdateStatus] = useState("");
@@ -38,7 +38,16 @@ const RoomsPage = () => {
 
   const fetchRoomsData = async () => {
     try {
-      const response = await axios.get("api/v1/rooms/all-rooms");
+      const response = await axios.get(`api/v1/rooms/all-rooms`, {
+        params: {
+          filterDate: selectedDate,
+          filterStartTime:meetingStartTime,
+          filterEndingTime: meetingEndingTime,
+          filterAmenities:selectedAmenities,
+          filterCapacity:capacity,
+        },
+      });
+      console.log("Rooms===================",response.data.data.rooms)
       setRoomsData(response.data.data.rooms);
     } catch (error) {
       toast.error("Something Went Wrong");
@@ -51,8 +60,8 @@ const RoomsPage = () => {
     setMeetingStartTime(newStartTime);
 
     // Auto-select one hour later for ending time
-    const autoEndTime = newStartTime.add(1, "hour");
-    setMeetingEndingTime(autoEndTime);
+   // const autoEndTime = newStartTime.add(1, "hour");
+   // setMeetingEndingTime(autoEndTime);
   };
 
   // Fetch amenities data
@@ -67,9 +76,12 @@ const RoomsPage = () => {
   };
 
   useEffect(() => {
-    fetchRoomsData();
     fetchAmenitiesData();
-  }, [deleteUpdateStatus,refreshPage]);
+  },[])
+
+  useEffect(() => {
+    fetchRoomsData();
+  }, [deleteUpdateStatus,refreshPage,selectedDate,meetingStartTime,selectedAmenities,capacity]);
 
   // Handle capacity change
   const handleChangeCapacity = (event) => {
@@ -90,26 +102,25 @@ const RoomsPage = () => {
   };
 
   // Filter rooms based on the selected filters
-  const filteredRooms = roomsData.filter((room) => {
-    // Filter by availability
-    const availabilityFilter =
-      isAvailable === "all"
-        ? true
-        : room.isAvailable === (isAvailable === "available");
+  // const filteredRooms = roomsData.filter((room) => {
+  //   // Filter by availability
+  //   const availabilityFilter =
+  //     isAvailable === "all"
+  //       ? true
+  //       : room.isAvailable === (isAvailable === "available");
 
-    // Filter by capacity
-    const capacityFilter = capacity ? room.capacity >= capacity : true;
+  //   // Filter by capacity
+  //   const capacityFilter = capacity ? room.capacity >= capacity : true;
 
-    // Filter by date and time
-    const timeFilter =
-      meetingStartTime && meetingEndingTime
-        ? dayjs(room.availableFrom).isBefore(meetingStartTime) &&
-          dayjs(room.availableTo).isAfter(meetingEndingTime)
-        : true;
+  //   // Filter by date and time
+  //   const timeFilter =
+  //     meetingStartTime && meetingEndingTime
+  //       ? dayjs(room.availableFrom).isBefore(meetingStartTime) &&
+  //         dayjs(room.availableTo).isAfter(meetingEndingTime)
+  //       : true;
 
-    return availabilityFilter && capacityFilter && timeFilter;
-  });
-  
+  //   return availabilityFilter && capacityFilter && timeFilter;
+  // });
   return (
     <>
       <PaperWrapper>
@@ -162,7 +173,8 @@ const RoomsPage = () => {
           capacity={capacity}
            />
           <div className="cardBox row w-100">
-            {filteredRooms.map((room, index) => (
+            {
+            roomsData&& roomsData.map((room, index) => (
               <div
                 className="col-xs-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 mb-4"
                 key={index}
@@ -174,6 +186,10 @@ const RoomsPage = () => {
                 />
               </div>
             ))}
+            {roomsData.length===0 &&(<div
+                className="col-xs-12 col-sm-6 col-md-12 col-lg-12 col-xl-12 text-center mb-4" >
+            <p>No Room Found</p>
+            </div>)}
           </div>
         </MainContainer>
       </PaperWrapper>
