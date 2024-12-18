@@ -1,36 +1,40 @@
+import React from "react";
 import {
   Box,
-  Button,
   Card,
   CardActionArea,
-  CardActions,
   CardContent,
   CardMedia,
-  Icon,
-  IconButton,
   Switch,
-  Tooltip,
   Typography,
 } from "@mui/material";
-import React from "react";
-import CustomButton from "../Common Components/CustomButton/CustomButton";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
 import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
+import CustomButton from "../Common Components/CustomButton/CustomButton";
 
-const UserCard = ({ user }) => {
-  console.log(user);
+const UserCard = ({
+  user,
+  handleView,
+  handleEdit,
+  handleDelete,
+  handleBlockStatusChange,
+}) => {
   return (
     <Card sx={{ width: 320 }}>
       <CardActionArea>
         <CardMedia
           component="img"
           height="140"
-          image={`${import.meta.env.VITE_API_URL}/${user.avatarPath}`}
-          alt="green iguana"
+          image={
+            user.avatarPath
+              ? `${import.meta.env.VITE_API_URL}/${user.avatarPath}`
+              : "/default-avatar.png"
+          }
+          alt="User Avatar"
           sx={{ objectFit: "contain", background: "#0af3ff0a" }}
         />
         <CardContent>
@@ -43,7 +47,7 @@ const UserCard = ({ user }) => {
               gap: "10px",
             }}
           >
-            <BadgeOutlinedIcon fontSize="medium" sx={{ marginBottom: "6px" }} />
+            <BadgeOutlinedIcon fontSize="small" sx={{ marginBottom: "6px" }} />
             {user.fullname}
           </Typography>
           <Typography
@@ -55,7 +59,7 @@ const UserCard = ({ user }) => {
               gap: "10px",
             }}
           >
-            <MailOutlinedIcon fontSize="medium" sx={{ marginBottom: "6px" }} />
+            <MailOutlinedIcon fontSize="small" sx={{ marginBottom: "6px" }} />
             {user.email}
           </Typography>
           <Typography
@@ -69,7 +73,7 @@ const UserCard = ({ user }) => {
             }}
           >
             <LocalPhoneOutlinedIcon
-              fontSize="medium"
+              fontSize="small"
               sx={{ marginBottom: "6px" }}
             />
             {user.phoneNumber}
@@ -83,37 +87,37 @@ const UserCard = ({ user }) => {
           justifyContent: "center",
           alignItems: "center",
           padding: "8px",
+          gap: "10px",
         }}
       >
         <CustomButton
           title={"View User"}
           placement={"top"}
-          onClick={""}
+          onClick={() => handleView(user.id)}
           Icon={RemoveRedEyeIcon}
-          fontSize={"medium"}
+          fontSize={"small"}
           background={"rgba(3, 176, 48, 0.68)"}
         />
-        <CustomButton />
         <CustomButton
           title={"Edit User"}
           placement={"top"}
-          onClick={""}
+          onClick={() => handleEdit(user.id)}
           Icon={EditOutlinedIcon}
-          fontSize={"medium"}
+          fontSize={"small"}
           background={"rgba(8, 90, 232, 0.62)"}
         />
-        <CustomButton />
         <CustomButton
           title={"Delete User"}
           placement={"top"}
-          onClick={""}
+          onClick={() => handleDelete(user.id)}
           Icon={DeleteOutlineOutlinedIcon}
-          fontSize={"medium"}
+          fontSize={"small"}
           background={"rgba(231, 26, 7, 0.77)"}
         />
-        <CustomButton />
-        <CustomButton />
-        <Switch />
+        <Switch
+          checked={user.isBlocked}
+          onChange={() => handleBlockStatusChange(user.id, user.isBlocked)}
+        />
       </Box>
     </Card>
   );

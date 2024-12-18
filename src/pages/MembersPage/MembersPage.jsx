@@ -48,7 +48,7 @@ const MembersPage = () => {
     showDeleted ? true : !user.deletedAt
   );
 
-  const isSmallScreen = useMediaQuery("(max-width: 426px)");
+  const isSmallScreen = useMediaQuery("(max-width: 768px)");
   const fetchUsers = async () => {
     try {
       showLoading();
@@ -245,7 +245,7 @@ const MembersPage = () => {
                   : "Show All Deleted Users"
               }
               Icon={showDeleted ? VisibilityIcon : VisibilityOffIcon}
-              fontSize="medium"
+              fontSize={isSmallScreen ? "small" : "medium"}
               background={"#1976d291"}
               placement={"left"}
             />
@@ -253,7 +253,7 @@ const MembersPage = () => {
               onClick={() => setIsOpen(true)}
               title={"Add New User"}
               Icon={PersonAddAlt1Rounded}
-              fontSize="medium"
+              fontSize={isSmallScreen ? "small" : "medium"}
               background={"rgba(3, 176, 48, 0.68)"}
               placement={"bottom"}
             />
@@ -268,11 +268,20 @@ const MembersPage = () => {
               borderRadius: "20px",
               position: "relative",
               top: "10px",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
             {filteredUsers.length > 0 ? (
               filteredUsers.map((user) => (
-                <UserCard user={user} key={user.id} />
+                <UserCard
+                  key={user.id}
+                  user={user}
+                  handleView={handleView}
+                  handleEdit={handleEdit}
+                  handleDelete={handleOpen}
+                  handleBlockStatusChange={handleBlockStatusChange}
+                />
               ))
             ) : (
               <Grid2 item xs={12}>

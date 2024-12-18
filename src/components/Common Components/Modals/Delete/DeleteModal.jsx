@@ -20,7 +20,7 @@ const DeleteModal = ({ open, onClose, onDeleteConfirm, title, button }) => {
       aria-labelledby="child-modal-title"
       aria-describedby="child-modal-description"
     >
-      <Box sx={{ ...style, width: 400 }}>
+      <Box sx={{ ...style, width: 320 }}>
         <Typography
           variant="h4"
           component="h4"

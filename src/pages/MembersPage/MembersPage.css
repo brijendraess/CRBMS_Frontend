@@ -108,3 +108,7 @@
   cursor: pointer;
   margin-top: 8px;
 }
+
+.custom-password-field .MuiOutlinedInput-root {
+  padding-right: 0;
+}

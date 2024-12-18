@@ -4,7 +4,15 @@ import toast from "react-hot-toast";
 
 // Material UI Imports
 import { DataGrid } from "@mui/x-data-grid";
-import { Button, Box, Typography, Switch, Tooltip } from "@mui/material";
+import {
+  Button,
+  Box,
+  Typography,
+  Switch,
+  Tooltip,
+  Grid2,
+  useMediaQuery,
+} from "@mui/material";
 import {
   DeleteOutlineOutlined as DeleteIcon,
   VisibilityOutlined as ViewIcon,
@@ -20,9 +28,9 @@ import { PaperWrapper, RightContent } from "../../Style";
 import AmenitiesAdd from "./AmenitiesAdd";
 import DeleteModal from "../../components/Common Components/Modals/Delete/DeleteModal";
 import AmenitiesEdit from "./AmenitiesEdit";
-
 import PopupModals from "../../components/Common Components/Modals/Popup/PopupModals";
 import CustomButton from "../../components/Common Components/CustomButton/CustomButton";
+import AmenitiesCard from "./AmenitiesCard";
 
 const AmenitiesList = () => {
   const [amenities, setAmenities] = useState([]);
@@ -55,20 +63,16 @@ const AmenitiesList = () => {
   }, [isRefreshed]);
 
   const handleClose = () => {
-    console.log("Error");
-
     setOpen(false);
     setDeleteId(null);
   };
 
   const handleOpen = (id) => {
-    console.log("Error");
     setDeleteId(id);
     setOpen(true);
   };
 
   const handleEdit = (id) => {
-    console.log("Error");
     setUpdatedId(id);
     setIsEditOpen(true);
   };
@@ -76,12 +80,10 @@ const AmenitiesList = () => {
   const handleDelete = async () => {
     try {
       await axios.delete(`/api/v1/amenity/delete/${deleteId}`);
-      // Directly remove the deleted amenity from the state
       setAmenities((prevAmenities) =>
         prevAmenities.filter((amenity) => amenity.id !== deleteId)
       );
       handleClose();
-      console.log("Error");
       toast.success("Amenity deleted successfully!");
     } catch (error) {
       toast.error("Failed to delete amenity!");
@@ -148,40 +150,54 @@ const AmenitiesList = () => {
     },
   ];
 
+  // Check for small screen using media query
+  const isSmallScreen = useMediaQuery("(max-width: 768px)");
+
   return (
-    <RightContent>
-      <PaperWrapper>
-        <Box
+    <PaperWrapper>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: "10px",
+        }}
+      >
+        <Typography
+          variant="h1"
+          component="h1"
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginBottom: "10px",
+            marginRight: "20px",
+            fontSize: "22px",
+            fontWeight: 500,
+            lineHeight: 1.5,
+            color: "#2E2E2E",
           }}
         >
-          <Typography
-            variant="h1"
-            component="h1"
-            sx={{
-              marginRight: "20px",
-              fontSize: "22px",
-              fontWeight: 500,
-              lineHeight: 1.5,
-              color: "#2E2E2E",
-            }}
-          >
-            Amenities
-          </Typography>
-          <CustomButton
-            onClick={() => setIsAddOpen(true)}
-            title={"Add New Amenity"}
-            placement={"left"}
-            Icon={AddOutlinedIcon}
-            fontSize={"medium"}
-            background={"rgba(3, 176, 48, 0.68)"}
-          />
-        </Box>
-        <div style={{ display: "flex", flexDirection: "column" }}>
+          Amenities
+        </Typography>
+        <CustomButton
+          onClick={() => setIsAddOpen(true)}
+          title={"Add New Amenity"}
+          placement={"left"}
+          Icon={AddOutlinedIcon}
+          fontSize={"medium"}
+          background={"rgba(3, 176, 48, 0.68)"}
+        />
+      </Box>
+
+      {/* Render AmenitiesCard only on small screens */}
+      {isSmallScreen && (
+        <Grid2 container spacing={2}>
+          {amenities.map((amenity) => (
+            <AmenitiesCard key={amenity.id} amenity={amenity} />
+          ))}
+        </Grid2>
+      )}
+
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        {/* DataGrid for larger screens */}
+        {!isSmallScreen && (
           <DataGrid
             rows={amenities}
             columns={columns}
@@ -197,43 +213,44 @@ const AmenitiesList = () => {
             showCellVerticalBorder
             showColumnVerticalBorder
           />
-        </div>
+        )}
+      </div>
 
-        <PopupModals
-          isOpen={isAddOpen}
-          setIsOpen={setIsAddOpen}
-          title={"Add Amenity"}
-          modalBody={
-            <AmenitiesAdd
-              setIsAddOpen={setIsAddOpen}
-              setAmenities={setAmenities} // Passing function to update amenities directly after adding
-              setIsRefreshed={setIsRefreshed}
-            />
-          }
-        />
+      {/* Modals for Add, Edit, Delete */}
+      <PopupModals
+        isOpen={isAddOpen}
+        setIsOpen={setIsAddOpen}
+        title={"Add Amenity"}
+        modalBody={
+          <AmenitiesAdd
+            setIsAddOpen={setIsAddOpen}
+            setAmenities={setAmenities}
+            setIsRefreshed={setIsRefreshed}
+          />
+        }
+      />
 
-        <PopupModals
-          isOpen={isEditOpen}
-          setIsOpen={setIsEditOpen}
-          title={"Edit Amenities"}
-          modalBody={
-            <AmenitiesEdit
-              id={updatedId}
-              setIsEditOpen={setIsEditOpen}
-              setAmenities={setAmenities} // Passing function to update amenities directly after editing
-              setIsRefreshed={setIsRefreshed}
-            />
-          }
-        />
+      <PopupModals
+        isOpen={isEditOpen}
+        setIsOpen={setIsEditOpen}
+        title={"Edit Amenities"}
+        modalBody={
+          <AmenitiesEdit
+            id={updatedId}
+            setIsEditOpen={setIsEditOpen}
+            setAmenities={setAmenities}
+            setIsRefreshed={setIsRefreshed}
+          />
+        }
+      />
 
-        <DeleteModal
-          open={open}
-          onClose={handleClose}
-          onDeleteConfirm={handleDelete}
-          button={"Delete"}
-        />
-      </PaperWrapper>
-    </RightContent>
+      <DeleteModal
+        open={open}
+        onClose={handleClose}
+        onDeleteConfirm={handleDelete}
+        button={"Delete"}
+      />
+    </PaperWrapper>
   );
 };
 

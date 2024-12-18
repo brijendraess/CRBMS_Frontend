@@ -62,11 +62,18 @@ const CommitteeCard = ({ committee, onDelete, setRefreshPage }) => {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       sx={{
-        height: "auto",
+        height: {
+          xs: "350px",
+          sm: "300px",
+          md: "300px",
+          lg: "300px",
+          xl: "300px",
+        },
         display: "flex",
         flexDirection: "column",
-        width: "32%",
+        width: 320,
         background: "#fafafa80",
+        justifyContent: "space-between",
       }}
     >
       <CardActionArea
@@ -76,10 +83,10 @@ const CommitteeCard = ({ committee, onDelete, setRefreshPage }) => {
       >
         <CardContent
           sx={{
-            height: "100%",
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-evenly",
+            height: "100%",
           }}
         >
           {/* Card Header */}
@@ -148,7 +155,15 @@ const CommitteeCard = ({ committee, onDelete, setRefreshPage }) => {
               justifyContent: "space-between",
             }}
           >
-            <AvatarGroup max={4}>
+            <AvatarGroup
+              max={4}
+              sx={{
+                "& .MuiAvatar-root": {
+                  width: "30px",
+                  height: "30px",
+                },
+              }}
+            >
               {(committee.CommitteeMembers || []).map((member, index) => (
                 <Tooltip
                   key={index}
@@ -175,8 +190,6 @@ const CommitteeCard = ({ committee, onDelete, setRefreshPage }) => {
                 </Tooltip>
               ))}
             </AvatarGroup>
-
-            {/* View All Members Button */}
             <Tooltip title="View all members">
               <Chip
                 label={`${committee.CommitteeMembers?.length || 0}`}
