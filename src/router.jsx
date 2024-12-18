@@ -27,6 +27,7 @@ import Layout from "./components/Layout/Layout";
 import LocationPage from "./pages/LocationPage/LocationPage";
 import MeetingLogs from "./pages/MeetingLogs/MeetingLogs";
 import ReportPage from "./pages/ReportPage/ReportPage";
+import FoodBeveragePage from "./pages/FoodBeverages/FoodBeveragesPage";
 
 const AppRouter = () => {
   return (
@@ -97,6 +98,7 @@ const AppRouter = () => {
         <Route path="/add-committee" element={<AddCommitteeForm />} />
         <Route path="/book-meeting/:id" element={<MeetingForm />} />
         <Route path="/location" element={<LocationPage />} />
+        <Route path="/food-beverages" element={<FoodBeveragePage />} />
         <Route path="/logs" element={<MeetingLogs />} />
         <Route
           path="/view-committee/:committeeId"

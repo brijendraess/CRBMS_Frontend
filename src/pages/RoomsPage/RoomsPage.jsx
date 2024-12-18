@@ -14,14 +14,6 @@ import CustomButton from "../../components/Common Components/CustomButton/Custom
 import { useSelector } from "react-redux";
 import { AddOutlinedIcon } from "../../components/Common Components/CustomButton/CustomIcon";
 
-const DataGridWrapper = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  color: theme.palette.text.secondary,
-  width: "100%",
-  padding: "15px",
-  borderRadius: "20px",
-}));
-
 const RoomsPage = () => {
   const [roomsData, setRoomsData] = useState([]); // State for rooms data
   const [capacity, setCapacity] = useState("");
@@ -47,7 +39,6 @@ const RoomsPage = () => {
           filterCapacity:capacity,
         },
       });
-      console.log("Rooms===================",response.data.data.rooms)
       setRoomsData(response.data.data.rooms);
     } catch (error) {
       toast.error("Something Went Wrong");
@@ -101,26 +92,6 @@ const RoomsPage = () => {
     setIsAvailable(event.target.value);
   };
 
-  // Filter rooms based on the selected filters
-  // const filteredRooms = roomsData.filter((room) => {
-  //   // Filter by availability
-  //   const availabilityFilter =
-  //     isAvailable === "all"
-  //       ? true
-  //       : room.isAvailable === (isAvailable === "available");
-
-  //   // Filter by capacity
-  //   const capacityFilter = capacity ? room.capacity >= capacity : true;
-
-  //   // Filter by date and time
-  //   const timeFilter =
-  //     meetingStartTime && meetingEndingTime
-  //       ? dayjs(room.availableFrom).isBefore(meetingStartTime) &&
-  //         dayjs(room.availableTo).isAfter(meetingEndingTime)
-  //       : true;
-
-  //   return availabilityFilter && capacityFilter && timeFilter;
-  // });
   return (
     <>
       <PaperWrapper>

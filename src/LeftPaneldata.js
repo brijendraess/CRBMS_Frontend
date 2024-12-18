@@ -7,6 +7,7 @@ import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
+import FoodBankOutlinedIcon from '@mui/icons-material/FoodBankOutlined';
 
 export const adminSideBarData = [
   {
@@ -44,6 +45,12 @@ export const adminSideBarData = [
     name: "Location",
     icon: LocationOnOutlinedIcon,
     path: "/location",
+  },
+  {
+    id: 10,
+    name: "Food & Beverages",
+    icon: FoodBankOutlinedIcon,
+    path: "/food-beverages",
   },
   
   {

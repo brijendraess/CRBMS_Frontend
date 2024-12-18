@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 import "./BottomNavbar.css";
 
 const BottomNavBar = () => {
-  const userIsAdmin = useLocation();
+  const userIsAdmin = useLocation(); 
   const { user } = useSelector((state) => state.user);
   const { state } = userIsAdmin; // Access state data
   const isAdmin = state ? state : user?.isAdmin;

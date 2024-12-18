@@ -20,7 +20,8 @@ import MeetingForm from "../../pages/MeetingPage/MeetingForm";
 import DeleteModal from "../Common Components/Modals/Delete/DeleteModal";
 import axios from "axios";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
-import { CleaningServicesIcon, CollectionsIcon, DeleteIcon, EditOutlinedIcon, ExtensionIcon, Groups2OutlinedIcon, GroupsOutlinedIcon, LocationOnOutlinedIcon, VisibilityOutlinedIcon } from "../Common Components/CustomButton/CustomIcon";
+import { CleaningServicesIcon, CollectionsIcon, DeleteIcon, EditOutlinedIcon, ExtensionIcon, FoodBankOutlinedIcon, Groups2OutlinedIcon, GroupsOutlinedIcon, LocationOnOutlinedIcon, VisibilityOutlinedIcon } from "../Common Components/CustomButton/CustomIcon";
+import RoomFoodBeverages from "./RoomFoodBeverages";
 
 const RoomsCard = ({ room, setDeleteUpdateStatus,setRefreshPage }) => {
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus,setRefreshPage }) => {
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [isBookNowOpen, setIsBookNowOpen] = useState(false);
   const [isAmenitiesOpen, setIsAmenitiesOpen] = useState(false);
+   const [isFoodBeverageOpen, setIsFoodBeverageOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -46,6 +48,10 @@ const RoomsCard = ({ room, setDeleteUpdateStatus,setRefreshPage }) => {
 
   const handleAmenities = () => {
     setIsAmenitiesOpen(true);
+  };
+
+    const handleFoodBeverage = () => {
+    setIsFoodBeverageOpen(true);
   };
 
   const handleDeleteClose = () => {
@@ -217,6 +223,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus,setRefreshPage }) => {
                 sx={{
                   borderRadius: "0 0 0px 10px",
                   flex: 1,
+                  minWidth: "47px",
                 }}
                 size="small"
               >
@@ -251,6 +258,21 @@ const RoomsCard = ({ room, setDeleteUpdateStatus,setRefreshPage }) => {
                 size="small"
               >
                 <Groups2OutlinedIcon color="white" className="cursor" />
+              </Button>
+              <Button
+                fullWidth
+                variant="contained"
+                title="Room Food & Beverages"
+                onClick={handleFoodBeverage}
+                sx={{
+                  background: "white",
+                  color: "black",
+                  flex: 1,
+                  minWidth: "47px",
+                }}
+                size="small"
+              >
+                <FoodBankOutlinedIcon color="white" className="cursor" />
               </Button>
               <Button
                 variant="contained"
@@ -318,6 +340,12 @@ const RoomsCard = ({ room, setDeleteUpdateStatus,setRefreshPage }) => {
         setIsOpen={setIsAmenitiesOpen}
         title={"Room Amenities"}
         modalBody={<RoomAmenities room={room} />}
+      />
+      <PopupModals
+        isOpen={isFoodBeverageOpen}
+        setIsOpen={setIsFoodBeverageOpen}
+        title={"Room Food & Beverage"}
+        modalBody={<RoomFoodBeverages room={room} />}
       />
       <PopupModals
         isOpen={isEditOpen}
