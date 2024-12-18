@@ -14,6 +14,7 @@ import * as Yup from "yup";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { PopContent } from "../../Style";
 
 const FormWrapper = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -125,110 +126,100 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
   });
 
   return (
-    <Box component="form" onSubmit={formik.handleSubmit}>
-      <TextField
-        label="Full Name"
-        name="fullname"
-        margin="normal"
-        value={formik.values.fullname}
-        onChange={formik.handleChange}
-        error={formik.touched.fullname && Boolean(formik.errors.fullname)}
-        helperText={formik.touched.fullname && formik.errors.fullname}
-        fullWidth
-        size="small"
-      />
+    <PopContent>
+      <Box component="form" onSubmit={formik.handleSubmit}>
+        <TextField
+          label="Full Name"
+          name="fullname"
+          margin="normal"
+          value={formik.values.fullname}
+          onChange={formik.handleChange}
+          error={formik.touched.fullname && Boolean(formik.errors.fullname)}
+          helperText={formik.touched.fullname && formik.errors.fullname}
+          fullWidth
+          size="small"
+        />
 
-      <TextField
-        label="Email"
-        name="email"
-        margin="normal"
-        value={formik.values.email}
-        onChange={formik.handleChange}
-        error={formik.touched.email && Boolean(formik.errors.email)}
-        helperText={formik.touched.email && formik.errors.email}
-        fullWidth
-        size="small"
-      />
+        <TextField
+          label="Email"
+          name="email"
+          margin="normal"
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          error={formik.touched.email && Boolean(formik.errors.email)}
+          helperText={formik.touched.email && formik.errors.email}
+          fullWidth
+          size="small"
+        />
 
-      <TextField
-        label="Phone Number"
-        name="phoneNumber"
-        margin="normal"
-        value={formik.values.phoneNumber}
-        onChange={formik.handleChange}
-        error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
-        helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
-        fullWidth
-        size="small"
-      />
+        <TextField
+          label="Phone Number"
+          name="phoneNumber"
+          margin="normal"
+          value={formik.values.phoneNumber}
+          onChange={formik.handleChange}
+          error={
+            formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)
+          }
+          helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+          fullWidth
+          size="small"
+        />
 
-      <Autocomplete
-        disableCloseOnSelect
-        multiple
-        id="committees"
-        options={availableCommittees}
-        value={formik.values.committees}
-        getOptionLabel={(option) => option.name || ""}
-        onChange={(_, selectedCommittees) => {
-          formik.setFieldValue("committees", selectedCommittees);
-        }}
-        isOptionEqualToValue={(option, value) => option.id === value.id}
-        renderInput={(params) => (
-          <TextField
-            marginTop={2}
-            {...params}
-            label="Select Committees"
-            error={
-              formik.touched.committees && Boolean(formik.errors.committees)
-            }
-            helperText={formik.touched.committees && formik.errors.committees}
-          />
-        )}
-        slotProps={{
-          listbox: {
-            style: { maxHeight: 100, overflowY: "scroll" }, // Scrollable dropdown
-          },
-        }}
-        style={{ marginTop: "1rem" }}
-        renderTags={(selected, getTagProps) => (
-          <div
-            style={{
-              maxHeight: "100px",
-              overflowY: "auto",
-              padding: "5px",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-            }}
-          >
-            {selected.map((option, index) => (
-              <Chip
-                key={option.id}
-                label={option.name}
-                {...getTagProps({ index })}
-                size="medium"
-              />
-            ))}
-          </div>
-        )}
-        renderOption={(props, option, { selected }) => (
-          <li
-            {...props}
-            style={{
-              backgroundColor: selected ? "#e0f7fa" : "inherit", // Change the color when selected
-              fontWeight: selected ? "bold" : "normal", // Optional: Make text bold when selected
-            }}
-          >
-            {option.name}
-          </li>
-        )}
-      />
+        <Autocomplete
+          disableCloseOnSelect
+          multiple
+          id="committees"
+          options={availableCommittees}
+          value={formik.values.committees}
+          getOptionLabel={(option) => option.name || ""}
+          onChange={(_, selectedCommittees) => {
+            formik.setFieldValue("committees", selectedCommittees);
+          }}
+          isOptionEqualToValue={(option, value) => option.id === value.id}
+          renderInput={(params) => (
+            <TextField
+              marginTop={2}
+              {...params}
+              label="Select Committees"
+              error={
+                formik.touched.committees && Boolean(formik.errors.committees)
+              }
+              helperText={formik.touched.committees && formik.errors.committees}
+            />
+          )}
+          slotProps={{
+            listbox: {
+              style: { maxHeight: 150, overflowY: "scroll" },
+            },
+          }}
+          style={{ marginTop: "1rem" }}
+          renderTags={(selected) => {
+            return selected.length > 0 ? (
+              <span>{selected.length} selected</span>
+            ) : null;
+          }}
+          renderOption={(props, option, { selected }) => (
+            <li
+              {...props}
+              style={{
+                backgroundColor: selected ? "#e0f7fa" : "inherit",
+                fontWeight: selected ? "bold" : "normal",
+                fontSize: "14px",
+              }}
+            >
+              {option.name}
+            </li>
+          )}
+        />
 
-      <Box mt={2} display="flex" justifyContent="flex-end">
-        <Button type="submit" variant="contained" color="primary">
-          Update Profile
-        </Button>
+        <Box mt={2} display="flex" justifyContent="flex-end">
+          <Button type="submit" variant="contained" color="primary">
+            Update Profile
+          </Button>
+        </Box>
       </Box>
-    </Box>
+    </PopContent>
   );
 };
 

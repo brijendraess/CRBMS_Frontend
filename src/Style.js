@@ -29,7 +29,6 @@ export const RightContent = styled("div")(({ theme }) => ({
 }));
 
 export const PaperWrapper = styled(Paper)(({ theme }) => ({
-  // bgcolor: "#f4f6f8",
   color: theme.palette.text.secondary,
   borderRadius: "10px",
   padding: "15px",
@@ -37,21 +36,18 @@ export const PaperWrapper = styled(Paper)(({ theme }) => ({
   width: "100%",
   height: `calc(100vh - 75px)`,
   overflow: "scroll",
-  // height: "100%",
+  [theme.breakpoints.down("md")]: {
+    height: `calc(100vh - 100px)`,
+    marginTop: "0px",
+  },
 }));
 
 export const PopContent = styled("div")(({ theme }) => ({
   padding: "15px",
+  [theme.breakpoints.down("sm")]: {
+    padding: "5px",
+  },
 }));
-
-// Data Grid CSS
-// sx={{
-//   "& .MuiDataGrid-cell:focus": {
-//     outline: "none",
-//   },
-// }}
-// showCellVerticalBorder
-// showColumnVerticalBorder
 
 export const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,

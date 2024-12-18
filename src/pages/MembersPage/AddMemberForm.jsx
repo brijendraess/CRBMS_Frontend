@@ -18,6 +18,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { PopContent } from "../../Style";
+import "./MembersPage.css";
 
 const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
   const [avatarPreview, setAvatarPreview] = useState(null); // Avatar preview
@@ -139,6 +140,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
             size="small"
           />
           <TextField
+            className="custom-password-field"
             label="Password"
             name="password"
             value={formik.values.password}
@@ -147,7 +149,12 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
             helperText={formik.touched.password && formik.errors.password}
             type={showPassword ? "text" : "password"}
             size="small"
-            style={{ flex: 1 }}
+            style={{
+              flex: 1,
+              "& .MuiOutlinedInput-root": {
+                paddingRight: "0",
+              },
+            }}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">

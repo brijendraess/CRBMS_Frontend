@@ -39,7 +39,6 @@ import { MyContext } from "../Layout/Layout";
 // Notifications Menu Component
 import NotificationsMenu from "../Notifications/NotificationsMenu";
 import { notifications } from "../../LeftPaneldata";
-import { MaterialUISwitch } from "../../Style";
 import PopupModals from "../Common Components/Modals/Popup/PopupModals";
 import ProfilePage from "../../pages/ProfilePage/ProfilePage";
 import ResetPassword from "../../pages/ProfilePage/ResetPassword";
@@ -122,7 +121,7 @@ const Header = () => {
     <header>
       <div className="container-fluid w-100">
         <div className="headerWrapper">
-          <div className="col-sm-2 col-xs-3 part1">
+          <div className="col-lg-3 col-md-4 col-sm-4 col-xs-3 part1">
             <Link
               to={"/meeting-calendar"}
               className="d-flex align-items-center logo gap-2"
@@ -131,7 +130,7 @@ const Header = () => {
               <span>Harambee</span>
             </Link>
           </div>
-          <div className="part2 col-sm-3 col-xs-3">
+          <div className="part2 col-lg-2 col-md-2 col-sm-3 col-xs-3">
             <Tooltip title="Menu Bar">
               <Button
                 className="rounded-circle"
@@ -143,9 +142,13 @@ const Header = () => {
               </Button>
             </Tooltip>
           </div>
-
+          <div className="col-lg-1 col-md-4 col-sm-4 col-xs-3">
+            <Typography className="heading" sx={{ display: "none" }}>
+              Harambee
+            </Typography>
+          </div>
           {/* Action Buttons */}
-          <div className="col-sm-7 col-xs-3 d-flex align-items-center justify-content-end gap-2">
+          <div className="col-lg-6 col-md-4 col-sm-4 col-xs-3 d-flex align-items-center justify-content-end gap-2">
             <Button
               className="rounded-circle"
               onClick={handleMenuToggle(setNotificationsAnchor)}
@@ -184,9 +187,6 @@ const Header = () => {
                 </div>
               </Tooltip>
             </Button>
-            <Typography className="heading" sx={{ display: "none" }}>
-              Harambee
-            </Typography>
           </div>
         </div>
       </div>

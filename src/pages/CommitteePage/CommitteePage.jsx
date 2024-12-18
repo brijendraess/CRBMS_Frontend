@@ -22,17 +22,12 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 
 const CommitteeManagementMUI = () => {
   const [committeeData, setCommitteeData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [filter, setFilter] = useState("all");
   const [isAddCommittee, setIsAddCommittee] = useState(false);
   const [refreshPage, setRefreshPage] = useState(0);
 
   const fetchCommittee = async () => {
     try {
-      setLoading(true);
-      setError(null);
-
       const response = await axios.get("/api/v1/committee/committees");
       if (response.data?.data?.committees) {
         setCommitteeData(response.data.data.committees);
@@ -43,8 +38,6 @@ const CommitteeManagementMUI = () => {
     } catch (err) {
       console.error("Error fetching committees:", err);
       setError(err.message || "Failed to fetch committees");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -83,7 +76,13 @@ const CommitteeManagementMUI = () => {
             component="h1"
             sx={{
               marginRight: "20px",
-              fontSize: "22px",
+              fontSize: {
+                xs: "16px",
+                sm: "18px",
+                md: "20px",
+                lg: "22px",
+                xl: "24px",
+              },
               fontWeight: 500,
               lineHeight: 1.5,
               color: "#2E2E2E",
@@ -130,6 +129,8 @@ const CommitteeManagementMUI = () => {
             borderRadius: "20px",
             position: "relative",
             top: "10px",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
           {filteredCommittees.map((committee) => (

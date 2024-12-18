@@ -13,7 +13,7 @@ header {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 .part2 {
   display: flex;
@@ -39,7 +39,13 @@ header {
     display: none !important;
   }
   .heading {
-    display: flex;
+    display: flex !important;
+    width: 100% !important;
+    justify-content: center;
+    align-items: center;
+    color: rgba(25, 24, 24, 0.823);
+    font-weight: 600 !important;
+    font-size: 20px !important;
   }
 }
 .logo {
