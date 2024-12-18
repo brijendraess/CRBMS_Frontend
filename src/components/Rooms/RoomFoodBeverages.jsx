@@ -6,16 +6,16 @@ import { DeleteOutlineOutlined as DeleteIcon } from "@mui/icons-material";
 import CustomButton from "../Common Components/CustomButton/CustomButton";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import PopupModals from "../Common Components/Modals/Popup/PopupModals";
-import AddRoomAmenities from "./AddRoomAmenities";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import DeleteModal from "../Common Components/Modals/Delete/DeleteModal";
-import EditRoomAmenities from "./EditRoomAmenities";
+import AddRoomFoodBeverage from "./AddRoomFoodBeverage";
+import EditRoomFoodBeverage from "./EditRoomFoodBeverage";
 
-const RoomAmenities = ({room}) => {
+const RoomFoodBeverages = ({room}) => {
   const [rows, setRows] = useState([]);
-  const [isAmenityQuantityOpen, setIsAmenityQuantityOpen] = useState(false);
+  const [isFoodBeverageOpen, setIsFoodBeverageOpen] = useState(false);
   const [refreshPage, setRefreshPage] = useState(0);
   const [updatedId, setUpdatedId] = useState(null);
   const [open, setOpen] = useState(false);
@@ -31,33 +31,31 @@ const RoomAmenities = ({room}) => {
     setEditInfo(rows.filter((row)=>row.uid===id)[0])
   };
 
-
   useEffect(() => {
-    const fetchAmenityQuantity = async () => {
+    const fetchFoodBeverage = async () => {
       try {
-        const response = await axios.get(`/api/v1/rooms/amenity-quantity-all/${room.id}`);
-        const amenityWithSerial = response.data.data.result.map(
-          (amenity, index) => ({
+        const response = await axios.get(`/api/v1/rooms/food-beverage-all/${room.id}`);
+        const foodBeverageWithSerial = response.data.data.result.map(
+          (foodBeverage, index) => ({
             id: index + 1,
-            uid: amenity.id,
-            name: amenity.RoomAmenity.name,
-            amenityId: amenity.RoomAmenity.id,
-            quantity: Number(amenity.quantity)
+            uid: foodBeverage.id,
+            foodBeverageName: foodBeverage.FoodBeverage.foodBeverageName,
+            foodBeverageId: foodBeverage.FoodBeverage.id,
           })
         );
-        setRows(amenityWithSerial);
+        setRows(foodBeverageWithSerial);
       } catch (error) {
         toast.success("Something Went Wrong");
-        console.error("Error fetching locations:", error);
+        console.error("Error fetching food beverage:", error);
       }
     };
 
-    fetchAmenityQuantity();
+    fetchFoodBeverage();
   }, [refreshPage]);
 
-  const handleRoomAmenities = () => {
-    setIsAmenityQuantityOpen(true);
-   // setIsAmenitiesOpen(false);
+  const handleRoomFoodBeverage = () => {
+    setIsFoodBeverageOpen(true);
+   // setIsFoodBeverageOpen(false);
   };
 
    const handleOpen = (id) => {
@@ -72,31 +70,30 @@ const RoomAmenities = ({room}) => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`/api/v1/rooms/delete-amenity-quantity/${deleteId}`);
+      await axios.delete(`/api/v1/rooms/delete-food-beverage/${deleteId}`);
 
       handleClose(false);
       setRefreshPage(Math.random());
-      toast.success("Amenity quantity deleted successfully!");
+      toast.success("Food beverage deleted successfully!");
     } catch (error) {
-      toast.error("Failed to delete amenity quantity!");
-      console.error("Error deleting amenity quantity:", error);
+      toast.error("Failed to delete food beverage!");
+      console.error("Error deleting food beverage:", error);
     }
   };
 
   const columns = [
     { field: "id", headerName: "S No.", width: 60 },
-    { field: "name", headerName: "Name", width: 100 },
-    { field: "quantity", headerName: "Quantity", width: 100 },
+    { field: "foodBeverageName", headerName: "Name", width: 300 },
     {
       field: "actions",
       headerName: "Actions",
-      width: 150,
+      width: 100,
       sortable: false,
       renderCell: (params) => (
         <Box>
-          <IconButton color="primary" onClick={() => handleEdit(params.row.uid)}>
+          {/* <IconButton color="primary" onClick={() => handleEdit(params.row.uid)}>
             <EditOutlinedIcon />
-          </IconButton>
+          </IconButton> */}
           <IconButton color="error" onClick={() => handleOpen(params.row.uid)}>
             <DeleteIcon />
           </IconButton>
@@ -116,9 +113,9 @@ const RoomAmenities = ({room}) => {
         }}
       >
         <CustomButton
-          title={"Add New Amenity Quantity"}
+          title={"Add New Food Beverage"}
           placement={"left"}
-          onClick={handleRoomAmenities}
+          onClick={handleRoomFoodBeverage}
           Icon={AddOutlinedIcon}
           fontSize={"medium"}
           background={"rgba(3, 176, 48, 0.68)"}
@@ -128,16 +125,16 @@ const RoomAmenities = ({room}) => {
         <DataGrid rows={rows } columns={columns} pageSize={20} />
       </Box>
       <PopupModals
-        isOpen={isAmenityQuantityOpen}
-        setIsOpen={setIsAmenityQuantityOpen}
-        title={"Add New Room Amenity"}
-        modalBody={<AddRoomAmenities room={room} setRefreshPage={setRefreshPage} setIsAmenityQuantityOpen={setIsAmenityQuantityOpen} />}
+        isOpen={isFoodBeverageOpen}
+        setIsOpen={setIsFoodBeverageOpen}
+        title={"Add New Food & Beverage"}
+        modalBody={<AddRoomFoodBeverage room={room} setRefreshPage={setRefreshPage} setIsFoodBeverageOpen={setIsFoodBeverageOpen} />}
       />
        <PopupModals
         isOpen={openEdit}
         setIsOpen={setOpenEdit}
-        title={"Edit Room Amenity"}
-        modalBody={<EditRoomAmenities room={room} setRefreshPage={setRefreshPage} setOpenEdit={setOpenEdit} editId={editId} editInfo={editInfo} />}
+        title={"Edit Food & Beverage"}
+        modalBody={<EditRoomFoodBeverage room={room} setRefreshPage={setRefreshPage} setOpenEdit={setOpenEdit} editId={editId} editInfo={editInfo} />}
       />
         <DeleteModal
         open={open}
@@ -149,4 +146,4 @@ const RoomAmenities = ({room}) => {
   );
 };
 
-export default RoomAmenities;
+export default RoomFoodBeverages;

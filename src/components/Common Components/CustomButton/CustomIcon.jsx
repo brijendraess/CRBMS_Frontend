@@ -10,6 +10,7 @@ import ExtensionIcon from '@mui/icons-material/Extension';
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import FoodBankOutlinedIcon from '@mui/icons-material/FoodBankOutlined';
 
 export {LocationOnOutlinedIcon,
     GroupsOutlinedIcon,
@@ -23,6 +24,7 @@ export {LocationOnOutlinedIcon,
     AddOutlinedIcon,
     PhotoCameraIcon,
     Visibility,
-    VisibilityOff
+    VisibilityOff,
+    FoodBankOutlinedIcon
 
 }
