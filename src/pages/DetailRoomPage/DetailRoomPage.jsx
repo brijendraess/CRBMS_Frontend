@@ -11,6 +11,7 @@ import {
   LinearProgress,
   Typography,
   Button,
+  Tooltip,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { meetings } from "../../LeftPaneldata";
@@ -21,6 +22,8 @@ import GroupsIcon from "@mui/icons-material/Groups";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+import { LocationOnOutlinedIcon } from "../../components/Common Components/CustomButton/CustomIcon";
+import { timeDifference } from "../../utils/utils";
 
 const ContentWrapper = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -45,6 +48,7 @@ const columns = [
     headerName: "End Time",
     width: 125,
   },
+  
   { field: "organizerName", headerName: "Organizer", width: 200 },
   {
     field: "status",
@@ -118,7 +122,8 @@ const renderProgressBar = (params) => {
 const DetailRoomPage = () => {
   const { id } = useParams();
   const [room, setRoom] = useState(null);
-  const [roomImagesForCarousel, setRoomImagesForCarousel] = useState([]);
+  const [meeting, setMeeting] = useState([]);
+  const [difference, setDifference] = useState(null);
   const navigate = useNavigate();
 
   const { user } = useSelector((state) => state.user);
@@ -126,37 +131,37 @@ const DetailRoomPage = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(`/api/v1/rooms/${id}`);
-      setRoom(response.data.data.room);
-      console.log(response.data.data.room);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  const fetchRoomImages = async () => {
-    try {
-      const response = await axios.get(
-        `/api/v1/rooms/single-room-gallery/${id}`
-      );
-      setRoomImagesForCarousel(response.data.data.roomGallery);
+      setRoom(response.data.data.room[0]);
+
+      console.log(response.data.data.room[0]);
     } catch (error) {
       console.error(error);
     }
   };
 
+  const getAllMeeting = () => {
+    const meeting = room?.Meetings.map((meeting) => {
+      const timeDiff = timeDifference(meeting?.startTime,meeting?.endTime)
+
+      return {
+        id: meeting.id,
+        title: meeting.subject,
+        startTime: meeting.startTime,
+        endTime: meeting.endTime, // 45 minutes duration
+        duration: timeDiff,
+        organizerName: meeting.User.fullname,
+        status: meeting.status,
+      };
+    });
+    setMeeting(meeting);
+  };
   useEffect(() => {
     fetchData();
-    fetchRoomImages();
+    getAllMeeting();
   }, [id]);
 
   if (!room) {
     return <p>Room not found</p>;
-  }
-
-  let amenitiesList = [];
-  if (Array.isArray(room.amenities)) {
-    amenitiesList = room.amenities;
-  } else if (typeof room.amenities === "string") {
-    amenitiesList = room.amenities.split(",");
   }
 
   const handleBookNow = () => {
@@ -170,12 +175,12 @@ const DetailRoomPage = () => {
       </Typography>
       <div className="wrapper">
         <div className="imageWrapper">
-          <Carousel roomImagesForCarousel={roomImagesForCarousel} />
+          <Carousel roomImagesForCarousel={room?.RoomGalleries} />
         </div>
         <div className="tableWrapper flex-1">
           <Box sx={{ height: 400, width: "100%" }}>
             <DataGrid
-              rows={meetings}
+              rows={meeting}
               columns={columns}
               pageSize={5}
               rowsPerPageOptions={[5]}
@@ -197,7 +202,7 @@ const DetailRoomPage = () => {
             flexDirection: "column",
             gap: "20px",
             height: "30vh",
-            width: "50%",
+            width: "33%",
           }}
         >
           <Divider>
@@ -206,62 +211,120 @@ const DetailRoomPage = () => {
           <Box display="flex" justifyContent="center">
             <div className="marquee">
               <div className="marquee-content">
-                <Chip label="Amenity 1" size="large" />
-                <Chip label="Amenity 2" size="large" />
-                <Chip label="Amenity 3" size="large" />
-                <Chip label="Amenity 4" size="large" />
-                <Chip label="Amenity 5" size="large" />
-                <Chip label="Amenity 6" size="large" />
+                {room.RoomAmenityQuantities &&
+                  room.RoomAmenityQuantities?.map((amenity) => (
+                    <Chip
+                      key={amenity.RoomAmenity.id}
+                      label={amenity.RoomAmenity.name}
+                      size="large"
+                    />
+                  ))}
               </div>
             </div>
           </Box>
         </Box>
 
-        <Divider variant="fullWidth" orientation="vertical" flexItem />
+        <Divider
+          variant="fullWidth"
+          orientation="vertical"
+          flexItem
+          sx={{ height: "50%", marginTop: "30px" }}
+        />
         <Box
-          display="flex"
-          flexDirection="column"
-          justifyContent="flex-start"
-          alignItems="flex-start"
-          width="50%"
-          gap={"10px"}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "20px",
+            height: "30vh",
+            width: "33%",
+          }}
         >
-          <Box
-            display="flex"
-            justifyContent="center"
-            gap="10px"
-            alignItems="flex-end"
-          >
-            <Typography variant="h5" component="h5">
-              {room.capacity}
-            </Typography>
-            <GroupsIcon fontSize="large" />
+          <Divider>
+            <Chip label="Food & Beverage" size="large" fontSize="20px" />
+          </Divider>
+          <Box justifyContent="center">
+            <div className="marquee">
+              <div className="marquee-content">
+                {room.RoomFoodBeverages &&
+                  room.RoomFoodBeverages?.map((amenity) => (
+                    <Chip
+                      key={amenity.FoodBeverage.id}
+                      label={amenity.FoodBeverage.foodBeverageName}
+                      size="large"
+                    />
+                  ))}
+              </div>
+            </div>
           </Box>
+        </Box>
+        <Divider
+          variant="fullWidth"
+          orientation="vertical"
+          flexItem
+          sx={{ height: "50%", marginTop: "30px" }}
+        />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "20px",
+            height: "40vh",
+            width: "33%",
+          }}
+        >
+          <Divider>
+            <Chip label="Room Detail" size="large" fontSize="20px" />
+          </Divider>
           <Box
             display="flex"
-            justifyContent="center"
-            gap="10px"
+            justifyContent="left"
+            gap="50px"
             alignItems="flex-end"
           >
-            <Typography variant="h6" component="h6">
-              Tolerance Period : {room.tolerancePeriod} mins
+            <Typography component="p">
+              <Tooltip title="Capacity">
+                <GroupsIcon fontSize="small" />
+              </Tooltip>{" "}
+              {room.capacity} people
             </Typography>
-            <AccessTimeIcon fontSize="large" />
-          </Box>
-          <Box
-            display="flex"
-            justifyContent="center"
-            gap="10px"
-            alignItems="flex-end"
-          >
-            <Typography variant="h6" component="h6">
+
+            <Typography component="p">
+              <Tooltip title="Tolerance Period">
+                <AccessTimeIcon fontSize="small" />
+              </Tooltip>{" "}
+              {room.tolerancePeriod} mins
+            </Typography>
+
+            <Typography component="p">
+              <Tooltip title="Sanitation">
+                {room.sanitationStatus ? (
+                  <CheckCircleOutlineOutlinedIcon fontSize="small" />
+                ) : (
+                  <CancelOutlinedIcon fontSize="small" />
+                )}
+              </Tooltip>{" "}
               Sanitation
             </Typography>
-            {room.sanitationStatus ? (
-              <CheckCircleOutlineOutlinedIcon fontSize="large" />
-            ) : (
-              <CancelOutlinedIcon fontSize="large" />
-            )}
+          </Box>
+          <Box
+            display="flex"
+            justifyContent="left"
+            gap="50px"
+            alignItems="flex-end"
+          >
+            <Typography component="p">
+              <Tooltip title="Location">
+                <LocationOnOutlinedIcon />
+              </Tooltip>{" "}
+              {room.Location.locationName}
+            </Typography>
+
+            <Typography component="p">
+              <Tooltip title="SanitationPeriod Period">
+                <AccessTimeIcon fontSize="small" />
+              </Tooltip>{" "}
+              {room.sanitationPeriod} mins
+            </Typography>
           </Box>
           <Typography variant="body1" component="body1">
             {room.description}
@@ -274,8 +337,3 @@ const DetailRoomPage = () => {
 
 export default DetailRoomPage;
 
-// <Box sx={{ width: "100%", display: "flex", alignItems: "flex-end" }}>
-//   <Button variant="contained" sx={{ marginTop: "50px" }}>
-//     Request Room
-//   </Button>
-// </Box>
