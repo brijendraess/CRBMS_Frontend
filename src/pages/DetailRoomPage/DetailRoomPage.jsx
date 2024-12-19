@@ -123,7 +123,6 @@ const DetailRoomPage = () => {
   const { id } = useParams();
   const [room, setRoom] = useState(null);
   const [meeting, setMeeting] = useState([]);
-  const [difference, setDifference] = useState(null);
   const navigate = useNavigate();
 
   const { user } = useSelector((state) => state.user);
@@ -157,17 +156,19 @@ const DetailRoomPage = () => {
   };
   useEffect(() => {
     fetchData();
-    getAllMeeting();
   }, [id]);
-
+  useEffect(() => {
+    getAllMeeting();
+  }, [id,room]);
   if (!room) {
-    return <p>Room not found</p>;
+    return <p>Loading...</p>;
   }
 
   const handleBookNow = () => {
     navigate(`/book-meeting/${id}`);
   };
-
+  console.log(meeting)
+  console.log(room)
   return (
     <ContentWrapper>
       <Typography variant="h4" component="h4" textAlign="center">
