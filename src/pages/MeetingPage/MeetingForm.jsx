@@ -16,32 +16,19 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { fetchActiveCommittee, fetchUsers } from "../../utils/utils";
 
 const MeetingForm = ({ room }) => {
   const [emailsList, setEmailsList] = useState([]);
-
+  const [committeeList, setCommitteeList] = useState([]);
   const [startTime, setStartTime] = useState(""); // Example start time
   const [endTime, setEndTime] = useState(""); // Example end time
-  const [difference, setDifference] = useState("");
+  const [difference, setDifference] = useState("0h 0m");
 
   const { user } = useSelector((state) => state.user);
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get("/api/v1/user/users");
-        const emails = response.data.data.users.rows.map((user) => ({
-          email: user.email,
-          id: user.id,
-          name: user.fullname,
-        }));
-        setEmailsList(emails);
-        console.log(response.data.data.users.rows);
-      } catch (error) {
-        toast.error("Failed to load users");
-        console.error("Error fetching users:", error);
-      }
-    };
-    fetchUsers();
+    fetchActiveCommittee(toast, setCommitteeList);
+    fetchUsers(toast, setEmailsList);
   }, []);
 
   const formik = useFormik({
@@ -50,10 +37,12 @@ const MeetingForm = ({ room }) => {
       organizerId: user.id,
       subject: "",
       agenda: "",
+      guestUser:"",
       startTime: null,
       endTime: null,
       date: null,
       attendees: [],
+      committees:[],
       notes: "",
       additionalEquipment: "",
       isPrivate: false,
@@ -66,8 +55,10 @@ const MeetingForm = ({ room }) => {
         .required("End Time is required")
         .min(Yup.ref("startTime"), "End Time must be after Start Time"),
       date: Yup.date().required("Meeting Date is required"),
-      attendees: Yup.array().min(1, "At least one attendee must be selected"),
+      attendees: Yup.array().optional(),
+      committees: Yup.array().min(1, "At least one committee must be selected"),
       notes: Yup.string(),
+      guestUser: Yup.string(),
       additionalEquipment: Yup.string(),
     }),
     onSubmit: async (values, { resetForm }) => {
@@ -76,7 +67,8 @@ const MeetingForm = ({ room }) => {
       try {
         const payload = {
           ...values,
-          attendees: values.attendees.map((attendee) => attendee.id), // Only send user IDs
+          attendees: values.attendees.map((attendee) => attendee.id),
+          committees: values.committees.map((committee) => committee.id),
         };
         console.log("payload", payload);
         const response = await axios.post(
@@ -109,7 +101,7 @@ const MeetingForm = ({ room }) => {
     const hours = Math.floor(diffMs / (1000 * 60 * 60));
     const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
-
+if(formik.values.startTime&&formik.values.endTime)
     setDifference(`${hours}h ${minutes}m`);
   };
 
@@ -224,49 +216,128 @@ const MeetingForm = ({ room }) => {
           size="small"
         />
       </Box>
-      {/* Attendees */}
-      <Autocomplete
-        multiple
-        id="attendees"
-        name="attendees"
-        size="small"
-        options={emailsList}
-        value={formik.values.attendees}
-        onChange={(_, newValue) => formik.setFieldValue("attendees", newValue)}
-        getOptionLabel={(option) => option.name}
-        renderOption={(props, option) => (
-          <Box
-            component="li"
-            {...props}
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              width: "100%",
-            }}
-          >
-            <div>
-              {/* Render the attendee's name */}
-              <span>{option.name}</span>
-            </div>
-            <div sx={{width:"100%",float:"right"}}>
-              {/* Render a hardcoded Chip for availability */}
-                <Chip label={option.id === "15b8126b-8ce7-443c-a231-007179da901a"?"Unavailable":"Available"} color={option.id === "15b8126b-8ce7-443c-a231-007179da901a"?"error":"success"} size="small" />
-             
-            </div>
-          </Box>
-        )}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Select Attendees"
-            error={formik.touched.attendees && Boolean(formik.errors.attendees)}
-            helperText={formik.touched.attendees && formik.errors.attendees}
-          />
-        )}
-        disableCloseOnSelect
-        isOptionEqualToValue={(option, value) => option.id === value.id}
-      />
+      <Box display="flex" gap={1} justifyContent="space-between">
+        <Autocomplete
+          multiple
+          id="attendees"
+          name="attendees"
+          size="small"
+          sx={{
+            width: "100%", 
+          }}
+          options={emailsList}
+          value={formik.values.attendees}
+          onChange={(_, newValue) =>
+            formik.setFieldValue("attendees", newValue)
+          }
+          getOptionLabel={(option) => option.name}
+          renderOption={(props, option) => (
+            <Box
+              component="li"
+              {...props}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: "100%",
+              }}
+            >
+              <div>
+                {/* Render the attendee's name */}
+                <span>{option.name}</span>
+              </div>
+              <div sx={{ width: "100%", float: "right" }}>
+                {/* Render a hardcoded Chip for availability */}
+                <Chip
+                  label={
+                    option.id === "15b8126b-8ce7-443c-a231-007179da901a"
+                      ? "Unavailable"
+                      : "Available"
+                  }
+                  color={
+                    option.id === "15b8126b-8ce7-443c-a231-007179da901a"
+                      ? "error"
+                      : "success"
+                  }
+                  size="small"
+                />
+              </div>
+            </Box>
+          )}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Select Attendees"
+              error={
+                formik.touched.attendees && Boolean(formik.errors.attendees)
+              }
+              helperText={formik.touched.attendees && formik.errors.attendees}
+            />
+          )}
+          disableCloseOnSelect
+          isOptionEqualToValue={(option, value) => option.id === value.id}
+        />
+        <Autocomplete
+          multiple
+          id="committees"
+          name="committees"
+          size="small"
+          sx={{
+            width: "100%", // Adjust the width as needed
+          }}
+          options={committeeList}
+          value={formik.values.committees}
+          onChange={(_, newValue) =>
+            formik.setFieldValue("committees", newValue)
+          }
+          getOptionLabel={(option) => option.name}
+          renderOption={(props, option) => (
+            <Box
+              component="li"
+              {...props}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: "100%",
+              }}
+            >
+              <div>
+                {/* Render the attendee's name */}
+                <span>{option.name}</span>
+              </div>
+              <div sx={{ width: "100%", float: "right" }}>
+                {/* Render a hardcoded Chip for availability */}
+                <Chip
+                  label={
+                    option.id === "15b8126b-8ce7-443c-a231-007179da901a"
+                      ? "Unavailable"
+                      : "Available"
+                  }
+                  color={
+                    option.id === "15b8126b-8ce7-443c-a231-007179da901a"
+                      ? "error"
+                      : "success"
+                  }
+                  size="small"
+                />
+              </div>
+            </Box>
+          )}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Select Committee"
+              error={
+                formik.touched.committees && Boolean(formik.errors.committees)
+              }
+              helperText={formik.touched.committees && formik.errors.committees}
+            />
+          )}
+          disableCloseOnSelect
+          isOptionEqualToValue={(option, value) => option.id === value.id}
+        />
+      </Box>
       <Box display="flex" gap={1} justifyContent="space-between">
         {/* Description */}
         <TextField
@@ -305,7 +376,9 @@ const MeetingForm = ({ room }) => {
         />
       </Box>
       {/* Private Meeting */}
-      <Typography variant="subtitle1" component="p" sx={{ mt: 2 }}>
+      <Box display="flex" gap={1} justifyContent="space-between">
+<Box component="p">
+<Typography variant="subtitle1" component="p" sx={{ mt: 2 }}>
         Is this a private meeting?
       </Typography>
       <RadioGroup
@@ -319,6 +392,26 @@ const MeetingForm = ({ room }) => {
         <FormControlLabel value={true} control={<Radio />} label="Yes" />
         <FormControlLabel value={false} control={<Radio />} label="No" />
       </RadioGroup>
+</Box>
+<Box component="p">
+<Typography variant="subtitle1" component="p" sx={{ mt: 2 }}>
+        Guest user(Comma separate email Id)
+      </Typography>
+      <TextField
+          label="guestUser"
+          name="guestUser"
+          margin="normal"
+          fullWidth
+          sx={{width:"100%"}}
+          value={formik.values.guestUser}
+          onChange={formik.handleChange}
+          error={formik.touched.guestUser && Boolean(formik.errors.guestUser)}
+          helperText={formik.touched.guestUser && formik.errors.guestUser}
+          size="small"
+        />
+</Box>
+      </Box>
+      
 
       {/* Submit Button */}
       <Box mt={2} display="flex" justifyContent="flex-end">
