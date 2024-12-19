@@ -5,6 +5,8 @@ import "./TodaysMeetings.css";
 
 import dayjs from "dayjs";
 import durationPlugin from "dayjs/plugin/duration";
+import axios from "axios";
+import { getFormattedDate, timeDifference } from "../../utils/utils";
 dayjs.extend(durationPlugin);
 
 const colorMap = {
@@ -91,44 +93,59 @@ const columns = [
 const TodaysMeetings = () => {
   const [meetings, setMeetings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [todayDate, setTodayDate] = useState("");
+  const [room, setRoom] = useState(null); 
   const gridRef = useRef(null);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`/api/v1/rooms/all-meeting`);
+      const todayDate=getFormattedDate()
+      setTodayDate(todayDate);
+      setRoom(response.data.data.meeting.filter((meet)=>meet.meetingDate===todayDate));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+      fetchData();
+    }, []);
 
   const generateFakeMeetings = () => {
     const meetings = [];
     const baseStartTime = "09:00:00";
-    const meetingDate = "2024-11-29";
+    const meetingDate = todayDate;
 
-    let startTime = dayjs(`${meetingDate}T${baseStartTime}`);
 
-    for (let i = 1; i <= 50; i++) {
-      const meetingLength = Math.floor(Math.random() * 120) + 30;
-      const endTime = startTime.add(meetingLength, "minute");
+    room?.map((meeting)=>{
 
-      const duration = dayjs.duration(meetingLength, "minute");
-      const formattedDuration = `${duration.hours()}h ${duration.minutes()}m`;
+    let startTime = dayjs(`${meetingDate}T${meeting.startTime}`);
+      const endTime = dayjs(`${meetingDate}T${meeting.endTime}`);
+      const timeDiff = timeDifference(meeting?.startTime,meeting?.endTime)
 
       meetings.push({
-        meetingId: i,
-        title: `Meeting ${i}`,
+        meetingId: meeting.id,
+        title: meeting.subject,
         meetingDate: meetingDate,
         startTime: startTime.format("HH:mm:ss"),
         endTime: endTime.format("HH:mm:ss"),
-        duration: formattedDuration,
-        roomName: `Room ${Math.ceil(i / 4)}`,
-        roomLocation: `Building ${(i % 3) + 1}`,
-        organizerName: `Organizer ${i}`,
+        duration: timeDiff,
+        roomName: meeting.Room.name,
+        roomLocation: meeting.Room.Location.locationName,
+        organizerName: meeting.User.fullname,
         progress: Math.floor(Math.random() * 101),
       });
 
       startTime = endTime.add(15, "minute");
-    }
+    })
     return meetings;
   };
 
   useEffect(() => {
     setMeetings(generateFakeMeetings());
     setLoading(false);
-  }, []);
+  }, [room]);
 
   useEffect(() => {
     let scrollInterval;
