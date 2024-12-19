@@ -188,15 +188,30 @@ const AmenitiesList = () => {
 
       {/* Render AmenitiesCard only on small screens */}
       {isSmallScreen && (
-        <Grid2 container spacing={2}>
+        <Grid2
+          container
+          spacing={2}
+          sx={{
+            borderRadius: "20px",
+            position: "relative",
+            top: "10px",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           {amenities.map((amenity) => (
-            <AmenitiesCard key={amenity.id} amenity={amenity} />
+            <AmenitiesCard
+              key={amenity.id}
+              amenity={amenity}
+              handleEdit={handleEdit}
+              handleDelete={handleOpen} // handleOpen is used to trigger deletion modal
+              handleStatusChange={handleStatusChange}
+            />
           ))}
         </Grid2>
       )}
 
       <div style={{ display: "flex", flexDirection: "column" }}>
-        {/* DataGrid for larger screens */}
         {!isSmallScreen && (
           <DataGrid
             rows={amenities}

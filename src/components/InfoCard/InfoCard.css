@@ -1,10 +1,3 @@
-.homepageCardBox {
-  width: 32%;
-  height: 150px;
-  /* background-color: red; */
-  border-radius: "20px";
-}
-
 .col1 {
   display: flex;
   flex-direction: column;

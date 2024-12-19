@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { PaperWrapper } from "../../Style";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import { Box, Switch, Tooltip, Typography } from "@mui/material";
+import {
+  Box,
+  Switch,
+  Tooltip,
+  Typography,
+  useMediaQuery,
+  Grid2,
+} from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import PopupModals from "../../components/Common Components/Modals/Popup/PopupModals";
 import LocationAdd from "./LocationAdd";
@@ -12,6 +19,8 @@ import toast from "react-hot-toast";
 import LocationEdit from "./LocationEdit";
 import CustomButton from "../../components/Common Components/CustomButton/CustomButton";
 import DeleteModal from "../../components/Common Components/Modals/Delete/DeleteModal";
+import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
+import LocationCard from "./LocationCard";
 
 const LocationPage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -21,6 +30,7 @@ const LocationPage = () => {
   const [open, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [refreshPage, setRefreshPage] = useState(0);
+  const isSmallScreen = useMediaQuery("(max-width: 768px)");
 
   useEffect(() => {
     const fetchLocations = async () => {
@@ -34,7 +44,7 @@ const LocationPage = () => {
         );
         setLocation(locationWithSerial);
       } catch (error) {
-        toast.success("Something Went Wrong");
+        toast.error("Something Went Wrong");
         console.error("Error fetching locations:", error);
       }
     };
@@ -100,11 +110,30 @@ const LocationPage = () => {
   };
 
   const columns = [
-    { field: "serialNo", headerName: "#", width: 150 },
+    { field: "serialNo", headerName: "#", width: 100 },
+    {
+      field: "locationImagePath",
+      headerName: "Image",
+      width: 200,
+      renderCell: (params) =>
+        params.value ? (
+          <>
+            <img
+              src={`${import.meta.env.VITE_API_URL}/${params.value}`}
+              alt="avatar"
+              style={{ width: "35px", height: "35px", borderRadius: "50%" }}
+            />
+          </>
+        ) : (
+          <AccountCircleRoundedIcon
+            style={{ width: "35px", height: "35px", borderRadius: "50%" }}
+          />
+        ),
+    },
     {
       field: "locationName",
       headerName: "Name",
-      width: 900,
+      width: 500,
     },
     {
       field: "action",
@@ -171,16 +200,41 @@ const LocationPage = () => {
           background={"rgba(3, 176, 48, 0.68)"}
         />
       </Box>
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <DataGrid
-          rows={location}
-          columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-          disableSelectionOnClick
-          rowHeight={40}
-        />
-      </div>
+      {isSmallScreen ? (
+        <Grid2
+          container
+          spacing={2}
+          sx={{
+            borderRadius: "20px",
+            position: "relative",
+            top: "10px",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {location.map((loc, index) => (
+            <LocationCard
+              key={loc.id}
+              location={loc}
+              onEdit={handleEdit}
+              onDelete={handleOpen} // Assuming handleOpen manages delete modal
+              onStatusChange={handleStatusChange}
+            />
+          ))}
+        </Grid2>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <DataGrid
+            rows={location}
+            columns={columns}
+            pageSize={5}
+            rowsPerPageOptions={[5]}
+            disableSelectionOnClick
+            rowHeight={40}
+          />
+        </div>
+      )}
+
       <PopupModals
         isOpen={isAddOpen}
         setIsOpen={setIsAddOpen}

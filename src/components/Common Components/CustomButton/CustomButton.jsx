@@ -6,7 +6,7 @@ const CustomButton = ({
   onClick,
   title,
   Icon,
-  fontSize = "medium",
+  fontSize,
   iconStyles = {},
   disabled = false,
   background,

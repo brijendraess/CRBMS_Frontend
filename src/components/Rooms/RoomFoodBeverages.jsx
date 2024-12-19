@@ -45,7 +45,7 @@ const RoomFoodBeverages = ({room}) => {
         );
         setRows(foodBeverageWithSerial);
       } catch (error) {
-        toast.success("Something Went Wrong");
+        toast.error("Something Went Wrong");
         console.error("Error fetching food beverage:", error);
       }
     };

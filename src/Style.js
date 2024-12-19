@@ -104,3 +104,14 @@ export const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     }),
   },
 }));
+
+export const Item = styled(Paper)(({ theme }) => ({
+  ...theme.typography.body2,
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+  height: "300px",
+  minWidth: 320,
+  lineHeight: "60px",
+  borderRadius: "20px",
+  padding: "15px",
+}));

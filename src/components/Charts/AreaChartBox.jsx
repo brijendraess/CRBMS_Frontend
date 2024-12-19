@@ -63,14 +63,14 @@ const Item = styled(Paper)(({ theme }) => ({
   width: "100%",
   lineHeight: "60px",
   borderRadius: "20px",
-  padding: "15px",
+  padding: "5px",
 }));
 
 const AreaChartBox = ({ color }) => {
   const [elevation, setElevation] = useState(2);
 
   return (
-    <div className="areaChartBox">
+    <div className="areaChartBox w-100">
       <Item
         elevation={elevation}
         onMouseEnter={() => setElevation(24)}

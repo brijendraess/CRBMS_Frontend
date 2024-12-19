@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { PaperWrapper } from "../../Style";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import { Box, Switch, Tooltip, Typography } from "@mui/material";
+import {
+  Box,
+  Switch,
+  Tooltip,
+  Typography,
+  useMediaQuery,
+  Grid2,
+} from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import PopupModals from "../../components/Common Components/Modals/Popup/PopupModals";
 import FoodBeverageAdd from "./FoodBeveragesAdd";
@@ -12,6 +19,7 @@ import toast from "react-hot-toast";
 import FoodBeverageEdit from "./FoodBeveragesEdit";
 import CustomButton from "../../components/Common Components/CustomButton/CustomButton";
 import DeleteModal from "../../components/Common Components/Modals/Delete/DeleteModal";
+import FoodBeverageCard from "../../components/Responsive Components/FoodBeverageCard/FoodBeverageCard";
 
 const FoodBeveragePage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -21,11 +29,14 @@ const FoodBeveragePage = () => {
   const [open, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [refreshPage, setRefreshPage] = useState(0);
+  const isSmallScreen = useMediaQuery("(max-width:768px)");
 
   useEffect(() => {
     const fetchFoodBeverages = async () => {
       try {
-        const response = await axios.get("/api/v1/food-beverages/food-beverage");
+        const response = await axios.get(
+          "/api/v1/food-beverages/food-beverage"
+        );
         const foodBeverageWithSerial = response.data.data.foodBeverages.map(
           (foodBeverage, index) => ({
             ...foodBeverage,
@@ -34,7 +45,7 @@ const FoodBeveragePage = () => {
         );
         setFoodBeverage(foodBeverageWithSerial);
       } catch (error) {
-        toast.success("Something Went Wrong");
+        toast.error("Something Went Wrong");
         console.error("Error fetching foodBeverages:", error);
       }
     };
@@ -54,7 +65,9 @@ const FoodBeveragePage = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`/api/v1/food-beverages/food-beverage/delete/${deleteId}`);
+      await axios.delete(
+        `/api/v1/food-beverages/food-beverage/delete/${deleteId}`
+      );
 
       handleClose(false);
       setRefreshPage(Math.random());
@@ -67,7 +80,9 @@ const FoodBeveragePage = () => {
 
   const handleUpdateSuccess = (updatedFoodBeverage) => {
     setFoodBeverage((prev) =>
-      prev.map((loc) => (loc.id === updatedFoodBeverage.id ? updatedFoodBeverage : loc))
+      prev.map((loc) =>
+        loc.id === updatedFoodBeverage.id ? updatedFoodBeverage : loc
+      )
     );
     setIsEditOpen(false);
   };
@@ -154,7 +169,11 @@ const FoodBeveragePage = () => {
           component="h1"
           sx={{
             marginRight: "20px",
-            fontSize: "22px",
+            fontSize: {
+              xs: "16px",
+              sm: "18px",
+              md: "22px",
+            },
             fontWeight: 500,
             lineHeight: 1.5,
             color: "#2E2E2E",
@@ -171,16 +190,41 @@ const FoodBeveragePage = () => {
           background={"rgba(3, 176, 48, 0.68)"}
         />
       </Box>
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <DataGrid
-          rows={foodBeverage}
-          columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-          disableSelectionOnClick
-          rowHeight={40}
-        />
-      </div>
+      {isSmallScreen && (
+        <Grid2
+          container
+          spacing={2}
+          sx={{
+            borderRadius: "20px",
+            position: "relative",
+            top: "10px",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {foodBeverage.map((food) => (
+            <FoodBeverageCard
+              key={food.id}
+              food={food}
+              handleEdit={handleEdit}
+              handleDelete={handleOpen}
+              handleStatusChange={handleStatusChange}
+            />
+          ))}
+        </Grid2>
+      )}
+      {!isSmallScreen && (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <DataGrid
+            rows={foodBeverage}
+            columns={columns}
+            pageSize={5}
+            rowsPerPageOptions={[5]}
+            disableSelectionOnClick
+            rowHeight={40}
+          />
+        </div>
+      )}
       <PopupModals
         isOpen={isAddOpen}
         setIsOpen={setIsAddOpen}
@@ -202,7 +246,8 @@ const FoodBeveragePage = () => {
             setRefreshPage={setRefreshPage}
             setIsEditOpen={setIsEditOpen}
             foodBeverageName={
-              foodBeverage.find((loc) => loc.id === updatedId)?.foodBeverageName || ""
+              foodBeverage.find((loc) => loc.id === updatedId)
+                ?.foodBeverageName || ""
             }
             onSuccess={handleUpdateSuccess}
           />

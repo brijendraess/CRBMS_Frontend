@@ -24,23 +24,16 @@ const AddRoomForm = ({ setDeleteUpdateStatus, setIsAddOpen }) => {
   const [locationList, setLocationList] = useState([]);
   const [roomImageError, setRoomImageError] = useState("");
   const [formState, setFormState] = useState({
-    sanitationStatus: false, // default value matches `defaultChecked`
-    isAvailable: true, // default value matches `defaultChecked`
+    sanitationStatus: false,
+    isAvailable: true,
   });
 
   const validateImage = (file) => {
-    // Allowed image types
     const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
-
-    // Max file size (2MB)
-    const maxSize = 2 * 1024 * 1024; // 2MB in bytes
-
-    // Check file type
+    const maxSize = 2 * 1024 * 1024;
     if (!allowedTypes.includes(file.type)) {
       return "Only JPEG, PNG, GIF, and WEBP images are allowed.";
     }
-
-    // Check file size
     if (file.size > maxSize) {
       return "Image must be smaller than 2MB.";
     }
@@ -48,11 +41,11 @@ const AddRoomForm = ({ setDeleteUpdateStatus, setIsAddOpen }) => {
     return null;
   };
 
-  // Fetching the  list
   useEffect(() => {
     const fetchLocation = async () => {
       try {
         const response = await axios.get("api/v1/location/activeLocations");
+        console.log(response.data.data);
         const locations = response.data.data.result.map((location) => {
           return { id: location.id, location: location.locationName };
         });
@@ -93,7 +86,7 @@ const AddRoomForm = ({ setDeleteUpdateStatus, setIsAddOpen }) => {
         .required("Tolerance Period is required")
         .positive()
         .integer(),
-        sanitationPeriod: Yup.number()
+      sanitationPeriod: Yup.number()
         .required("Tolerance Period is required")
         .positive()
         .integer(),
@@ -111,7 +104,7 @@ const AddRoomForm = ({ setDeleteUpdateStatus, setIsAddOpen }) => {
         formData.append("description", values.description);
         formData.append("location", values.location.id);
         formData.append("sanitationStatus", formState.sanitationStatus);
-         formData.append("isAvailable", formState.isAvailable);
+        formData.append("isAvailable", formState.isAvailable);
         if (values.roomImage) formData.append("roomImage", values.roomImage);
 
         const response = await axios.post("api/v1/rooms/add-room", formData, {
@@ -165,7 +158,7 @@ const AddRoomForm = ({ setDeleteUpdateStatus, setIsAddOpen }) => {
 
   return (
     <Box component="form" onSubmit={formik.handleSubmit}>
-        <Box display="flex" justifyContent="space-between">
+      <Box display="flex" justifyContent="space-between">
         <TextField
           label="Room Name"
           name="name"
@@ -179,7 +172,7 @@ const AddRoomForm = ({ setDeleteUpdateStatus, setIsAddOpen }) => {
         />
       </Box>
       <Box display="flex" justifyContent="space-between">
-      <TextField
+        <TextField
           label="Sanitation Period (in min.)"
           name="sanitationPeriod"
           margin="normal"
@@ -209,7 +202,7 @@ const AddRoomForm = ({ setDeleteUpdateStatus, setIsAddOpen }) => {
               helperText={formik.touched.location && formik.errors.location}
             />
           )}
-          />
+        />
       </Box>
       <Box display="flex" justifyContent="space-between">
         <TextField
