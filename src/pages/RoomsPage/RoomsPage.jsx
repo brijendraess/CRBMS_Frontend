@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import RoomsCard from "../../components/Rooms/RoomsCard";
-import { Box, styled, Paper, Typography } from "@mui/material";
+import { Box, Grid2, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -33,10 +33,10 @@ const RoomsPage = () => {
       const response = await axios.get(`api/v1/rooms/all-rooms`, {
         params: {
           filterDate: selectedDate,
-          filterStartTime:meetingStartTime,
+          filterStartTime: meetingStartTime,
           filterEndingTime: meetingEndingTime,
-          filterAmenities:selectedAmenities,
-          filterCapacity:capacity,
+          filterAmenities: selectedAmenities,
+          filterCapacity: capacity,
         },
       });
       setRoomsData(response.data.data.rooms);
@@ -45,14 +45,14 @@ const RoomsPage = () => {
       console.error("Error fetching room data:", error);
     }
   };
-  
+
   // Handle Start Time Change
   const handleStartTimeChange = (newStartTime) => {
     setMeetingStartTime(newStartTime);
 
     // Auto-select one hour later for ending time
-   // const autoEndTime = newStartTime.add(1, "hour");
-   // setMeetingEndingTime(autoEndTime);
+    // const autoEndTime = newStartTime.add(1, "hour");
+    // setMeetingEndingTime(autoEndTime);
   };
 
   // Fetch amenities data
@@ -68,11 +68,18 @@ const RoomsPage = () => {
 
   useEffect(() => {
     fetchAmenitiesData();
-  },[])
+  }, []);
 
   useEffect(() => {
     fetchRoomsData();
-  }, [deleteUpdateStatus,refreshPage,selectedDate,meetingStartTime,selectedAmenities,capacity]);
+  }, [
+    deleteUpdateStatus,
+    refreshPage,
+    selectedDate,
+    meetingStartTime,
+    selectedAmenities,
+    capacity,
+  ]);
 
   // Handle capacity change
   const handleChangeCapacity = (event) => {
@@ -108,7 +115,11 @@ const RoomsPage = () => {
             component="h1"
             sx={{
               marginRight: "20px",
-              fontSize: "22px",
+              fontSize: {
+                xs: "16px",
+                sm: "18px",
+                md: "22px",
+              },
               fontWeight: 500,
               lineHeight: 1.5,
               color: "#2E2E2E",
@@ -130,38 +141,43 @@ const RoomsPage = () => {
           )}
         </Box>
         <MainContainer>
-          <RoomFilter 
-          handleChangeAmenities={handleChangeAmenities} 
-          selectedAmenities={selectedAmenities}
-          amenitiesList={amenitiesList}
-          handleStartTimeChange={handleStartTimeChange}
-          meetingStartTime={meetingStartTime}
-          setMeetingEndingTime={setMeetingEndingTime}
-          meetingEndingTime={meetingEndingTime}
-          handleChangeCapacity={handleChangeCapacity}
-          selectedDate={selectedDate}
-          setSelectedDate={setSelectedDate}
-          capacity={capacity}
-           />
-          <div className="cardBox row w-100">
-            {
-            roomsData&& roomsData.map((room, index) => (
-              <div
-                className="col-xs-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 mb-4"
-                key={index}
+          <RoomFilter
+            handleChangeAmenities={handleChangeAmenities}
+            selectedAmenities={selectedAmenities}
+            amenitiesList={amenitiesList}
+            handleStartTimeChange={handleStartTimeChange}
+            meetingStartTime={meetingStartTime}
+            setMeetingEndingTime={setMeetingEndingTime}
+            meetingEndingTime={meetingEndingTime}
+            handleChangeCapacity={handleChangeCapacity}
+            selectedDate={selectedDate}
+            setSelectedDate={setSelectedDate}
+            capacity={capacity}
+          />
+          {roomsData &&
+            roomsData.map((room, index) => (
+              <Grid2
+                container
+                spacing={2}
+                sx={{
+                  borderRadius: "20px",
+                  position: "relative",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
               >
                 <RoomsCard
                   room={room}
                   setRefreshPage={setRefreshPage}
                   setDeleteUpdateStatus={setDeleteUpdateStatus}
                 />
-              </div>
+              </Grid2>
             ))}
-            {roomsData.length===0 &&(<div
-                className="col-xs-12 col-sm-6 col-md-12 col-lg-12 col-xl-12 text-center mb-4" >
-            <p>No Room Found</p>
-            </div>)}
-          </div>
+          {roomsData.length === 0 && (
+            <div className="col-xs-12 col-sm-6 col-md-12 col-lg-12 col-xl-12 text-center mb-4">
+              <p>No Room Found</p>
+            </div>
+          )}
         </MainContainer>
       </PaperWrapper>
       <PopupModals

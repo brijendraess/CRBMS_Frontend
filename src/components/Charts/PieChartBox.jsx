@@ -17,7 +17,7 @@ const Item = styled(Paper)(({ theme }) => ({
   width: "100%",
   lineHeight: "60px",
   borderRadius: "20px",
-  padding: "15px",
+  padding: "5px",
 }));
 
 const data = [

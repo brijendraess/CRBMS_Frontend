@@ -6,7 +6,7 @@ import {
   Button,
   CardActions,
   Chip,
-  Tooltip
+  Tooltip,
 } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
@@ -20,16 +20,27 @@ import MeetingForm from "../../pages/MeetingPage/MeetingForm";
 import DeleteModal from "../Common Components/Modals/Delete/DeleteModal";
 import axios from "axios";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
-import { CleaningServicesIcon, CollectionsIcon, DeleteIcon, EditOutlinedIcon, ExtensionIcon, FoodBankOutlinedIcon, Groups2OutlinedIcon, GroupsOutlinedIcon, LocationOnOutlinedIcon, VisibilityOutlinedIcon } from "../Common Components/CustomButton/CustomIcon";
+import {
+  CleaningServicesIcon,
+  CollectionsIcon,
+  DeleteIcon,
+  EditOutlinedIcon,
+  ExtensionIcon,
+  FoodBankOutlinedIcon,
+  Groups2OutlinedIcon,
+  GroupsOutlinedIcon,
+  LocationOnOutlinedIcon,
+  VisibilityOutlinedIcon,
+} from "../Common Components/CustomButton/CustomIcon";
 import RoomFoodBeverages from "./RoomFoodBeverages";
 
-const RoomsCard = ({ room, setDeleteUpdateStatus,setRefreshPage }) => {
+const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
   const navigate = useNavigate();
   const [hover, setHover] = useState(false);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [isBookNowOpen, setIsBookNowOpen] = useState(false);
   const [isAmenitiesOpen, setIsAmenitiesOpen] = useState(false);
-   const [isFoodBeverageOpen, setIsFoodBeverageOpen] = useState(false);
+  const [isFoodBeverageOpen, setIsFoodBeverageOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -50,7 +61,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus,setRefreshPage }) => {
     setIsAmenitiesOpen(true);
   };
 
-    const handleFoodBeverage = () => {
+  const handleFoodBeverage = () => {
     setIsFoodBeverageOpen(true);
   };
 
@@ -95,6 +106,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus,setRefreshPage }) => {
           overflow: "hidden",
           backgroundColor: "#fff",
           transformOrigin: "center",
+          width: 320,
           transition: "all 0.4s ease-in-out",
           ":hover": {
             boxShadow:
@@ -167,7 +179,9 @@ const RoomsCard = ({ room, setDeleteUpdateStatus,setRefreshPage }) => {
               gap: 1,
             }}
           >
-            <Tooltip title="Capacity"><GroupsOutlinedIcon /></Tooltip>
+            <Tooltip title="Capacity">
+              <GroupsOutlinedIcon />
+            </Tooltip>
             {room.capacity} People
           </Typography>
 
@@ -180,8 +194,10 @@ const RoomsCard = ({ room, setDeleteUpdateStatus,setRefreshPage }) => {
               gap: 1,
             }}
           >
-            <Tooltip title="Location"><LocationOnOutlinedIcon /></Tooltip>
-            {room.Location.locationName || "Unknown Location"}
+            <Tooltip title="Location">
+              <LocationOnOutlinedIcon />
+            </Tooltip>
+            {room.Location?.locationName || "Unknown Location"}
           </Typography>
           <Typography
             variant="body2"
@@ -192,9 +208,12 @@ const RoomsCard = ({ room, setDeleteUpdateStatus,setRefreshPage }) => {
               textTransform: "capitalize",
             }}
           >
-           <Tooltip title="Sanitation Status"><CleaningServicesIcon /></Tooltip> {room.sanitationStatus ? "Yes" : "No"}
+            <Tooltip title="Sanitation Status">
+              <CleaningServicesIcon />
+            </Tooltip>{" "}
+            {room.sanitationStatus ? "Yes" : "No"}
           </Typography>
-          
+
           <Typography
             variant="body2"
             sx={{
@@ -204,8 +223,11 @@ const RoomsCard = ({ room, setDeleteUpdateStatus,setRefreshPage }) => {
               textTransform: "capitalize",
             }}
           >
-            <Tooltip title="Tolerance Period"><ExtensionIcon /></Tooltip> {room.tolerancePeriod} minutes
-                      </Typography>
+            <Tooltip title="Tolerance Period">
+              <ExtensionIcon />
+            </Tooltip>{" "}
+            {room.tolerancePeriod} minutes
+          </Typography>
         </Box>
         <CardActions sx={{ p: 0 }}>
           {user?.isAdmin ? (
@@ -223,7 +245,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus,setRefreshPage }) => {
                 sx={{
                   borderRadius: "0 0 0px 10px",
                   flex: 1,
-                  minWidth: "47px",
+                  minWidth: "45px",
                 }}
                 size="small"
               >
@@ -238,7 +260,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus,setRefreshPage }) => {
                   background: "white",
                   color: "black",
                   flex: 1,
-                  minWidth: "47px",
+                  minWidth: "45px",
                 }}
                 size="small"
               >
@@ -253,7 +275,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus,setRefreshPage }) => {
                   background: "white",
                   color: "black",
                   flex: 1,
-                  minWidth: "47px",
+                  minWidth: "45px",
                 }}
                 size="small"
               >
@@ -268,7 +290,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus,setRefreshPage }) => {
                   background: "white",
                   color: "black",
                   flex: 1,
-                  minWidth: "47px",
+                  minWidth: "45px",
                 }}
                 size="small"
               >
@@ -282,7 +304,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus,setRefreshPage }) => {
                   background: "white",
                   color: "black",
                   flex: 1,
-                  minWidth: "47px",
+                  minWidth: "45px",
                 }}
                 size="small"
               >
@@ -297,6 +319,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus,setRefreshPage }) => {
                   borderRadius: "0 0 10px 0px",
                   background: "red",
                   flex: 1,
+                  minWidth: "45px",
                 }}
                 size="small"
               >
@@ -351,7 +374,13 @@ const RoomsCard = ({ room, setDeleteUpdateStatus,setRefreshPage }) => {
         isOpen={isEditOpen}
         setIsOpen={setIsEditOpen}
         title={"Room Edit"}
-        modalBody={<EditRoomForm room={room} setRefreshPage={setRefreshPage} setIsEditOpen={setIsEditOpen} />}
+        modalBody={
+          <EditRoomForm
+            room={room}
+            setRefreshPage={setRefreshPage}
+            setIsEditOpen={setIsEditOpen}
+          />
+        }
       />
       <PopupModals
         isOpen={isBookNowOpen}
