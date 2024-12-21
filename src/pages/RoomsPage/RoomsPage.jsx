@@ -98,7 +98,6 @@ const RoomsPage = () => {
   const handleAvailabilityChange = (event) => {
     setIsAvailable(event.target.value);
   };
-
   return (
     <>
       <PaperWrapper>

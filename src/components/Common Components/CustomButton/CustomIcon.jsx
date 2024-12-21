@@ -11,6 +11,8 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import FoodBankOutlinedIcon from '@mui/icons-material/FoodBankOutlined';
+import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
+import EventBusyOutlinedIcon from '@mui/icons-material/EventBusyOutlined';
 
 export {LocationOnOutlinedIcon,
     GroupsOutlinedIcon,
@@ -25,6 +27,7 @@ export {LocationOnOutlinedIcon,
     PhotoCameraIcon,
     Visibility,
     VisibilityOff,
-    FoodBankOutlinedIcon
+    FoodBankOutlinedIcon,HistoryOutlinedIcon,
+    EventBusyOutlinedIcon
 
 }

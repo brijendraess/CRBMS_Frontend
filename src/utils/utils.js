@@ -45,7 +45,6 @@ const fetchUsers = async (toast, setEmailsList) => {
 const fetchActiveCommittee = async (toast, setCommitteeList) => {
   try {
     const response = await axios.get("/api/v1/committee/active-committee");
-    console.log(response.data.data.committees)
     const emails = response.data.data.committees.map((committee) => ({
       name: committee.name,
       id: committee.id,
