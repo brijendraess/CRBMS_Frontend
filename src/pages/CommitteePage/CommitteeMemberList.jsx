@@ -3,11 +3,18 @@ import axios from "axios";
 import { DataGrid } from "@mui/x-data-grid";
 import { toast } from "react-hot-toast";
 import { useLocation, useParams } from "react-router-dom";
-import { Box, Button, Paper, styled, Switch, Tooltip, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Paper,
+  styled,
+  Switch,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
 import PopupModals from "../../components/Common Components/Modals/Popup/PopupModals";
 import AddMembersToCommittee from "./AddMembersToCommittee";
-import RemoveCircleOutlinedIcon from "@mui/icons-material/RemoveCircleOutlined";
 import unknownUser from "../../assets/Images/unknownUser.png";
 
 const DataGridWrapper = styled(Paper)(({ theme }) => ({
@@ -33,10 +40,16 @@ const CommitteeMemberList = () => {
           `/api/v1/committee/committees/${committeeId}/members`
         );
         const members = response.data?.data?.members || [];
+
         const formattedData = members.map((member) => ({
-          ...member.User,
-          committeeId: member.committeeId, // Preserve committeeId for removal logic
+          id: member.id,
+          avatarPath: member.User?.avatarPath,
+          fullname: member.User?.fullname,
+          email: member.User?.email,
+          phoneNumber: member.User?.phoneNumber,
+          committeeId: member.committeeId,
         }));
+
         setData(formattedData);
       } catch (error) {
         toast.error("Failed to fetch members. Please try again.");
@@ -144,7 +157,7 @@ const CommitteeMemberList = () => {
           rowsPerPageOptions={[5]}
           rowHeight={40}
           disableSelectionOnClick
-          getRowId={(row) => row.id} // Use `id` from User as the unique row identifier
+          getRowId={(row) => row.id}
         />
       </DataGridWrapper>
       <PopupModals

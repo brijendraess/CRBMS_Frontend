@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 import "./BottomNavbar.css";
 
 const BottomNavBar = () => {
-  const userIsAdmin = useLocation(); 
+  const userIsAdmin = useLocation();
   const { user } = useSelector((state) => state.user);
   const { state } = userIsAdmin; // Access state data
   const isAdmin = state ? state : user?.isAdmin;
@@ -37,7 +37,7 @@ const BottomNavBar = () => {
           key={item.id}
           to={item.path}
           style={{
-            width: "45px",
+            width: "40px",
             padding: 0,
             display: "flex",
             alignItems: "center",
@@ -52,6 +52,7 @@ const BottomNavBar = () => {
                 color: currentPath === item.path ? "#1976d2" : "gray",
                 "&.Mui-selected": {
                   color: "#1976d2",
+                  // background: "#1976d2",
                 },
               }}
             />

@@ -63,7 +63,7 @@ const Item = styled(Paper)(({ theme }) => ({
   height: "300px",
   width: "100%",
   borderRadius: "20px",
-  padding: "15px",
+  padding: "5px",
 }));
 
 const LineChartBox = () => {
