@@ -181,7 +181,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus,setRefreshPage }) => {
             }}
           >
             <Tooltip title="Location"><LocationOnOutlinedIcon /></Tooltip>
-            {room.Location.locationName || "Unknown Location"}
+            {room?.Location?.locationName || "Unknown Location"}
           </Typography>
           <Typography
             variant="body2"

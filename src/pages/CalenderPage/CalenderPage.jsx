@@ -15,6 +15,11 @@ import {
 import "./CalendarPage.css";
 import { PaperWrapper } from "../../Style";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import PopupModals from "../../components/Common Components/Modals/Popup/PopupModals";
+import MeetingFormPostPone from "../MeetingPage/MeetingFormPostPone";
+import CancelMeetingModal from "../../components/Common Components/Modals/Delete/CancelMeetingModal";
+import MeetingFormEdit from "../MeetingPage/MeetingFormEdit";
+import { color } from "framer-motion";
 
 const CalenderPage = () => {
   const localizer = dayjsLocalizer(dayjs);
@@ -24,7 +29,35 @@ const CalenderPage = () => {
     localStorage.getItem("lastView") || "week"
   );
   const [events, setEvents] = useState([]);
+  const [isPostponeBookingOpen, setIsPostponeBookingOpen] = useState(false);
+  const [isCancelBookingOpen, setIsCancelBookingOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [updatedBookingId, setUpdatedBookingId] = useState("");
+   const [isEditBookingOpen, setIsEditBookingOpen] = useState(false);
+   const [updatedRoomId, setUpdatedRoomId] = useState("");
+  const [refreshPage, setRefreshPage] = useState(0);
+  const [room, setRoom] = useState([]);
+
+    useEffect(() => {
+    const fetchMeetings = async () => {
+      try {
+        if (updatedBookingId) {
+          const response = await axios.get(
+            `/api/v1/meeting/get-single-meeting/${updatedBookingId}`,
+            { withCredentials: true }
+          );
+          const meetings = response.data.data.meetings;
+          setRoom(meetings);
+        }
+        // Format the data for DataGrid
+      } catch (error) {
+        toast.error("Failed to fetch meetings");
+        console.error("Error fetching meetings:", error);
+      }
+    };
+
+    fetchMeetings();
+  }, [updatedBookingId,refreshPage]);
 
   useEffect(() => {
     const fetchMeetings = async () => {
@@ -34,12 +67,11 @@ const CalenderPage = () => {
         //   ? "/api/v1/meeting/get-all-meeting"
         //   : "/api/v1/meeting/get-all-my-meeting";
 
-        const endpoint ="/api/v1/meeting/get-all-my-meeting";
+        const endpoint = "/api/v1/meeting/get-all-my-meeting";
 
         const response = await axios.get(endpoint, {
           withCredentials: true,
         });
-
         const meetings =
           response.data.data.myMeetings || response.data.data.meetings;
 
@@ -56,9 +88,12 @@ const CalenderPage = () => {
             start: startDateTime,
             end: endDateTime,
             description: meeting.notes || "",
-            location: meeting.Room.Location.locationName || "",
+            location: meeting?.Room?.Location?.locationName || "",
             organizer: meeting.User.fullname || "N/A",
-            organizerId: meeting.organizerId
+            organizerId: meeting.organizerId,
+            roomId: meeting.roomId,
+            bookingId: meeting.id,
+            isCanceled: meeting.status === "cancelled" ? true : false,
           };
         });
 
@@ -85,6 +120,60 @@ const CalenderPage = () => {
   const handleCloseModal = () => {
     setSelectedEvent(null);
   };
+
+  const eventPropGetter = (event) => {
+    if (event.isCanceled) {
+      return {
+        style: {
+          backgroundColor: "red",
+          textDecoration: "line-through",
+          color: "white",
+        },
+      };
+    }
+    return {};
+  };
+
+  const handleEdit = (roomId, meetingId) => {
+    setIsEditBookingOpen(true);
+    handleCloseModal()
+    setUpdatedRoomId(roomId);
+    setUpdatedBookingId(meetingId);
+  };
+
+  const handlePostpone = (roomId, meetingId) => {
+    setIsPostponeBookingOpen(true);
+    handleCloseModal()
+    setUpdatedRoomId(roomId);
+    setUpdatedBookingId(meetingId);
+  };
+
+  const handleCancelMeeting = (roomId, meetingId) => {
+    setIsCancelBookingOpen(true);
+    handleCloseModal()
+    setUpdatedRoomId(roomId);
+    setUpdatedBookingId(meetingId);
+  };
+
+  const handleCloseMeeting = () => {
+    setIsCancelBookingOpen(false);
+    setUpdatedRoomId(null);
+    setUpdatedBookingId(null);
+  };
+
+  const handleCancelMeetingConfirm = async () => {
+    try {
+      await axios.put(`/api/v1/meeting/cancel-meeting/${updatedBookingId}`);
+
+      handleCloseMeeting(false);
+      setRefreshPage(Math.random());
+      toast.success("Meeting cancelled successfully!");
+    } catch (error) {
+      toast.error("Failed to cancelled meeting!");
+      console.error("Error cancelled meeting:", error);
+    }
+  };
+console.log(room,updatedBookingId)
   return (
     <PaperWrapper>
       <Calendar
@@ -100,6 +189,7 @@ const CalenderPage = () => {
         }}
         view={lastView}
         onView={handleViewChange}
+        eventPropGetter={eventPropGetter}
         onSelectEvent={handleEventClick} // Handle event click
         tooltipAccessor={(event) => event.description} // Display description in tooltip
       />
@@ -139,9 +229,16 @@ const CalenderPage = () => {
                 <strong>Description:</strong> {selectedEvent.description}
               </Typography>
             )}
-            <Box sx={{ display: "flex", gap: "5px" }}>
+            {selectedEvent.isCanceled && (
+             <Typography component="strong" sx={{ color: "#f00000", fontWeight: "bold" }}>
+             Meeting Cancelled
+           </Typography>
+            )}
+            {!selectedEvent.isCanceled&&<Box sx={{ display: "flex", gap: "5px" }}>
               <Button
-                onClick={handleCloseModal}
+                onClick={() =>
+                  handleCancelMeeting(selectedEvent.roomId, selectedEvent.bookingId)
+                }
                 variant="contained"
                 color="primary"
                 sx={{ mt: 2 }}
@@ -149,25 +246,54 @@ const CalenderPage = () => {
                 Cancel
               </Button>
               <Button
-                onClick={handleCloseModal}
+               onClick={() => handlePostpone(selectedEvent.roomId, selectedEvent.bookingId)}
                 variant="contained"
                 color="primary"
                 sx={{ mt: 2 }}
               >
                 Postpone
               </Button>
-              {user?.isAdmin &&<Button
-                onClick={handleCloseModal}
-                variant="contained"
-                color="primary"
-                sx={{ mt: 2 }}
-              >
-                Edit
-              </Button>}
-            </Box>
+              {/* {user?.isAdmin && ( */}
+                <Button
+                onClick={() => handleEdit(selectedEvent.roomId, selectedEvent.bookingId)}
+                 
+                  variant="contained"
+                  color="primary"
+                  sx={{ mt: 2 }}
+                >
+                  Edit
+                </Button>
+              {/* )} */}
+            </Box>}
           </DialogContent>
         </Dialog>
       )}
+      <PopupModals
+        isOpen={isEditBookingOpen}
+        setIsOpen={setIsEditBookingOpen}
+        title={"Edit Meeting"}
+        modalBody={
+          <MeetingFormEdit updatedBookingId={updatedBookingId} room={room} />
+        }
+      />
+      <PopupModals
+        isOpen={isPostponeBookingOpen}
+        setIsOpen={setIsPostponeBookingOpen}
+        title={"Postpone Meeting"}
+        modalBody={
+          <MeetingFormPostPone
+            updatedBookingId={updatedBookingId}
+            room={room}
+          />
+        }
+      />
+      <CancelMeetingModal
+        open={isCancelBookingOpen}
+        onClose={handleCloseMeeting}
+        onDeleteConfirm={handleCancelMeetingConfirm}
+        button={"Cancel meeting"}
+        title="meeting"
+      />
     </PaperWrapper>
   );
 };
