@@ -194,15 +194,10 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
               gap: 1,
             }}
           >
-<<<<<<< HEAD
-            <Tooltip title="Location"><LocationOnOutlinedIcon /></Tooltip>
-            {room?.Location?.locationName || "Unknown Location"}
-=======
             <Tooltip title="Location">
               <LocationOnOutlinedIcon />
             </Tooltip>
             {room.Location?.locationName || "Unknown Location"}
->>>>>>> b1e5e91686177ec76d539e8ed095eaeb8d462242
           </Typography>
           <Typography
             variant="body2"
