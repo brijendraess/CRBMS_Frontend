@@ -28,6 +28,7 @@ import LocationPage from "./pages/LocationPage/LocationPage";
 import MeetingLogs from "./pages/MeetingLogs/MeetingLogs";
 import ReportPage from "./pages/ReportPage/ReportPage";
 import FoodBeveragePage from "./pages/FoodBeverages/FoodBeveragesPage";
+import Notification from "./pages/Notification/NotificationPage";
 
 const AppRouter = () => {
   return (
@@ -105,6 +106,7 @@ const AppRouter = () => {
           element={<CommitteeMemberList />}
         />
         <Route path="/view/:id" element={<ViewMember />} />
+        <Route path="/notification-all" element={<Notification />} />
       </Route>
     </Routes>
   );

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -11,7 +12,16 @@ import {
   Divider,
 } from "@mui/material";
 
-const NotificationsMenu = ({ notifications, onViewAll }) => {
+const NotificationsMenu = ({ notifications,unReadCount }) => {
+
+  const navigate = useNavigate();
+
+
+  const onViewAll=()=>{
+    navigate("/notification-all"); 
+  }
+
+
   return (
     <Box
       sx={{
@@ -31,13 +41,13 @@ const NotificationsMenu = ({ notifications, onViewAll }) => {
         }}
       >
         <Typography variant="p" sx={{ fontWeight: "bold" }}>
-          Meetings(4)
+          Meetings({unReadCount})
         </Typography>
       </Box>
 
       {/* Notifications List */}
       <List sx={{ maxHeight: 300, overflowY: "auto" }}>
-        {notifications.map((notification, index) => (
+        {notifications?.map((notification, index) => (
           <React.Fragment key={index}>
             <NotificationItem {...notification} />
             {index < notifications.length - 1 && (

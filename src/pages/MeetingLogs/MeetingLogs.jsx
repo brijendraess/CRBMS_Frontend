@@ -76,9 +76,9 @@ const MeetingLogs = () => {
   };
   const columns = [
     { field: "subject", headerName: "Subject", width: 90 },
-    { field: "agenda", headerName: "Agenda", width: 100 },
-    { field: "notes", headerName: "Notes", width: 200 },
-    { field: "startTime", headerName: "Start Time", width: 150 },
+    { field: "agenda", headerName: "Agenda", width: 90 },
+    { field: "notes", headerName: "Notes", width: 100 },
+    { field: "startTime", headerName: "Start Time", width: 140 },
     { field: "endTime", headerName: "End Time", width: 150 },
     { field: "meetingDate", headerName: "Meeting Date", width: 150 },
     { field: "roomLocation", headerName: "Room Location", width: 140 },
