@@ -19,6 +19,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { PopContent } from "../../Style";
 import "./MembersPage.css";
+import { useDispatch } from "react-redux";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 
 const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
   const [avatarPreview, setAvatarPreview] = useState(null); // Avatar preview
@@ -28,14 +30,17 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
   // Toggle password visibility
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => event.preventDefault();
-
+  const dispatch = useDispatch();
   // Fetch committees on mount
   useEffect(() => {
     const fetchCommittees = async () => {
       try {
+        dispatch(showLoading());
         const response = await axios.get("/api/v1/committee/committees");
         setCommittees(response.data.data.committees || []); // Store committees
+        dispatch(hideLoading());
       } catch (error) {
+        dispatch(hideLoading());
         toast.error("Failed to fetch committees");
         console.error("Error fetching committees:", error);
       }
@@ -78,6 +83,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
     }),
     onSubmit: async (values, { resetForm }) => {
       try {
+        dispatch(showLoading());
         console.log("Submitted data : ", values);
         const formData = new FormData();
         formData.append("fullname", values.fullname);
@@ -103,7 +109,9 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
             resetForm();
             setAvatarPreview(null); // Clear avatar preview
           });
+        dispatch(hideLoading());
       } catch (error) {
+        dispatch(hideLoading());
         toast.error(error.response?.data?.message || "An error occurred");
         console.error("Error during form submission:", error);
       }

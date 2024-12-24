@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { PaperWrapper, RightContent } from "../../Style";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import PageHeader from "../../components/Common Components/PageHeader/PageHeader";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { Box, Tooltip } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import {
@@ -20,13 +22,14 @@ const MeetingLogs = () => {
   const { user } = useSelector((state) => state.user);
 
   const [events, setEvents] = useState([]);
+  const dispatch = useDispatch();
   const [isEditBookingOpen, setIsEditBookingOpen] = useState(false);
   const [isPostponeBookingOpen, setIsPostponeBookingOpen] = useState(false);
   const [isCancelBookingOpen, setIsCancelBookingOpen] = useState(false);
   const [updatedRoomId, setUpdatedRoomId] = useState("");
   const [room, setRoom] = useState([]);
   const [updatedBookingId, setUpdatedBookingId] = useState("");
-   const [refreshPage, setRefreshPage] = useState(0);
+  const [refreshPage, setRefreshPage] = useState(0);
   const [roomsData, setRoomsData] = useState([]); // State for rooms data
 
   const handleEdit = (roomId, meetingId) => {
@@ -90,7 +93,12 @@ const MeetingLogs = () => {
       width: 150,
 
       renderCell: (params) => (
-        <Box display="flex" alignItems="center" sx={{ display: params.row.status!=='cancelled' ? 'block' : 'none' }} gap={1}>
+        <Box
+          display="flex"
+          alignItems="center"
+          sx={{ display: params.row.status !== "cancelled" ? "block" : "none" }}
+          gap={1}
+        >
           <Tooltip title="Edit meeting">
             <EditOutlinedIcon
               className="cursor"
@@ -139,7 +147,7 @@ const MeetingLogs = () => {
     };
 
     fetchMeetings();
-  }, [updatedBookingId,refreshPage]);
+  }, [updatedBookingId, refreshPage]);
 
   useEffect(() => {
     if (updatedRoomId) fetchRoomsData();
@@ -170,7 +178,9 @@ const MeetingLogs = () => {
         }));
 
         setEvents(formattedMeetings);
+        dispatch(hideLoading());
       } catch (error) {
+        dispatch(hideLoading());
         toast.error("Failed to fetch meetings");
         console.error("Error fetching meetings:", error);
       }
@@ -179,24 +189,23 @@ const MeetingLogs = () => {
     fetchMeetings();
   }, [user?.isAdmin]);
 
-
   const useStyles = makeStyles({
     rowCancelled: {
       backgroundColor: "#fdd", // Light red for cancelled meetings
       color: "#900", // Dark red text
     },
     rowActive: {
-      // backgroundColor: "#dfd", 
-      // color: "#090", 
+      // backgroundColor: "#dfd",
+      // color: "#090",
     },
   });
 
   const classes = useStyles();
 
   return (
-    <RightContent>
-      <PaperWrapper>
-        <h2>Meeting Logs</h2>
+    <PaperWrapper>
+      <PageHeader heading={"Meeting Logs"} />
+      <div style={{ display: "flex", flexDirection: "column" }}>
         <DataGrid
           rows={events}
           columns={columns}
@@ -209,13 +218,18 @@ const MeetingLogs = () => {
               : classes.rowActive
           }
         />
-      </PaperWrapper>
+      </div>
+
       <PopupModals
         isOpen={isEditBookingOpen}
         setIsOpen={setIsEditBookingOpen}
         title={"Edit Meeting"}
         modalBody={
-          <MeetingFormEdit updatedBookingId={updatedBookingId} room={room} setRefreshPage={setRefreshPage} />
+          <MeetingFormEdit
+            updatedBookingId={updatedBookingId}
+            room={room}
+            setRefreshPage={setRefreshPage}
+          />
         }
       />
       <PopupModals
@@ -237,7 +251,7 @@ const MeetingLogs = () => {
         button={"Cancel meeting"}
         title="meeting"
       />
-    </RightContent>
+    </PaperWrapper>
   );
 };
 

@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import PopupModals from "../Common Components/Modals/Popup/PopupModals";
 import RoomGallery from "./RoomGallery";
 import RoomAmenities from "./RoomAmenities";
@@ -73,23 +73,23 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
     setIsDeleteOpen(true);
     setDeleteId(id);
   };
-
+  const dispatch = useDispatch();
   const handleDeleteRoom = async () => {
     try {
-      showLoading();
+      dispatch(showLoading());
       const response = await axios.delete(`/api/v1/rooms/${deleteId}`);
       console.log(response);
       if (response.status === 200) {
         toast.success("Room deleted successfully");
       }
-      hideLoading();
+      dispatch(hideLoading());
     } catch (error) {
       console.error("Error deleting user:", error);
       toast.error("Failed to delete user");
     } finally {
       setDeleteUpdateStatus(Math.random());
-      hideLoading();
       handleDeleteClose();
+      dispatch(hideLoading());
     }
   };
 
@@ -106,7 +106,13 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
           overflow: "hidden",
           backgroundColor: "#fff",
           transformOrigin: "center",
-          width: 320,
+          width: {
+            xs: "100%",
+            sm: 320,
+            md: 320,
+            xl: 320,
+            lg: 320,
+          },
           transition: "all 0.4s ease-in-out",
           ":hover": {
             boxShadow:

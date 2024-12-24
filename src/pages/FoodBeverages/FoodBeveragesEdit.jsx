@@ -2,6 +2,7 @@ import { Box, Button, TextField } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 
 const FoodBeverageEdit = ({ id, foodBeverageName, onSuccess,setRefreshPage,setIsEditOpen }) => {
   const [formData, setFormData] = useState({
@@ -22,6 +23,7 @@ const FoodBeverageEdit = ({ id, foodBeverageName, onSuccess,setRefreshPage,setIs
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      showLoading();
       const response = await axios.put(`/api/v1/food-beverages/food-beverage/${id}`, {
         name: formData.name,
       });
@@ -31,7 +33,9 @@ const FoodBeverageEdit = ({ id, foodBeverageName, onSuccess,setRefreshPage,setIs
       if (onSuccess) {
         onSuccess(response.data.data.foodBeverage);
       }
+      hideLoading();
     } catch (error) {
+      hideLoading();
       const errorMessage =
         error.response?.data?.message || "Failed to update foodBeverage!";
       toast.error(errorMessage);

@@ -20,6 +20,7 @@ import FoodBeverageEdit from "./FoodBeveragesEdit";
 import CustomButton from "../../components/Common Components/CustomButton/CustomButton";
 import DeleteModal from "../../components/Common Components/Modals/Delete/DeleteModal";
 import FoodBeverageCard from "../../components/Responsive Components/FoodBeverageCard/FoodBeverageCard";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 
 const FoodBeveragePage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -34,6 +35,7 @@ const FoodBeveragePage = () => {
   useEffect(() => {
     const fetchFoodBeverages = async () => {
       try {
+        showLoading();
         const response = await axios.get(
           "/api/v1/food-beverages/food-beverage"
         );
@@ -44,7 +46,9 @@ const FoodBeveragePage = () => {
           })
         );
         setFoodBeverage(foodBeverageWithSerial);
+        hideLoading();
       } catch (error) {
+        hideLoading();
         toast.error("Something Went Wrong");
         console.error("Error fetching foodBeverages:", error);
       }
@@ -65,6 +69,7 @@ const FoodBeveragePage = () => {
 
   const handleDelete = async () => {
     try {
+      showLoading();
       await axios.delete(
         `/api/v1/food-beverages/food-beverage/delete/${deleteId}`
       );
@@ -72,7 +77,9 @@ const FoodBeveragePage = () => {
       handleClose(false);
       setRefreshPage(Math.random());
       toast.success("Food beverage deleted successfully!");
+      hideLoading();
     } catch (error) {
+      hideLoading();
       toast.error("Failed to delete foodBeverage!");
       console.error("Error deleting foodBeverage:", error);
     }
@@ -94,6 +101,7 @@ const FoodBeveragePage = () => {
 
   const handleStatusChange = async (id) => {
     try {
+      showLoading();
       const response = await axios.patch(
         `/api/v1/food-beverages/food-beverage/${id}/status`
       );
@@ -108,7 +116,9 @@ const FoodBeveragePage = () => {
       toast.success(
         `Food beverage status changed to ${updatedFoodBeverage.status ? "Active" : "Inactive"}`
       );
+      hideLoading();
     } catch (error) {
+      hideLoading();
       console.error("Error changing status:", error);
       toast.error("Failed to change foodBeverage status!");
     }

@@ -4,6 +4,7 @@ import { TextField, Button, Typography, Box } from "@mui/material";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { PopContent } from "../../Style";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 
 const AddCommitteeForm = ({
   onAddCommittee,
@@ -27,6 +28,7 @@ const AddCommitteeForm = ({
       if (committeeId) {
         setIsLoading(true);
         try {
+          showLoading();
           const response = await axios.get(
             `/api/v1/committee/committees/${committeeId}`
           );
@@ -38,10 +40,13 @@ const AddCommitteeForm = ({
             description: committee.description,
             createdByUserId: committee.createdByUserId || user.id,
           });
+          hideLoading();
         } catch (err) {
+          hideLoading();
           toast.error("Failed to fetch committee details.");
           console.error("Error fetching committee:", err);
         } finally {
+          hideLoading();
           setIsLoading(false);
         }
       }
@@ -60,6 +65,7 @@ const AddCommitteeForm = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      showLoading();
       if (committeeId) {
         // Update existing committee
         const response = await axios.put(
@@ -81,7 +87,9 @@ const AddCommitteeForm = ({
       // Reset form after submission
       setFormData({ name: "", description: "", createdByUserId: user.id });
       setRefreshPage(Math.random());
+      hideLoading();
     } catch (err) {
+      hideLoading();
       toast.error(err.response?.data?.message || "Failed to save committee.");
       console.error("Error saving committee:", err);
     }

@@ -32,6 +32,8 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { PaperWrapper, RightContent } from "../../Style";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import UserCard from "../../components/Cards/UserCard";
+import PageHeader from "../../components/Common Components/PageHeader/PageHeader";
+import { useDispatch } from "react-redux";
 
 const MembersPage = () => {
   const [users, setUsers] = useState([]);
@@ -47,20 +49,20 @@ const MembersPage = () => {
   const filteredUsers = users.filter((user) =>
     showDeleted ? true : !user.deletedAt
   );
-
+  const dispatch = useDispatch();
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
   const fetchUsers = async () => {
     try {
-      showLoading();
+      dispatch(showLoading());
       const response = await axios.get(`/api/v1/user/users?page=1&limit=10`);
 
       if (response.data.success) {
         setUsers(response.data.data.users.rows);
       }
-      hideLoading();
+      dispatch(hideLoading());
     } catch (error) {
       console.error("Error fetching users:", error);
-      hideLoading();
+      dispatch(hideLoading());
     }
   };
 
@@ -90,7 +92,7 @@ const MembersPage = () => {
 
   const handleDelete = async () => {
     try {
-      showLoading();
+      dispatch(showLoading());
       const response = await axios.delete(
         `/api/v1/user/soft-delete/${deleteId}`
       );
@@ -102,22 +104,22 @@ const MembersPage = () => {
         );
       }
       handleClose(false);
-      showLoading();
+      dispatch(hideLoading());
     } catch (error) {
       console.error("Error deleting user:", error);
       toast.error("Failed to delete user");
-      hideLoading();
+      dispatch(hideLoading());
     } finally {
       setLoading(false);
       handleClose(); // Close modal after delete
-      hideLoading();
+      dispatch(hideLoading());
     }
   };
 
   // Block/unblock user
   const handleBlockStatusChange = async (id, isBlocked) => {
     try {
-      showLoading();
+      dispatch(showLoading());
       const response = await axios.post(
         `/api/v1/user/block-status`,
         { userId: id, isBlocked: !isBlocked },
@@ -133,14 +135,14 @@ const MembersPage = () => {
           )
         );
       }
-      hideLoading();
+      dispatch(hideLoading());
     } catch (error) {
       console.error("Failed to update block status:", error);
       toast.error("An error occurred while updating the block status");
-      hideLoading();
+      dispatch(hideLoading());
     } finally {
       setLoading(false);
-      hideLoading();
+      dispatch(hideLoading());
     }
   };
 
@@ -215,51 +217,22 @@ const MembersPage = () => {
   return (
     <>
       <PaperWrapper>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginBottom: "10px",
-          }}
+        <PageHeader
+          heading={"Users"}
+          icon={PersonAddAlt1Rounded}
+          func={setIsOpen}
         >
-          <Typography
-            variant="h1"
-            component="h1"
-            sx={{
-              marginRight: "20px",
-              fontSize: "22px",
-              fontWeight: 500,
-              lineHeight: 1.5,
-              color: "#2E2E2E",
-            }}
-          >
-            Users
-          </Typography>
-          <div className="buttonWrapper">
-            <CustomButton
-              onClick={() => setShowDeleted(!showDeleted)}
-              title={
-                showDeleted
-                  ? "Hide All Deleted Users"
-                  : "Show All Deleted Users"
-              }
-              Icon={showDeleted ? VisibilityIcon : VisibilityOffIcon}
-              fontSize={isSmallScreen ? "small" : "medium"}
-              background={"#1976d291"}
-              placement={"left"}
-            />
-            <CustomButton
-              onClick={() => setIsOpen(true)}
-              title={"Add New User"}
-              Icon={PersonAddAlt1Rounded}
-              fontSize={isSmallScreen ? "small" : "medium"}
-              background={"rgba(3, 176, 48, 0.68)"}
-              placement={"bottom"}
-            />
-          </div>
-        </Box>
-
+          <CustomButton
+            onClick={() => setShowDeleted(!showDeleted)}
+            title={
+              showDeleted ? "Hide All Deleted Users" : "Show All Deleted Users"
+            }
+            Icon={showDeleted ? VisibilityIcon : VisibilityOffIcon}
+            fontSize={isSmallScreen ? "small" : "medium"}
+            background={"#1976d291"}
+            placement={"left"}
+          />
+        </PageHeader>
         {isSmallScreen ? (
           <Grid2
             container

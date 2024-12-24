@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Box, Paper, styled } from "@mui/material";
+import { Box, IconButton, Menu, MenuItem, Paper, styled } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import "./InfoCard.css";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -14,8 +15,18 @@ const Item = styled(Paper)(({ theme }) => ({
   padding: "15px",
 }));
 
-const InfoCard = ({ color, tittle, count }) => {
+const InfoCard = ({ color, tittle, count, show, options = [] }) => {
   const [elevation, setElevation] = useState(2);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <Item
@@ -36,6 +47,45 @@ const InfoCard = ({ color, tittle, count }) => {
             <AccountCircleIcon />
           </span>
         </Box>
+        <div style={{ display: show ? "block" : "none" }}>
+          <IconButton
+            aria-label="more"
+            id="long-button"
+            aria-controls={open ? "long-menu" : undefined}
+            aria-expanded={open ? "true" : undefined}
+            aria-haspopup="true"
+            onClick={handleClick}
+          >
+            <MoreVertIcon />
+          </IconButton>
+          <Menu
+            id="long-menu"
+            MenuListProps={{
+              "aria-labelledby": "long-button",
+            }}
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            slotProps={{
+              paper: {
+                style: {
+                  maxHeight: "175px",
+                  width: "125px",
+                },
+              },
+            }}
+          >
+            {options.map((option) => (
+              <MenuItem
+                key={option}
+                selected={option === "Pyxis"}
+                onClick={handleClose}
+              >
+                {option}
+              </MenuItem>
+            ))}
+          </Menu>
+        </div>
       </Box>
     </Item>
   );

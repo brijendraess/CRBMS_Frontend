@@ -15,15 +15,18 @@ import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
 import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
 import CustomButton from "../Common Components/CustomButton/CustomButton";
+import { useSelector } from "react-redux";
 
-const UserCard = ({
-  user,
+const CommitteeMemberCard = ({
+  member,
   handleView,
   handleEdit,
   handleDelete,
   handleBlockStatusChange,
   children,
 }) => {
+  const { user } = useSelector((state) => state.user);
+
   return (
     <Card sx={{ width: 320 }}>
       <CardActionArea>
@@ -32,11 +35,11 @@ const UserCard = ({
             component="img"
             height="150"
             image={
-              user.avatarPath
-                ? `${import.meta.env.VITE_API_URL}/${user.avatarPath}`
+              member.avatarPath
+                ? `${import.meta.env.VITE_API_URL}/${member.avatarPath}`
                 : "/default-avatar.png"
             }
-            alt="User Avatar"
+            alt="Member Avatar"
             sx={{
               objectFit: "contain",
               background: "#bfc9c957",
@@ -57,7 +60,7 @@ const UserCard = ({
             }}
           >
             <BadgeOutlinedIcon fontSize="small" sx={{ marginBottom: "6px" }} />
-            {user.fullname}
+            {member.fullname}
           </Typography>
           <Typography
             variant="body2"
@@ -70,7 +73,7 @@ const UserCard = ({
             }}
           >
             <MailOutlinedIcon fontSize="small" sx={{ marginBottom: "6px" }} />
-            {user.email}
+            {member.email}
           </Typography>
           <Typography
             gutterBottom
@@ -87,59 +90,61 @@ const UserCard = ({
               fontSize="small"
               sx={{ marginBottom: "6px" }}
             />
-            {user.phoneNumber}
+            {member.phoneNumber}
           </Typography>
         </CardContent>
       </CardActionArea>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          padding: "8px",
-          gap: "10px",
-        }}
-      >
-        {handleView && (
-          <CustomButton
-            title={"View User"}
-            placement={"top"}
-            onClick={() => handleView(user.id)}
-            Icon={RemoveRedEyeIcon}
-            fontSize={"small"}
-            background={"rgba(3, 176, 48, 0.68)"}
-          />
-        )}
-        {handleEdit && (
-          <CustomButton
-            title={"Edit User"}
-            placement={"top"}
-            onClick={() => handleEdit(user.id)}
-            Icon={EditOutlinedIcon}
-            fontSize={"small"}
-            background={"rgba(8, 90, 232, 0.62)"}
-          />
-        )}
-        {handleDelete && (
-          <CustomButton
-            title={"Delete User"}
-            placement={"top"}
-            onClick={() => handleDelete(user.id)}
-            Icon={DeleteOutlineOutlinedIcon}
-            fontSize={"small"}
-            background={"rgba(231, 26, 7, 0.77)"}
-          />
-        )}
-        {handleBlockStatusChange && (
-          <Switch
-            checked={user.isBlocked}
-            onChange={() => handleBlockStatusChange(user.id, user.isBlocked)}
-          />
-        )}
-        {children}
-      </Box>
+      {user?.isAdmin ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: "8px",
+            gap: "10px",
+          }}
+        >
+          {handleView && (
+            <CustomButton
+              title={"View User"}
+              placement={"top"}
+              onClick={() => handleView(user.id)}
+              Icon={RemoveRedEyeIcon}
+              fontSize={"small"}
+              background={"rgba(3, 176, 48, 0.68)"}
+            />
+          )}
+          {handleEdit && (
+            <CustomButton
+              title={"Edit User"}
+              placement={"top"}
+              onClick={() => handleEdit(user.id)}
+              Icon={EditOutlinedIcon}
+              fontSize={"small"}
+              background={"rgba(8, 90, 232, 0.62)"}
+            />
+          )}
+          {handleDelete && (
+            <CustomButton
+              title={"Delete User"}
+              placement={"top"}
+              onClick={() => handleDelete(user.id)}
+              Icon={DeleteOutlineOutlinedIcon}
+              fontSize={"small"}
+              background={"rgba(231, 26, 7, 0.77)"}
+            />
+          )}
+          {handleBlockStatusChange && (
+            <Switch
+              checked={user.isBlocked}
+              onChange={() => handleBlockStatusChange(user.id, user.isBlocked)}
+            />
+          )}
+          {children}
+        </Box>
+      ) : null}
     </Card>
   );
 };
 
-export default UserCard;
+export default CommitteeMemberCard;

@@ -27,13 +27,16 @@ export default function RoomGallery({ room }) {
 
   const fetchRoomsGalleryData = async () => {
     try {
+      showLoading();
       const response = await axios.get(
         `api/v1/rooms/single-room-gallery/${room?.id}`
       );
       setRoomGallery(response.data.data?.roomGallery);
+      hideLoading();
     } catch (error) {
       toast.error("Something Went Wrong");
       console.error("Error fetching room data:", error);
+      hideLoading();
     }
   };
 
@@ -60,8 +63,8 @@ export default function RoomGallery({ room }) {
       toast.error("Failed to delete user");
     } finally {
       setRefreshPage(Math.random());
-      hideLoading();
       handleDeleteClose();
+      hideLoading();
     }
   };
 
@@ -89,6 +92,7 @@ export default function RoomGallery({ room }) {
     }
 
     try {
+      showLoading();
       const response = await axios.post(
         "api/v1/rooms/add-room-gallery",
         formData,
@@ -98,9 +102,11 @@ export default function RoomGallery({ room }) {
       );
       toast.success(response.data.message);
       setRefreshPage(Math.random());
-      setPreviewUrls([])
+      setPreviewUrls([]);
+      hideLoading();
     } catch (error) {
       console.error("Upload error:", error);
+      hideLoading();
     }
   };
 
@@ -116,7 +122,7 @@ export default function RoomGallery({ room }) {
           {...getRootProps()}
           sx={{
             border: "2px dashed #ccc",
-            padding: 4,
+            padding: 2,
             textAlign: "center",
             cursor: "pointer",
             marginBottom: 2,
@@ -161,10 +167,16 @@ export default function RoomGallery({ room }) {
 
       <ImageList
         sx={{
-          width: 500,
+          // width: {
+          //   xs: 300,
+          //   sm: 400,
+          //   md: 500,
+          //   lg: 500,
+          //   xl: 500,
+          // },
           height: 200,
           marginTop: "10px",
-          paddingRight: "20px",
+          paddingRight: "10px",
         }}
       >
         {roomGallery.map((item) => (

@@ -19,17 +19,18 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import PopupModals from "../Common Components/Modals/Popup/PopupModals";
 import AddCommitteeForm from "../../pages/CommitteePage/AddCommitteeForm";
 import DeleteModal from "../Common Components/Modals/Delete/DeleteModal";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 
-const CommitteeCard = ({ committee, onDelete, setRefreshPage }) => {
+const CommitteeCard = ({ committee, onDelete, setRefreshPage, heading }) => {
   const [hover, setHover] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
-
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
 
-  // Delete confirmation modal handlers
   const handleOpen = (id) => {
     setDeleteId(id);
     setOpen(true);
@@ -39,21 +40,40 @@ const CommitteeCard = ({ committee, onDelete, setRefreshPage }) => {
     setDeleteId(null);
   };
 
-  // Delete request
   const handleDelete = async () => {
-    try {
-      // Call API to delete committee
-      onDelete(committee.id);
-      toast.success("Committee deleted successfully!");
-    } catch (error) {
-      console.error("Error deleting committee:", error);
-      toast.error("Failed to delete committee. Please try again.");
-    }
+    onDelete(committee.id);
   };
 
-  // Navigate to view committee
   const handleView = () => {
-    navigate(`/view-committee/${committee.id}`, { state: { committee } });
+    navigate(`/view-committee/${committee.id}`, {
+      state: { committee, heading },
+    });
+  };
+
+  const handleChangeStatus = async (id, currentStatus) => {
+    const updatedStatus = !currentStatus;
+    const payload = { committeeId: id, status: updatedStatus };
+
+    try {
+      showLoading();
+      const response = await axios.put(
+        `/api/v1/committee/change-status`,
+        payload,
+        { withCredentials: true }
+      );
+
+      if (response.data.success) {
+        setRefreshPage((prev) => prev + 1);
+        hideLoading();
+        toast.success("Committee status changed successfully!");
+      } else {
+        toast.error("Failed to change committee status. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error changing committee status:", error);
+      toast.error("Failed to change committee status. Please try again.");
+      hideLoading();
+    }
   };
 
   return (
@@ -121,8 +141,15 @@ const CommitteeCard = ({ committee, onDelete, setRefreshPage }) => {
                 }}
               >
                 <Tooltip title="Change Status">
-                  <Switch size="small" defaultChecked />
+                  <Switch
+                    size="small"
+                    checked={!!committee.status}
+                    onChange={() =>
+                      handleChangeStatus(committee.id, !!committee.status)
+                    }
+                  />
                 </Tooltip>
+
                 <Tooltip title="Delete">
                   <DeleteOutline
                     onClick={() => handleOpen(committee.id)}
@@ -152,10 +179,11 @@ const CommitteeCard = ({ committee, onDelete, setRefreshPage }) => {
             sx={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "space-between",
+              // justifyContent: "space-between",
+              justifyContent: "flex-end",
             }}
           >
-            <AvatarGroup
+            {/* <AvatarGroup
               max={4}
               sx={{
                 "& .MuiAvatar-root": {
@@ -189,7 +217,7 @@ const CommitteeCard = ({ committee, onDelete, setRefreshPage }) => {
                   </Avatar>
                 </Tooltip>
               ))}
-            </AvatarGroup>
+            </AvatarGroup> */}
             <Tooltip title="View all members">
               <Chip
                 label={`${committee.CommitteeMembers?.length || 0}`}

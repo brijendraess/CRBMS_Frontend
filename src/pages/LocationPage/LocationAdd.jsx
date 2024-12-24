@@ -3,6 +3,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { PhotoCameraIcon } from "../../components/Common Components/CustomButton/CustomIcon";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 
 const LocationAdd = ({ setRefreshPage, setIsAddOpen }) => {
   const [formData, setFormData] = useState({
@@ -50,6 +51,7 @@ const LocationAdd = ({ setRefreshPage, setIsAddOpen }) => {
     formDataToSubmit.append("locationImage", locationImage); // Add image file
 
     try {
+      showLoading();
       const response = await axios.post(
         "api/v1/location/locations",
         formDataToSubmit,
@@ -67,7 +69,9 @@ const LocationAdd = ({ setRefreshPage, setIsAddOpen }) => {
       setLocationImagePreview(null); // Reset preview
       setRefreshPage(Math.random()); // Trigger parent component refresh
       setIsAddOpen(false); // Close modal
+      hideLoading();
     } catch (err) {
+      hideLoading();
       toast.error(err.response?.data?.message || "An error occurred");
       console.error("Error adding location:", err);
     }

@@ -52,7 +52,10 @@ const BottomNavBar = () => {
                 color: currentPath === item.path ? "#1976d2" : "gray",
                 "&.Mui-selected": {
                   color: "#1976d2",
-                  // background: "#1976d2",
+                },
+
+                "&.MuiButtonBase-root": {
+                  minWidth: "40px",
                 },
               }}
             />

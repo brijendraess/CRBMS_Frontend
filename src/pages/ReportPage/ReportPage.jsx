@@ -1,39 +1,114 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./ReportPage.css";
 import InfoCard from "../../components/InfoCard/InfoCard";
-import LineChartBox from "../../components/Charts/LineChartBox";
-import AreaChartBox from "../../components/Charts/AreaChartBox";
-import BarChartBox from "../../components/Charts/BarChartBox";
-import PieChartBox from "../../components/Charts/PieChartBox";
-import RadarChartBox from "../../components/Charts/RadarChartBox";
 import { PaperWrapper } from "../../Style";
-import { Box, Grid2 } from "@mui/material";
-// LineChartBox
 import Grid from "@mui/material/Grid2";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import PageHeader from "../../components/Common Components/PageHeader/PageHeader";
 
 const ReportPage = () => {
+  const [counts, setCounts] = useState({
+    users: 0,
+    amenities: 0,
+    food: 0,
+    rooms: 0,
+    // meetings: 0,
+    activeCommittees: 0,
+    inactiveCommittees: 0,
+  });
+  const dispatch = useDispatch();
+  const fetchCounts = async () => {
+    try {
+      dispatch(showLoading());
+      const results = await Promise.allSettled([
+        axios.get("/api/v1/report/user-count"),
+        axios.get("/api/v1/report/amenity-count"),
+        axios.get("/api/v1/report/food-count"),
+        axios.get("/api/v1/report/room-count"),
+        // axios.get("/api/v1/report/meeting-count"),
+        axios.get("/api/v1/report/active-committee-count"),
+        axios.get("/api/v1/report/inactive-committee-count"),
+      ]);
+
+      const [
+        userCount,
+        amenityCount,
+        foodCount,
+        roomCount,
+        // meetingCount,
+        activeCommitteeCount,
+        inactiveCommitteeCount,
+      ] = results;
+
+      setCounts({
+        users:
+          userCount.status === "fulfilled"
+            ? userCount.value.data.data.count || 0
+            : 0,
+        amenities:
+          amenityCount.status === "fulfilled"
+            ? amenityCount.value.data.data.count || 0
+            : 0,
+        food:
+          foodCount.status === "fulfilled"
+            ? foodCount.value.data.data.count || 0
+            : 0,
+        rooms:
+          roomCount.status === "fulfilled"
+            ? roomCount.value.data.data.count || 0
+            : 0,
+        // meetings: meetingCount.status === "fulfilled" ? meetingCount.value.data.data.count || 0 : 0,
+        activeCommittees:
+          activeCommitteeCount.status === "fulfilled"
+            ? activeCommitteeCount.value.data.data.count || 0
+            : 0,
+        inactiveCommittees:
+          inactiveCommitteeCount.status === "fulfilled"
+            ? inactiveCommitteeCount.value.data.data.count || 0
+            : 0,
+      });
+      dispatch(hideLoading());
+    } catch (error) {
+      dispatch(hideLoading());
+      console.error("Unexpected error fetching counts:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCounts();
+  }, []);
+
   return (
     <PaperWrapper>
+      <PageHeader heading={"Reports"} />
       <Grid container spacing={2} mb={2}>
         <Grid size={{ xs: 12, sm: 6, md: 4 }}>
           <InfoCard
             color={["#1da256", "#48d483"]}
             tittle="Users"
-            count="1253"
+            count={counts.users}
+            show={false}
+            options={[]}
           />
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 4 }}>
           <InfoCard
             color={["#2c78e5", "#60aff5"]}
             tittle="Amenities"
-            count="15"
+            count={counts.amenities}
+            show={false}
+            options={[]}
           />
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 4 }}>
           <InfoCard
             color={["#e1950e", "#f3cd29"]}
             tittle="Meetings"
-            count="169"
+            count={"169"}
+            show={false}
+            options={["Today", "This Week", "This Month", "This Year"]}
           />
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 4 }}>
@@ -47,30 +122,19 @@ const ReportPage = () => {
           <InfoCard
             color={["#2dd2a6", "#88f2d5"]}
             tittle="Committee"
-            count="15"
+            options={["Active", "Inactive"]}
+            count={counts.activeCommittees + counts.inactiveCommittees}
+            show={false}
           />
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-          <InfoCard color={["#c012e2", "#eb64fe"]} tittle="Rooms" count="59" />
-        </Grid>
-      </Grid>
-      <Grid container spacing={2} mb={2}>
-        <Grid size={{ xs: 12, sm: 4, md: 5 }}>
-          <AreaChartBox color={["#cc2b5e ", "#753a88"]} />
-        </Grid>
-        <Grid size={{ xs: 12, sm: 8, md: 7 }}>
-          <LineChartBox />
-        </Grid>
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid size={{ xs: 12, sm: 4, md: 4 }}>
-          <PieChartBox />
-        </Grid>
-        <Grid size={{ xs: 12, sm: 4, md: 4 }}>
-          <BarChartBox color={["#eb3349  ", "#f45c43"]} />
-        </Grid>
-        <Grid size={{ xs: 12, sm: 4, md: 4 }}>
-          <RadarChartBox color={["#bdc3c7  ", "#2c3e50"]} />
+          <InfoCard
+            color={["#c012e2", "#eb64fe"]}
+            tittle="Rooms"
+            count={counts.rooms}
+            options={[]}
+            show={false}
+          />
         </Grid>
       </Grid>
     </PaperWrapper>

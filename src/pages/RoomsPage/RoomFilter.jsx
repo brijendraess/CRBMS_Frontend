@@ -11,11 +11,22 @@ import {
   ListItemText,
 } from "@mui/material";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
-import dayjs from "dayjs";
 import "./RoomsPage.css";
 import { ContentHeader } from "../../Style";
-const RoomFilter = ({handleChangeAmenities,selectedAmenities,amenitiesList,handleStartTimeChange,meetingStartTime,setMeetingEndingTime,meetingEndingTime,handleChangeCapacity,selectedDate,setSelectedDate,capacity }) => {
 
+const RoomFilter = ({
+  handleChangeAmenities,
+  selectedAmenities,
+  amenitiesList,
+  handleStartTimeChange,
+  meetingStartTime,
+  setMeetingEndingTime,
+  meetingEndingTime,
+  handleChangeCapacity,
+  selectedDate,
+  setSelectedDate,
+  capacity,
+}) => {
   return (
     <ContentHeader
       sx={{ position: "sticky", marginBottom: "20px" }}

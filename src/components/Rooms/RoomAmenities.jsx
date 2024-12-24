@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import DeleteModal from "../Common Components/Modals/Delete/DeleteModal";
 import EditRoomAmenities from "./EditRoomAmenities";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 
 const RoomAmenities = ({room}) => {
   const [rows, setRows] = useState([]);
@@ -35,6 +36,7 @@ const RoomAmenities = ({room}) => {
   useEffect(() => {
     const fetchAmenityQuantity = async () => {
       try {
+        showLoading();
         const response = await axios.get(`/api/v1/rooms/amenity-quantity-all/${room.id}`);
         const amenityWithSerial = response.data.data.result.map(
           (amenity, index) => ({
@@ -46,9 +48,11 @@ const RoomAmenities = ({room}) => {
           })
         );
         setRows(amenityWithSerial);
+        hideLoading();
       } catch (error) {
         toast.success("Something Went Wrong");
         console.error("Error fetching locations:", error);
+        hideLoading();
       }
     };
 
@@ -72,14 +76,17 @@ const RoomAmenities = ({room}) => {
 
   const handleDelete = async () => {
     try {
+      showLoading();
       await axios.delete(`/api/v1/rooms/delete-amenity-quantity/${deleteId}`);
 
       handleClose(false);
       setRefreshPage(Math.random());
       toast.success("Amenity quantity deleted successfully!");
+      hideLoading();
     } catch (error) {
       toast.error("Failed to delete amenity quantity!");
       console.error("Error deleting amenity quantity:", error);
+      hideLoading();
     }
   };
 

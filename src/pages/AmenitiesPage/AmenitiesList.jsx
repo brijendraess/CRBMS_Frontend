@@ -4,33 +4,24 @@ import toast from "react-hot-toast";
 
 // Material UI Imports
 import { DataGrid } from "@mui/x-data-grid";
-import {
-  Button,
-  Box,
-  Typography,
-  Switch,
-  Tooltip,
-  Grid2,
-  useMediaQuery,
-} from "@mui/material";
-import {
-  DeleteOutlineOutlined as DeleteIcon,
-  VisibilityOutlined as ViewIcon,
-} from "@mui/icons-material";
+import { Box, Switch, Tooltip, Grid2, useMediaQuery } from "@mui/material";
+import { DeleteOutlineOutlined as DeleteIcon } from "@mui/icons-material";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 
 // Style Imports
 import "./Amenities.css";
-import { PaperWrapper, RightContent } from "../../Style";
+import { PaperWrapper } from "../../Style";
 
 // Component Imports
 import AmenitiesAdd from "./AmenitiesAdd";
 import DeleteModal from "../../components/Common Components/Modals/Delete/DeleteModal";
 import AmenitiesEdit from "./AmenitiesEdit";
 import PopupModals from "../../components/Common Components/Modals/Popup/PopupModals";
-import CustomButton from "../../components/Common Components/CustomButton/CustomButton";
 import AmenitiesCard from "./AmenitiesCard";
+import PageHeader from "../../components/Common Components/PageHeader/PageHeader";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import { useDispatch } from "react-redux";
 
 const AmenitiesList = () => {
   const [amenities, setAmenities] = useState([]);
@@ -40,11 +31,12 @@ const AmenitiesList = () => {
   const [open, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [isRefreshed, setIsRefreshed] = useState(0);
-
+  const dispatch = useDispatch();
   // Fetch amenities only when component mounts
   useEffect(() => {
     const fetchAmenities = async () => {
       try {
+        dispatch(showLoading());
         const response = await axios.get("/api/v1/amenity/get-all-amenities");
         const amenitiesWithSerial = response.data.data.roomAmenities.map(
           (amenity, index) => ({
@@ -53,9 +45,11 @@ const AmenitiesList = () => {
           })
         );
         setAmenities(amenitiesWithSerial);
+        dispatch(hideLoading());
       } catch (error) {
         toast.error("Something went wrong");
         console.error("Error fetching amenities:", error);
+        dispatch(hideLoading());
       }
     };
 
@@ -79,20 +73,24 @@ const AmenitiesList = () => {
 
   const handleDelete = async () => {
     try {
+      dispatch(showLoading());
       await axios.delete(`/api/v1/amenity/delete/${deleteId}`);
       setAmenities((prevAmenities) =>
         prevAmenities.filter((amenity) => amenity.id !== deleteId)
       );
       handleClose();
       toast.success("Amenity deleted successfully!");
+      hideLoading();
     } catch (error) {
       toast.error("Failed to delete amenity!");
       console.error("Error deleting amenity:", error);
+      dispatch(hideLoading());
     }
   };
 
   const handleStatusChange = async (id) => {
     try {
+      dispatch(showLoading());
       const response = await axios.patch(
         `/api/v1/amenity/amenities/${id}/status`
       );
@@ -105,12 +103,13 @@ const AmenitiesList = () => {
             : amenity
         )
       );
-
+      dispatch(hideLoading());
       toast.success(
         `Amenity status changed to ${updatedRoomAmenity.status ? "Active" : "Inactive"}`
       );
     } catch (error) {
       console.error("Error changing status:", error);
+      dispatch(hideLoading());
       toast.error("Failed to change Amenity status!");
     }
   };
@@ -155,37 +154,11 @@ const AmenitiesList = () => {
 
   return (
     <PaperWrapper>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          marginBottom: "10px",
-        }}
-      >
-        <Typography
-          variant="h1"
-          component="h1"
-          sx={{
-            marginRight: "20px",
-            fontSize: "22px",
-            fontWeight: 500,
-            lineHeight: 1.5,
-            color: "#2E2E2E",
-          }}
-        >
-          Amenities
-        </Typography>
-        <CustomButton
-          onClick={() => setIsAddOpen(true)}
-          title={"Add New Amenity"}
-          placement={"left"}
-          Icon={AddOutlinedIcon}
-          fontSize={"medium"}
-          background={"rgba(3, 176, 48, 0.68)"}
-        />
-      </Box>
-
+      <PageHeader
+        heading={"Amenities"}
+        icon={AddOutlinedIcon}
+        func={setIsAddOpen}
+      />
       {/* Render AmenitiesCard only on small screens */}
       {isSmallScreen && (
         <Grid2

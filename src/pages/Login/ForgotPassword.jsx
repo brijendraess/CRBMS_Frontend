@@ -20,8 +20,8 @@ const ForgotPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(showLoading());
     try {
+      dispatch(showLoading());
       const response = await axios.post(
         "/api/v1/user/forgot-password",
         { email },

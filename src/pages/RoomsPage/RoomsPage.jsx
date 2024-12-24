@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import RoomsCard from "../../components/Rooms/RoomsCard";
-import { Box, Grid2, Typography } from "@mui/material";
-import dayjs from "dayjs";
+import { Grid2 } from "@mui/material";
 import axios from "axios";
 import toast from "react-hot-toast";
 import "./RoomsPage.css";
@@ -9,10 +8,11 @@ import { MainContainer, PaperWrapper } from "../../Style";
 import PopupModals from "../../components/Common Components/Modals/Popup/PopupModals";
 import AddRoomForm from "./AddRoomForm";
 import RoomFilter from "./RoomFilter";
-import CustomButton from "../../components/Common Components/CustomButton/CustomButton";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AddOutlinedIcon } from "../../components/Common Components/CustomButton/CustomIcon";
+import PageHeader from "../../components/Common Components/PageHeader/PageHeader";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 
 const RoomsPage = () => {
   const [roomsData, setRoomsData] = useState([]); // State for rooms data
@@ -27,9 +27,10 @@ const RoomsPage = () => {
   const [meetingEndingTime, setMeetingEndingTime] = useState(null); // For end time filter
   const [refreshPage, setRefreshPage] = useState(0);
   const { user } = useSelector((state) => state.user);
-
+  const dispatch = useDispatch();
   const fetchRoomsData = async () => {
     try {
+      dispatch(showLoading());
       const response = await axios.get(`api/v1/rooms/all-rooms`, {
         params: {
           filterDate: selectedDate,
@@ -40,6 +41,7 @@ const RoomsPage = () => {
         },
       });
       setRoomsData(response.data.data.rooms);
+      dispatch(hideLoading());
     } catch (error) {
       toast.error("Something Went Wrong");
       console.error("Error fetching room data:", error);
@@ -58,10 +60,13 @@ const RoomsPage = () => {
   // Fetch amenities data
   const fetchAmenitiesData = async () => {
     try {
+      dispatch(showLoading());
       const response = await axios.get("/api/v1/amenity/get-all-amenities");
       const names = response.data.data.roomAmenities.map((item) => item.name);
       setAmenitiesList(names);
+      dispatch(hideLoading());
     } catch (error) {
+      dispatch(hideLoading());
       console.error("Error fetching amenities data:", error);
     }
   };
@@ -101,44 +106,12 @@ const RoomsPage = () => {
   return (
     <>
       <PaperWrapper>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginBottom: "10px",
-          }}
-        >
-          <Typography
-            variant="h1"
-            component="h1"
-            sx={{
-              marginRight: "20px",
-              fontSize: {
-                xs: "16px",
-                sm: "18px",
-                md: "22px",
-              },
-              fontWeight: 500,
-              lineHeight: 1.5,
-              color: "#2E2E2E",
-            }}
-          >
-            Conference Rooms
-          </Typography>
-          {user?.isAdmin ? (
-            <CustomButton
-              onClick={() => setIsAddOpen(true)}
-              title={"Add New Room"}
-              placement={"left"}
-              Icon={AddOutlinedIcon}
-              fontSize={"medium"}
-              background={"rgba(3, 176, 48, 0.68)"}
-            />
-          ) : (
-            ""
-          )}
-        </Box>
+        <PageHeader
+          heading={"Rooms"}
+          icon={AddOutlinedIcon}
+          func={setIsAddOpen}
+          title={"Add New Room"}
+        />
         <MainContainer>
           <RoomFilter
             handleChangeAmenities={handleChangeAmenities}
@@ -153,25 +126,29 @@ const RoomsPage = () => {
             setSelectedDate={setSelectedDate}
             capacity={capacity}
           />
-          {roomsData &&
-            roomsData.map((room, index) => (
-              <Grid2
-                container
-                spacing={2}
-                sx={{
-                  borderRadius: "20px",
-                  position: "relative",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <RoomsCard
-                  room={room}
-                  setRefreshPage={setRefreshPage}
-                  setDeleteUpdateStatus={setDeleteUpdateStatus}
-                />
-              </Grid2>
-            ))}
+          <Grid2
+            container
+            columnSpacing={3}
+            rowSpacing={3}
+            sx={{
+              borderRadius: "20px",
+              position: "relative",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {roomsData &&
+              roomsData.map((room, index) => (
+                <Grid2 item xs={12} sm={6} md={4} lg={3} key={index}>
+                  <RoomsCard
+                    room={room}
+                    setRefreshPage={setRefreshPage}
+                    setDeleteUpdateStatus={setDeleteUpdateStatus}
+                  />
+                </Grid2>
+              ))}
+          </Grid2>
+
           {roomsData.length === 0 && (
             <div className="col-xs-12 col-sm-6 col-md-12 col-lg-12 col-xl-12 text-center mb-4">
               <p>No Room Found</p>

@@ -18,6 +18,8 @@ import * as Yup from "yup";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import { useDispatch } from "react-redux";
 
 const EditRoomForm = ({ room, setRefreshPage, setIsEditOpen }) => {
   const [roomImagePreview, setRoomImagePreview] = useState(null);
@@ -26,6 +28,8 @@ const EditRoomForm = ({ room, setRefreshPage, setIsEditOpen }) => {
   const [sanitationStatus, setSanitationStatus] = useState(
     room.sanitationStatus
   );
+
+  const dispatch = useDispatch();
   const [isAvailable, setIsAvailable] = useState(room.isAvailable);
   const validateImage = (file) => {
     // Allowed image types
@@ -51,14 +55,17 @@ const EditRoomForm = ({ room, setRefreshPage, setIsEditOpen }) => {
   useEffect(() => {
     const fetchLocation = async () => {
       try {
+        dispatch(showLoading());
         const response = await axios.get("api/v1/location/activeLocations");
         const locations = response.data.data.result.map((location) => {
           return { id: location.id, label: location.locationName };
         });
         setLocationList(locations);
+        dispatch(hideLoading());
       } catch (error) {
         toast.error("Failed to load location");
         console.error("Error fetching location:", error);
+        dispatch(hideLoading());
       }
     };
 
@@ -99,12 +106,12 @@ const EditRoomForm = ({ room, setRefreshPage, setIsEditOpen }) => {
         .required("Tolerance Period is required")
         .positive()
         .integer(),
-      // password: Yup.string().required("Password is required"),
       description: Yup.string(),
     }),
     onSubmit: async (values, { resetForm }) => {
       console.log("Form Submitted:", values);
       try {
+        dispatch(showLoading());
         const formData = new FormData();
         formData.append("name", values.name);
         formData.append("capacity", values.capacity);
@@ -133,7 +140,9 @@ const EditRoomForm = ({ room, setRefreshPage, setIsEditOpen }) => {
         setRefreshPage(Math.random());
         setIsEditOpen(false);
         setRoomImageError("");
+        dispatch(hideLoading());
       } catch (error) {
+        dispatch(hideLoading());
         toast.error(error.response?.data?.message || "An error occurred");
         console.error("Error adding room:", error);
       }
@@ -174,6 +183,7 @@ const EditRoomForm = ({ room, setRefreshPage, setIsEditOpen }) => {
     formik.setFieldValue("isAvailable", event.target.checked);
     setIsAvailable(event.target.checked);
   };
+  
   return (
     <Box component="form" onSubmit={formik.handleSubmit}>
       <Box display="flex" justifyContent="space-between">

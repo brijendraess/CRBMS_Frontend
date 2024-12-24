@@ -24,6 +24,8 @@ import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutli
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import { LocationOnOutlinedIcon } from "../../components/Common Components/CustomButton/CustomIcon";
 import { timeDifference } from "../../utils/utils";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import Loader from "../../components/Common Components/Loader/Loader";
 import BarCode from "../BarCodePage/BarCode";
 
 const ContentWrapper = styled(Paper)(({ theme }) => ({
@@ -61,7 +63,7 @@ const columns = [
     headerName: "End Time",
     width: 125,
   },
-  
+
   { field: "organizerName", headerName: "Organizer", width: 200 },
   {
     field: "status",
@@ -144,17 +146,21 @@ const DetailRoomPage = () => {
 
   const fetchData = async () => {
     try {
+      showLoading();
       const response = await axios.get(`/api/v1/rooms/${id}`);
       setRoom(response.data.data.room[0]);
 
+      // console.log(response.data.data.room[0]);
+      hideLoading();
     } catch (error) {
+      hideLoading();
       console.error(error);
     }
   };
 
   const getAllMeeting = () => {
     const meeting = room?.Meetings.map((meeting) => {
-      const timeDiff = timeDifference(meeting?.startTime,meeting?.endTime)
+      const timeDiff = timeDifference(meeting?.startTime, meeting?.endTime);
 
       return {
         id: meeting.id,
@@ -171,6 +177,7 @@ const DetailRoomPage = () => {
     });
     setMeeting(meeting);
   };
+
   useEffect(() => {
     fetchData();
   }, [id,refreshPage]);
@@ -184,14 +191,9 @@ const DetailRoomPage = () => {
     setUrlData(`${import.meta.env.VITE_APPLICATION_URL}/rooms/${room?.id}`)
   }, [id,room]);
   if (!room) {
-    return <p>Loading...</p>;
+    return <Loader />;
   }
 
-  const handleBookNow = () => {
-    navigate(`/book-meeting/${id}`);
-  };
-  console.log(meeting)
-  console.log(room)
   return (
     <ContentWrapper>
       <Typography variant="h4" component="h4" textAlign="center">
@@ -381,4 +383,3 @@ const DetailRoomPage = () => {
 };
 
 export default DetailRoomPage;
-

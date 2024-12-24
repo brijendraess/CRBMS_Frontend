@@ -7,6 +7,8 @@ import dayjs from "dayjs";
 import durationPlugin from "dayjs/plugin/duration";
 import axios from "axios";
 import { getFormattedDate, timeDifference } from "../../utils/utils";
+import { useDispatch } from "react-redux";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 dayjs.extend(durationPlugin);
 
 const colorMap = {
@@ -110,14 +112,17 @@ const TodaysMeetings = () => {
   const [refreshPage, setRefreshPage] = useState("");
   const [room, setRoom] = useState(null); 
   const gridRef = useRef(null);
-
+  const dispatch = useDispatch();
   const fetchData = async () => {
     try {
+      dispatch(showLoading());
       const response = await axios.get(`/api/v1/rooms/all-meeting`);
       const todayDate=getFormattedDate()
       setTodayDate(todayDate);
       setRoom(response.data.data.meeting.filter((meet)=>meet.meetingDate===todayDate));
+      dispatch(hideLoading());
     } catch (error) {
+      dispatch(hideLoading());
       console.error(error);
     }
   };

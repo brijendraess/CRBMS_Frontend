@@ -15,6 +15,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { PopContent } from "../../Style";
+import { useDispatch } from "react-redux";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 
 const FormWrapper = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -31,10 +33,11 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
   //const { id } = useParams();
   const [availableCommittees, setAvailableCommittees] = useState([]);
   const [userCommittees, setUserCommittees] = useState([]);
-
+  const dispatch = useDispatch();
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+        dispatch(showLoading());
         const [userResponse, committeesResponse] = await Promise.all([
           axios.get(`/api/v1/user/${id}`),
           axios.get("/api/v1/committee/committees"),
@@ -60,7 +63,9 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
         });
 
         setUserCommittees(userCommitteeObjects);
+        dispatch(hideLoading());
       } catch (error) {
+        dispatch(hideLoading());
         toast.error("Failed to load data.");
         console.error("Error fetching data:", error);
       }
@@ -91,6 +96,7 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
     }),
     onSubmit: async (values) => {
       try {
+        dispatch(showLoading());
         // Extract committee IDs
         const committeeIds = values.committees.map((committee) => committee.id);
 
@@ -102,8 +108,6 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
           committees: committeeIds,
         };
 
-        console.log("Sending payload:", payload);
-
         const response = await axios.put(
           `/api/v1/user/update-profile/${id}`,
           payload, // Send as JSON
@@ -114,11 +118,12 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
           }
         );
 
-        console.log("Response:", response.data);
         toast.success("Profile updated successfully!");
         setRefreshPage(Math.random());
         setIsEditOpen(false);
+        dispatch(hideLoading());
       } catch (error) {
+        dispatch(hideLoading());
         toast.error("Failed to update profile.");
         console.error("Error updating profile:", error);
       }

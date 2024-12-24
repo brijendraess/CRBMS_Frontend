@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { TextField, Button, Box, Paper, styled } from "@mui/material";
 import toast from "react-hot-toast";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import { useDispatch } from "react-redux";
 
 const AmenitiesAdd = ({ setAmenities, setIsAddOpen, setIsRefreshed }) => {
   const [formData, setFormData] = useState({
@@ -16,23 +18,19 @@ const AmenitiesAdd = ({ setAmenities, setIsAddOpen, setIsRefreshed }) => {
       [e.target.name]: e.target.value,
     });
   };
-
-  const handleQuantityChange = (amount) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      quantity: Math.max(1, prevData.quantity + amount), // Ensure quantity is at least 1
-    }));
-  };
-
+  const dispatch = useDispatch();
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      dispatch(showLoading());
       const response = await axios.post("api/v1/amenity/add-amenity", formData);
       toast.success("Amenity added Successfully");
       setFormData({ name: "", description: "", quantity: 1 });
       setIsRefreshed(Math.random());
       setIsAddOpen(false);
+      dispatch(hideLoading());
     } catch (err) {
+      dispatch(hideLoading());
       toast.error(err.response?.data?.message);
       console.error("Error adding amenity:", err);
     }

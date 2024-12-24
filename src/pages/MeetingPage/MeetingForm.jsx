@@ -10,13 +10,14 @@ import {
   Radio,
   Chip,
 } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { fetchActiveCommittee, fetchUsers } from "../../utils/utils";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 
 const MeetingForm = ({ room }) => {
   const [emailsList, setEmailsList] = useState([]);
@@ -30,19 +31,19 @@ const MeetingForm = ({ room }) => {
     fetchActiveCommittee(toast, setCommitteeList);
     fetchUsers(toast, setEmailsList);
   }, []);
-
+  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
       roomId: room.id,
       organizerId: user.id,
       subject: "",
       agenda: "",
-      guestUser:"",
+      guestUser: "",
       startTime: null,
       endTime: null,
       date: null,
       attendees: [],
-      committees:[],
+      committees: [],
       notes: "",
       additionalEquipment: "",
       isPrivate: false,
@@ -65,6 +66,7 @@ const MeetingForm = ({ room }) => {
       console.log("Form Submitted:", values);
 
       try {
+        dispatch(showLoading());
         const payload = {
           ...values,
           attendees: values.attendees.map((attendee) => attendee.id),
@@ -81,7 +83,9 @@ const MeetingForm = ({ room }) => {
 
         toast.success("Meeting added successfully");
         resetForm();
+        dispatch(hideLoading());
       } catch (error) {
+        dispatch(hideLoading());
         toast.error(error.response?.data?.message || "An error occurred");
         console.error("Error adding meeting:", error);
       }
@@ -101,8 +105,8 @@ const MeetingForm = ({ room }) => {
     const hours = Math.floor(diffMs / (1000 * 60 * 60));
     const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
-if(formik.values.startTime&&formik.values.endTime)
-    setDifference(`${hours}h ${minutes}m`);
+    if (formik.values.startTime && formik.values.endTime)
+      setDifference(`${hours}h ${minutes}m`);
   };
 
   useEffect(() => {
@@ -223,7 +227,7 @@ if(formik.values.startTime&&formik.values.endTime)
           name="attendees"
           size="small"
           sx={{
-            width: "100%", 
+            width: "100%",
           }}
           options={emailsList}
           value={formik.values.attendees}
@@ -377,41 +381,40 @@ if(formik.values.startTime&&formik.values.endTime)
       </Box>
       {/* Private Meeting */}
       <Box display="flex" gap={1} justifyContent="space-between">
-<Box component="p">
-<Typography variant="subtitle1" component="p" sx={{ mt: 2 }}>
-        Is this a private meeting?
-      </Typography>
-      <RadioGroup
-        name="isPrivate"
-        value={formik.values.isPrivate}
-        onChange={(e) =>
-          formik.setFieldValue("isPrivate", e.target.value === "true")
-        }
-        row
-      >
-        <FormControlLabel value={true} control={<Radio />} label="Yes" />
-        <FormControlLabel value={false} control={<Radio />} label="No" />
-      </RadioGroup>
-</Box>
-<Box component="p">
-<Typography variant="subtitle1" component="p" sx={{ mt: 2 }}>
-        Guest user(Comma separate email Id)
-      </Typography>
-      <TextField
-          label="guestUser"
-          name="guestUser"
-          margin="normal"
-          fullWidth
-          sx={{width:"100%"}}
-          value={formik.values.guestUser}
-          onChange={formik.handleChange}
-          error={formik.touched.guestUser && Boolean(formik.errors.guestUser)}
-          helperText={formik.touched.guestUser && formik.errors.guestUser}
-          size="small"
-        />
-</Box>
+        <Box component="p">
+          <Typography variant="subtitle1" component="p" sx={{ mt: 2 }}>
+            Is this a private meeting?
+          </Typography>
+          <RadioGroup
+            name="isPrivate"
+            value={formik.values.isPrivate}
+            onChange={(e) =>
+              formik.setFieldValue("isPrivate", e.target.value === "true")
+            }
+            row
+          >
+            <FormControlLabel value={true} control={<Radio />} label="Yes" />
+            <FormControlLabel value={false} control={<Radio />} label="No" />
+          </RadioGroup>
+        </Box>
+        <Box component="p">
+          <Typography variant="subtitle1" component="p" sx={{ mt: 2 }}>
+            Guest user(Comma separate email Id)
+          </Typography>
+          <TextField
+            label="guestUser"
+            name="guestUser"
+            margin="normal"
+            fullWidth
+            sx={{ width: "100%" }}
+            value={formik.values.guestUser}
+            onChange={formik.handleChange}
+            error={formik.touched.guestUser && Boolean(formik.errors.guestUser)}
+            helperText={formik.touched.guestUser && formik.errors.guestUser}
+            size="small"
+          />
+        </Box>
       </Box>
-      
 
       {/* Submit Button */}
       <Box mt={2} display="flex" justifyContent="flex-end">

@@ -46,7 +46,6 @@ const AmenitiesCard = ({
       </CardActionArea>
       <CardActions>
         <Box
-          disableSpacing
           sx={{
             display: "flex",
             justifyContent: "center",

@@ -1,24 +1,20 @@
 import React, { useEffect, useState } from "react";
 import {
-  Box,
   Grid2,
-  Typography,
-  Paper,
-  styled,
-  CircularProgress,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
-  Button,
 } from "@mui/material";
 import axios from "axios";
 import CommitteeCard from "../../components/CommitteeCard/CommitteeCard";
 import { PaperWrapper } from "../../Style";
 import PopupModals from "../../components/Common Components/Modals/Popup/PopupModals";
 import AddCommitteeForm from "./AddCommitteeForm";
-import CustomButton from "../../components/Common Components/CustomButton/CustomButton";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import PageHeader from "../../components/Common Components/PageHeader/PageHeader";
+import toast from "react-hot-toast";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 
 const CommitteeManagementMUI = () => {
   const [committeeData, setCommitteeData] = useState([]);
@@ -28,16 +24,18 @@ const CommitteeManagementMUI = () => {
 
   const fetchCommittee = async () => {
     try {
+      showLoading();
       const response = await axios.get("/api/v1/committee/committees");
+      console.log(response.data.data);
       if (response.data?.data?.committees) {
         setCommitteeData(response.data.data.committees);
       } else {
         console.error("Unexpected data structure:", response.data);
-        setError("Invalid data structure received from server");
       }
+      hideLoading();
     } catch (err) {
       console.error("Error fetching committees:", err);
-      setError(err.message || "Failed to fetch committees");
+      hideLoading();
     }
   };
 
@@ -46,13 +44,24 @@ const CommitteeManagementMUI = () => {
   }, [refreshPage]);
 
   const filteredCommittees = committeeData.filter((committee) => {
-    if (filter === "active") return committee.status === "active";
-    if (filter === "inactive") return committee.status === "inactive";
+    if (filter === "active") return committee.status === true;
+    if (filter === "inactive") return committee.status === false;
     return true;
   });
 
   const handleDeleteCommittee = (id) => {
-    setCommitteeData((prev) => prev.filter((committee) => committee.id !== id));
+    try {
+      showLoading();
+      const response = axios.delete(`/api/v1/committee/committees/${id}`, {
+        withCredentials: true,
+      });
+      toast.success("Committee deleted successfully!");
+      setRefreshPage((prev) => prev + 1);
+      hideLoading();
+    } catch (error) {
+      console.error("Error deleting committee:", error);
+      toast.error("Failed to delete committee. Please try again.");
+    }
   };
 
   const handleAddCommittee = (newCommittee) => {
@@ -63,64 +72,28 @@ const CommitteeManagementMUI = () => {
   return (
     <>
       <PaperWrapper>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginBottom: "10px",
-          }}
+        <PageHeader
+          heading={"Committee"}
+          icon={AddOutlinedIcon}
+          func={setIsAddCommittee}
+          title={"Add New Committee"}
         >
-          <Typography
-            variant="h1"
-            component="h1"
-            sx={{
-              marginRight: "20px",
-              fontSize: {
-                xs: "16px",
-                sm: "18px",
-                md: "20px",
-                lg: "22px",
-                xl: "24px",
-              },
-              fontWeight: 500,
-              lineHeight: 1.5,
-              color: "#2E2E2E",
-            }}
-          >
-            Committee
-          </Typography>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            gap={2}
-          >
-            <FormControl style={{ marginRight: "5 px", width: "100px" }}>
-              <InputLabel id="filter-select-label">Show</InputLabel>
-              <Select
-                labelId="filter-select-label"
-                id="filter-select"
-                value={filter} // Controlled filter state
-                label="Show"
-                onChange={(e) => setFilter(e.target.value)} // Update filter state
-                size="small"
-              >
-                <MenuItem value="all">All</MenuItem>
-                <MenuItem value="active">Active</MenuItem>
-                <MenuItem value="inactive">Inactive</MenuItem>
-              </Select>
-            </FormControl>
-            <CustomButton
-              onClick={() => setIsAddCommittee(true)}
-              title={"Add New Committee"}
-              placement={"bottom"}
-              Icon={AddOutlinedIcon}
-              fontSize={"medium"}
-              background={"rgba(3, 176, 48, 0.68)"}
-            />
-          </Box>
-        </Box>
+          <FormControl style={{ marginRight: "5 px", width: "100px" }}>
+            <InputLabel id="filter-select-label">Show</InputLabel>
+            <Select
+              labelId="filter-select-label"
+              id="filter-select"
+              value={filter} // Controlled filter state
+              label="Show"
+              onChange={(e) => setFilter(e.target.value)} // Update filter state
+              size="small"
+            >
+              <MenuItem value="all">All</MenuItem>
+              <MenuItem value="active">Active</MenuItem>
+              <MenuItem value="inactive">Inactive</MenuItem>
+            </Select>
+          </FormControl>
+        </PageHeader>
         <Grid2
           container
           columnSpacing={3}
@@ -137,6 +110,7 @@ const CommitteeManagementMUI = () => {
             <CommitteeCard
               key={committee.id}
               committee={committee}
+              heading={committee.name}
               onDelete={handleDeleteCommittee}
               setRefreshPage={setRefreshPage}
             />

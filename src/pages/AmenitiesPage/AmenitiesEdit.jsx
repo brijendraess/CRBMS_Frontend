@@ -3,20 +3,27 @@ import axios from "axios";
 import { TextField, Button, Box, Paper, styled } from "@mui/material";
 import toast from "react-hot-toast";
 import { PopContent } from "../../Style";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import { useDispatch } from "react-redux";
 
-const AmenitiesEdit = ({ id, setRefreshPage, setIsEditOpen,setIsRefreshed }) => {
+const AmenitiesEdit = ({
+  id,
+  setRefreshPage,
+  setIsEditOpen,
+  setIsRefreshed,
+}) => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
     quantity: 1,
   });
-  const [isLoading, setIsLoading] = useState(false);
 
+  const dispatch = useDispatch();
   // Fetch committee data when `committeeId` is available
   useEffect(() => {
     const fetchAmenities = async () => {
       if (id) {
-        setIsLoading(true);
+        dispatch(showLoading());
         try {
           const response = await axios.get(
             `/api/v1/amenity/get-single-amenity/${id}`
@@ -27,11 +34,13 @@ const AmenitiesEdit = ({ id, setRefreshPage, setIsEditOpen,setIsRefreshed }) => 
             name: amenity.name,
             description: amenity.description,
           });
+          dispatch(hideLoading());
         } catch (err) {
+          dispatch(hideLoading());
           toast.error("Failed to fetch amenity details.");
           console.error("Error fetching amenity:", err);
         } finally {
-          setIsLoading(false);
+          dispatch(hideLoading());
         }
       }
     };
@@ -56,6 +65,7 @@ const AmenitiesEdit = ({ id, setRefreshPage, setIsEditOpen,setIsRefreshed }) => 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      dispatch(showLoading());
       const response = await axios.put(
         `api/v1/amenity/update-amenity/${id}`,
         formData
@@ -64,7 +74,9 @@ const AmenitiesEdit = ({ id, setRefreshPage, setIsEditOpen,setIsRefreshed }) => 
       setFormData({ name: "", description: "", quantity: 1 });
       setIsRefreshed(Math.random());
       setIsEditOpen(false);
+      dispatch(hideLoading());
     } catch (err) {
+      dispatch(hideLoading());
       toast.error(err.response?.data?.message);
       console.error("Error adding amenity:", err);
     }

@@ -240,7 +240,7 @@ const Header = () => {
           component="li"
           sx={{ marginTop: "15px", marginBottom: "15px" }}
         />
-        <MenuItem onClick={handleEdit} sx={{ color: "black" }}>
+        {/* <MenuItem onClick={handleEdit} sx={{ color: "black" }}>
           <ListItemIcon>
             <PersonOutlineOutlinedIcon
               fontSize="small"
@@ -254,7 +254,7 @@ const Header = () => {
             <KeyOutlinedIcon fontSize="small" sx={{ color: "black" }} />
           </ListItemIcon>
           Reset Password
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem onClick={handleLogout} sx={{ color: "red" }}>
           <ListItemIcon>
             <Logout fontSize="small" sx={{ color: "red" }} />

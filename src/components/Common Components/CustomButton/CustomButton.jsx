@@ -1,45 +1,39 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { IconButton, Tooltip } from "@mui/material";
+import { IconButton, useMediaQuery } from "@mui/material";
 
 const CustomButton = ({
   onClick,
-  title,
+  disabled,
+  iconStyles,
+  background,
   Icon,
   fontSize,
-  iconStyles = {},
-  disabled = false,
-  background,
-  placement,
 }) => {
-  return (
-    <Tooltip title={title} placement={placement}>
-      <IconButton
-        onClick={onClick}
-        disabled={disabled}
-        style={{
-          ...iconStyles,
-          cursor: disabled ? "not-allowed" : "pointer",
-          borderRadius: "50%",
-          background: background,
-        }}
-      >
-        {Icon && <Icon fontSize={fontSize} sx={{ color: "black" }} />}
-      </IconButton>
-    </Tooltip>
-  );
-};
+  const isXs = useMediaQuery("(max-width:600px)");
+  const isSm = useMediaQuery("(max-width:960px)");
+  const isMd = useMediaQuery("(max-width:1280px)");
 
-// Define PropTypes for type checking
-CustomButton.propTypes = {
-  onClick: PropTypes.func.isRequired,
-  title: PropTypes.string,
-  Icon: PropTypes.elementType.isRequired,
-  background: PropTypes.string,
-  placement: PropTypes.string,
-  fontSize: PropTypes.oneOf(["small", "medium", "large"]),
-  iconStyles: PropTypes.object,
-  disabled: PropTypes.bool,
+  // Determine size based on breakpoints
+  const buttonSize = isXs
+    ? "small"
+    : isSm
+    ? "medium"
+    : "large";
+
+  return (
+    <IconButton
+      onClick={onClick}
+      disabled={disabled}
+      style={{
+        ...iconStyles,
+        cursor: disabled ? "not-allowed" : "pointer",
+        borderRadius: "50%",
+        background: background,
+      }}
+      size={buttonSize}
+    >
+      {Icon && <Icon fontSize={fontSize} sx={{ color: "black" }} />}
+    </IconButton>
+  );
 };
 
 export default CustomButton;
