@@ -5,7 +5,7 @@ import {
   TextField,
   Typography,
   MenuItem,
-  Grid,
+  Grid2,
   Select,
   InputLabel,
   FormControl,
@@ -66,8 +66,8 @@ const MeetingFormPage = ({ rooms, users, onSubmit }) => {
         Schedule Meeting
       </Typography>
       <Box component="form" onSubmit={formik.handleSubmit}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
+        <Grid2 container spacing={2}>
+          <Grid2 item xs={12}>
             <TextField
               label="Title"
               name="title"
@@ -77,8 +77,8 @@ const MeetingFormPage = ({ rooms, users, onSubmit }) => {
               error={formik.touched.title && Boolean(formik.errors.title)}
               helperText={formik.touched.title && formik.errors.title}
             />
-          </Grid>
-          <Grid item xs={12}>
+          </Grid2>
+          <Grid2 item xs={12}>
             <TextField
               label="Description"
               name="description"
@@ -88,8 +88,8 @@ const MeetingFormPage = ({ rooms, users, onSubmit }) => {
               value={formik.values.description}
               onChange={formik.handleChange}
             />
-          </Grid>
-          <Grid item xs={12} sm={6}>
+          </Grid2>
+          <Grid2 item xs={12} sm={6}>
             <TextField
               label="Start Time"
               name="startTime"
@@ -105,8 +105,8 @@ const MeetingFormPage = ({ rooms, users, onSubmit }) => {
                 shrink: true,
               }}
             />
-          </Grid>
-          <Grid item xs={12} sm={6}>
+          </Grid2>
+          <Grid2 item xs={12} sm={6}>
             <TextField
               label="End Time"
               name="endTime"
@@ -120,8 +120,8 @@ const MeetingFormPage = ({ rooms, users, onSubmit }) => {
                 shrink: true,
               }}
             />
-          </Grid>
-          <Grid item xs={12} sm={6}>
+          </Grid2>
+          <Grid2 item xs={12} sm={6}>
             <FormControl fullWidth>
               <InputLabel>Room</InputLabel>
               <Select
@@ -137,8 +137,8 @@ const MeetingFormPage = ({ rooms, users, onSubmit }) => {
                 ))}
               </Select>
             </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={6}>
+          </Grid2>
+          <Grid2 item xs={12} sm={6}>
             <FormControl fullWidth>
               <InputLabel>Organizer</InputLabel>
               <Select
@@ -157,8 +157,8 @@ const MeetingFormPage = ({ rooms, users, onSubmit }) => {
                 ))}
               </Select>
             </FormControl>
-          </Grid>
-          <Grid item xs={12}>
+          </Grid2>
+          <Grid2 item xs={12}>
             <FormControl fullWidth>
               <InputLabel>Participants</InputLabel>
               <Select
@@ -178,8 +178,8 @@ const MeetingFormPage = ({ rooms, users, onSubmit }) => {
                 ))}
               </Select>
             </FormControl>
-          </Grid>
-        </Grid>
+          </Grid2>
+        </Grid2>
         <Box mt={3} display="flex" justifyContent="flex-end">
           <Button
             type="reset"

@@ -16,7 +16,6 @@ const FoodBeverageCard = ({ food, handleEdit, handleDelete }) => {
         {food.foodBeverageName}
       </Typography>
       <Box
-        disableSpacing
         sx={{
           display: "flex",
           justifyContent: "center",

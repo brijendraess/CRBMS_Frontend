@@ -12,15 +12,18 @@ import {
 import axios from "axios";
 import toast from "react-hot-toast";
 import { PopContent } from "../../Style";
+import { useDispatch } from "react-redux";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 
 const ViewMember = ({ id }) => {
   //const { id } = useParams();
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const dispatch = useDispatch();
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+        dispatch(showLoading());
         const response = await axios.get(`/api/v1/user/${id}`);
         const result = response.data.data;
 
@@ -35,10 +38,13 @@ const ViewMember = ({ id }) => {
         };
 
         setUserData(formattedData);
+        dispatch(hideLoading());
       } catch (error) {
+        dispatch(hideLoading());
         toast.error("Failed to fetch user data.");
         console.error("Error fetching user data:", error);
       } finally {
+        dispatch(hideLoading());
         setLoading(false);
       }
     };

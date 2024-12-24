@@ -40,7 +40,7 @@
   align-items: center;
   padding: 1rem;
   text-align: center;
-  overflow-y: auto;
+  overflow: auto;
 }
 
 .dialogPanel {
@@ -56,6 +56,7 @@
   vertical-align: middle;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+  overflow-y: scroll;
 }
 
 .dialogPanel.enter {
@@ -109,6 +110,7 @@
   .dialogPanel {
     padding: 10px;
     width: 19.5rem;
+    height: 500px;
   }
   .dialogTitle h4 {
     font-size: 16px !important;

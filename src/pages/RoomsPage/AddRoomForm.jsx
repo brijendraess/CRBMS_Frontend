@@ -18,6 +18,8 @@ import * as Yup from "yup";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { PhotoCameraIcon } from "../../components/Common Components/CustomButton/CustomIcon";
+import { useDispatch } from "react-redux";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 
 const AddRoomForm = ({ setDeleteUpdateStatus, setIsAddOpen }) => {
   const [roomImagePreview, setRoomImagePreview] = useState(null);
@@ -40,17 +42,20 @@ const AddRoomForm = ({ setDeleteUpdateStatus, setIsAddOpen }) => {
 
     return null;
   };
-
+  const dispatch = useDispatch();
   useEffect(() => {
     const fetchLocation = async () => {
       try {
+        dispatch(showLoading());
         const response = await axios.get("api/v1/location/activeLocations");
         console.log(response.data.data);
         const locations = response.data.data.result.map((location) => {
           return { id: location.id, location: location.locationName };
         });
         setLocationList(locations);
+        dispatch(hideLoading());
       } catch (error) {
+        dispatch(hideLoading());
         toast.error("Failed to load location");
         console.error("Error fetching location:", error);
       }
@@ -67,7 +72,6 @@ const AddRoomForm = ({ setDeleteUpdateStatus, setIsAddOpen }) => {
       tolerancePeriod: "",
       sanitationPeriod: "",
       roomImage: "",
-      // password: "",
       description: "",
       sanitationStatus: false,
       isAvailable: true,
@@ -90,12 +94,11 @@ const AddRoomForm = ({ setDeleteUpdateStatus, setIsAddOpen }) => {
         .required("Tolerance Period is required")
         .positive()
         .integer(),
-      // password: Yup.string().required("Password is required"),
       description: Yup.string(),
     }),
     onSubmit: async (values, { resetForm }) => {
-      console.log("Form Submitted:", values);
       try {
+        dispatch(showLoading());
         const formData = new FormData();
         formData.append("name", values.name);
         formData.append("capacity", values.capacity);
@@ -117,7 +120,9 @@ const AddRoomForm = ({ setDeleteUpdateStatus, setIsAddOpen }) => {
         setDeleteUpdateStatus(Math.random());
         setIsAddOpen(false);
         setRoomImageError("");
+        dispatch(hideLoading());
       } catch (error) {
+        dispatch(hideLoading());
         toast.error(error.response?.data?.message || "An error occurred");
         console.error("Error adding room:", error);
       }
@@ -177,6 +182,9 @@ const AddRoomForm = ({ setDeleteUpdateStatus, setIsAddOpen }) => {
           name="sanitationPeriod"
           margin="normal"
           type="number"
+          slotProps={{
+            inputProps: { min: 15},
+          }}
           // value={formik.values.Sanitation Time}
           onChange={formik.handleChange}
           // error={formik.touched.Sanitation Time && Boolean(formik.errors.Sanitation Time)}

@@ -12,8 +12,9 @@ import axios from "axios";
 import DeleteModal from "../Common Components/Modals/Delete/DeleteModal";
 import AddRoomFoodBeverage from "./AddRoomFoodBeverage";
 import EditRoomFoodBeverage from "./EditRoomFoodBeverage";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 
-const RoomFoodBeverages = ({room}) => {
+const RoomFoodBeverages = ({ room }) => {
   const [rows, setRows] = useState([]);
   const [isFoodBeverageOpen, setIsFoodBeverageOpen] = useState(false);
   const [refreshPage, setRefreshPage] = useState(0);
@@ -28,13 +29,16 @@ const RoomFoodBeverages = ({room}) => {
   const handleEdit = (id) => {
     setEditId(id);
     setOpenEdit(true);
-    setEditInfo(rows.filter((row)=>row.uid===id)[0])
+    setEditInfo(rows.filter((row) => row.uid === id)[0]);
   };
 
   useEffect(() => {
     const fetchFoodBeverage = async () => {
       try {
-        const response = await axios.get(`/api/v1/rooms/food-beverage-all/${room.id}`);
+        showLoading();
+        const response = await axios.get(
+          `/api/v1/rooms/food-beverage-all/${room.id}`
+        );
         const foodBeverageWithSerial = response.data.data.result.map(
           (foodBeverage, index) => ({
             id: index + 1,
@@ -44,9 +48,11 @@ const RoomFoodBeverages = ({room}) => {
           })
         );
         setRows(foodBeverageWithSerial);
+        hideLoading();
       } catch (error) {
         toast.error("Something Went Wrong");
         console.error("Error fetching food beverage:", error);
+        hideLoading();
       }
     };
 
@@ -55,10 +61,10 @@ const RoomFoodBeverages = ({room}) => {
 
   const handleRoomFoodBeverage = () => {
     setIsFoodBeverageOpen(true);
-   // setIsFoodBeverageOpen(false);
+    // setIsFoodBeverageOpen(false);
   };
 
-   const handleOpen = (id) => {
+  const handleOpen = (id) => {
     setDeleteId(id);
     setOpen(true);
   };
@@ -70,14 +76,17 @@ const RoomFoodBeverages = ({room}) => {
 
   const handleDelete = async () => {
     try {
+      showLoading();
       await axios.delete(`/api/v1/rooms/delete-food-beverage/${deleteId}`);
 
       handleClose(false);
       setRefreshPage(Math.random());
       toast.success("Food beverage deleted successfully!");
+      hideLoading();
     } catch (error) {
       toast.error("Failed to delete food beverage!");
       console.error("Error deleting food beverage:", error);
+      hideLoading();
     }
   };
 
@@ -122,21 +131,35 @@ const RoomFoodBeverages = ({room}) => {
         />
       </Box>
       <Box sx={{ minHeight: 400, width: "100%" }}>
-        <DataGrid rows={rows } columns={columns} pageSize={20} />
+        <DataGrid rows={rows} columns={columns} pageSize={20} />
       </Box>
       <PopupModals
         isOpen={isFoodBeverageOpen}
         setIsOpen={setIsFoodBeverageOpen}
         title={"Add New Food & Beverage"}
-        modalBody={<AddRoomFoodBeverage room={room} setRefreshPage={setRefreshPage} setIsFoodBeverageOpen={setIsFoodBeverageOpen} />}
+        modalBody={
+          <AddRoomFoodBeverage
+            room={room}
+            setRefreshPage={setRefreshPage}
+            setIsFoodBeverageOpen={setIsFoodBeverageOpen}
+          />
+        }
       />
-       <PopupModals
+      <PopupModals
         isOpen={openEdit}
         setIsOpen={setOpenEdit}
         title={"Edit Food & Beverage"}
-        modalBody={<EditRoomFoodBeverage room={room} setRefreshPage={setRefreshPage} setOpenEdit={setOpenEdit} editId={editId} editInfo={editInfo} />}
+        modalBody={
+          <EditRoomFoodBeverage
+            room={room}
+            setRefreshPage={setRefreshPage}
+            setOpenEdit={setOpenEdit}
+            editId={editId}
+            editInfo={editInfo}
+          />
+        }
       />
-        <DeleteModal
+      <DeleteModal
         open={open}
         onClose={handleClose}
         onDeleteConfirm={handleDelete}

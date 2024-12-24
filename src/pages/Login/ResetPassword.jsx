@@ -7,10 +7,8 @@ import { Lock } from "@mui/icons-material";
 import axios from "axios";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useDispatch } from "react-redux";
-import './Login.css'
-import {
-  Button,
-} from "@mui/material";
+import "./Login.css";
+import { Button } from "@mui/material";
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
@@ -27,6 +25,7 @@ const ResetPassword = () => {
       return;
     }
     try {
+      dispatch(showLoading());
       const response = await axios.post(
         `/api/v1/user/reset-password/${token}`,
         { password }
@@ -42,6 +41,7 @@ const ResetPassword = () => {
         navigate("/login");
       }, 2000);
     } catch (error) {
+      dispatch(hideLoading());
       console.log(error);
       toast.error(error.message || "Error resetting password");
     }
@@ -79,17 +79,16 @@ const ResetPassword = () => {
               required
             />
             <div className="loginButtonBox">
-            <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
-            sx={{ mb: 2, width:"50%" }}
-          >
-            Set New Password
-          </Button>
-           
-                </div>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                fullWidth
+                sx={{ mb: 2, width: "50%" }}
+              >
+                Set New Password
+              </Button>
+            </div>
           </form>
         </div>
       </motion.div>

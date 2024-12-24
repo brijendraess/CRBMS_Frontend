@@ -7,6 +7,8 @@ import dayjs from "dayjs";
 import durationPlugin from "dayjs/plugin/duration";
 import axios from "axios";
 import { getFormattedDate, timeDifference } from "../../utils/utils";
+import { useDispatch } from "react-redux";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 dayjs.extend(durationPlugin);
 
 const colorMap = {
@@ -96,14 +98,17 @@ const TodaysMeetings = () => {
   const [todayDate, setTodayDate] = useState("");
   const [room, setRoom] = useState(null); 
   const gridRef = useRef(null);
-
+  const dispatch = useDispatch();
   const fetchData = async () => {
     try {
+      dispatch(showLoading());
       const response = await axios.get(`/api/v1/rooms/all-meeting`);
       const todayDate=getFormattedDate()
       setTodayDate(todayDate);
       setRoom(response.data.data.meeting.filter((meet)=>meet.meetingDate===todayDate));
+      dispatch(hideLoading());
     } catch (error) {
+      dispatch(hideLoading());
       console.error(error);
     }
   };
@@ -111,41 +116,6 @@ const TodaysMeetings = () => {
   useEffect(() => {
       fetchData();
     }, []);
-
-  const generateFakeMeetings = () => {
-    const meetings = [];
-    const baseStartTime = "09:00:00";
-    const meetingDate = todayDate;
-
-
-    room?.map((meeting)=>{
-
-    let startTime = dayjs(`${meetingDate}T${meeting.startTime}`);
-      const endTime = dayjs(`${meetingDate}T${meeting.endTime}`);
-      const timeDiff = timeDifference(meeting?.startTime,meeting?.endTime)
-
-      meetings.push({
-        meetingId: meeting.id,
-        title: meeting.subject,
-        meetingDate: meetingDate,
-        startTime: startTime.format("HH:mm:ss"),
-        endTime: endTime.format("HH:mm:ss"),
-        duration: timeDiff,
-        roomName: meeting.Room.name,
-        roomLocation: meeting.Room.Location.locationName,
-        organizerName: meeting.User.fullname,
-        progress: Math.floor(Math.random() * 101),
-      });
-
-      startTime = endTime.add(15, "minute");
-    })
-    return meetings;
-  };
-
-  useEffect(() => {
-    setMeetings(generateFakeMeetings());
-    setLoading(false);
-  }, [room]);
 
   useEffect(() => {
     let scrollInterval;

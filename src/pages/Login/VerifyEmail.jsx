@@ -6,6 +6,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import ebizLogo from "../../assets/Images/ebizlogo.png";
 import "./Login.css";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 
 const VerifyEmail = () => {
   const [otp, setOTP] = useState(["", "", "", "", "", ""]);
@@ -22,6 +23,7 @@ const VerifyEmail = () => {
 
   // If email is not in Redux, try to get it from localStorage
   useEffect(() => {
+    dispatch(showLoading());
     if (!verifyLoginEmail) {
       const savedEmail = localStorage.getItem("verifyLoginEmail");
       if (savedEmail) {
@@ -31,6 +33,7 @@ const VerifyEmail = () => {
         toast.error("Please login first");
       }
     }
+    dispatch(hideLoading());
   }, [verifyLoginEmail, dispatch, navigate]);
 
   // Handle paste functionality
@@ -81,6 +84,7 @@ const VerifyEmail = () => {
     }
 
     try {
+      dispatch(showLoading());
       const response = await axios.post(
         "/api/v1/user/verify-otp",
         { verifyLoginEmail, verificationCode },
@@ -92,13 +96,15 @@ const VerifyEmail = () => {
 
       if (response.data.success) {
         const fullname = response.data.data?.user?.fullname || "User";
-        navigate("/home",{ state: response.data?.data?.user?.isAdmin });
+        navigate("/home", { state: response.data?.data?.user?.isAdmin });
         // toast.success(`Welcome Back, ${fullname}`);
         toast.success(`${fullname}, You Have 4 New Meeting Notifications`);
         // Clear stored email after successful verification
         localStorage.removeItem("verifyLoginEmail");
       }
+      dispatch(hideLoading());
     } catch (error) {
+      dispatch(hideLoading());
       toast.error(error.response?.data?.message || "Wrong OTP");
     }
   };
@@ -113,6 +119,7 @@ const VerifyEmail = () => {
     console.log(verifyLoginEmail);
 
     try {
+      dispatch(showLoading());
       const response = await axios.post(
         "/api/v1/user/resend-otp",
         { email: verifyLoginEmail },
@@ -121,7 +128,7 @@ const VerifyEmail = () => {
           withCredentials: true,
         }
       );
-
+      
       if (response.data.success) {
         toast.success("OTP resent successfully");
         setIsResendDisabled(true);
@@ -129,7 +136,9 @@ const VerifyEmail = () => {
         setOTP(["", "", "", "", "", ""]);
         inputRefs.current[0]?.focus();
       }
+      dispatch(hideLoading());
     } catch (error) {
+      dispatch(hideLoading());
       toast.error(error.response?.data?.message || "Failed to resend OTP");
       setIsResendDisabled(false);
     }

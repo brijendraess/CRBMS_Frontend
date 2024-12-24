@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { PaperWrapper, RightContent } from "../../Style";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import PageHeader from "../../components/Common Components/PageHeader/PageHeader";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 
 const MeetingLogs = () => {
   const { user } = useSelector((state) => state.user);
 
   const [events, setEvents] = useState([]);
-
+  const dispatch = useDispatch();
   const columns = [
     { field: "subject", headerName: "Subject", width: 90 },
     { field: "agenda", headerName: "Agenda", width: 100 },
@@ -24,10 +26,11 @@ const MeetingLogs = () => {
   useEffect(() => {
     const fetchMeetings = async () => {
       try {
+        dispatch(showLoading());
         const endpoint = user?.isAdmin
           ? "/api/v1/meeting/get-all-meeting"
           : "/api/v1/meeting/get-all-my-meeting";
-console.log(endpoint)
+        console.log(endpoint);
         const response = await axios.get(endpoint, { withCredentials: true });
 
         const meetings =
@@ -46,7 +49,9 @@ console.log(endpoint)
         }));
 
         setEvents(formattedMeetings);
+        dispatch(hideLoading());
       } catch (error) {
+        dispatch(hideLoading());
         toast.error("Failed to fetch meetings");
         console.error("Error fetching meetings:", error);
       }
@@ -56,9 +61,9 @@ console.log(endpoint)
   }, [user?.isAdmin]);
 
   return (
-    <RightContent>
-      <PaperWrapper>
-        <h2>Meeting Logs</h2>
+    <PaperWrapper>
+      <PageHeader heading={"Meeting Logs"} />
+      <div style={{ display: "flex", flexDirection: "column" }}>
         <DataGrid
           rows={events}
           columns={columns}
@@ -66,8 +71,8 @@ console.log(endpoint)
           rowsPerPageOptions={[10, 20, 50]}
           rowHeight={50}
         />
-      </PaperWrapper>
-    </RightContent>
+      </div>
+    </PaperWrapper>
   );
 };
 

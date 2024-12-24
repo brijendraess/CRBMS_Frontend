@@ -18,12 +18,12 @@ const DetailRoom = () => {
     } catch (error) {
       setError("Failed to fetch room data.");
       console.error(error);
+      hideLoading();
     }
   };
 
   useEffect(() => {
     fetchData();
-    console.log("asda");
   }, [id]); // Add id to dependency array to refetch if it changes
 
   if (error) {

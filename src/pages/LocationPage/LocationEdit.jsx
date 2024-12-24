@@ -2,8 +2,15 @@ import { Box, Button, TextField } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 
-const LocationEdit = ({ id, locationName, onSuccess,setRefreshPage,setIsEditOpen }) => {
+const LocationEdit = ({
+  id,
+  locationName,
+  onSuccess,
+  setRefreshPage,
+  setIsEditOpen,
+}) => {
   const [formData, setFormData] = useState({
     name: locationName || "",
   });
@@ -22,16 +29,19 @@ const LocationEdit = ({ id, locationName, onSuccess,setRefreshPage,setIsEditOpen
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      showLoading();
       const response = await axios.put(`/api/v1/location/locations/${id}`, {
         name: formData.name,
       });
       toast.success("Location Updated Successfully");
-      setRefreshPage(Math.random())
-      setIsEditOpen(false)
+      setRefreshPage(Math.random());
+      setIsEditOpen(false);
       if (onSuccess) {
         onSuccess(response.data.data.location);
       }
+      hideLoading();
     } catch (error) {
+      hideLoading();
       const errorMessage =
         error.response?.data?.message || "Failed to update location!";
       toast.error(errorMessage);

@@ -16,7 +16,20 @@ const PopupModals = ({
   };
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="dialogWrapper" onClose={closeDialog}>
+      <Dialog
+        as="div"
+        className="dialogWrapper"
+        onClose={closeDialog}
+        style={{
+          height: {
+            xs: "500px",
+            sm: "500px",
+            md: "500px",
+            lg: "500px",
+            xl: "500px",
+          },
+        }}
+      >
         <Transition.Child
           as={Fragment}
           enter="dialogOverlay enter"

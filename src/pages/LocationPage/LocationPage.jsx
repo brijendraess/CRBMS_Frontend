@@ -21,6 +21,8 @@ import CustomButton from "../../components/Common Components/CustomButton/Custom
 import DeleteModal from "../../components/Common Components/Modals/Delete/DeleteModal";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import LocationCard from "./LocationCard";
+import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import PageHeader from "../../components/Common Components/PageHeader/PageHeader";
 
 const LocationPage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -35,6 +37,7 @@ const LocationPage = () => {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
+        showLoading();
         const response = await axios.get("/api/v1/location/locations");
         const locationWithSerial = response.data.data.locations.map(
           (location, index) => ({
@@ -43,7 +46,9 @@ const LocationPage = () => {
           })
         );
         setLocation(locationWithSerial);
+        hideLoading();
       } catch (error) {
+        hideLoading();
         toast.error("Something Went Wrong");
         console.error("Error fetching locations:", error);
       }
@@ -64,12 +69,14 @@ const LocationPage = () => {
 
   const handleDelete = async () => {
     try {
+      showLoading();
       await axios.delete(`/api/v1/location/locations/delete/${deleteId}`);
-
       handleClose(false);
       setRefreshPage(Math.random());
       toast.success("Location deleted successfully!");
+      hideLoading();
     } catch (error) {
+      hideLoading();
       toast.error("Failed to delete location!");
       console.error("Error deleting location:", error);
     }
@@ -89,6 +96,7 @@ const LocationPage = () => {
 
   const handleStatusChange = async (id) => {
     try {
+      showLoading();
       const response = await axios.patch(
         `/api/v1/location/locations/${id}/status`
       );
@@ -103,7 +111,9 @@ const LocationPage = () => {
       toast.success(
         `Location status changed to ${updatedLocation.status ? "Active" : "Inactive"}`
       );
+      hideLoading();
     } catch (error) {
+      hideLoading();
       console.error("Error changing status:", error);
       toast.error("Failed to change location status!");
     }
@@ -170,36 +180,12 @@ const LocationPage = () => {
 
   return (
     <PaperWrapper>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          marginBottom: "10px",
-        }}
-      >
-        <Typography
-          variant="h1"
-          component="h1"
-          sx={{
-            marginRight: "20px",
-            fontSize: "22px",
-            fontWeight: 500,
-            lineHeight: 1.5,
-            color: "#2E2E2E",
-          }}
-        >
-          Location
-        </Typography>
-        <CustomButton
-          onClick={() => setIsAddOpen(true)}
-          title={"Add New Room"}
-          placement={"left"}
-          Icon={AddOutlinedIcon}
-          fontSize={"medium"}
-          background={"rgba(3, 176, 48, 0.68)"}
-        />
-      </Box>
+      <PageHeader
+        heading={"Location"}
+        icon={AddOutlinedIcon}
+        title={"Add"}
+        func={setIsAddOpen}
+      />
       {isSmallScreen ? (
         <Grid2
           container
