@@ -77,13 +77,26 @@ const renderProgressBar = (params) => {
 };
 
 const columns = [
-  { field: "roomName", headerName: "Room Name", width: 200 },
-  { field: "roomLocation", headerName: "Room Location", width: 175 },
-  { field: "title", headerName: "Title", width: 150 },
+  { field: "subject", headerName: "Subject", width: 150 },
+  { field: "agenda", headerName: "Agenda", width: 100,
+    renderCell: (params) => {
+      // Hide cell content for specific rows
+      return params.row.private === true ? '---' : <span>{params.value}</span>;
+  },
+   },
+  { field: "notes", headerName: "Notes", width: 100,
+    renderCell: (params) => {
+      // Hide cell content for specific rows
+      return params.row.private === true ? '---' : <span>{params.value}</span>;
+  },
+   },
+  { field: "roomName", headerName: "Room", width: 200 },
+  { field: "roomLocation", headerName: "Location", width: 125 },
+  
   { field: "startTime", headerName: "Start Time", width: 125 },
   { field: "endTime", headerName: "End Time", width: 125 },
-  { field: "duration", headerName: "Duration", width: 150 },
-  { field: "organizerName", headerName: "Organizer", width: 175 },
+  { field: "duration", headerName: "Duration", width: 100 },
+  { field: "organizerName", headerName: "Organizer", width: 125 },
   {
     field: "progress",
     headerName: "Time Remaining",
@@ -96,6 +109,7 @@ const TodaysMeetings = () => {
   const [meetings, setMeetings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [todayDate, setTodayDate] = useState("");
+  const [refreshPage, setRefreshPage] = useState("");
   const [room, setRoom] = useState(null); 
   const gridRef = useRef(null);
   const dispatch = useDispatch();
@@ -115,7 +129,49 @@ const TodaysMeetings = () => {
 
   useEffect(() => {
       fetchData();
-    }, []);
+    }, [refreshPage]);
+
+    setTimeout(()=>{
+      setRefreshPage(Math.random())
+    },10000)
+
+  const generateFakeMeetings = () => {
+    const meetings = [];
+    const baseStartTime = "09:00:00";
+    const meetingDate = todayDate;
+
+
+    room?.map((meeting)=>{
+
+    let startTime = dayjs(`${meetingDate}T${meeting.startTime}`);
+      const endTime = dayjs(`${meetingDate}T${meeting.endTime}`);
+      const timeDiff = timeDifference(meeting?.startTime,meeting?.endTime)
+
+      meetings.push({
+        meetingId: meeting.id,
+        subject: meeting.subject,
+        agenda: meeting.agenda,
+        private: meeting.isPrivate,
+        notes: meeting.notes,
+        meetingDate: meetingDate,
+        startTime: startTime.format("HH:mm:ss"),
+        endTime: endTime.format("HH:mm:ss"),
+        duration: timeDiff,
+        roomName: meeting.Room.name,
+        roomLocation: meeting.Room.Location.locationName,
+        organizerName: meeting.User.fullname,
+        progress: Math.floor(Math.random() * 101),
+      });
+
+      startTime = endTime.add(15, "minute");
+    })
+    return meetings;
+  };
+
+  useEffect(() => {
+    setMeetings(generateFakeMeetings());
+    setLoading(false);
+  }, [room]);
 
   useEffect(() => {
     let scrollInterval;

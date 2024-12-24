@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Header.css";
 import { Link, useNavigate } from "react-router-dom";
 import unknownUser from "../../assets/Images/unknownUser.PNG";
@@ -34,6 +34,7 @@ import KeyOutlinedIcon from "@mui/icons-material/KeyOutlined";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import axios from "axios";
+import dayjs from "dayjs";
 import { MyContext } from "../Layout/Layout";
 
 // Notifications Menu Component
@@ -51,6 +52,8 @@ const Header = () => {
   const [menuAnchor, setMenuAnchor] = useState(null);
   const [notificationsAnchor, setNotificationsAnchor] = useState(null);
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const [notificationList, setNotificationList] = useState([]);
+  const [unReadCount,setUnReadCount]=useState(0);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isResetPasswordOpen, setIsResetPasswordOpen] = useState(false);
   const navigate = useNavigate();
@@ -84,6 +87,36 @@ const Header = () => {
     setIsFullScreen(!isFullScreen); // Toggle State
   };
 
+  useEffect(() => {
+    const fetchNotification = async () => {
+      try {
+        const endpoint = `/api/v1/notification/limited-notification`;
+        const response = await axios.get(endpoint, { withCredentials: true });
+        setUnReadCount(
+          response.data.notification?.filter((data) => data.isRead===false)?.length
+        )
+        setNotificationList(
+          response.data.notification?.map((data) => {
+            const timeDifference = dayjs().diff(dayjs(data?.createdAt), "hour");
+
+            return {
+              avatar: `${import.meta.env.VITE_API_URL}/${data?.User?.avatarPath}`,
+              name: data?.User?.fullname,
+              action: data?.type,
+              item: data?.message,
+              time: `${timeDifference} hours ago`,
+            };
+          })
+        );
+      } catch (error) {
+        toast.error("Failed to fetch Notification");
+        console.error("Error fetching Notification:", error);
+      }
+    };
+
+    fetchNotification();
+  }, []);
+
   // Logout Handler
   const handleLogout = async () => {
     try {
@@ -116,7 +149,6 @@ const Header = () => {
   const handleResetPassword = () => {
     setIsResetPasswordOpen(true);
   };
-
   return (
     <header>
       <div className="container-fluid w-100">
@@ -154,7 +186,7 @@ const Header = () => {
               onClick={handleMenuToggle(setNotificationsAnchor)}
             >
               <Tooltip title="Notification">
-                <Badge badgeContent={4} color="error">
+                <Badge badgeContent={unReadCount} color="error">
                   <NotificationsOutlinedIcon />
                 </Badge>
               </Tooltip>
@@ -245,10 +277,7 @@ const Header = () => {
           horizontal: "right",
         }}
       >
-        <NotificationsMenu
-          notifications={notifications}
-          onViewAll={() => alert("View All Notifications clicked!")}
-        />
+        <NotificationsMenu notifications={notificationList} unReadCount={unReadCount} />
       </Popover>
 
       <PopupModals

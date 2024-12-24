@@ -10,21 +10,24 @@ import ExtensionIcon from "@mui/icons-material/Extension";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import FoodBankOutlinedIcon from "@mui/icons-material/FoodBankOutlined";
+import FoodBankOutlinedIcon from '@mui/icons-material/FoodBankOutlined';
+import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
+import EventBusyOutlinedIcon from '@mui/icons-material/EventBusyOutlined';
 
-export {
-  LocationOnOutlinedIcon,
-  GroupsOutlinedIcon,
-  VisibilityOutlinedIcon,
-  CollectionsIcon,
-  Groups2OutlinedIcon,
-  EditOutlinedIcon,
-  CleaningServicesIcon,
-  ExtensionIcon,
-  DeleteIcon,
-  AddOutlinedIcon,
-  PhotoCameraIcon,
-  Visibility,
-  VisibilityOff,
-  FoodBankOutlinedIcon,
-};
+export {LocationOnOutlinedIcon,
+    GroupsOutlinedIcon,
+    VisibilityOutlinedIcon,
+    CollectionsIcon,
+    Groups2OutlinedIcon,
+    EditOutlinedIcon,
+    CleaningServicesIcon,
+    ExtensionIcon,
+    DeleteIcon,
+    AddOutlinedIcon,
+    PhotoCameraIcon,
+    Visibility,
+    VisibilityOff,
+    FoodBankOutlinedIcon,HistoryOutlinedIcon,
+    EventBusyOutlinedIcon
+
+}
