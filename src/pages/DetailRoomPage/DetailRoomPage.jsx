@@ -24,6 +24,7 @@ import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutli
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import { LocationOnOutlinedIcon } from "../../components/Common Components/CustomButton/CustomIcon";
 import { timeDifference } from "../../utils/utils";
+import BarCode from "../BarCodePage/BarCode";
 
 const ContentWrapper = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -37,7 +38,19 @@ const ContentWrapper = styled(Paper)(({ theme }) => ({
 }));
 
 const columns = [
-  { field: "title", headerName: "Title", width: 200 },
+  { field: "subject", headerName: "Subject", width: 150 },
+  { field: "agenda", headerName: "Agenda", width: 100,
+    renderCell: (params) => {
+      // Hide cell content for specific rows
+      return params.row.private === true ? '---' : <span>{params.value}</span>;
+  },
+   },
+  { field: "notes", headerName: "Notes", width: 100,
+    renderCell: (params) => {
+      // Hide cell content for specific rows
+      return params.row.private === true ? '---' : <span>{params.value}</span>;
+  },
+   },
   {
     field: "startTime",
     headerName: "Start Time",
@@ -123,6 +136,8 @@ const DetailRoomPage = () => {
   const { id } = useParams();
   const [room, setRoom] = useState(null);
   const [meeting, setMeeting] = useState([]);
+    const [refreshPage, setRefreshPage] = useState("");
+    const [urlData, setUrlData] = React.useState("Not Found");
   const navigate = useNavigate();
 
   const { user } = useSelector((state) => state.user);
@@ -132,7 +147,6 @@ const DetailRoomPage = () => {
       const response = await axios.get(`/api/v1/rooms/${id}`);
       setRoom(response.data.data.room[0]);
 
-      console.log(response.data.data.room[0]);
     } catch (error) {
       console.error(error);
     }
@@ -144,7 +158,10 @@ const DetailRoomPage = () => {
 
       return {
         id: meeting.id,
-        title: meeting.subject,
+        subject: meeting.subject,
+        agenda: meeting.agenda,
+        private: meeting.isPrivate,
+        notes: meeting.notes,
         startTime: meeting.startTime,
         endTime: meeting.endTime, // 45 minutes duration
         duration: timeDiff,
@@ -156,9 +173,15 @@ const DetailRoomPage = () => {
   };
   useEffect(() => {
     fetchData();
-  }, [id]);
+  }, [id,refreshPage]);
+
+  setTimeout(()=>{
+    setRefreshPage(Math.random())
+  },10000)
+
   useEffect(() => {
     getAllMeeting();
+    setUrlData(`${import.meta.env.VITE_APPLICATION_URL}/rooms/${room?.id}`)
   }, [id,room]);
   if (!room) {
     return <p>Loading...</p>;
@@ -203,7 +226,7 @@ const DetailRoomPage = () => {
             flexDirection: "column",
             gap: "20px",
             height: "30vh",
-            width: "33%",
+            width: "25%",
           }}
         >
           <Divider>
@@ -237,7 +260,7 @@ const DetailRoomPage = () => {
             flexDirection: "column",
             gap: "20px",
             height: "30vh",
-            width: "33%",
+            width: "25%",
           }}
         >
           <Divider>
@@ -258,6 +281,26 @@ const DetailRoomPage = () => {
             </div>
           </Box>
         </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "20px",
+            height: "30vh",
+            width: "25%",
+          }}
+        >
+          <Divider>
+            <Chip label="Bar Code" size="large" fontSize="20px" />
+          </Divider>
+          <Box justifyContent="center">
+            
+              <BarCode urlData={urlData} />
+             
+          </Box>
+        </Box>
+
         <Divider
           variant="fullWidth"
           orientation="vertical"
@@ -270,7 +313,7 @@ const DetailRoomPage = () => {
             flexDirection: "column",
             gap: "20px",
             height: "40vh",
-            width: "33%",
+            width: "25%",
           }}
         >
           <Divider>
@@ -331,6 +374,7 @@ const DetailRoomPage = () => {
             {room.description}
           </Typography>
         </Box>
+        
       </Box>
     </ContentWrapper>
   );

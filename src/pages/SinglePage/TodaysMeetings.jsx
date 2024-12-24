@@ -75,13 +75,26 @@ const renderProgressBar = (params) => {
 };
 
 const columns = [
-  { field: "roomName", headerName: "Room Name", width: 200 },
-  { field: "roomLocation", headerName: "Room Location", width: 175 },
-  { field: "title", headerName: "Title", width: 150 },
+  { field: "subject", headerName: "Subject", width: 150 },
+  { field: "agenda", headerName: "Agenda", width: 100,
+    renderCell: (params) => {
+      // Hide cell content for specific rows
+      return params.row.private === true ? '---' : <span>{params.value}</span>;
+  },
+   },
+  { field: "notes", headerName: "Notes", width: 100,
+    renderCell: (params) => {
+      // Hide cell content for specific rows
+      return params.row.private === true ? '---' : <span>{params.value}</span>;
+  },
+   },
+  { field: "roomName", headerName: "Room", width: 200 },
+  { field: "roomLocation", headerName: "Location", width: 125 },
+  
   { field: "startTime", headerName: "Start Time", width: 125 },
   { field: "endTime", headerName: "End Time", width: 125 },
-  { field: "duration", headerName: "Duration", width: 150 },
-  { field: "organizerName", headerName: "Organizer", width: 175 },
+  { field: "duration", headerName: "Duration", width: 100 },
+  { field: "organizerName", headerName: "Organizer", width: 125 },
   {
     field: "progress",
     headerName: "Time Remaining",
@@ -94,6 +107,7 @@ const TodaysMeetings = () => {
   const [meetings, setMeetings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [todayDate, setTodayDate] = useState("");
+  const [refreshPage, setRefreshPage] = useState("");
   const [room, setRoom] = useState(null); 
   const gridRef = useRef(null);
 
@@ -110,7 +124,11 @@ const TodaysMeetings = () => {
 
   useEffect(() => {
       fetchData();
-    }, []);
+    }, [refreshPage]);
+
+    setTimeout(()=>{
+      setRefreshPage(Math.random())
+    },10000)
 
   const generateFakeMeetings = () => {
     const meetings = [];
@@ -126,7 +144,10 @@ const TodaysMeetings = () => {
 
       meetings.push({
         meetingId: meeting.id,
-        title: meeting.subject,
+        subject: meeting.subject,
+        agenda: meeting.agenda,
+        private: meeting.isPrivate,
+        notes: meeting.notes,
         meetingDate: meetingDate,
         startTime: startTime.format("HH:mm:ss"),
         endTime: endTime.format("HH:mm:ss"),
