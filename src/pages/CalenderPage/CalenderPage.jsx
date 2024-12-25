@@ -19,7 +19,6 @@ import PopupModals from "../../components/Common Components/Modals/Popup/PopupMo
 import MeetingFormPostPone from "../MeetingPage/MeetingFormPostPone";
 import CancelMeetingModal from "../../components/Common Components/Modals/Delete/CancelMeetingModal";
 import MeetingFormEdit from "../MeetingPage/MeetingFormEdit";
-import { color } from "framer-motion";
 
 const CalenderPage = () => {
   const localizer = dayjsLocalizer(dayjs);
@@ -33,12 +32,12 @@ const CalenderPage = () => {
   const [isCancelBookingOpen, setIsCancelBookingOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [updatedBookingId, setUpdatedBookingId] = useState("");
-   const [isEditBookingOpen, setIsEditBookingOpen] = useState(false);
-   const [updatedRoomId, setUpdatedRoomId] = useState("");
+  const [isEditBookingOpen, setIsEditBookingOpen] = useState(false);
+  const [updatedRoomId, setUpdatedRoomId] = useState("");
   const [refreshPage, setRefreshPage] = useState(0);
   const [room, setRoom] = useState([]);
 
-    useEffect(() => {
+  useEffect(() => {
     const fetchMeetings = async () => {
       try {
         if (updatedBookingId) {
@@ -57,24 +56,21 @@ const CalenderPage = () => {
     };
 
     fetchMeetings();
-  }, [updatedBookingId,refreshPage]);
+  }, [updatedBookingId, refreshPage]);
 
   useEffect(() => {
     const fetchMeetings = async () => {
       try {
         showLoading();
-        // const endpoint = user?.isAdmin
-        //   ? "/api/v1/meeting/get-all-meeting"
-        //   : "/api/v1/meeting/get-all-my-meeting";
-
-        const endpoint = "/api/v1/meeting/get-all-my-meeting";
+        const endpoint = user?.isAdmin
+          ? "/api/v1/meeting/get-all-admin-meeting"
+          : "/api/v1/meeting/get-all-my-meeting";
 
         const response = await axios.get(endpoint, {
           withCredentials: true,
         });
         const meetings =
           response.data.data.myMeetings || response.data.data.meetings;
-
         const formattedEvents = meetings.map((meeting) => {
           const startDateTime = new Date(
             `${meeting.meetingDate}T${meeting.startTime}`
@@ -93,7 +89,7 @@ const CalenderPage = () => {
             organizerId: meeting.organizerId,
             roomId: meeting.roomId,
             bookingId: meeting.id,
-            isCanceled: meeting.status === "cancelled" ? true : false,
+            isCanceled: meeting.status,
           };
         });
 
@@ -122,11 +118,20 @@ const CalenderPage = () => {
   };
 
   const eventPropGetter = (event) => {
-    if (event.isCanceled) {
+    if (event.isCanceled === "cancelled") {
       return {
         style: {
           backgroundColor: "red",
           textDecoration: "line-through",
+          color: "white",
+        },
+      };
+    }
+    if (event.isCanceled === "pending") {
+      return {
+        style: {
+          backgroundColor: "yellow",
+          textDecoration: "none",
           color: "white",
         },
       };
@@ -136,21 +141,21 @@ const CalenderPage = () => {
 
   const handleEdit = (roomId, meetingId) => {
     setIsEditBookingOpen(true);
-    handleCloseModal()
+    handleCloseModal();
     setUpdatedRoomId(roomId);
     setUpdatedBookingId(meetingId);
   };
 
   const handlePostpone = (roomId, meetingId) => {
     setIsPostponeBookingOpen(true);
-    handleCloseModal()
+    handleCloseModal();
     setUpdatedRoomId(roomId);
     setUpdatedBookingId(meetingId);
   };
 
   const handleCancelMeeting = (roomId, meetingId) => {
     setIsCancelBookingOpen(true);
-    handleCloseModal()
+    handleCloseModal();
     setUpdatedRoomId(roomId);
     setUpdatedBookingId(meetingId);
   };
@@ -173,7 +178,7 @@ const CalenderPage = () => {
       console.error("Error cancelled meeting:", error);
     }
   };
-console.log(room,updatedBookingId)
+
   return (
     <PaperWrapper>
       <Calendar
@@ -200,7 +205,7 @@ console.log(room,updatedBookingId)
           maxWidth="sm"
           fullWidth
         >
-          <DialogTitle>Event Details</DialogTitle>
+          <DialogTitle>Meeting Details</DialogTitle>
           <DialogContent>
             <Typography variant="h6" gutterBottom>
               {selectedEvent.title}
@@ -224,47 +229,71 @@ console.log(room,updatedBookingId)
                 <strong>Organizer:</strong> {selectedEvent.organizer}
               </Typography>
             )}
+            {selectedEvent.isCanceled === "cancelled" && (
+              <Typography>
+                <strong>Status:</strong>{" "}
+                <Typography sx={{ color: "red", fontWeight: "bold" }}>
+                  Meeting cancelled.
+                </Typography>
+              </Typography>
+            )}
+            {selectedEvent.isCanceled === "pending" && (
+              <Typography>
+                <strong>Status:</strong>{" "}
+                <Typography sx={{ color: "yellow", fontWeight: "bold" }}>
+                  Meeting is pending now, Please asked admin to approve it.
+                </Typography>
+              </Typography>
+            )}
             {selectedEvent.description && (
               <Typography variant="body1">
                 <strong>Description:</strong> {selectedEvent.description}
               </Typography>
             )}
-            {selectedEvent.isCanceled && (
-             <Typography component="strong" sx={{ color: "#f00000", fontWeight: "bold" }}>
-             Meeting Cancelled
-           </Typography>
-            )}
-            {!selectedEvent.isCanceled&&<Box sx={{ display: "flex", gap: "5px" }}>
-              <Button
-                onClick={() =>
-                  handleCancelMeeting(selectedEvent.roomId, selectedEvent.bookingId)
-                }
-                variant="contained"
-                color="primary"
-                sx={{ mt: 2 }}
-              >
-                Cancel
-              </Button>
-              <Button
-               onClick={() => handlePostpone(selectedEvent.roomId, selectedEvent.bookingId)}
-                variant="contained"
-                color="primary"
-                sx={{ mt: 2 }}
-              >
-                Postpone
-              </Button>
-              {/* {user?.isAdmin && ( */}
-                <Button
-                onClick={() => handleEdit(selectedEvent.roomId, selectedEvent.bookingId)}
-                 
-                  variant="contained"
-                  color="primary"
-                  sx={{ mt: 2 }}
-                >
-                  Edit
-                </Button>
-              {/* )} */}
-            </Box>}
+
+            {!selectedEvent.isCanceled === "cancelled" ||
+              (!selectedEvent.isCanceled === "pending" && (
+                <Box sx={{ display: "flex", gap: "5px" }}>
+                  <Button
+                    onClick={() =>
+                      handleCancelMeeting(
+                        selectedEvent.roomId,
+                        selectedEvent.bookingId
+                      )
+                    }
+                    variant="contained"
+                    color="primary"
+                    sx={{ mt: 2 }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={() =>
+                      handlePostpone(
+                        selectedEvent.roomId,
+                        selectedEvent.bookingId
+                      )
+                    }
+                    variant="contained"
+                    color="primary"
+                    sx={{ mt: 2 }}
+                  >
+                    Postpone
+                  </Button>
+                  {/* {user?.isAdmin && ( */}
+                  <Button
+                    onClick={() =>
+                      handleEdit(selectedEvent.roomId, selectedEvent.bookingId)
+                    }
+                    variant="contained"
+                    color="primary"
+                    sx={{ mt: 2 }}
+                  >
+                    Edit
+                  </Button>
+                  {/* )} */}
+                </Box>
+              ))}
           </DialogContent>
         </Dialog>
       )}

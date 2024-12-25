@@ -59,6 +59,12 @@ export const adminSideBarData = [
     icon: BarChartOutlinedIcon,
     path: "/reports",
   },
+  {
+    id: 7,
+    name: "Meeting Logs",
+    icon: HistoryOutlinedIcon,
+    path: "/logs",
+  },
 ];
 
 export const userSideBarData = [

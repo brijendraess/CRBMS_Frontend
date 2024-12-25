@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -30,9 +30,11 @@ import {
   Groups2OutlinedIcon,
   GroupsOutlinedIcon,
   LocationOnOutlinedIcon,
+  QrCodeOutlinedIcon,
   VisibilityOutlinedIcon,
 } from "../Common Components/CustomButton/CustomIcon";
 import RoomFoodBeverages from "./RoomFoodBeverages";
+import BarCode from "../../pages/BarCodePage/BarCode";
 
 const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
   const navigate = useNavigate();
@@ -41,10 +43,12 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
   const [isBookNowOpen, setIsBookNowOpen] = useState(false);
   const [isAmenitiesOpen, setIsAmenitiesOpen] = useState(false);
   const [isFoodBeverageOpen, setIsFoodBeverageOpen] = useState(false);
+  const [isBarCodeOpen, setIsBarCodeOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const { user } = useSelector((state) => state.user);
+  const [urlData, setUrlData] = React.useState("Not Found");
   const handleCardClick = () => {
     navigate(`/rooms/${room.id}`);
   };
@@ -62,9 +66,14 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
   };
 
   const handleFoodBeverage = () => {
-    setIsFoodBeverageOpen(true);
+    setIsBarCodeOpen(true);
   };
 
+
+
+  const handleBarCode = () => {
+    setIsBarCodeOpen(true);
+  };
   const handleDeleteClose = () => {
     setIsDeleteOpen(false);
   };
@@ -96,6 +105,11 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
   const handleRoomEdit = () => {
     setIsEditOpen(true);
   };
+
+   useEffect(() => {
+      setUrlData(`${import.meta.env.VITE_BARCODE_URL}/rooms/${room?.id}`)
+    }, [room]);
+
   return (
     <>
       <Paper
@@ -303,6 +317,21 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
                 <FoodBankOutlinedIcon color="white" className="cursor" />
               </Button>
               <Button
+                fullWidth
+                variant="contained"
+                title="Barcode"
+                onClick={handleBarCode}
+                sx={{
+                  background: "white",
+                  color: "black",
+                  flex: 1,
+                  minWidth: "45px",
+                }}
+                size="small"
+              >
+                <QrCodeOutlinedIcon color="white" className="cursor" />
+              </Button>
+              <Button
                 variant="contained"
                 title="Edit Room"
                 onClick={handleRoomEdit}
@@ -375,6 +404,13 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
         setIsOpen={setIsFoodBeverageOpen}
         title={"Room Food & Beverage"}
         modalBody={<RoomFoodBeverages room={room} />}
+      />
+
+<PopupModals
+        isOpen={isBarCodeOpen}
+        setIsOpen={setIsBarCodeOpen}
+        title={"Room Barcode"}
+        modalBody={<BarCode urlData={urlData} />}
       />
       <PopupModals
         isOpen={isEditOpen}

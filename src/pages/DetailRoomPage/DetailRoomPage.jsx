@@ -188,7 +188,7 @@ const DetailRoomPage = () => {
 
   useEffect(() => {
     getAllMeeting();
-    setUrlData(`${import.meta.env.VITE_APPLICATION_URL}/rooms/${room?.id}`)
+    setUrlData(`${import.meta.env.VITE_BARCODE_URL}/rooms/${room?.id}`)
   }, [id,room]);
   if (!room) {
     return <Loader />;
