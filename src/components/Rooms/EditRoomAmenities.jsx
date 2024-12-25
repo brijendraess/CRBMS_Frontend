@@ -62,8 +62,8 @@ const EditRoomAmenities = ({
     const fetchAmenities = async () => {
       try {
         showLoading();
-        const response = await axios.get("api/v1/amenity/get-all-amenities");
-        const amenities = response.data.data.roomAmenities.map((amenity) => {
+        const response = await axios.get("api/v1/amenity/get-all-active-amenities");
+        const amenities = response.data.data.result.map((amenity) => {
           return { id: amenity.id, label: amenity.name };
         });
         setAmenitiesList(amenities);

@@ -13,6 +13,8 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import FoodBankOutlinedIcon from '@mui/icons-material/FoodBankOutlined';
 import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
 import EventBusyOutlinedIcon from '@mui/icons-material/EventBusyOutlined';
+import ApprovalOutlinedIcon from '@mui/icons-material/ApprovalOutlined';
+import QrCodeOutlinedIcon from '@mui/icons-material/QrCodeOutlined';
 
 export {LocationOnOutlinedIcon,
     GroupsOutlinedIcon,
@@ -27,7 +29,10 @@ export {LocationOnOutlinedIcon,
     PhotoCameraIcon,
     Visibility,
     VisibilityOff,
-    FoodBankOutlinedIcon,HistoryOutlinedIcon,
-    EventBusyOutlinedIcon
+    FoodBankOutlinedIcon,
+    HistoryOutlinedIcon,
+    EventBusyOutlinedIcon,
+    ApprovalOutlinedIcon,
+    QrCodeOutlinedIcon
 
 }

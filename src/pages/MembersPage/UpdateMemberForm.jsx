@@ -40,7 +40,7 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
         dispatch(showLoading());
         const [userResponse, committeesResponse] = await Promise.all([
           axios.get(`/api/v1/user/${id}`),
-          axios.get("/api/v1/committee/committees"),
+          axios.get("/api/v1/committee/active-committee"),
         ]);
 
         const userData = userResponse.data.data;

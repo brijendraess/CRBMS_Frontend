@@ -36,7 +36,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
     const fetchCommittees = async () => {
       try {
         dispatch(showLoading());
-        const response = await axios.get("/api/v1/committee/committees");
+        const response = await axios.get("/api/v1/committee/active-committee");
         setCommittees(response.data.data.committees || []); // Store committees
         dispatch(hideLoading());
       } catch (error) {
