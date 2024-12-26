@@ -8,12 +8,7 @@ import {
   Switch,
   Typography,
 } from "@mui/material";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
-import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
-import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
+import { AdminPanelSettingsOutlinedIcon, BadgeOutlinedIcon, DeleteOutlineOutlinedIcon, EditOutlinedIcon, LocalPhoneOutlinedIcon, MailOutlinedIcon, RemoveRedEyeIcon } from "../Common Components/CustomButton/CustomIcon";
 import CustomButton from "../Common Components/CustomButton/CustomButton";
 
 const UserCard = ({
@@ -88,6 +83,22 @@ const UserCard = ({
               sx={{ marginBottom: "6px" }}
             />
             {user.phoneNumber}
+          </Typography>
+          <Typography
+            variant="body2"
+            component="div"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              fontSize: "14px",
+            }}
+          >
+            <AdminPanelSettingsOutlinedIcon
+            fontSize="small"
+            sx={{ marginBottom: "6px" }}
+             />
+            {user.isAdmin}
           </Typography>
         </CardContent>
       </CardActionArea>

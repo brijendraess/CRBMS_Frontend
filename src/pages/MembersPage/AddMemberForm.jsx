@@ -5,8 +5,6 @@ import {
   MenuItem,
   Avatar,
   IconButton,
-  Paper,
-  styled,
   Autocomplete,
   InputAdornment,
 } from "@mui/material";
@@ -162,7 +160,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
             size="small"
             style={{
               flex: 1,
-              "& .MuiOutlinedInput-root": {
+              "& .MuiOutlinedInputRoot": {
                 paddingRight: "0",
               },
             }}

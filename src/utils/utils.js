@@ -56,4 +56,25 @@ const fetchActiveCommittee = async (toast, setCommitteeList) => {
   }
 };
 
-export { checkFileExists, getFormattedDate, timeDifference, fetchUsers,fetchActiveCommittee };
+const validateImage = (file) => {
+  // Allowed image types
+  const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+
+  // Max file size (2MB)
+  const maxSize = 2 * 1024 * 1024; // 2MB in bytes
+
+  // Check file type
+  if (!allowedTypes.includes(file.type)) {
+    return "Only JPEG, PNG, GIF, and WEBP images are allowed.";
+  }
+
+  // Check file size
+  if (file.size > maxSize) {
+    return "Image must be smaller than 2MB.";
+  }
+
+  return null;
+};
+
+
+export { checkFileExists, getFormattedDate, timeDifference, fetchUsers,fetchActiveCommittee,validateImage };

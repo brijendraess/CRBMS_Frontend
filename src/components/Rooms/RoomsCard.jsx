@@ -66,7 +66,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
   };
 
   const handleFoodBeverage = () => {
-    setIsBarCodeOpen(true);
+    setIsFoodBeverageOpen(true);
   };
 
 

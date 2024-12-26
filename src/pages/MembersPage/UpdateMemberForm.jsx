@@ -7,16 +7,19 @@ import {
   Paper,
   styled,
   Autocomplete,
-  Chip,
+  Avatar,
+  IconButton,
+  MenuItem,
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useParams } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { PopContent } from "../../Style";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import { PhotoCameraIcon } from "../../components/Common Components/CustomButton/CustomIcon";
+import { validateImage } from "../../utils/utils";
 
 const FormWrapper = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -32,6 +35,8 @@ const FormWrapper = styled(Paper)(({ theme }) => ({
 const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
   //const { id } = useParams();
   const [availableCommittees, setAvailableCommittees] = useState([]);
+  const [profileImagePreview, setProfileImagePreview] = useState(null);
+  const [profileImageError, setProfileImageError] = useState("");
   const [userCommittees, setUserCommittees] = useState([]);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -42,7 +47,7 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
           axios.get(`/api/v1/user/${id}`),
           axios.get("/api/v1/committee/active-committee"),
         ]);
-
+        console.log(userResponse.data.data);
         const userData = userResponse.data.data;
         const committees = committeesResponse.data.data.committees || [];
         setAvailableCommittees(committees);
@@ -59,10 +64,14 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
           fullname: userData.fullname,
           email: userData.email,
           phoneNumber: userData.phoneNumber,
+          isAdmin: userData.isAdmin,
           committees: userCommitteeObjects,
         });
 
         setUserCommittees(userCommitteeObjects);
+        setProfileImagePreview(
+          `${import.meta.env.VITE_API_URL}/${userData?.avatarPath}`
+        );
         dispatch(hideLoading());
       } catch (error) {
         dispatch(hideLoading());
@@ -70,7 +79,7 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
         console.error("Error fetching data:", error);
       }
     };
-
+    
     fetchUserData();
   }, [id]);
 
@@ -79,6 +88,7 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
       fullname: "",
       email: "",
       phoneNumber: "",
+      isAdmin: "",
       committees: [],
     },
     validationSchema: Yup.object({
@@ -95,25 +105,27 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
         .required("Select at least one committee"),
     }),
     onSubmit: async (values) => {
+      console.log("Form Submitted:", values);
       try {
         dispatch(showLoading());
         // Extract committee IDs
         const committeeIds = values.committees.map((committee) => committee.id);
 
         // Create payload object
-        const payload = {
-          fullname: values.fullname,
-          email: values.email,
-          phoneNumber: values.phoneNumber,
-          committees: committeeIds,
-        };
+        const formData = new FormData();
+        formData.append("fullname", values.fullname);
+        formData.append("email", values.email);
+        formData.append("phoneNumber", values.phoneNumber);
+        formData.append("isAdmin", values.isAdmin);
+        formData.append("committees", committeeIds);
+        if (values.profileImage) formData.append("profileImage", values.profileImage);
 
         const response = await axios.put(
           `/api/v1/user/update-profile/${id}`,
-          payload, // Send as JSON
+          formData,
           {
             headers: {
-              "Content-Type": "application/json",
+              "Content-Type": "multipart/form-data",
             },
           }
         );
@@ -129,6 +141,28 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
       }
     },
   });
+
+  const handleProfileImageChange = (event) => {
+    const file = event.currentTarget.files[0];
+    if (file) {
+      // Reset previous error
+      setProfileImageError("");
+
+      // Validate image
+      const validationError = validateImage(file);
+
+      if (validationError) {
+        // Set error and clear image
+        setProfileImageError(validationError);
+        setProfileImagePreview(null);
+        formik.setFieldValue("profileImage", "");
+        return;
+      }
+      // If validation passes
+      formik.setFieldValue("profileImage", file);
+      setProfileImagePreview(URL.createObjectURL(file));
+    }
+  };
 
   return (
     <PopContent>
@@ -170,6 +204,24 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
           fullWidth
           size="small"
         />
+
+        <TextField
+          label="Role"
+          name="isAdmin"
+          fullWidth
+          select
+          value={formik.values.isAdmin}
+          onChange={(event) => {
+            formik.setFieldValue("isAdmin", event.target.value === "true");
+          }}
+          error={formik.touched.isAdmin && Boolean(formik.errors.isAdmin)}
+          helperText={formik.touched.isAdmin && formik.errors.isAdmin}
+          style={{ marginRight: 8, flex: 1 }}
+          size="small"
+        >
+          <MenuItem value="false">User</MenuItem>
+          <MenuItem value="true">Admin</MenuItem>
+        </TextField>
 
         <Autocomplete
           disableCloseOnSelect
@@ -217,7 +269,43 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
             </li>
           )}
         />
+        {/* AVatar */}
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-around"
+          mt={2}
+          mb={2}
+        >
+          <Avatar
+            sx={{ width: 75, height: 75 }}
+            src={profileImagePreview}
+            alt="Profile Image Preview"
+          />
+          <input
+            accept="image/*"
+            style={{ display: "none" }}
+            id="profile-image-upload"
+            type="file"
+            onChange={handleProfileImageChange}
+          />
+          <label htmlFor="profile-image-upload">
+            <IconButton component="span" color="primary">
+              <PhotoCameraIcon fontSize="medium" />
+            </IconButton>
+          </label>
+        </Box>
 
+        {profileImageError && (
+          <Typography
+            color="error"
+            variant="body2"
+            align="center"
+            style={{ marginBottom: 16 }}
+          >
+            {profileImageError}
+          </Typography>
+        )}
         <Box mt={2} display="flex" justifyContent="flex-end">
           <Button type="submit" variant="contained" color="primary">
             Update Profile
