@@ -82,9 +82,9 @@ const CommitteeManagementMUI = () => {
             <Select
               labelId="filter-select-label"
               id="filter-select"
-              value={filter} // Controlled filter state
+              value={filter}
               label="Show"
-              onChange={(e) => setFilter(e.target.value)} // Update filter state
+              onChange={(e) => setFilter(e.target.value)}
               size="small"
             >
               <MenuItem value="all">All</MenuItem>
@@ -102,7 +102,11 @@ const CommitteeManagementMUI = () => {
             position: "relative",
             top: "10px",
             alignItems: "center",
-            justifyContent: "center",
+            justifyContent: {
+              xs: "center",
+              sm: "center",
+              md: "start",
+            },
           }}
         >
           {filteredCommittees.map((committee) => (

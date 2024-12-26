@@ -176,10 +176,14 @@ const MembersPage = () => {
       headerName: "Action",
       renderCell: (params) => (
         <div style={{ display: "flex", gap: "10px" }}>
-          <Tooltip title="Edit">
+          <Tooltip title="Update">
             <EditOutlinedIcon
               className="cursor"
               color="success"
+<<<<<<< HEAD
+=======
+              title="Update"
+>>>>>>> 6bcc7c7007046e6852f45813450029ff7427c0a0
               onClick={() => handleEdit(params.id)}
             />
           </Tooltip>

@@ -19,7 +19,7 @@
   width: 85%;
   flex: 0 0 85%;
   transition: all 0.3s ease-in-out;
-} 
+}
 
 .contentToggle {
   width: calc(100% - 60px);
@@ -33,13 +33,10 @@
   /* position: fixed; */
 }
 @media (max-width: 768px) {
-  .sidebarWrapper {
-    width: 0;
-    display: none;
-  }
   .content {
     width: 100%;
     flex: 0 0 100%;
+    position: fixed;
   }
   .contentToggle {
     width: 100%;

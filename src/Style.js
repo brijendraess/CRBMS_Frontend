@@ -31,7 +31,7 @@ export const RightContent = styled("div")(({ theme }) => ({
 export const PaperWrapper = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
   borderRadius: "10px",
-  padding: "15px",
+  padding: "10px",
   marginTop: "10px",
   width: "100%",
   height: `calc(100vh - 75px)`,

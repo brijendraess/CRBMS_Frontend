@@ -1,4 +1,4 @@
-.wrapper {
+.carouselAndDataGridWrapper {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -6,94 +6,9 @@
   align-items: start;
   justify-content: center;
   padding: 10px;
+  height: 60%;
 }
-
-.imageWrapper {
-  flex: 1;
-  width: 40%;
-}
-
-.tableWrapper {
-  flex: 1;
-  width: 60%;
-}
-
-.infoWrapper {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0px;
-}
-.infoWrapper h2 {
-  margin: 0px;
-  padding: 0px;
-}
-.infoWrapper p {
-  margin: 0px;
-  line-height: 30px;
-}
-
-.infoWrapper ul {
-  list-style-type: none;
-  margin: 0px;
-  padding: 0px;
-}
-.infoWrapper ul li {
-  margin: 0px;
-  padding: 0px;
-  line-height: 30px;
-}
-
 img {
   width: 100%;
-  /* height: 400px; */
-  /* object-fit: cover; */
-  border-radius: 5% 5% 5% 5%;
-}
-
-.buttonWrapper {
-  display: flex;
-  justify-content: space-between;
-}
-.checkButtonWrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-.timeWrapper {
-  display: flex;
-  gap: 5px;
-}
-
-.marquee {
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-  height: 50px;
-  /* background: #f5f5f5; */
   border-radius: 20px;
-  display: flex;
-  align-items: center;
 }
-
-.marquee-content {
-  display: flex;
-  width: 100%;
-  gap: 10px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-
-  /* position: absolute; */
-  /* animation: marquee-scroll 10s linear infinite alternate-reverse; */
-  white-space: nowrap;
-}
-/* 
-@keyframes marquee-scroll {
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-} */

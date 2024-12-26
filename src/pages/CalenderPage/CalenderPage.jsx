@@ -11,6 +11,8 @@ import {
   Typography,
   Button,
   Box,
+  Paper,
+  styled,
 } from "@mui/material";
 import "./CalendarPage.css";
 import { PaperWrapper } from "../../Style";
@@ -19,6 +21,20 @@ import PopupModals from "../../components/Common Components/Modals/Popup/PopupMo
 import MeetingFormPostPone from "../MeetingPage/MeetingFormPostPone";
 import CancelMeetingModal from "../../components/Common Components/Modals/Delete/CancelMeetingModal";
 import MeetingFormEdit from "../MeetingPage/MeetingFormEdit";
+
+const CalenderWrapper = styled(Paper)(({ theme }) => ({
+  color: theme.palette.text.secondary,
+  borderRadius: "10px",
+  padding: "10px",
+  marginTop: "10px",
+  width: "100%",
+  height: `calc(100vh - 75px)`,
+  overflow: "scroll",
+  [theme.breakpoints.down("md")]: {
+    height: "100vh",
+    marginTop: "0px",
+  },
+}));
 
 const CalenderPage = () => {
   const localizer = dayjsLocalizer(dayjs);
@@ -178,9 +194,8 @@ const CalenderPage = () => {
       console.error("Error cancelled meeting:", error);
     }
   };
-
   return (
-    <PaperWrapper>
+    <CalenderWrapper>
       <Calendar
         localizer={localizer}
         events={events}
@@ -323,7 +338,7 @@ const CalenderPage = () => {
         button={"Cancel meeting"}
         title="meeting"
       />
-    </PaperWrapper>
+    </CalenderWrapper>
   );
 };
 
