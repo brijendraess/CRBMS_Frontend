@@ -75,7 +75,10 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
         .email("Invalid email format")
         .required("Email is required"),
       role: Yup.boolean().required("Role is required"),
-      phoneNumber: Yup.string().required("Phone number is required"),
+      phoneNumber: Yup.string()
+        .matches(/^\d+$/, "Phone number must contain only digits")
+        .required("Phone number is required")
+        .length(10, "Phone number must be 10 digits"),
       password: Yup.string().required("Password is required"),
       committee: Yup.array()
         .of(Yup.string().required("Committee ID is required"))
@@ -91,7 +94,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
         formData.append("role", values.role);
         formData.append("phoneNumber", values.phoneNumber);
         formData.append("password", values.password);
-        formData.append("committee", JSON.stringify(values.committee)); // Stringify the array
+        formData.append("committee", JSON.stringify(values.committee));
         console.log(formData);
         if (values.avatar) {
           formData.append("avatar", values.avatar);
@@ -117,7 +120,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
       }
     },
   });
-  console.log(committees);
+
   return (
     <PopContent>
       <Box component="form" onSubmit={formik.handleSubmit}>
@@ -163,17 +166,19 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
                 paddingRight: "0",
               },
             }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
+            slotProps={{
+              input: {
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              },
             }}
           />
         </Box>
@@ -185,7 +190,9 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
             name="role"
             select
             value={formik.values.role}
-            onChange={formik.handleChange}
+            onChange={(event) => {
+              formik.setFieldValue("role", event.target.value === "true");
+            }}
             error={formik.touched.role && Boolean(formik.errors.role)}
             helperText={formik.touched.role && formik.errors.role}
             style={{ marginRight: 8, flex: 1 }}
@@ -194,6 +201,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
             <MenuItem value="false">User</MenuItem>
             <MenuItem value="true">Admin</MenuItem>
           </TextField>
+
           <TextField
             label="Phone Number"
             name="phoneNumber"

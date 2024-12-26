@@ -4,23 +4,16 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import {
   Box,
-  Chip,
-  Divider,
   Paper,
   styled,
   LinearProgress,
   Typography,
   Button,
-  Tooltip,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useDispatch, useSelector } from "react-redux";
-import dayjs from "dayjs";
 import Carousel from "../../components/Carousel/Carousel";
 import GroupsIcon from "@mui/icons-material/Groups";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
-import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import { LocationOnOutlinedIcon } from "../../components/Common Components/CustomButton/CustomIcon";
 import { timeDifference } from "../../utils/utils";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
@@ -146,7 +139,7 @@ const renderProgressBar = (params) => {
   );
 };
 
-const DetailRoomPage = () => {
+const TabScreenDetailPage = () => {
   const { id } = useParams();
   const [room, setRoom] = useState(null);
   const [meeting, setMeeting] = useState([]);
@@ -199,14 +192,22 @@ const DetailRoomPage = () => {
 
   useEffect(() => {
     getAllMeeting();
-    setUrlData(`${import.meta.env.VITE_BARCODE_URL}/rooms/${room?.id}`);
+    setUrlData(`${import.meta.env.VITE_APPLICATION_URL}/rooms/${room?.id}`);
   }, [id, room]);
   if (!room) {
     return <Loader />;
   }
 
   return (
-    <PaperWrapper sx={{ display: "flex", gap: "5px", flexDirection: "column" }}>
+    <PaperWrapper
+      sx={{
+        display: "flex",
+        gap: "5px",
+        flexDirection: "column",
+        height: "100vh",
+        marginTop: "0",
+      }}
+    >
       <Typography
         variant="h5"
         component="h5"
@@ -218,16 +219,13 @@ const DetailRoomPage = () => {
       <Box
         sx={{
           display: "flex",
-          gap: {
-            xs: "20px",
-            sm: "20px",
-            md: "10px",
-          },
+          gap: "5px",
           flexDirection: {
             xs: "column-reverse",
             sm: "column-reverse",
             md: "row",
           },
+          height: "100%",
         }}
       >
         <Box
@@ -235,7 +233,7 @@ const DetailRoomPage = () => {
             display: "flex",
             gap: "20px",
             flexDirection: "column",
-            height: "80vh",
+            height: "100%",
             width: {
               xs: "100%",
               sm: "100%",
@@ -243,11 +241,13 @@ const DetailRoomPage = () => {
             },
           }}
         >
-          <Carousel
-            height={"300px"}
-            roomImagesForCarousel={room?.RoomGalleries}
-          />
-          <BoxWrapper style={{ width: "100%" }}>
+          <Box style={{ width: "100%", height: "50%" }}>
+            <Carousel
+              height={"400px"}
+              roomImagesForCarousel={room?.RoomGalleries}
+            />
+          </Box>
+          <BoxWrapper style={{ width: "100%", height: "47%" }}>
             <Box
               sx={{
                 display: "flex",
@@ -350,26 +350,17 @@ const DetailRoomPage = () => {
               </Wrapper>
             </Box>
           </BoxWrapper>
-          {!user.isAdmin && (
-            <Box>
-              <Button variant="contained">Book Now</Button>
-            </Box>
-          )}
         </Box>
         <Box
           sx={{
             display: "flex",
             gap: "20px",
             flexDirection: "column",
-            height: "80vh",
-            width: {
-              xs: "100%",
-              sm: "100%",
-              md: "60%",
-            },
+            height: "92vh",
+            width: "60%",
           }}
         >
-          <Box sx={{ width: "100%", height: "80vh" }}>
+          <Box sx={{ width: "100%", height: "92vh" }}>
             <DataGrid
               rows={meeting}
               columns={columns}
@@ -411,4 +402,4 @@ const DetailRoomPage = () => {
   );
 };
 
-export default DetailRoomPage;
+export default TabScreenDetailPage;

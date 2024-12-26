@@ -30,12 +30,13 @@ import ReportPage from "./pages/ReportPage/ReportPage";
 import FoodBeveragePage from "./pages/FoodBeverages/FoodBeveragesPage";
 import Notification from "./pages/Notification/NotificationPage";
 import Outlook from "./pages/Outlook/Outlook";
+import TabScreenDetailPage from "./pages/DetailRoomPage/TabScreenDetailPage";
 
 const AppRouter = () => {
   return (
     <Routes>
-      <Route path="/rooms/:id" element={<DetailRoomPage />} />
       <Route path="/meetings/today" element={<TodaysMeetings />} />
+      <Route path="/room-tab/:id" element={<TabScreenDetailPage />} />
       <Route
         path="/login"
         element={
@@ -106,11 +107,11 @@ const AppRouter = () => {
           path="/view-committee/:committeeId"
           element={<CommitteeMemberList />}
         />
-         <Route path="/callback" element={<Outlook />} />
+        <Route path="/callback" element={<Outlook />} />
         <Route path="/view/:id" element={<ViewMember />} />
         <Route path="/notification-all" element={<Notification />} />
         <Route path="/outlook" element={<Notification />} />
-       
+        <Route path="/rooms/:id" element={<DetailRoomPage />} />
       </Route>
     </Routes>
   );

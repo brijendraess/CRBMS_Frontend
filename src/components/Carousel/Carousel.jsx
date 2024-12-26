@@ -6,7 +6,7 @@ import "swiper/css/effect-fade"; // Import fade effect styles
 import { Autoplay, Pagination, EffectCards } from "swiper/modules";
 import "./Carousel.css";
 
-const Carousel = ({ roomImagesForCarousel }) => {
+const Carousel = ({ roomImagesForCarousel, height }) => {
   const progressCircle = useRef(null);
   const progressContent = useRef(null);
 
@@ -39,7 +39,7 @@ const Carousel = ({ roomImagesForCarousel }) => {
       modules={[Autoplay, Pagination, EffectCards]}
       style={{
         width: "100%",
-        height: "400px",
+        height: height,
       }}
     >
       {roomImagesForCarousel.map((item, index) => (
