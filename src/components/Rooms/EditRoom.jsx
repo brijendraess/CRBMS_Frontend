@@ -4,11 +4,8 @@ import {
   Button,
   TextField,
   Typography,
-  MenuItem,
   Avatar,
   IconButton,
-  Paper,
-  styled,
   Autocomplete,
   FormControlLabel,
   Switch,
@@ -109,7 +106,7 @@ const EditRoomForm = ({ room, setRefreshPage, setIsEditOpen }) => {
       description: Yup.string(),
     }),
     onSubmit: async (values, { resetForm }) => {
-      console.log("Form Submitted:", values);
+      //console.log("Form Submitted:", values);
       try {
         dispatch(showLoading());
         const formData = new FormData();
@@ -123,13 +120,13 @@ const EditRoomForm = ({ room, setRefreshPage, setIsEditOpen }) => {
         formData.append("isAvailable", isAvailable);
         if (values.roomImage) formData.append("roomImage", values.roomImage);
 
-        const response = await axios.put(
+        await axios.put(
           `api/v1/rooms/edit-room/${room.id}`,
           formData,
           {
             withCredentials: true,
             headers: {
-              "Content-Type": "application/json", // Explicitly set content type
+              "Content-Type": "multipart/form-data", 
             },
           }
         );
@@ -165,7 +162,6 @@ const EditRoomForm = ({ room, setRefreshPage, setIsEditOpen }) => {
         formik.setFieldValue("roomImage", "");
         return;
       }
-
       // If validation passes
       formik.setFieldValue("roomImage", file);
       setRoomImagePreview(URL.createObjectURL(file));
@@ -260,8 +256,6 @@ const EditRoomForm = ({ room, setRefreshPage, setIsEditOpen }) => {
           type="number"
           value={formik.values.tolerancePeriod}
           onChange={formik.handleChange}
-          // error={formik.touched.Sanitation Time && Boolean(formik.errors.Sanitation Time)}
-          // helperText={formik.touched.Sanitation Time && formik.errors.Sanitation Time}
           size="small"
           style={{ marginRight: 8, flex: 1 }}
         />
@@ -297,7 +291,6 @@ const EditRoomForm = ({ room, setRefreshPage, setIsEditOpen }) => {
         error={formik.touched.description && Boolean(formik.errors.description)}
         helperText={formik.touched.description && formik.errors.description}
         size="small"
-        // style={{ flex: 1 }}
         multiline
         rows={3}
         fullWidth
@@ -322,12 +315,12 @@ const EditRoomForm = ({ room, setRefreshPage, setIsEditOpen }) => {
           style={{ display: "none" }}
           id="room-image-upload"
           type="file"
+          onChange={handleRoomImageChange}
         />
         <label htmlFor="room-image-upload">
           <IconButton component="span" color="primary">
             <PhotoCameraIcon
               fontSize="medium"
-              onChange={handleRoomImageChange}
             />
           </IconButton>
         </label>

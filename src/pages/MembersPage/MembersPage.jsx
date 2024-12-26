@@ -180,7 +180,10 @@ const MembersPage = () => {
             <EditOutlinedIcon
               className="cursor"
               color="success"
+<<<<<<< HEAD
+=======
               title="Update"
+>>>>>>> 6bcc7c7007046e6852f45813450029ff7427c0a0
               onClick={() => handleEdit(params.id)}
             />
           </Tooltip>

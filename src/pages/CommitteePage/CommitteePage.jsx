@@ -26,7 +26,6 @@ const CommitteeManagementMUI = () => {
     try {
       showLoading();
       const response = await axios.get("/api/v1/committee/committees");
-      console.log(response.data.data);
       if (response.data?.data?.committees) {
         setCommitteeData(response.data.data.committees);
       } else {
