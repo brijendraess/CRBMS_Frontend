@@ -14,10 +14,11 @@ const ReportPage = () => {
     amenities: 0,
     food: 0,
     rooms: 0,
-    // meetings: 0,
     activeCommittees: 0,
     inactiveCommittees: 0,
   });
+  const [meetingCount, setMeetingCount] = useState(0);
+  const [selectedOption, setSelectedOption] = useState("Today");
   const dispatch = useDispatch();
   const fetchCounts = async () => {
     try {
@@ -27,17 +28,14 @@ const ReportPage = () => {
         axios.get("/api/v1/report/amenity-count"),
         axios.get("/api/v1/report/food-count"),
         axios.get("/api/v1/report/room-count"),
-        // axios.get("/api/v1/report/meeting-count"),
         axios.get("/api/v1/report/active-committee-count"),
         axios.get("/api/v1/report/inactive-committee-count"),
       ]);
-
       const [
         userCount,
         amenityCount,
         foodCount,
         roomCount,
-        // meetingCount,
         activeCommitteeCount,
         inactiveCommitteeCount,
       ] = results;
@@ -59,7 +57,6 @@ const ReportPage = () => {
           roomCount.status === "fulfilled"
             ? roomCount.value.data.data.count || 0
             : 0,
-        // meetings: meetingCount.status === "fulfilled" ? meetingCount.value.data.data.count || 0 : 0,
         activeCommittees:
           activeCommitteeCount.status === "fulfilled"
             ? activeCommitteeCount.value.data.data.count || 0
@@ -76,6 +73,33 @@ const ReportPage = () => {
     }
   };
 
+  const handleOptionSelect = async (option) => {
+    setSelectedOption(option);
+    try {
+      let queryParam = "";
+      switch (option) {
+        case "Today":
+          queryParam = "?filter=today";
+          break;
+        case "This Week":
+          queryParam = "?filter=this_week";
+          break;
+        case "This Month":
+          queryParam = "?filter=this_month";
+          break;
+        default:
+          queryParam = "?filter=today";
+      }
+
+      const response = await axios.get(
+        `/api/v1/report/meeting-count${queryParam}`
+      );
+      setMeetingCount(response.data.data.count || 0);
+      console.log(response.data.data);
+    } catch (error) {
+      console.error("Error fetching meeting count:", error);
+    }
+  };
   useEffect(() => {
     fetchCounts();
   }, []);
@@ -106,18 +130,20 @@ const ReportPage = () => {
           <InfoCard
             color={["#e1950e", "#f3cd29"]}
             tittle="Meetings"
-            count={"169"}
-            show={false}
-            options={["Today", "This Week", "This Month", "This Year"]}
+            count={meetingCount}
+            show={true}
+            options={["Today", "This Week", "This Month"]}
+            onOptionSelect={handleOptionSelect}
+            subHeading={selectedOption}
           />
         </Grid>
-        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+        {/* <Grid size={{ xs: 12, sm: 6, md: 4 }}>
           <InfoCard
             color={["#d30d56", "#ff478b"]}
             tittle="Visitors"
             count="80"
           />
-        </Grid>
+        </Grid> */}
         <Grid size={{ xs: 12, sm: 6, md: 4 }}>
           <InfoCard
             color={["#2dd2a6", "#88f2d5"]}

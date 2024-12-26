@@ -4,76 +4,83 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { PhotoCameraIcon } from "../../components/Common Components/CustomButton/CustomIcon";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const LocationAdd = ({ setRefreshPage, setIsAddOpen }) => {
-  const [formData, setFormData] = useState({
-    name: "",
-  });
-
-  const [locationImage, setLocationImage] = useState(null);
   const [locationImagePreview, setLocationImagePreview] = useState(null);
 
-  // Handle image selection
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      locationImage: null,
+    },
+    validationSchema: Yup.object({
+      name: Yup.string()
+        .required("Location name is required")
+        .min(3, "Name must be at least 3 characters")
+        .max(50, "Name must be at most 50 characters"),
+      locationImage: Yup.mixed()
+        .required("Please upload a location image")
+        .test(
+          "fileType",
+          "Only image files are allowed",
+          (value) =>
+            value &&
+            [
+              "image/jpeg",
+              "image/png",
+              "image/jpg",
+              "image/heic",
+              "image/heif",
+              "image/dng",
+              "image/webp",
+              "image/tiff",
+              "image/bmp",
+              "image/gif",
+            ].includes(value.type)
+        )
+        .test(
+          "fileSize",
+          "File size should be less than 2MB",
+          (value) => value && value.size <= 2 * 1024 * 1024
+        ),
+    }),
+    onSubmit: async (values, { resetForm }) => {
+      const formDataToSubmit = new FormData();
+      formDataToSubmit.append("name", values.name);
+      formDataToSubmit.append("locationImage", values.locationImage);
+
+      try {
+        showLoading();
+        const response = await axios.post(
+          "api/v1/location/locations",
+          formDataToSubmit,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        toast.success("Location added successfully!");
+        resetForm();
+        setLocationImagePreview(null);
+        setRefreshPage(Math.random());
+        setIsAddOpen(false);
+        hideLoading();
+      } catch (err) {
+        hideLoading();
+        toast.error(err.response?.data?.message || "An error occurred");
+        console.error("Error adding location:", err);
+      }
+    },
+  });
+
   const handleLocationImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setLocationImage(file);
-      setLocationImagePreview(URL.createObjectURL(file)); // Create a preview URL
-    }
-  };
-
-  // Handle input change
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value, // Dynamically update the correct key
-    });
-  };
-
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Validation
-    if (!formData.name.trim()) {
-      toast.error("Location name is required!");
-      return;
-    }
-
-    if (!locationImage) {
-      toast.error("Please upload a location image!");
-      return;
-    }
-
-    // Prepare data for submission
-    const formDataToSubmit = new FormData();
-    formDataToSubmit.append("name", formData.name); // Add location name
-    formDataToSubmit.append("locationImage", locationImage); // Add image file
-
-    try {
-      showLoading();
-      const response = await axios.post(
-        "api/v1/location/locations",
-        formDataToSubmit,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data", // Required for file uploads
-          },
-        }
-      );
-      console.log(response);
-
-      toast.success("Location added successfully!");
-      setFormData({ name: "" }); // Reset input field
-      setLocationImage(null); // Reset image
-      setLocationImagePreview(null); // Reset preview
-      setRefreshPage(Math.random()); // Trigger parent component refresh
-      setIsAddOpen(false); // Close modal
-      hideLoading();
-    } catch (err) {
-      hideLoading();
-      toast.error(err.response?.data?.message || "An error occurred");
-      console.error("Error adding location:", err);
+      formik.setFieldValue("locationImage", file);
+      setLocationImagePreview(URL.createObjectURL(file));
     }
   };
 
@@ -81,7 +88,7 @@ const LocationAdd = ({ setRefreshPage, setIsAddOpen }) => {
     <div className="pop-content w-100">
       <Box
         component="form"
-        onSubmit={handleSubmit}
+        onSubmit={formik.handleSubmit}
         sx={{
           maxWidth: 500,
           margin: "auto",
@@ -90,11 +97,13 @@ const LocationAdd = ({ setRefreshPage, setIsAddOpen }) => {
       >
         <TextField
           label="Location Name"
-          name="name" // Match the key in formData
-          value={formData.name} // Access the correct value
-          onChange={handleChange}
+          name="name"
+          value={formik.values.name}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.name && Boolean(formik.errors.name)}
+          helperText={formik.touched.name && formik.errors.name}
           fullWidth
-          required
           margin="normal"
           size="small"
         />
@@ -124,6 +133,11 @@ const LocationAdd = ({ setRefreshPage, setIsAddOpen }) => {
             </IconButton>
           </label>
         </Box>
+        {formik.errors.locationImage && (
+          <Box color="error.main" textAlign="center" mb={2}>
+            {formik.errors.locationImage}
+          </Box>
+        )}
         <Button
           type="submit"
           variant="contained"

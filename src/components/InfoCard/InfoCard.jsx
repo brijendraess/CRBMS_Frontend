@@ -15,17 +15,32 @@ const Item = styled(Paper)(({ theme }) => ({
   padding: "15px",
 }));
 
-const InfoCard = ({ color, tittle, count, show, options = [] }) => {
+const InfoCard = ({
+  color,
+  tittle,
+  count,
+  show,
+  options = [],
+  onOptionSelect,
+  subHeading,
+}) => {
   const [elevation, setElevation] = useState(2);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleOptionClick = (option) => {
+    setAnchorEl(null);
+    if (onOptionSelect) {
+      onOptionSelect(option); // Call the passed function with the selected option
+    }
   };
 
   return (
@@ -39,7 +54,10 @@ const InfoCard = ({ color, tittle, count, show, options = [] }) => {
     >
       <Box display="flex" width="100%">
         <Box className="col1">
-          <h4 className="text-white">{tittle}</h4>
+          <h4 className="text-white">
+            {tittle}{" "}
+            {subHeading && <span>|| {subHeading}</span>}
+          </h4>
           <span className="number text-white">{count}</span>
         </Box>
         <Box className="ms-auto">
@@ -76,11 +94,7 @@ const InfoCard = ({ color, tittle, count, show, options = [] }) => {
             }}
           >
             {options.map((option) => (
-              <MenuItem
-                key={option}
-                selected={option === "Pyxis"}
-                onClick={handleClose}
-              >
+              <MenuItem key={option} onClick={() => handleOptionClick(option)}>
                 {option}
               </MenuItem>
             ))}

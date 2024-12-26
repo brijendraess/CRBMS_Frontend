@@ -140,7 +140,6 @@ const FoodBeveragePage = () => {
         <Box display="flex" alignItems="center" gap={1}>
           <Tooltip title="Edit">
             <EditOutlinedIcon
-              className="cursor"
               color="success"
               onClick={() => handleEdit(params.row.id)}
               style={{ cursor: "pointer" }}

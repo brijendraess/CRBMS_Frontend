@@ -80,7 +80,7 @@ const AmenitiesList = () => {
       );
       handleClose();
       toast.success("Amenity deleted successfully!");
-      hideLoading();
+      dispatch(hideLoading());
     } catch (error) {
       toast.error("Failed to delete amenity!");
       console.error("Error deleting amenity:", error);

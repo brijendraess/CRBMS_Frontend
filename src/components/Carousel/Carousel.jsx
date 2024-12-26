@@ -60,7 +60,7 @@ const Carousel = ({ roomImagesForCarousel, height }) => {
         <svg viewBox="0 0 48 48" ref={progressCircle}>
           <circle cx="24" cy="24" r="20"></circle>
         </svg>
-        <span ref={progressContent}></span>
+        {/* <span ref={progressContent}></span> */}
       </div>
     </Swiper>
   );

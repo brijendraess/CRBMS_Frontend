@@ -23,6 +23,7 @@ import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import LocationCard from "./LocationCard";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import PageHeader from "../../components/Common Components/PageHeader/PageHeader";
+import { useDispatch } from "react-redux";
 
 const LocationPage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -33,11 +34,11 @@ const LocationPage = () => {
   const [deleteId, setDeleteId] = useState(null);
   const [refreshPage, setRefreshPage] = useState(0);
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
-
+  const dispatch = useDispatch();
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        showLoading();
+        dispatch(showLoading());
         const response = await axios.get("/api/v1/location/locations");
         const locationWithSerial = response.data.data.locations.map(
           (location, index) => ({
@@ -46,9 +47,9 @@ const LocationPage = () => {
           })
         );
         setLocation(locationWithSerial);
-        hideLoading();
+        dispatch(hideLoading());
       } catch (error) {
-        hideLoading();
+        dispatch(hideLoading());
         toast.error("Something Went Wrong");
         console.error("Error fetching locations:", error);
       }
@@ -69,14 +70,14 @@ const LocationPage = () => {
 
   const handleDelete = async () => {
     try {
-      showLoading();
+      dispatch(showLoading());
       await axios.delete(`/api/v1/location/locations/delete/${deleteId}`);
       handleClose(false);
       setRefreshPage(Math.random());
       toast.success("Location deleted successfully!");
-      hideLoading();
+      dispatch(hideLoading());
     } catch (error) {
-      hideLoading();
+      dispatch(hideLoading());
       toast.error("Failed to delete location!");
       console.error("Error deleting location:", error);
     }
@@ -96,7 +97,7 @@ const LocationPage = () => {
 
   const handleStatusChange = async (id) => {
     try {
-      showLoading();
+      dispatch(showLoading());
       const response = await axios.patch(
         `/api/v1/location/locations/${id}/status`
       );
@@ -111,9 +112,9 @@ const LocationPage = () => {
       toast.success(
         `Location status changed to ${updatedLocation.status ? "Active" : "Inactive"}`
       );
-      hideLoading();
+      dispatch(hideLoading());
     } catch (error) {
-      hideLoading();
+      dispatch(hideLoading());
       console.error("Error changing status:", error);
       toast.error("Failed to change location status!");
     }
@@ -244,6 +245,7 @@ const LocationPage = () => {
             locationName={
               location.find((loc) => loc.id === updatedId)?.locationName || ""
             }
+            locationImagePath={location.find((loc) => loc.id === updatedId)?.locationImagePath|| ""}
             onSuccess={handleUpdateSuccess}
           />
         }

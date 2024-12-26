@@ -1,51 +1,80 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Avatar, Box, Button, IconButton, TextField } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { PhotoCameraIcon } from "../../components/Common Components/CustomButton/CustomIcon";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const LocationEdit = ({
   id,
   locationName,
+  locationImagePath,
   onSuccess,
   setRefreshPage,
   setIsEditOpen,
 }) => {
-  const [formData, setFormData] = useState({
-    name: locationName || "",
+  console.log(locationImagePath)
+  const [locationImagePreview, setLocationImagePreview] = useState(
+    locationImagePath || null
+  );
+  const [locationImage, setLocationImage] = useState(null);
+
+  // Formik setup
+  const formik = useFormik({
+    initialValues: {
+      name: locationName || "",
+    },
+    enableReinitialize: true,
+    validationSchema: Yup.object({
+      name: Yup.string()
+        .required("Location name is required")
+        .min(3, "Name must be at least 3 characters")
+        .max(50, "Name must be at most 50 characters"),
+    }),
+    onSubmit: async (values) => {
+      const formDataToSubmit = new FormData();
+      formDataToSubmit.append("name", values.name);
+
+      if (locationImage) {
+        formDataToSubmit.append("locationImage", locationImage);
+      }
+
+      try {
+        showLoading();
+        const response = await axios.put(
+          `/api/v1/location/locations/${id}`,
+          formDataToSubmit,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        toast.success("Location updated successfully!");
+        setRefreshPage(Math.random());
+        setIsEditOpen(false);
+        if (onSuccess) {
+          onSuccess(response.data.data.location);
+        }
+        hideLoading();
+      } catch (error) {
+        hideLoading();
+        const errorMessage =
+          error.response?.data?.message || "Failed to update location!";
+        toast.error(errorMessage);
+        console.error("Error updating location:", error);
+      }
+    },
   });
 
-  useEffect(() => {
-    setFormData({ name: locationName || "" });
-  }, [locationName]);
-
-  const handleInputChange = (event) => {
-    setFormData({
-      ...formData,
-      [event.target.name]: event.target.value,
-    });
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      showLoading();
-      const response = await axios.put(`/api/v1/location/locations/${id}`, {
-        name: formData.name,
-      });
-      toast.success("Location Updated Successfully");
-      setRefreshPage(Math.random());
-      setIsEditOpen(false);
-      if (onSuccess) {
-        onSuccess(response.data.data.location);
-      }
-      hideLoading();
-    } catch (error) {
-      hideLoading();
-      const errorMessage =
-        error.response?.data?.message || "Failed to update location!";
-      toast.error(errorMessage);
-      console.error("Error updating location:", error);
+  // Handle image change
+  const handleLocationImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setLocationImage(file); // Save the selected file
+      setLocationImagePreview(URL.createObjectURL(file)); // Show preview
     }
   };
 
@@ -53,7 +82,7 @@ const LocationEdit = ({
     <div className="pop-content w-100">
       <Box
         component="form"
-        onSubmit={handleSubmit}
+        onSubmit={formik.handleSubmit}
         sx={{
           maxWidth: 500,
           margin: "auto",
@@ -63,13 +92,46 @@ const LocationEdit = ({
         <TextField
           label="Location Name"
           name="name"
-          value={formData.name}
-          onChange={handleInputChange}
+          value={formik.values.name}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.name && Boolean(formik.errors.name)}
+          helperText={formik.touched.name && formik.errors.name}
           fullWidth
-          required
           margin="normal"
           size="small"
         />
+
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          mt={2}
+          mb={2}
+        >
+          <input
+            accept="image/*"
+            style={{ display: "none" }}
+            id="room-image-upload"
+            type="file"
+            onChange={handleLocationImageChange}
+          />
+          <label htmlFor="room-image-upload">
+            <IconButton component="span">
+              <Avatar
+                sx={{ width: 50, height: 50 }}
+                src={
+                  `${import.meta.env.VITE_API_URL}/${locationImagePath}` ||
+                  undefined
+                }
+                alt="Location Image Preview"
+              >
+                {!locationImagePreview && <PhotoCameraIcon fontSize="medium" />}
+              </Avatar>
+            </IconButton>
+          </label>
+        </Box>
+
         <Button
           type="submit"
           variant="contained"
@@ -77,7 +139,7 @@ const LocationEdit = ({
           fullWidth
           sx={{ mt: 2 }}
         >
-          Update
+          Update Location
         </Button>
       </Box>
     </div>

@@ -1,46 +1,44 @@
 import { Box, Button, TextField } from "@mui/material";
 import axios from "axios";
-import React, { useState } from "react";
+import React from "react";
 import toast from "react-hot-toast";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const FoodBeverageAdd = ({ setRefreshPage, setIsAddOpen }) => {
-  const [formData, setFormData] = useState({
-    name: "", // Key must match the name attribute of the TextField
+  const formik = useFormik({
+    initialValues: {
+      name: "", // Initial value for the field
+    },
+    validationSchema: Yup.object({
+      name: Yup.string()
+        .required("Food beverage name is required")
+        .min(3, "Name must be at least 3 characters")
+        .max(50, "Name must be at most 50 characters"),
+    }),
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        showLoading();
+        await axios.post("api/v1/food-beverages/food-beverage", values);
+        toast.success("Food beverage added Successfully");
+        resetForm(); // Reset form after successful submission
+        setRefreshPage(Math.random());
+        setIsAddOpen(false);
+        hideLoading();
+      } catch (err) {
+        hideLoading();
+        toast.error(err.response?.data?.message || "An error occurred");
+        console.error("Error adding foodBeverage:", err);
+      }
+    },
   });
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value, // Dynamically update the correct key
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      showLoading();
-      const response = await axios.post(
-        "api/v1/food-beverages/food-beverage",
-        formData
-      );
-      toast.success("Food beverage added Successfully");
-      setFormData({ name: "" }); // Reset formData after submission
-      setRefreshPage(Math.random());
-      setIsAddOpen(false);
-      hideLoading();
-    } catch (err) {
-      hideLoading();
-      toast.error(err.response?.data?.message || "An error occurred");
-      console.error("Error adding foodBeverage:", err);
-    }
-  };
 
   return (
     <div className="pop-content w-100">
       <Box
         component="form"
-        onSubmit={handleSubmit}
+        onSubmit={formik.handleSubmit}
         sx={{
           maxWidth: 500,
           margin: "auto",
@@ -49,9 +47,12 @@ const FoodBeverageAdd = ({ setRefreshPage, setIsAddOpen }) => {
       >
         <TextField
           label="Food beverage Name"
-          name="name" // Match the key in formData
-          value={formData.name} // Access the correct value
-          onChange={handleChange}
+          name="name" // Field name must match Formik's initialValues
+          value={formik.values.name} // Managed by Formik
+          onChange={formik.handleChange} // Managed by Formik
+          onBlur={formik.handleBlur} // Tracks field's touch state
+          error={formik.touched.name && Boolean(formik.errors.name)} // Show error if touched and invalid
+          helperText={formik.touched.name && formik.errors.name} // Display validation error
           fullWidth
           required
           margin="normal"

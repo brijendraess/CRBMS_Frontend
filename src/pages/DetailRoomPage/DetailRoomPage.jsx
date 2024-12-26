@@ -251,8 +251,9 @@ const DetailRoomPage = () => {
             <Box
               sx={{
                 display: "flex",
-                justifyContent: "space-between",
+                justifyContent: "flex-start",
                 alignItems: "center",
+                gap: "50px",
               }}
             >
               <Typography

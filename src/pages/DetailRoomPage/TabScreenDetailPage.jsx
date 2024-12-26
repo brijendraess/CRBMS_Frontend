@@ -243,11 +243,11 @@ const TabScreenDetailPage = () => {
         >
           <Box style={{ width: "100%", height: "50%" }}>
             <Carousel
-              height={"400px"}
+              height={"50vh"}
               roomImagesForCarousel={room?.RoomGalleries}
             />
           </Box>
-          <BoxWrapper style={{ width: "100%", height: "47%" }}>
+          <BoxWrapper style={{ width: "100%", height: "50%" }}>
             <Box
               sx={{
                 display: "flex",
