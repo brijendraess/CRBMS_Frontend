@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   Box,
-  Paper,
-  styled,
-  Button,
   Typography,
   Switch,
   Tooltip,
@@ -14,22 +11,20 @@ import { DataGrid } from "@mui/x-data-grid";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import BlockIcon from "@mui/icons-material/Block";
 import toast from "react-hot-toast";
 import axios from "axios";
 import DeleteModal from "../../components/Common Components/Modals/Delete/DeleteModal";
 import "./MembersPage.css";
-import { CircleRounded, PersonAddAlt1Rounded } from "@mui/icons-material";
+import { PersonAddAlt1Rounded } from "@mui/icons-material";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import PopupModals from "../../components/Common Components/Modals/Popup/PopupModals";
 import AddMemberForm from "./AddMemberForm";
 import UpdateMemberForm from "./UpdateMemberForm";
 import ViewMember from "./ViewMember";
 import CustomButton from "../../components/Common Components/CustomButton/CustomButton";
-import { checkFileExists } from "../../utils/utils";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { PaperWrapper, RightContent } from "../../Style";
+import { PaperWrapper } from "../../Style";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import UserCard from "../../components/Cards/UserCard";
 import PageHeader from "../../components/Common Components/PageHeader/PageHeader";
@@ -48,7 +43,7 @@ const MembersPage = () => {
   const [refreshPage, setRefreshPage] = useState(0);
   const filteredUsers = users.filter((user) =>
     showDeleted ? true : !user.deletedAt
-  );
+  ).map((user)=>({...user,isAdmin:user.isAdmin?'Admin':'User'}))
   const dispatch = useDispatch();
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
   const fetchUsers = async () => {
@@ -170,6 +165,7 @@ const MembersPage = () => {
     { field: "fullname", headerName: "Full Name", flex: 1 },
     { field: "email", headerName: "Email", flex: 1 },
     { field: "phoneNumber", headerName: "Phone Number", flex: 1 },
+    { field: "isAdmin", headerName: "Role", flex: 1 },
     {
       field: "action",
       flex: 0.5,
@@ -180,10 +176,6 @@ const MembersPage = () => {
             <EditOutlinedIcon
               className="cursor"
               color="success"
-<<<<<<< HEAD
-=======
-              title="Update"
->>>>>>> 6bcc7c7007046e6852f45813450029ff7427c0a0
               onClick={() => handleEdit(params.id)}
             />
           </Tooltip>

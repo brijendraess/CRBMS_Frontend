@@ -15,6 +15,12 @@ import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
 import EventBusyOutlinedIcon from '@mui/icons-material/EventBusyOutlined';
 import ApprovalOutlinedIcon from '@mui/icons-material/ApprovalOutlined';
 import QrCodeOutlinedIcon from '@mui/icons-material/QrCodeOutlined';
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
+import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
+import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
+import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 
 export {LocationOnOutlinedIcon,
     GroupsOutlinedIcon,
@@ -33,6 +39,12 @@ export {LocationOnOutlinedIcon,
     HistoryOutlinedIcon,
     EventBusyOutlinedIcon,
     ApprovalOutlinedIcon,
-    QrCodeOutlinedIcon
+    QrCodeOutlinedIcon,
+    RemoveRedEyeIcon,
+    DeleteOutlineOutlinedIcon,
+    BadgeOutlinedIcon,
+    MailOutlinedIcon,
+    LocalPhoneOutlinedIcon, 
+    AdminPanelSettingsOutlinedIcon,
 
 }
