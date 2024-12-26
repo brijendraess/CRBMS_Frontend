@@ -9,6 +9,7 @@ import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { Box, Tooltip } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import {
+  ApprovalOutlinedIcon,
   EditOutlinedIcon,
   EventBusyOutlinedIcon,
   HistoryOutlinedIcon,
@@ -17,6 +18,7 @@ import PopupModals from "../../components/Common Components/Modals/Popup/PopupMo
 import MeetingFormEdit from "../MeetingPage/MeetingFormEdit";
 import MeetingFormPostPone from "../MeetingPage/MeetingFormPostPone";
 import CancelMeetingModal from "../../components/Common Components/Modals/Delete/CancelMeetingModal";
+import MeetingApproval from "../MeetingPage/MeetingApproval";
 
 const MeetingLogs = () => {
   const { user } = useSelector((state) => state.user);
@@ -25,10 +27,12 @@ const MeetingLogs = () => {
   const dispatch = useDispatch();
   const [isEditBookingOpen, setIsEditBookingOpen] = useState(false);
   const [isPostponeBookingOpen, setIsPostponeBookingOpen] = useState(false);
+    const [isApprovalBookingOpen, setIsApprovalBookingOpen] = useState(false);
   const [isCancelBookingOpen, setIsCancelBookingOpen] = useState(false);
   const [updatedRoomId, setUpdatedRoomId] = useState("");
   const [room, setRoom] = useState([]);
   const [updatedBookingId, setUpdatedBookingId] = useState("");
+   const [meetingUpdatedStatus, setMeetingUpdatedStatus] = useState("");
   const [refreshPage, setRefreshPage] = useState(0);
   const [roomsData, setRoomsData] = useState([]); // State for rooms data
 
@@ -40,6 +44,13 @@ const MeetingLogs = () => {
 
   const handlePostpone = (roomId, meetingId) => {
     setIsPostponeBookingOpen(true);
+    setUpdatedRoomId(roomId);
+    setUpdatedBookingId(meetingId);
+  };
+
+  const handleApproval = (roomId, meetingId,meetingUpdatedStatus) => {
+    setIsApprovalBookingOpen(true);
+    setMeetingUpdatedStatus(meetingUpdatedStatus)
     setUpdatedRoomId(roomId);
     setUpdatedBookingId(meetingId);
   };
@@ -58,7 +69,10 @@ const MeetingLogs = () => {
 
   const handleCancelMeetingConfirm = async () => {
     try {
-      await axios.put(`/api/v1/meeting/cancel-meeting/${updatedBookingId}`);
+      await axios.put(`/api/v1/meeting/update-meeting-status/${updatedBookingId}`,{meetingStatus: 'cancelled',},
+        {
+          withCredentials: true,
+        });
 
       handleCloseMeeting(false);
       setRefreshPage(Math.random());
@@ -77,6 +91,7 @@ const MeetingLogs = () => {
       console.error("Error fetching room data:", error);
     }
   };
+
   const columns = [
     { field: "subject", headerName: "Subject", width: 90 },
     { field: "agenda", headerName: "Agenda", width: 90 },
@@ -109,7 +124,7 @@ const MeetingLogs = () => {
           </Tooltip>
           <Tooltip title="Postpone meeting">
             <HistoryOutlinedIcon
-              color="error"
+              color="message"
               style={{ cursor: "pointer" }}
               onClick={() => handlePostpone(params.row.roomId, params.row.id)}
             />
@@ -123,6 +138,15 @@ const MeetingLogs = () => {
               }
             />
           </Tooltip>
+          {user.isAdmin&&<Tooltip title="Change the status of meeting">
+            <ApprovalOutlinedIcon
+              color="success"
+              style={{ cursor: "pointer" }}
+              onClick={() =>
+                handleApproval(params.row.roomId, params.row.id,params.row.status)
+              }
+            />
+          </Tooltip>}
         </Box>
       ),
     },
@@ -150,14 +174,15 @@ const MeetingLogs = () => {
   }, [updatedBookingId, refreshPage]);
 
   useEffect(() => {
-    if (updatedRoomId) fetchRoomsData();
-  }, [updatedRoomId, updatedBookingId]);
+    if (updatedRoomId) 
+      fetchRoomsData();
+  }, [updatedRoomId, updatedBookingId,refreshPage]);
 
   useEffect(() => {
     const fetchMeetings = async () => {
       try {
         const endpoint = user?.isAdmin
-          ? "/api/v1/meeting/get-all-meeting"
+          ? "/api/v1/meeting/get-all-admin-meeting"
           : "/api/v1/meeting/get-all-my-meeting";
         const response = await axios.get(endpoint, { withCredentials: true });
         const meetings =
@@ -187,7 +212,7 @@ const MeetingLogs = () => {
     };
 
     fetchMeetings();
-  }, [user?.isAdmin]);
+  }, [user?.isAdmin,refreshPage]);
 
   const useStyles = makeStyles({
     rowCancelled: {
@@ -241,6 +266,19 @@ const MeetingLogs = () => {
             updatedBookingId={updatedBookingId}
             room={room}
             setRefreshPage={setRefreshPage}
+          />
+        }
+      />
+      <PopupModals
+        isOpen={isApprovalBookingOpen}
+        setIsOpen={setIsApprovalBookingOpen}
+        title={"Meeting Change Status"}
+        modalBody={
+          <MeetingApproval
+            updatedBookingId={updatedBookingId}
+            meetingUpdatedStatus={meetingUpdatedStatus}
+            setRefreshPage={setRefreshPage}
+            setIsApprovalBookingOpen={setIsApprovalBookingOpen}
           />
         }
       />
