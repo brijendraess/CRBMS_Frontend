@@ -11,6 +11,8 @@ import {
   Typography,
   Button,
   Box,
+  Paper,
+  styled,
 } from "@mui/material";
 import "./CalendarPage.css";
 import { PaperWrapper } from "../../Style";
@@ -20,6 +22,20 @@ import MeetingFormPostPone from "../MeetingPage/MeetingFormPostPone";
 import CancelMeetingModal from "../../components/Common Components/Modals/Delete/CancelMeetingModal";
 import MeetingFormEdit from "../MeetingPage/MeetingFormEdit";
 import { color } from "framer-motion";
+
+const CalenderWrapper = styled(Paper)(({ theme }) => ({
+  color: theme.palette.text.secondary,
+  borderRadius: "10px",
+  padding: "10px",
+  marginTop: "10px",
+  width: "100%",
+  height: `calc(100vh - 75px)`,
+  overflow: "scroll",
+  [theme.breakpoints.down("md")]: {
+    height: "100vh",
+    marginTop: "0px",
+  },
+}));
 
 const CalenderPage = () => {
   const localizer = dayjsLocalizer(dayjs);
@@ -33,12 +49,12 @@ const CalenderPage = () => {
   const [isCancelBookingOpen, setIsCancelBookingOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [updatedBookingId, setUpdatedBookingId] = useState("");
-   const [isEditBookingOpen, setIsEditBookingOpen] = useState(false);
-   const [updatedRoomId, setUpdatedRoomId] = useState("");
+  const [isEditBookingOpen, setIsEditBookingOpen] = useState(false);
+  const [updatedRoomId, setUpdatedRoomId] = useState("");
   const [refreshPage, setRefreshPage] = useState(0);
   const [room, setRoom] = useState([]);
 
-    useEffect(() => {
+  useEffect(() => {
     const fetchMeetings = async () => {
       try {
         if (updatedBookingId) {
@@ -57,7 +73,7 @@ const CalenderPage = () => {
     };
 
     fetchMeetings();
-  }, [updatedBookingId,refreshPage]);
+  }, [updatedBookingId, refreshPage]);
 
   useEffect(() => {
     const fetchMeetings = async () => {
@@ -136,21 +152,21 @@ const CalenderPage = () => {
 
   const handleEdit = (roomId, meetingId) => {
     setIsEditBookingOpen(true);
-    handleCloseModal()
+    handleCloseModal();
     setUpdatedRoomId(roomId);
     setUpdatedBookingId(meetingId);
   };
 
   const handlePostpone = (roomId, meetingId) => {
     setIsPostponeBookingOpen(true);
-    handleCloseModal()
+    handleCloseModal();
     setUpdatedRoomId(roomId);
     setUpdatedBookingId(meetingId);
   };
 
   const handleCancelMeeting = (roomId, meetingId) => {
     setIsCancelBookingOpen(true);
-    handleCloseModal()
+    handleCloseModal();
     setUpdatedRoomId(roomId);
     setUpdatedBookingId(meetingId);
   };
@@ -173,9 +189,9 @@ const CalenderPage = () => {
       console.error("Error cancelled meeting:", error);
     }
   };
-console.log(room,updatedBookingId)
+  console.log(room, updatedBookingId);
   return (
-    <PaperWrapper>
+    <CalenderWrapper>
       <Calendar
         localizer={localizer}
         events={events}
@@ -230,41 +246,55 @@ console.log(room,updatedBookingId)
               </Typography>
             )}
             {selectedEvent.isCanceled && (
-             <Typography component="strong" sx={{ color: "#f00000", fontWeight: "bold" }}>
-             Meeting Cancelled
-           </Typography>
+              <Typography
+                component="strong"
+                sx={{ color: "#f00000", fontWeight: "bold" }}
+              >
+                Meeting Cancelled
+              </Typography>
             )}
-            {!selectedEvent.isCanceled&&<Box sx={{ display: "flex", gap: "5px" }}>
-              <Button
-                onClick={() =>
-                  handleCancelMeeting(selectedEvent.roomId, selectedEvent.bookingId)
-                }
-                variant="contained"
-                color="primary"
-                sx={{ mt: 2 }}
-              >
-                Cancel
-              </Button>
-              <Button
-               onClick={() => handlePostpone(selectedEvent.roomId, selectedEvent.bookingId)}
-                variant="contained"
-                color="primary"
-                sx={{ mt: 2 }}
-              >
-                Postpone
-              </Button>
-              {/* {user?.isAdmin && ( */}
+            {!selectedEvent.isCanceled && (
+              <Box sx={{ display: "flex", gap: "5px" }}>
                 <Button
-                onClick={() => handleEdit(selectedEvent.roomId, selectedEvent.bookingId)}
-                 
+                  onClick={() =>
+                    handleCancelMeeting(
+                      selectedEvent.roomId,
+                      selectedEvent.bookingId
+                    )
+                  }
+                  variant="contained"
+                  color="primary"
+                  sx={{ mt: 2 }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={() =>
+                    handlePostpone(
+                      selectedEvent.roomId,
+                      selectedEvent.bookingId
+                    )
+                  }
+                  variant="contained"
+                  color="primary"
+                  sx={{ mt: 2 }}
+                >
+                  Postpone
+                </Button>
+                {/* {user?.isAdmin && ( */}
+                <Button
+                  onClick={() =>
+                    handleEdit(selectedEvent.roomId, selectedEvent.bookingId)
+                  }
                   variant="contained"
                   color="primary"
                   sx={{ mt: 2 }}
                 >
                   Edit
                 </Button>
-              {/* )} */}
-            </Box>}
+                {/* )} */}
+              </Box>
+            )}
           </DialogContent>
         </Dialog>
       )}
@@ -294,7 +324,7 @@ console.log(room,updatedBookingId)
         button={"Cancel meeting"}
         title="meeting"
       />
-    </PaperWrapper>
+    </CalenderWrapper>
   );
 };
 

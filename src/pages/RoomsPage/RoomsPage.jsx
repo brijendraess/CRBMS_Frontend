@@ -134,7 +134,11 @@ const RoomsPage = () => {
               borderRadius: "20px",
               position: "relative",
               alignItems: "center",
-              justifyContent: "center",
+              justifyContent: {
+                xs: "center",
+                sm: "center",
+                md: "start",
+              },
             }}
           >
             {roomsData &&

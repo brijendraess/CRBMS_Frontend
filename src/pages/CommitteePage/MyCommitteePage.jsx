@@ -76,6 +76,12 @@ const MyCommitteePage = () => {
           borderRadius: "20px",
           position: "relative",
           top: "10px",
+          alignItems: "center",
+          justifyContent: {
+            xs: "center",
+            sm: "center",
+            md: "start",
+          },
         }}
       >
         {filteredCommittees.map((committee) => (
