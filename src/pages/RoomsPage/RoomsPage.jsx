@@ -51,10 +51,6 @@ const RoomsPage = () => {
   // Handle Start Time Change
   const handleStartTimeChange = (newStartTime) => {
     setMeetingStartTime(newStartTime);
-
-    // Auto-select one hour later for ending time
-    // const autoEndTime = newStartTime.add(1, "hour");
-    // setMeetingEndingTime(autoEndTime);
   };
 
   // Fetch amenities data
