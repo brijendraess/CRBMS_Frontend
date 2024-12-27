@@ -5,6 +5,12 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  useMediaQuery,
+  Box,
+  Tooltip,
+  Button,
+  Chip,
+  Switch,
 } from "@mui/material";
 import axios from "axios";
 import CommitteeCard from "../../components/CommitteeCard/CommitteeCard";
@@ -15,17 +21,25 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import PageHeader from "../../components/Common Components/PageHeader/PageHeader";
 import toast from "react-hot-toast";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import { useNavigate } from "react-router-dom";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import { DataGrid } from "@mui/x-data-grid";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import PeopleIcon from "@mui/icons-material/People";
 
 const CommitteeManagementMUI = () => {
   const [committeeData, setCommitteeData] = useState([]);
   const [filter, setFilter] = useState("all");
   const [isAddCommittee, setIsAddCommittee] = useState(false);
   const [refreshPage, setRefreshPage] = useState(0);
+  const navigate = useNavigate();
+  const isSmallScreen = useMediaQuery("(max-width: 768px)");
 
   const fetchCommittee = async () => {
     try {
       showLoading();
       const response = await axios.get("/api/v1/committee/committees");
+      console.log(response.data.data);
       if (response.data?.data?.committees) {
         setCommitteeData(response.data.data.committees);
       } else {
@@ -68,6 +82,82 @@ const CommitteeManagementMUI = () => {
     setIsAddCommittee(false); // Close the modal
   };
 
+  const columns = [
+    { field: "name", headerName: "Committee Name", flex: 1 },
+    { field: "description", headerName: "Description", flex: 1 },
+    {
+      field: "action",
+      headerName: "Action",
+      flex: 1,
+      renderCell: (params) => (
+        <div
+          style={{
+            display: "flex",
+            gap: "10px",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "100%",
+          }}
+        >
+          <Tooltip title="Delete">
+            <DeleteOutlineOutlinedIcon
+              onClick={() => handleDeleteCommittee(params.row.id)}
+              sx={{ cursor: "pointer" }}
+              fontSize="medium"
+              color="error"
+            />
+          </Tooltip>
+          <Tooltip title="Edit">
+            <EditOutlinedIcon
+              color="success"
+              onClick={() => handleEditCommittee(params.row.id)}
+              sx={{ cursor: "pointer" }}
+            />
+          </Tooltip>
+          <Tooltip title="Change Status">
+            <Switch
+              size="small"
+              checked={!!params.row.status}
+              onChange={() =>
+                handleChangeStatus(params.row.id, !!params.row.status)
+              }
+            />
+          </Tooltip>
+          <Tooltip title="View all members">
+            <Chip
+              label={`${params.row.CommitteeMembers?.length || 0}`}
+              size="large"
+              color="success"
+              variant="outlined"
+              icon={<PeopleIcon />}
+              onClick={() => handleNavigateToMemberList(params.row.id)}
+              sx={{ cursor: "pointer", padding: "5px" }}
+            />
+          </Tooltip>
+        </div>
+      ),
+    },
+  ];
+
+  const handleStatusChange = async (committeeId, newStatus) => {
+    try {
+      await axios.put(`/api/v1/committee/${committeeId}/status`, {
+        status: newStatus,
+      });
+      fetchCommittee(); // Refresh the committee list
+      alert("Status updated successfully!");
+    } catch (error) {
+      console.error("Error updating status:", error);
+      alert("Failed to update status.");
+    }
+  };
+
+  const handleNavigateToMemberList = () => {
+    navigate(`/view-committee/${committee.id}`, {
+      state: { committee, heading },
+    });
+  };
+
   return (
     <>
       <PaperWrapper>
@@ -93,32 +183,54 @@ const CommitteeManagementMUI = () => {
             </Select>
           </FormControl>
         </PageHeader>
-        <Grid2
-          container
-          columnSpacing={3}
-          rowSpacing={3}
-          sx={{
-            borderRadius: "20px",
-            position: "relative",
-            top: "10px",
-            alignItems: "center",
-            justifyContent: {
-              xs: "center",
-              sm: "center",
-              md: "start",
-            },
-          }}
-        >
-          {filteredCommittees.map((committee) => (
-            <CommitteeCard
-              key={committee.id}
-              committee={committee}
-              heading={committee.name}
-              onDelete={handleDeleteCommittee}
-              setRefreshPage={setRefreshPage}
+        {isSmallScreen ? (
+          <Grid2
+            container
+            columnSpacing={3}
+            rowSpacing={3}
+            sx={{
+              borderRadius: "20px",
+              position: "relative",
+              top: "10px",
+              alignItems: "center",
+              justifyContent: {
+                xs: "center",
+                sm: "center",
+                md: "start",
+              },
+            }}
+          >
+            {filteredCommittees.map((committee) => (
+              <CommitteeCard
+                key={committee.id}
+                committee={committee}
+                heading={committee.name}
+                onDelete={handleDeleteCommittee}
+                setRefreshPage={setRefreshPage}
+              />
+            ))}
+          </Grid2>
+        ) : (
+          <Box sx={{ width: "100%", height: "70vh" }}>
+            <DataGrid
+              autoPageSize
+              showCellVerticalBorder
+              showColumnVerticalBorder
+              rows={filteredCommittees}
+              rowHeight={40}
+              columns={[...columns]}
+              initialState={{
+                pagination: {
+                  paginationModel: {
+                    pageSize: 10,
+                  },
+                },
+              }}
+              pageSizeOptions={[10]}
+              height="100%"
             />
-          ))}
-        </Grid2>
+          </Box>
+        )}
       </PaperWrapper>
       <PopupModals
         modalBody={

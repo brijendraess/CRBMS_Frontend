@@ -41,9 +41,9 @@ const MembersPage = () => {
   const [isViewOpen, setIsViewOpen] = useState(false);
   const [viewId, setViewId] = useState("");
   const [refreshPage, setRefreshPage] = useState(0);
-  const filteredUsers = users.filter((user) =>
-    showDeleted ? true : !user.deletedAt
-  ).map((user)=>({...user,isAdmin:user.isAdmin?'Admin':'User'}))
+  const filteredUsers = users
+    .filter((user) => (showDeleted ? true : !user.deletedAt))
+    .map((user) => ({ ...user, isAdmin: user.isAdmin ? "Admin" : "User" }));
   const dispatch = useDispatch();
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
   const fetchUsers = async () => {
@@ -287,9 +287,6 @@ const MembersPage = () => {
               getRowClassName={(params) => {
                 if (params.row.deletedAt) {
                   return "delete-row";
-                }
-                if (params.row.isAdmin) {
-                  return "admin-row";
                 }
                 return "";
               }}

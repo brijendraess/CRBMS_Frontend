@@ -31,12 +31,13 @@ import FoodBeveragePage from "./pages/FoodBeverages/FoodBeveragesPage";
 import Notification from "./pages/Notification/NotificationPage";
 import Outlook from "./pages/Outlook/Outlook";
 import TabScreenDetailPage from "./pages/DetailRoomPage/TabScreenDetailPage";
+import SingleDisplayPage from "./pages/DetailRoomPage/SingleDisplayPage";
 
 const AppRouter = () => {
   return (
     <Routes>
       <Route path="/meetings/today" element={<TodaysMeetings />} />
-      <Route path="/room-tab/:id" element={<TabScreenDetailPage />} />
+      <Route path="/room-tab/:id" element={<SingleDisplayPage />} />
       <Route
         path="/login"
         element={

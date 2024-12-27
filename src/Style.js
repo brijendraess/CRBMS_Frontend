@@ -22,12 +22,6 @@ export const MainContainer = styled("div")(({ theme }) => ({
   width: "100%",
 }));
 
-export const RightContent = styled("div")(({ theme }) => ({
-  // marginTop: "50px",
-  // padding: "15px",
-  //   overflowY: "auto",
-}));
-
 export const PaperWrapper = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
   borderRadius: "10px",

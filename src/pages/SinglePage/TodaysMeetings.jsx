@@ -1,8 +1,17 @@
 import React, { useEffect, useState, useRef } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { Box, Typography, LinearProgress } from "@mui/material";
+import {
+  Box,
+  Typography,
+  LinearProgress,
+  styled,
+  Paper,
+  Button,
+} from "@mui/material";
 import "./TodaysMeetings.css";
-
+import FullscreenIcon from "@mui/icons-material/Fullscreen";
+import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
+import flag2 from "../../assets/flag2.webp";
 import dayjs from "dayjs";
 import durationPlugin from "dayjs/plugin/duration";
 import axios from "axios";
@@ -10,6 +19,19 @@ import { getFormattedDate, timeDifference } from "../../utils/utils";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 dayjs.extend(durationPlugin);
+
+const Item = styled(Paper)(({ theme }) => ({
+  ...theme.typography.body2,
+  textAlign: "center",
+  lineHeight: "60px",
+  background: "rgba(251, 251, 251, 0)",
+  backdropFilter: "blur(2px)",
+  boxShadow: "0 4px 30px rgba(0, 0, 0, 0.33)",
+  border: "1px solid rgba(255, 255, 255, 0.3)",
+  borderRadius: "20px",
+  overflow: "hidden",
+  color: "#fff",
+}));
 
 const colorMap = {
   A: { row: "#ffecec", bar: "#ff4d4d" }, // Light Red
@@ -76,50 +98,49 @@ const renderProgressBar = (params) => {
   );
 };
 
-const columns = [
-  { field: "subject", headerName: "Subject", width: 150 },
-  { field: "agenda", headerName: "Agenda", width: 100,
-    renderCell: (params) => {
-      // Hide cell content for specific rows
-      return params.row.private === true ? '---' : <span>{params.value}</span>;
-  },
-   },
-  { field: "notes", headerName: "Notes", width: 100,
-    renderCell: (params) => {
-      // Hide cell content for specific rows
-      return params.row.private === true ? '---' : <span>{params.value}</span>;
-  },
-   },
-  { field: "roomName", headerName: "Room", width: 200 },
-  { field: "roomLocation", headerName: "Location", width: 125 },
-  
-  { field: "startTime", headerName: "Start Time", width: 125 },
-  { field: "endTime", headerName: "End Time", width: 125 },
-  { field: "duration", headerName: "Duration", width: 100 },
-  { field: "organizerName", headerName: "Organizer", width: 125 },
-  {
-    field: "progress",
-    headerName: "Time Remaining",
-    width: 400,
-    renderCell: renderProgressBar,
-  },
-];
-
 const TodaysMeetings = () => {
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  const handleFullScreen = () => {
+    const elem = document.documentElement;
+
+    if (!isFullScreen) {
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+      }
+    }
+    setIsFullScreen(!isFullScreen); // Toggle State
+  };
+
   const [meetings, setMeetings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [todayDate, setTodayDate] = useState("");
   const [refreshPage, setRefreshPage] = useState("");
-  const [room, setRoom] = useState(null); 
+  const [room, setRoom] = useState(null);
   const gridRef = useRef(null);
   const dispatch = useDispatch();
   const fetchData = async () => {
     try {
       dispatch(showLoading());
       const response = await axios.get(`/api/v1/rooms/all-meeting`);
-      const todayDate=getFormattedDate()
+      const todayDate = getFormattedDate();
       setTodayDate(todayDate);
-      setRoom(response.data.data.meeting.filter((meet)=>meet.meetingDate===todayDate));
+      setRoom(
+        response.data.data.meeting.filter(
+          (meet) => meet.meetingDate === todayDate
+        )
+      );
       dispatch(hideLoading());
     } catch (error) {
       dispatch(hideLoading());
@@ -128,24 +149,22 @@ const TodaysMeetings = () => {
   };
 
   useEffect(() => {
-      fetchData();
-    }, [refreshPage]);
+    fetchData();
+  }, [refreshPage]);
 
-    setTimeout(()=>{
-      setRefreshPage(Math.random())
-    },10000)
+  // setTimeout(() => {
+  //   setRefreshPage(Math.random());
+  // }, 10000);
 
   const generateFakeMeetings = () => {
     const meetings = [];
     const baseStartTime = "09:00:00";
     const meetingDate = todayDate;
 
-
-    room?.map((meeting)=>{
-
-    let startTime = dayjs(`${meetingDate}T${meeting.startTime}`);
+    room?.map((meeting) => {
+      let startTime = dayjs(`${meetingDate}T${meeting.startTime}`);
       const endTime = dayjs(`${meetingDate}T${meeting.endTime}`);
-      const timeDiff = timeDifference(meeting?.startTime,meeting?.endTime)
+      const timeDiff = timeDifference(meeting?.startTime, meeting?.endTime);
 
       meetings.push({
         meetingId: meeting.id,
@@ -164,7 +183,7 @@ const TodaysMeetings = () => {
       });
 
       startTime = endTime.add(15, "minute");
-    })
+    });
     return meetings;
   };
 
@@ -210,47 +229,135 @@ const TodaysMeetings = () => {
     return () => clearInterval(scrollInterval);
   }, []);
 
+  const columns = [
+    {
+      field: "subject",
+      headerName: "Subject",
+      maxWidth: 300,
+      flex: 1,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "roomName",
+      headerName: "Room",
+      width: 200,
+      flex: 1,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "roomLocation",
+      headerName: "Location",
+      width: 125,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "startTime",
+      headerName: "Start Time",
+      width: 125,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "endTime",
+      headerName: "End Time",
+      width: 125,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "duration",
+      headerName: "Duration",
+      width: 100,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "organizerName",
+      headerName: "Organizer",
+      width: 125,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "progress",
+      headerName: "Time Remaining",
+      width: 300,
+      renderCell: renderProgressBar,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "",
+      headerName: (
+        <Button style={{ color: "BLACK" }} onClick={handleFullScreen}>
+          {isFullScreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
+        </Button>
+      ),
+      width: 100,
+      headerClassName: "super-app-theme--header",
+    },
+  ];
+
   return (
     <Box
-      sx={{
+      style={{
+        display: "flex",
         height: "100vh",
         width: "100%",
-        bgcolor: "white",
-        display: "flex",
         flexDirection: "column",
+        backgroundImage: `
+              linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+              url(${flag2})
+            `,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        padding: "10px",
+        gap: "10px",
+        border: "12px solid transparent",
+        borderImage:
+          "linear-gradient(to right, #006400, #ffffff, #ff0000, rgb(158, 24, 24)) 1",
       }}
     >
-      <DataGrid
-        ref={gridRef}
-        rows={meetings}
-        columns={columns}
-        disableSelectionOnClick
-        getRowId={(row) => row.meetingId}
-        loading={loading}
-        hideFooterPagination // Hide pagination controls
-        rowHeight={40}
-        getRowClassName={(params) => {
-          const color = getColorByProgress(params.row.progress);
-          return `progress-row-${color.row.replace("#", "")}`;
+      <Item
+        style={{
+          display: "flex",
+          height: "100vh",
+          width: "100%",
+          justifyContent: "space-between",
+          alignItems: "center",
         }}
-        sx={{
-          flexGrow: 1,
-          "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: "#3182ce",
-            color: "black",
-            fontWeight: "bold",
-          },
-          "& .MuiDataGrid-row": {
-            borderBottom: "1px solid #d9d9d9",
-            "&:hover": {
-              backgroundColor: "#f5f5f5",
+        elevation={24}
+      >
+        <DataGrid
+          ref={gridRef}
+          rows={meetings}
+          columns={columns}
+          disableSelectionOnClick
+          getRowId={(row) => row.meetingId}
+          loading={loading}
+          hideFooterPagination // Hide pagination controls
+          rowHeight={40}
+          sx={{
+            backgroundColor: "rgba(255, 255, 255, 0.26)",
+            backdropFilter: "blur(5px)",
+            // borderRadius: "10px",
+            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
+            flexGrow: 1,
+            "& .super-app-theme--header": {
+              backgroundColor: "rgba(255, 223, 0, 1)",
+              color: "red",
+              fontWeight: "700",
+              fontSize: "18px",
             },
-          },
-          "& .MuiDataGrid-columnHeaderRow": {
-            borderBottom: "2px solid #3182ce",
-          },
-        }}
-      />
+            "& .MuiDataGrid-footerContainer": {
+              display: "none", // Hides footer
+            },
+            "& .MuiDataGrid-row": {
+              "&:nth-of-type(odd)": {
+                backgroundColor: "rgba(93, 220, 205, 0.15)",
+              },
+              color: "#fff",
+              fontWeight: "700",
+              fontSize: "18px",
+            },
+          }}
+        />
+      </Item>
     </Box>
   );
 };

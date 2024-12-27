@@ -17,12 +17,10 @@ const AddCommitteeForm = ({
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    createdByUserId: user.id, // Prefill creator ID
+    createdByUserId: user.id,
   });
 
   const [isLoading, setIsLoading] = useState(false);
-
-  // Fetch committee data when `committeeId` is available
   useEffect(() => {
     const fetchCommittee = async () => {
       if (committeeId) {
@@ -33,8 +31,6 @@ const AddCommitteeForm = ({
             `/api/v1/committee/committees/${committeeId}`
           );
           const committee = response.data.data.committee;
-          // console.log(response.data.data.committee);
-
           setFormData({
             name: committee.name,
             description: committee.description,
@@ -67,24 +63,20 @@ const AddCommitteeForm = ({
     try {
       showLoading();
       if (committeeId) {
-        // Update existing committee
         const response = await axios.put(
           `/api/v1/committee/committees/${committeeId}`,
           formData
         );
         toast.success("Committee updated successfully!");
         setIsEditOpen(false);
-        // onAddCommittee(response.data.data.committee); // Pass updated committee data
       } else {
-        // Create new committee
         const response = await axios.post(
           "/api/v1/committee/committees",
           formData
         );
         toast.success("Committee added successfully!");
-        onAddCommittee(response.data.data.committee); // Pass newly added committee data
+        onAddCommittee(response.data.data.committee);
       }
-      // Reset form after submission
       setFormData({ name: "", description: "", createdByUserId: user.id });
       setRefreshPage(Math.random());
       hideLoading();
