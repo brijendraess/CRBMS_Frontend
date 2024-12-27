@@ -91,12 +91,12 @@ setInitialValueState({
           }
         );
 
-        toast.success("Meeting postpone successfully");
+        toast.success("Meeting Rescheduled successfully");
         setRefreshPage(Math.random())
         resetForm();
       } catch (error) {
         toast.error(error.response?.data?.message || "An error occurred");
-        console.error("Error postpone meeting:", error);
+        console.error("Error Rescheduled meeting:", error);
       }
     },
   });
