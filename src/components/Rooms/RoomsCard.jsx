@@ -69,8 +69,6 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
     setIsFoodBeverageOpen(true);
   };
 
-
-
   const handleBarCode = () => {
     setIsBarCodeOpen(true);
   };
@@ -106,9 +104,9 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
     setIsEditOpen(true);
   };
 
-   useEffect(() => {
-      setUrlData(`${import.meta.env.VITE_BARCODE_URL}/rooms/${room?.id}`)
-    }, [room]);
+  useEffect(() => {
+    setUrlData(`${import.meta.env.VITE_BARCODE_URL}/rooms/${room?.id}`);
+  }, [room]);
 
   return (
     <>
@@ -362,13 +360,20 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
               </Button>
             </Box>
           ) : (
-            <>
+            <Box
+              style={{
+                display: "flex",
+                justifyContent: "space-around",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
               <Button
                 fullWidth
                 variant="contained"
                 onClick={handleCardClick}
                 sx={{
-                  borderRadius: "0 0 12px 12px",
+                  borderRadius: "0",
                 }}
               >
                 View More
@@ -378,12 +383,13 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
                 variant="contained"
                 onClick={handleBookNowClick}
                 sx={{
-                  borderRadius: "0 0 12px 12px",
+                  borderRadius: "0",
+                  bgcolor: "red",
                 }}
               >
                 Book Now
               </Button>
-            </>
+            </Box>
           )}
         </CardActions>
       </Paper>
@@ -406,7 +412,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
         modalBody={<RoomFoodBeverages room={room} />}
       />
 
-<PopupModals
+      <PopupModals
         isOpen={isBarCodeOpen}
         setIsOpen={setIsBarCodeOpen}
         title={"Room Barcode"}

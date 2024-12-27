@@ -30,12 +30,13 @@ import ReportPage from "./pages/ReportPage/ReportPage";
 import FoodBeveragePage from "./pages/FoodBeverages/FoodBeveragesPage";
 import Notification from "./pages/Notification/NotificationPage";
 import TabScreenDetailPage from "./pages/DetailRoomPage/TabScreenDetailPage";
+import SingleDisplayPage from "./pages/DetailRoomPage/SingleDisplayPage";
 
 const AppRouter = () => {
   return (
     <Routes>
       <Route path="/meetings/today" element={<TodaysMeetings />} />
-      <Route path="/room-tab/:id" element={<TabScreenDetailPage />} />
+      <Route path="/room-tab/:id" element={<SingleDisplayPage />} />
       <Route
         path="/login"
         element={
