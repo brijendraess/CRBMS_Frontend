@@ -11,11 +11,12 @@ import {
 import "./TodaysMeetings.css";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import flag2 from "../../assets/flag2.webp";
 import dayjs from "dayjs";
 import durationPlugin from "dayjs/plugin/duration";
 import axios from "axios";
-import { getFormattedDate, timeDifference } from "../../utils/utils";
+import { getFormattedDate, getMeetingTimePercentage, timeDifference } from "../../utils/utils";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 dayjs.extend(durationPlugin);
@@ -32,6 +33,24 @@ const Item = styled(Paper)(({ theme }) => ({
   overflow: "hidden",
   color: "#fff",
 }));
+
+const theme = createTheme({
+  palette: {
+    progress: {
+      color10: "#FF0000", // Red
+      color20: "#FF3300",
+      color30: "#FF6600",
+      color40: "#FF9900",
+      color50: "#FFCC00",
+      color60: "#FFFF00",
+      color70: "#CCFF00", // Yellow
+      color80: "#99FF00",
+      color90: "#66FF00",
+      color100: "#33FF00", // Green
+    },
+  },
+});
+
 
 const colorMap = {
   A: { row: "#ffecec", bar: "#ff4d4d" }, // Light Red
@@ -50,8 +69,39 @@ const getColorByProgress = (progress) => {
 };
 
 const renderProgressBar = (params) => {
-  const progress = params.value;
-  const color = getColorByProgress(progress);
+  const status = params.row.status;
+   const meetingStartTime = `${params.row.meetingDate}T${params.row.startTime}Z`; // ISO 8601 format
+   const meetingEndTime = `${params.row.meetingDate}T${params.row.endTime}Z`;
+   const percentage = getMeetingTimePercentage(meetingStartTime, meetingEndTime);
+   let progress = 0;
+
+  if (status === "Completed") progress = percentage;
+  else if (status === "ongoing") progress = percentage;
+  else if (status === "Scheduled") progress = 0;
+
+  const getCustomColor = (percentage) => {
+    if (percentage >= 0 && percentage <= 10)
+      return theme.palette.progress.color10;
+    if (percentage >= 11 && percentage <= 20)
+      return theme.palette.progress.color20;
+    if (percentage >= 21 && percentage <= 30)
+      return theme.palette.progress.color30;
+    if (percentage >= 31 && percentage <= 40)
+      return theme.palette.progress.color40;
+    if (percentage >= 41 && percentage <= 50)
+      return theme.palette.progress.color50;
+
+    if (percentage >= 51 && percentage <= 60)
+      return theme.palette.progress.color60;
+    if (percentage >= 61 && percentage <= 70)
+      return theme.palette.progress.color70;
+    if (percentage >= 71 && percentage <= 80)
+      return theme.palette.progress.color80;
+    if (percentage >= 81 && percentage <= 90)
+      return theme.palette.progress.color90;
+    if (percentage >= 91 && percentage <= 100)
+      return theme.palette.progress.color100;
+  };
 
   return (
     <Box
@@ -70,9 +120,8 @@ const renderProgressBar = (params) => {
           sx={{
             height: 20,
             borderRadius: 5,
-            bgcolor: "#f0f0f0", // Light gray background for unused portion
             "& .MuiLinearProgress-bar": {
-              bgcolor: color.bar, // Progress bar color
+              backgroundColor: getCustomColor(percentage),
             },
           }}
         />
@@ -172,7 +221,7 @@ const TodaysMeetings = () => {
         agenda: meeting.agenda,
         private: meeting.isPrivate,
         notes: meeting.notes,
-        meetingDate: meetingDate,
+        meetingDate: meeting.meetingDate,
         startTime: startTime.format("HH:mm:ss"),
         endTime: endTime.format("HH:mm:ss"),
         duration: timeDiff,
