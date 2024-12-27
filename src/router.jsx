@@ -84,6 +84,7 @@ const AppRouter = () => {
         }
       >
         {/* To-Do Admin Condition */}
+        <Route path="/" element={<CalenderPage />} />
         <Route path="/home" element={<CalenderPage />} />
         <Route path="/rooms" element={<RoomsPage />} />
         <Route path="/reports" element={<ReportPage />} />
