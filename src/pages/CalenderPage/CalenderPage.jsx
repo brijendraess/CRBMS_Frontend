@@ -323,7 +323,7 @@ const CalenderPage = () => {
       <PopupModals
         isOpen={isPostponeBookingOpen}
         setIsOpen={setIsPostponeBookingOpen}
-        title={"Postpone Meeting"}
+        title={"Rescheduled Meeting"}
         modalBody={
           <MeetingFormPostPone
             updatedBookingId={updatedBookingId}
