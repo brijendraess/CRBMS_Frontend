@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { PaperWrapper, RightContent } from "../../Style";
+import { PaperWrapper } from "../../Style";
 import { useDispatch, useSelector } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
