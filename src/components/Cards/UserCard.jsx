@@ -8,7 +8,7 @@ import {
   Switch,
   Typography,
 } from "@mui/material";
-import { AdminPanelSettingsOutlinedIcon, BadgeOutlinedIcon, DeleteOutlineOutlinedIcon, EditOutlinedIcon, LocalPhoneOutlinedIcon, MailOutlinedIcon, RemoveRedEyeIcon } from "../Common Components/CustomButton/CustomIcon";
+import { AdminPanelSettingsOutlinedIcon, BadgeOutlinedIcon, DeleteOutlineOutlinedIcon, EditOutlinedIcon, LocalPhoneOutlinedIcon, MailOutlinedIcon, Person3OutlinedIcon, RemoveRedEyeIcon } from "../Common Components/CustomButton/CustomIcon";
 import CustomButton from "../Common Components/CustomButton/CustomButton";
 
 const UserCard = ({
@@ -53,6 +53,19 @@ const UserCard = ({
           >
             <BadgeOutlinedIcon fontSize="small" sx={{ marginBottom: "6px" }} />
             {user.fullname}
+          </Typography>
+          <Typography
+            variant="h5"
+            component="div"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              fontSize: "14px",
+            }}
+          >
+            <Person3OutlinedIcon fontSize="small" sx={{ marginBottom: "6px" }} />
+            {user.userName}
           </Typography>
           <Typography
             variant="body2"

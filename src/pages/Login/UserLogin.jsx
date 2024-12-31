@@ -23,7 +23,7 @@ import Input from "../../components/Common Components/Input/Input";
 import ebizLogo from "../../assets/Images/ebizlogo.png";
 
 const UserLogin = () => {
-  const [email, setEmail] = useState("");
+  const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ const UserLogin = () => {
       dispatch(showLoading());
       const response = await axios.post(
         "/api/v1/user/login",
-        { email, password },
+        { userName, password },
         {
           headers: {
             "Content-Type": "application/json",
@@ -43,8 +43,9 @@ const UserLogin = () => {
         }
       );
       dispatch(hideLoading());
+      console.log(response.data.success)
       if (response.data.success) {
-        dispatch(setLoginEmail(email));
+        dispatch(setLoginEmail(userName));
         navigate("/verify-email");
         toast.success(`Please complete authentication with OTP`);
       }
@@ -68,10 +69,10 @@ const UserLogin = () => {
           <form onSubmit={handleLogin}>
             <Input
               icon={Mail}
-              type="email"
-              placeholder="Email Address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="userName"
+              placeholder="User Name"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
             />
 
             <Input

@@ -173,6 +173,10 @@ const MembersPage = () => {
       flex: 1,
       headerClassName: "super-app-theme--header",
     },
+    { field: "userName", 
+      headerName: "User name", 
+      flex: 1, headerClassName: 
+      "super-app-theme--header", },
     {
       field: "email",
       headerName: "Email",
