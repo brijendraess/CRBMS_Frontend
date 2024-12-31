@@ -1,6 +1,5 @@
 import {
   Box,
-  IconButton,
   LinearProgress,
   Paper,
   styled,
@@ -19,10 +18,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import Loader from "../../components/Common Components/Loader/Loader";
 import { LocationOnOutlinedIcon } from "../../components/Common Components/CustomButton/CustomIcon";
-import { timeDifference } from "../../utils/utils";
+import { getMeetingTimePercentage, timeDifference } from "../../utils/utils";
 import { DataGrid } from "@mui/x-data-grid";
 import GroupsIcon from "@mui/icons-material/Groups";
 import axios from "axios";
+import { createTheme } from "@mui/material/styles";
+import FullscreenExitOutlinedIcon from "@mui/icons-material/FullscreenExitOutlined";
+import { FullscreenOutlined } from "@mui/icons-material";
 
 const Wrapper = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -35,6 +37,23 @@ const Wrapper = styled(Box)(({ theme }) => ({
   textAlign: "left",
   alignItems: "center",
 }));
+
+const theme = createTheme({
+  palette: {
+    progress: {
+      color10: "#FF0000", // Red
+      color20: "#FF3300",
+      color30: "#FF6600",
+      color40: "#FF9900",
+      color50: "#FFCC00",
+      color60: "#FFFF00",
+      color70: "#CCFF00", // Yellow
+      color80: "#99FF00",
+      color90: "#66FF00",
+      color100: "#33FF00", // Green
+    },
+  },
+});
 
 const columns = [
   {
@@ -73,16 +92,39 @@ const columns = [
 ];
 
 const renderProgressBar = (params) => {
-  const status = params.value;
+  const status = params.row.status;
+  const meetingStartTime = `${params.row.meetingDate}T${params.row.startTime}Z`; // ISO 8601 format
+  const meetingEndTime = `${params.row.meetingDate}T${params.row.endTime}Z`;
+  const percentage = getMeetingTimePercentage(meetingStartTime, meetingEndTime);
   let progress = 0;
 
-  if (status === "Completed") progress = 100;
-  else if (status === "In Progress") progress = 33;
+  if (status === "Completed") progress = percentage;
+  else if (status === "ongoing") progress = percentage;
   else if (status === "Scheduled") progress = 0;
 
-  let color = "success";
-  if (progress >= 33 && progress <= 66) color = "info";
-  if (progress > 66) color = "error";
+  const getCustomColor = (percentage) => {
+    if (percentage >= 0 && percentage <= 10)
+      return theme.palette.progress.color10;
+    if (percentage >= 11 && percentage <= 20)
+      return theme.palette.progress.color20;
+    if (percentage >= 21 && percentage <= 30)
+      return theme.palette.progress.color30;
+    if (percentage >= 31 && percentage <= 40)
+      return theme.palette.progress.color40;
+    if (percentage >= 41 && percentage <= 50)
+      return theme.palette.progress.color50;
+
+    if (percentage >= 51 && percentage <= 60)
+      return theme.palette.progress.color60;
+    if (percentage >= 61 && percentage <= 70)
+      return theme.palette.progress.color70;
+    if (percentage >= 71 && percentage <= 80)
+      return theme.palette.progress.color80;
+    if (percentage >= 81 && percentage <= 90)
+      return theme.palette.progress.color90;
+    if (percentage >= 91 && percentage <= 100)
+      return theme.palette.progress.color100;
+  };
 
   return (
     <Box
@@ -103,10 +145,12 @@ const renderProgressBar = (params) => {
         <LinearProgress
           variant="determinate"
           value={progress}
-          color={color}
           sx={{
             height: 20, // Increased thickness
             borderRadius: 6, // Rounded edges
+            "& .MuiLinearProgress-bar": {
+              backgroundColor: getCustomColor(percentage),
+            },
           }}
         />
         <Typography
@@ -149,7 +193,6 @@ const SingleDisplayPage = () => {
   const [room, setRoom] = useState(null);
   const [meeting, setMeeting] = useState([]);
   const [refreshPage, setRefreshPage] = useState("");
-  const [urlData, setUrlData] = useState("Not Found");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
@@ -201,6 +244,7 @@ const SingleDisplayPage = () => {
         private: meeting.isPrivate,
         notes: meeting.notes,
         startTime: meeting.startTime,
+        meetingDate: meeting.meetingDate,
         endTime: meeting.endTime, // 45 minutes duration
         duration: timeDiff,
         organizerName: meeting.User.fullname,
@@ -220,8 +264,7 @@ const SingleDisplayPage = () => {
 
   useEffect(() => {
     getAllMeeting();
-    setUrlData(`${import.meta.env.VITE_APPLICATION_URL}/rooms/${room?.id}`);
-  }, [id, room]);
+  }, [id, room,refreshPage]);
   if (!room) {
     return <Loader />;
   }
@@ -302,7 +345,7 @@ const SingleDisplayPage = () => {
 
         <Button style={{ color: "white" }} onClick={handleFullScreen}>
           <Tooltip title="Full Screen">
-            {isFullScreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
+            {isFullScreen ? <FullscreenExitOutlinedIcon /> : <FullscreenOutlined />}
           </Tooltip>
         </Button>
       </Item>

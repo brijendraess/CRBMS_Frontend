@@ -76,5 +76,26 @@ const validateImage = (file) => {
   return null;
 };
 
+function getMeetingTimePercentage(startTime, endTime) {
+  const now = new Date(); // Current time
 
-export { checkFileExists, getFormattedDate, timeDifference, fetchUsers,fetchActiveCommittee,validateImage };
+  // Convert start and end times to Date objects
+  const start = new Date(startTime);
+  const end = new Date(endTime);
+
+  if (now < start) {
+    // Meeting hasn't started yet
+    return 0;
+  } else if (now > end) {
+    // Meeting has already ended
+    return 100;
+  } else {
+    // Calculate the percentage
+    const timeElapsed = now - start;
+    const totalDuration = end - start;
+    const percentageSpent = (timeElapsed / totalDuration) * 100;
+    return percentageSpent.toFixed(2); // Return as a formatted percentage
+  }
+}
+
+export { checkFileExists, getFormattedDate, timeDifference, fetchUsers,fetchActiveCommittee,validateImage,getMeetingTimePercentage };
