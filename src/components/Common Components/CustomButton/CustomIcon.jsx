@@ -21,6 +21,7 @@ import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
 import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
+import Person3OutlinedIcon from '@mui/icons-material/Person3Outlined';
 
 export {LocationOnOutlinedIcon,
     GroupsOutlinedIcon,
@@ -46,5 +47,6 @@ export {LocationOnOutlinedIcon,
     MailOutlinedIcon,
     LocalPhoneOutlinedIcon, 
     AdminPanelSettingsOutlinedIcon,
+    Person3OutlinedIcon
 
 }

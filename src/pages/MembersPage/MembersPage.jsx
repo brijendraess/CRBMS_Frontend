@@ -164,6 +164,7 @@ const MembersPage = () => {
     },
     { field: "fullname", headerName: "Full Name", flex: 1 },
     { field: "email", headerName: "Email", flex: 1 },
+    { field: "userName", headerName: "User name", flex: 1 },
     { field: "phoneNumber", headerName: "Phone Number", flex: 1 },
     { field: "isAdmin", headerName: "Role", flex: 0.5 },
     {

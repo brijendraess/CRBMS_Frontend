@@ -66,6 +66,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
       committee: [], // Array of committee IDs
       avatar: "",
       password: "",
+      userName:"",
     },
     validationSchema: Yup.object({
       fullname: Yup.string().required("Full name is required"),
@@ -78,6 +79,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
         .required("Phone number is required")
         .length(10, "Phone number must be 10 digits"),
       password: Yup.string().required("Password is required"),
+      userName: Yup.string().required("user name is required"),
       committee: Yup.array()
         .of(Yup.string().required("Committee ID is required"))
         .min(1, "Select at least one committee"),
@@ -92,8 +94,9 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
         formData.append("role", values.role);
         formData.append("phoneNumber", values.phoneNumber);
         formData.append("password", values.password);
+        formData.append("userName", values.userName);
         formData.append("committee", JSON.stringify(values.committee));
-        console.log(formData);
+       // console.log(formData);
         if (values.avatar) {
           formData.append("avatar", values.avatar);
         }
@@ -135,16 +138,27 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
             size="small"
           />
         </Box>
-
-        {/* Email and Password */}
         <Box display="flex" justifyContent="space-between" mb={2}>
-          <TextField
+        <TextField
             label="Email"
             name="email"
             value={formik.values.email}
             onChange={formik.handleChange}
             error={formik.touched.email && Boolean(formik.errors.email)}
             helperText={formik.touched.email && formik.errors.email}
+            style={{ marginRight: 8, flex: 1 }}
+            size="small"
+          />
+        </Box>
+        {/* Email and Password */}
+        <Box display="flex" justifyContent="space-between" mb={2}>
+          <TextField
+            label="User name"
+            name="userName"
+            value={formik.values.userName}
+            onChange={formik.handleChange}
+            error={formik.touched.userName && Boolean(formik.errors.userName)}
+            helperText={formik.touched.userName && formik.errors.userName}
             style={{ marginRight: 8, flex: 1 }}
             size="small"
           />
