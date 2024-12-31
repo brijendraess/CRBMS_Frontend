@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { TextField, Button, Typography, Box } from "@mui/material";
+import { TextField, Button } from "@mui/material";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { PopContent } from "../../Style";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 
@@ -13,116 +15,126 @@ const AddCommitteeForm = ({
   setIsEditOpen,
 }) => {
   const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
-  const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    createdByUserId: user.id,
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      description: "",
+    },
+    validationSchema: Yup.object({
+      name: Yup.string()
+        .required("Committee name is required")
+        .min(3, "Name must be at least 3 characters")
+        .max(50, "Name must be at most 50 characters"),
+      description: Yup.string()
+        .required("Description is required")
+        .min(10, "Description must be at least 10 characters")
+        .max(500, "Description must be at most 500 characters"),
+    }),
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        dispatch(showLoading());
+        const formData = { ...values, createdByUserId: user.id };
+        if (committeeId) {
+          await axios.put(
+            `/api/v1/committee/committees/${committeeId}`,
+            formData
+          );
+          toast.success("Committee updated successfully!");
+          setIsEditOpen(false);
+        } else {
+          const response = await axios.post(
+            "/api/v1/committee/committees",
+            formData
+          );
+          toast.success("Committee added successfully!");
+          onAddCommittee(response.data.data.committee);
+        }
+        resetForm();
+        setRefreshPage(Math.random());
+        dispatch(hideLoading());
+      } catch (err) {
+        toast.error(err.response?.data?.message || "Failed to save committee.");
+        dispatch(hideLoading());
+        console.error("Error saving committee:", err);
+      } finally {
+        dispatch(hideLoading());
+        hideLoading();
+      }
+    },
   });
 
-  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const fetchCommittee = async () => {
       if (committeeId) {
-        setIsLoading(true);
         try {
-          showLoading();
+          dispatch(showLoading());
           const response = await axios.get(
             `/api/v1/committee/committees/${committeeId}`
           );
           const committee = response.data.data.committee;
-          setFormData({
+          formik.setValues({
             name: committee.name,
             description: committee.description,
-            createdByUserId: committee.createdByUserId || user.id,
           });
-          hideLoading();
+          dispatch(hideLoading());
         } catch (err) {
-          hideLoading();
           toast.error("Failed to fetch committee details.");
           console.error("Error fetching committee:", err);
+          dispatch(hideLoading());
         } finally {
-          hideLoading();
-          setIsLoading(false);
+          dispatch(hideLoading());
         }
       }
     };
 
     fetchCommittee();
-  }, [committeeId, user.id]);
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      showLoading();
-      if (committeeId) {
-        const response = await axios.put(
-          `/api/v1/committee/committees/${committeeId}`,
-          formData
-        );
-        toast.success("Committee updated successfully!");
-        setIsEditOpen(false);
-      } else {
-        const response = await axios.post(
-          "/api/v1/committee/committees",
-          formData
-        );
-        toast.success("Committee added successfully!");
-        onAddCommittee(response.data.data.committee);
-      }
-      setFormData({ name: "", description: "", createdByUserId: user.id });
-      setRefreshPage(Math.random());
-      hideLoading();
-    } catch (err) {
-      hideLoading();
-      toast.error(err.response?.data?.message || "Failed to save committee.");
-      console.error("Error saving committee:", err);
-    }
-  };
+  }, [committeeId]);
 
   return (
     <PopContent>
-      <>
+      <form onSubmit={formik.handleSubmit}>
         <TextField
           label="Committee Name"
           name="name"
-          value={formData.name}
-          onChange={handleChange}
+          value={formik.values.name}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
           fullWidth
           required
           margin="normal"
           size="small"
+          error={formik.touched.name && Boolean(formik.errors.name)}
+          helperText={formik.touched.name && formik.errors.name}
         />
         <TextField
           label="Description"
           name="description"
-          value={formData.description}
-          onChange={handleChange}
+          value={formik.values.description}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
           fullWidth
           required
           margin="normal"
           multiline
           rows={4}
+          error={
+            formik.touched.description && Boolean(formik.errors.description)
+          }
+          helperText={formik.touched.description && formik.errors.description}
         />
-
         <Button
           type="submit"
           variant="contained"
           color="primary"
           fullWidth
           sx={{ mt: 2 }}
-          onClick={handleSubmit}
+          disabled={isLoading || !formik.isValid}
         >
           {committeeId ? "Update Committee" : "Add Committee"}
         </Button>
-      </>
+      </form>
     </PopContent>
   );
 };

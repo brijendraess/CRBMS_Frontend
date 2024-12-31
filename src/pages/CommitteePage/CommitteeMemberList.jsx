@@ -15,7 +15,7 @@ import UserCard from "../../components/Cards/UserCard";
 import CustomButton from "../../components/Common Components/CustomButton/CustomButton";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CommitteeMemberCard from "../../components/CommitteeCard/CommitteeMemberCard";
 
 const CommitteeMemberList = () => {
@@ -23,13 +23,15 @@ const CommitteeMemberList = () => {
   const { committeeId } = useParams();
   const location = useLocation();
   const { committee, heading } = location.state || {};
-  console.log(location)
+  console.log(location);
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
   const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        showLoading();
+        dispatch(showLoading());
         const response = await axios.get(
           `/api/v1/committee/committees/${committeeId}/members`
         );
@@ -45,9 +47,9 @@ const CommitteeMemberList = () => {
         }));
 
         setData(formattedData);
-        hideLoading();
+        dispatch(hideLoading());
       } catch (error) {
-        hideLoading();
+        dispatch(hideLoading());
         toast.error("Failed to fetch members. Please try again.");
         console.error("Error fetching members:", error);
       }
@@ -58,6 +60,7 @@ const CommitteeMemberList = () => {
 
   const removeUserFromCommittee = async (userId) => {
     try {
+      dispatch(showLoading());
       const response = await axios.delete(
         `/api/v1/committee/committees/${committeeId}/members/${userId}`
       );
@@ -65,7 +68,9 @@ const CommitteeMemberList = () => {
         toast.success("User removed from committee successfully");
         setData((prevData) => prevData.filter((user) => user.id !== userId));
       }
+      dispatch(hideLoading());
     } catch (error) {
+      dispatch(hideLoading());
       if (error.response?.status === 404) {
         toast.error("User is not a member of this committee");
       } else {
@@ -91,21 +96,26 @@ const CommitteeMemberList = () => {
           style={{ width: "35px", height: "35px", borderRadius: "50%" }}
         />
       ),
+      headerClassName: "super-app-theme--header",
     },
     {
       field: "fullname",
       headerName: "Full Name",
       width: 300,
+      headerClassName: "super-app-theme--header",
     },
     {
       field: "email",
       headerName: "Email",
       width: 300,
+      flex: 1,
+      headerClassName: "super-app-theme--header",
     },
     {
       field: "phoneNumber",
       headerName: "Phone Number",
       width: 200,
+      headerClassName: "super-app-theme--header",
     },
     {
       field: "Actions",
@@ -121,6 +131,7 @@ const CommitteeMemberList = () => {
             />
           </Tooltip>
         ) : null,
+      headerClassName: "super-app-theme--header",
     },
   ];
 
@@ -168,6 +179,15 @@ const CommitteeMemberList = () => {
             rowHeight={40}
             disableSelectionOnClick
             getRowId={(row) => row.id}
+            sx={{
+              "& .super-app-theme--header": {
+                backgroundColor: "#006400",
+                // backgroundColor: "rgba(255, 223, 0, 1)",
+                color: "#fff",
+                fontWeight: "600",
+                fontSize: "16px",
+              },
+            }}
           />
         </div>
       )}

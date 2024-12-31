@@ -9,7 +9,6 @@ import {
   Grid2,
 } from "@mui/material";
 import axios from "axios";
-import CommitteeCard from "../../components/CommitteeCard/CommitteeCard";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { PaperWrapper } from "../../Style";
@@ -30,7 +29,6 @@ const MyCommitteePage = () => {
         const response = await axios.get("/api/v1/committee/my-committee", {
           withCredentials: true,
         });
-        console.log(response.data.data.committees);
         setCommitteeData(response.data.data.committees);
         dispatch(hideLoading());
       } catch (err) {
@@ -67,7 +65,6 @@ const MyCommitteePage = () => {
           </Select>
         </FormControl>
       </PageHeader>
-
       <Grid2
         container
         columnSpacing={3}

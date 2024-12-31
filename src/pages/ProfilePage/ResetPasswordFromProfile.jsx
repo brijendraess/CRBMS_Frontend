@@ -9,13 +9,17 @@ import {
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { VisibilityOff,Visibility } from "@mui/icons-material";
+import { VisibilityOff, Visibility } from "@mui/icons-material";
+import axios from "axios";
+import toast from "react-hot-toast";
 
-const ResetPassword = () => {
+const ResetPasswordFromProfile = () => {
+  const [showOldPassword, setShowOldPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Toggle password visibility
+  const handleClickShowOldPassword = () => setShowOldPassword(!showOldPassword);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleClickShowConfirmPassword = () =>
     setShowConfirmPassword(!showConfirmPassword);
@@ -31,13 +35,14 @@ const ResetPassword = () => {
     return score;
   };
 
-  // Formik form and validation
   const formik = useFormik({
     initialValues: {
+      oldPassword: "",
       password: "",
       confirmPassword: "",
     },
     validationSchema: Yup.object({
+      oldPassword: Yup.string().required("Old password is required"),
       password: Yup.string()
         .min(8, "Password should be at least 8 characters")
         .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
@@ -52,9 +57,28 @@ const ResetPassword = () => {
         .oneOf([Yup.ref("password"), null], "Passwords must match")
         .required("Confirm Password is required"),
     }),
-    onSubmit: (values) => {
-      // Handle form submission logic here
-      console.log("Form Submitted:", values);
+    onSubmit: async (values, { setSubmitting, resetForm }) => {
+      try {
+        const response = await axios.post(
+          "api/v1/user/profile-reset-password",
+          {
+            oldPassword: values.oldPassword,
+            newPassword: values.password,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            withCredentials: true,
+          }
+        );
+        toast.success("Password Reset Successfully");
+        resetForm();
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setSubmitting(false);
+      }
     },
   });
 
@@ -72,8 +96,35 @@ const ResetPassword = () => {
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
+        {/* Old Password */}
         <TextField
-          label="Password"
+          label="Old Password"
+          name="oldPassword"
+          type={showOldPassword ? "text" : "password"}
+          fullWidth
+          value={formik.values.oldPassword}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={
+            formik.touched.oldPassword && Boolean(formik.errors.oldPassword)
+          }
+          helperText={formik.touched.oldPassword && formik.errors.oldPassword}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={handleClickShowOldPassword}>
+                  {showOldPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+          sx={{ marginTop: 2 }}
+          size="small"
+        />
+
+        {/* New Password */}
+        <TextField
+          label="New Password"
           name="password"
           type={showPassword ? "text" : "password"}
           fullWidth
@@ -92,9 +143,12 @@ const ResetPassword = () => {
             ),
           }}
           sx={{ marginBottom: 2, marginTop: 2 }}
+          size="small"
         />
+
+        {/* Confirm New Password */}
         <TextField
-          label="Confirm Password"
+          label="Confirm New Password"
           name="confirmPassword"
           type={showConfirmPassword ? "text" : "password"}
           fullWidth
@@ -117,18 +171,17 @@ const ResetPassword = () => {
               </InputAdornment>
             ),
           }}
+          size="small"
         />
+
+        {/* Password Strength Progress Bar */}
         <LinearProgress
           variant="determinate"
           value={progress}
           sx={{ marginTop: "10px", height: "8px" }}
           color={getProgressBarColor()}
         />
-        <Typography
-          variant="body2"
-          color="textSecondary"
-          sx={{ marginTop: "5px" }}
-        >
+        <Typography variant="body2" color="textSecondary">
           <strong>Password Strength: </strong>
           {passwordStrength === 0
             ? "Too weak"
@@ -140,20 +193,24 @@ const ResetPassword = () => {
                   ? "Strong"
                   : "Very Strong"}
         </Typography>
+
+        {/* Submit Button */}
         <Button
           type="submit"
           variant="contained"
           color="primary"
-          fullWidth
-          sx={{ marginTop: "20px" }}
+          sx={{ marginTop: "10px" }}
+          disabled={formik.isSubmitting}
         >
           Submit
         </Button>
       </form>
+
+      {/* Password Rules */}
       <Typography
         variant="body2"
         color="textSecondary"
-        sx={{ marginTop: "15px" }}
+        sx={{ marginTop: "13px" }}
       >
         <ul>
           <li>Password should be at least 8 characters</li>
@@ -167,4 +224,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default ResetPasswordFromProfile;

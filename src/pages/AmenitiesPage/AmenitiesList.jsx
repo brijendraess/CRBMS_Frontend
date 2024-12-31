@@ -115,13 +115,28 @@ const AmenitiesList = () => {
   };
 
   const columns = [
-    { field: "serialNo", headerName: "#", width: 50 },
-    { field: "name", headerName: "Amenity Name", width: 300 },
-    { field: "description", headerName: "Description", width: 700 },
+    {
+      field: "serialNo",
+      headerName: "#",
+      width: 50,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "name",
+      headerName: "Amenity Name",
+      width: 300,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "description",
+      headerName: "Description",
+      width: 800,
+      headerClassName: "super-app-theme--header",
+    },
     {
       field: "action",
       headerName: "Action",
-      width: 150,
+      width: 300,
       renderCell: (params) => (
         <Box height={"40px"} display="flex" alignItems="center" gap={2}>
           <Tooltip title="Edit">
@@ -146,6 +161,7 @@ const AmenitiesList = () => {
           </Tooltip>
         </Box>
       ),
+      headerClassName: "super-app-theme--header",
     },
   ];
 
@@ -196,6 +212,13 @@ const AmenitiesList = () => {
             sx={{
               "& .MuiDataGrid-cell:focus": {
                 outline: "none",
+              },
+              "& .super-app-theme--header": {
+                backgroundColor: "#006400",
+                // backgroundColor: "rgba(255, 223, 0, 1)",
+                color: "#fff",
+                fontWeight: "600",
+                fontSize: "16px",
               },
             }}
             showCellVerticalBorder

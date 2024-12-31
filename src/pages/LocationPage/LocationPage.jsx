@@ -121,7 +121,12 @@ const LocationPage = () => {
   };
 
   const columns = [
-    { field: "serialNo", headerName: "#", width: 100 },
+    {
+      field: "serialNo",
+      headerName: "#",
+      width: 100,
+      headerClassName: "super-app-theme--header",
+    },
     {
       field: "locationImagePath",
       headerName: "Image",
@@ -140,11 +145,13 @@ const LocationPage = () => {
             style={{ width: "35px", height: "35px", borderRadius: "50%" }}
           />
         ),
+      headerClassName: "super-app-theme--header",
     },
     {
       field: "locationName",
       headerName: "Name",
       width: 500,
+      headerClassName: "super-app-theme--header",
     },
     {
       field: "action",
@@ -176,6 +183,7 @@ const LocationPage = () => {
           </Tooltip>
         </Box>
       ),
+      headerClassName: "super-app-theme--header",
     },
   ];
 
@@ -218,6 +226,15 @@ const LocationPage = () => {
             rowsPerPageOptions={[5]}
             disableSelectionOnClick
             rowHeight={40}
+            sx={{
+              "& .super-app-theme--header": {
+                backgroundColor: "#006400",
+                // backgroundColor: "rgba(255, 223, 0, 1)",
+                color: "#fff",
+                fontWeight: "600",
+                fontSize: "16px",
+              },
+            }}
           />
         </div>
       )}
@@ -245,7 +262,10 @@ const LocationPage = () => {
             locationName={
               location.find((loc) => loc.id === updatedId)?.locationName || ""
             }
-            locationImagePath={location.find((loc) => loc.id === updatedId)?.locationImagePath|| ""}
+            locationImagePath={
+              location.find((loc) => loc.id === updatedId)?.locationImagePath ||
+              ""
+            }
             onSuccess={handleUpdateSuccess}
           />
         }

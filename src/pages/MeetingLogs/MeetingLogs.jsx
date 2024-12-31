@@ -27,12 +27,12 @@ const MeetingLogs = () => {
   const dispatch = useDispatch();
   const [isEditBookingOpen, setIsEditBookingOpen] = useState(false);
   const [isPostponeBookingOpen, setIsPostponeBookingOpen] = useState(false);
-    const [isApprovalBookingOpen, setIsApprovalBookingOpen] = useState(false);
+  const [isApprovalBookingOpen, setIsApprovalBookingOpen] = useState(false);
   const [isCancelBookingOpen, setIsCancelBookingOpen] = useState(false);
   const [updatedRoomId, setUpdatedRoomId] = useState("");
   const [room, setRoom] = useState([]);
   const [updatedBookingId, setUpdatedBookingId] = useState("");
-   const [meetingUpdatedStatus, setMeetingUpdatedStatus] = useState("");
+  const [meetingUpdatedStatus, setMeetingUpdatedStatus] = useState("");
   const [refreshPage, setRefreshPage] = useState(0);
   const [roomsData, setRoomsData] = useState([]); // State for rooms data
 
@@ -48,9 +48,9 @@ const MeetingLogs = () => {
     setUpdatedBookingId(meetingId);
   };
 
-  const handleApproval = (roomId, meetingId,meetingUpdatedStatus) => {
+  const handleApproval = (roomId, meetingId, meetingUpdatedStatus) => {
     setIsApprovalBookingOpen(true);
-    setMeetingUpdatedStatus(meetingUpdatedStatus)
+    setMeetingUpdatedStatus(meetingUpdatedStatus);
     setUpdatedRoomId(roomId);
     setUpdatedBookingId(meetingId);
   };
@@ -69,10 +69,13 @@ const MeetingLogs = () => {
 
   const handleCancelMeetingConfirm = async () => {
     try {
-      await axios.put(`/api/v1/meeting/update-meeting-status/${updatedBookingId}`,{meetingStatus: 'cancelled',},
+      await axios.put(
+        `/api/v1/meeting/update-meeting-status/${updatedBookingId}`,
+        { meetingStatus: "cancelled" },
         {
           withCredentials: true,
-        });
+        }
+      );
 
       handleCloseMeeting(false);
       setRefreshPage(Math.random());
@@ -93,20 +96,65 @@ const MeetingLogs = () => {
   };
 
   const columns = [
-    { field: "subject", headerName: "Subject", width: 90 },
-    { field: "agenda", headerName: "Agenda", width: 90 },
-    { field: "notes", headerName: "Notes", width: 100 },
-    { field: "startTime", headerName: "Start Time", width: 140 },
-    { field: "endTime", headerName: "End Time", width: 150 },
-    { field: "meetingDate", headerName: "Meeting Date", width: 150 },
-    { field: "roomLocation", headerName: "Room Location", width: 140 },
-    { field: "organizerName", headerName: "Organizer", width: 130 },
-    { field: "status", headerName: "Status", width: 100 },
+    {
+      field: "subject",
+      headerName: "Subject",
+      width: 90,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "agenda",
+      headerName: "Agenda",
+      width: 90,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "notes",
+      headerName: "Notes",
+      width: 100,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "startTime",
+      headerName: "Start Time",
+      width: 140,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "endTime",
+      headerName: "End Time",
+      width: 150,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "meetingDate",
+      headerName: "Meeting Date",
+      width: 150,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "roomLocation",
+      headerName: "Room Location",
+      width: 140,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "organizerName",
+      headerName: "Organizer",
+      width: 130,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      width: 100,
+      headerClassName: "super-app-theme--header",
+    },
     {
       field: "action",
       headerName: "Action",
       width: 150,
-
+      headerClassName: "super-app-theme--header",
       renderCell: (params) => (
         <Box
           display="flex"
@@ -138,15 +186,21 @@ const MeetingLogs = () => {
               }
             />
           </Tooltip>
-          {user.isAdmin&&<Tooltip title="Change the status of meeting">
-            <ApprovalOutlinedIcon
-              color="success"
-              style={{ cursor: "pointer" }}
-              onClick={() =>
-                handleApproval(params.row.roomId, params.row.id,params.row.status)
-              }
-            />
-          </Tooltip>}
+          {user.isAdmin && (
+            <Tooltip title="Change the status of meeting">
+              <ApprovalOutlinedIcon
+                color="success"
+                style={{ cursor: "pointer" }}
+                onClick={() =>
+                  handleApproval(
+                    params.row.roomId,
+                    params.row.id,
+                    params.row.status
+                  )
+                }
+              />
+            </Tooltip>
+          )}
         </Box>
       ),
     },
@@ -174,9 +228,8 @@ const MeetingLogs = () => {
   }, [updatedBookingId, refreshPage]);
 
   useEffect(() => {
-    if (updatedRoomId) 
-      fetchRoomsData();
-  }, [updatedRoomId, updatedBookingId,refreshPage]);
+    if (updatedRoomId) fetchRoomsData();
+  }, [updatedRoomId, updatedBookingId, refreshPage]);
 
   useEffect(() => {
     const fetchMeetings = async () => {
@@ -212,7 +265,7 @@ const MeetingLogs = () => {
     };
 
     fetchMeetings();
-  }, [user?.isAdmin,refreshPage]);
+  }, [user?.isAdmin, refreshPage]);
 
   const useStyles = makeStyles({
     rowCancelled: {
@@ -242,6 +295,15 @@ const MeetingLogs = () => {
               ? classes.rowCancelled
               : classes.rowActive
           }
+          sx={{
+            "& .super-app-theme--header": {
+              backgroundColor: "#006400",
+              // backgroundColor: "rgba(255, 223, 0, 1)",
+              color: "#fff",
+              fontWeight: "600",
+              fontSize: "16px",
+            },
+          }}
         />
       </div>
 

@@ -15,7 +15,6 @@ import {
   styled,
 } from "@mui/material";
 import "./CalendarPage.css";
-import { PaperWrapper } from "../../Style";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import PopupModals from "../../components/Common Components/Modals/Popup/PopupModals";
 import MeetingFormPostPone from "../MeetingPage/MeetingFormPostPone";

@@ -26,6 +26,8 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { DataGrid } from "@mui/x-data-grid";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import PeopleIcon from "@mui/icons-material/People";
+import DeleteModal from "../../components/Common Components/Modals/Delete/DeleteModal";
+import { useDispatch } from "react-redux";
 
 const CommitteeManagementMUI = () => {
   const [committeeData, setCommitteeData] = useState([]);
@@ -34,21 +36,24 @@ const CommitteeManagementMUI = () => {
   const [refreshPage, setRefreshPage] = useState(0);
   const navigate = useNavigate();
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [selectedCommitteeId, setSelectedCommitteeId] = useState(null);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+
+  const dispatch = useDispatch();
 
   const fetchCommittee = async () => {
     try {
-      showLoading();
+      dispatch(showLoading());
       const response = await axios.get("/api/v1/committee/committees");
-      console.log(response.data.data);
       if (response.data?.data?.committees) {
         setCommitteeData(response.data.data.committees);
-      } else {
-        console.error("Unexpected data structure:", response.data);
       }
-      hideLoading();
+      dispatch(hideLoading());
     } catch (err) {
       console.error("Error fetching committees:", err);
-      hideLoading();
+      dispatch(hideLoading());
     }
   };
 
@@ -62,46 +67,94 @@ const CommitteeManagementMUI = () => {
     return true;
   });
 
-  const handleDeleteCommittee = (id) => {
+  const handleDeleteCommittee = async (id) => {
     try {
-      showLoading();
-      const response = axios.delete(`/api/v1/committee/committees/${id}`, {
+      dispatch(showLoading());
+      await axios.delete(`/api/v1/committee/committees/${id}`, {
         withCredentials: true,
       });
       toast.success("Committee deleted successfully!");
       setRefreshPage((prev) => prev + 1);
-      hideLoading();
+      dispatch(hideLoading());
     } catch (error) {
+      dispatch(hideLoading());
       console.error("Error deleting committee:", error);
       toast.error("Failed to delete committee. Please try again.");
+    } finally {
+      dispatch(hideLoading());
     }
   };
 
+  const handleChangeStatus = async (id, currentStatus) => {
+    const updatedStatus = !currentStatus;
+    const payload = { committeeId: id, status: updatedStatus };
+
+    try {
+      dispatch(showLoading());
+      const response = await axios.put(
+        `/api/v1/committee/change-status`,
+        payload,
+        { withCredentials: true }
+      );
+
+      if (response.data.success) {
+        setRefreshPage((prev) => prev + 1);
+        toast.success("Committee status changed successfully!");
+      } else {
+        toast.error("Failed to change committee status. Please try again.");
+      }
+      dispatch(hideLoading());
+    } catch (error) {
+      dispatch(hideLoading());
+      console.error("Error changing committee status:", error);
+      toast.error("Failed to change committee status. Please try again.");
+    } finally {
+      dispatch(hideLoading());
+    }
+  };
+
+  const handleNavigateToMemberList = (id) => {
+    navigate(`/view-committee/${id}`);
+  };
+
   const handleAddCommittee = (newCommittee) => {
-    setCommitteeData((prev) => [...prev, newCommittee]); // Add new committee to the state
-    setIsAddCommittee(false); // Close the modal
+    setCommitteeData((prev) => [...prev, newCommittee]);
+    setIsAddCommittee(false);
   };
 
   const columns = [
-    { field: "name", headerName: "Committee Name", flex: 1 },
-    { field: "description", headerName: "Description", flex: 1 },
+    {
+      field: "name",
+      headerName: "Committee Name",
+      flex: 1,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "description",
+      headerName: "Description",
+      flex: 1,
+      headerClassName: "super-app-theme--header",
+    },
     {
       field: "action",
       headerName: "Action",
       flex: 1,
+      headerClassName: "super-app-theme--header",
       renderCell: (params) => (
         <div
           style={{
             display: "flex",
             gap: "10px",
             alignItems: "center",
-            justifyContent: "center",
             height: "100%",
           }}
         >
           <Tooltip title="Delete">
             <DeleteOutlineOutlinedIcon
-              onClick={() => handleDeleteCommittee(params.row.id)}
+              onClick={() => {
+                setDeleteId(params.row.id);
+                setDeleteModalOpen(true);
+              }}
               sx={{ cursor: "pointer" }}
               fontSize="medium"
               color="error"
@@ -110,7 +163,10 @@ const CommitteeManagementMUI = () => {
           <Tooltip title="Edit">
             <EditOutlinedIcon
               color="success"
-              onClick={() => handleEditCommittee(params.row.id)}
+              onClick={() => {
+                setSelectedCommitteeId(params.row.id);
+                setIsEditOpen(true);
+              }}
               sx={{ cursor: "pointer" }}
             />
           </Tooltip>
@@ -139,33 +195,14 @@ const CommitteeManagementMUI = () => {
     },
   ];
 
-  const handleStatusChange = async (committeeId, newStatus) => {
-    try {
-      await axios.put(`/api/v1/committee/${committeeId}/status`, {
-        status: newStatus,
-      });
-      fetchCommittee(); // Refresh the committee list
-      alert("Status updated successfully!");
-    } catch (error) {
-      console.error("Error updating status:", error);
-      alert("Failed to update status.");
-    }
-  };
-
-  const handleNavigateToMemberList = () => {
-    navigate(`/view-committee/${committee.id}`, {
-      state: { committee, heading },
-    });
-  };
-
   return (
     <>
       <PaperWrapper>
         <PageHeader
-          heading={"Committee"}
+          heading="Committee"
           icon={AddOutlinedIcon}
           func={setIsAddCommittee}
-          title={"Add New Committee"}
+          title="Add New Committee"
         >
           <FormControl style={{ marginRight: "5 px", width: "100px" }}>
             <InputLabel id="filter-select-label">Show</InputLabel>
@@ -183,21 +220,17 @@ const CommitteeManagementMUI = () => {
             </Select>
           </FormControl>
         </PageHeader>
+
         {isSmallScreen ? (
           <Grid2
             container
-            columnSpacing={3}
-            rowSpacing={3}
+            spacing={3}
             sx={{
               borderRadius: "20px",
               position: "relative",
               top: "10px",
               alignItems: "center",
-              justifyContent: {
-                xs: "center",
-                sm: "center",
-                md: "start",
-              },
+              justifyContent: "center",
             }}
           >
             {filteredCommittees.map((committee) => (
@@ -206,7 +239,12 @@ const CommitteeManagementMUI = () => {
                 committee={committee}
                 heading={committee.name}
                 onDelete={handleDeleteCommittee}
-                setRefreshPage={setRefreshPage}
+                onEdit={() => {
+                  setSelectedCommitteeId(committee.id);
+                  setIsEditOpen(true);
+                }}
+                onChangeStatus={handleChangeStatus}
+                onViewMembers={handleNavigateToMemberList}
               />
             ))}
           </Grid2>
@@ -217,33 +255,62 @@ const CommitteeManagementMUI = () => {
               showCellVerticalBorder
               showColumnVerticalBorder
               rows={filteredCommittees}
+              columns={columns}
               rowHeight={40}
-              columns={[...columns]}
+              pageSizeOptions={[10]}
               initialState={{
                 pagination: {
-                  paginationModel: {
-                    pageSize: 10,
-                  },
+                  paginationModel: { pageSize: 10 },
                 },
               }}
-              pageSizeOptions={[10]}
-              height="100%"
+              sx={{
+                "& .super-app-theme--header": {
+                  backgroundColor: "#006400",
+                  // backgroundColor: "rgba(255, 223, 0, 1)",
+                  color: "#fff",
+                  fontWeight: "600",
+                  fontSize: "16px",
+                },
+              }}
             />
           </Box>
         )}
+
+        <PopupModals
+          modalBody={
+            <AddCommitteeForm
+              onAddCommittee={handleAddCommittee}
+              setRefreshPage={setRefreshPage}
+            />
+          }
+          isOpen={isAddCommittee}
+          title={"Add Committee"}
+          setIsOpen={setIsAddCommittee}
+          width={500}
+        />
+
+        <PopupModals
+          isOpen={isEditOpen}
+          setIsOpen={setIsEditOpen}
+          title={"Edit Committee"}
+          modalBody={
+            <AddCommitteeForm
+              committeeId={selectedCommitteeId}
+              setRefreshPage={setRefreshPage}
+              setIsEditOpen={setIsEditOpen}
+            />
+          }
+          width={500}
+        />
+
+        <DeleteModal
+          open={deleteModalOpen}
+          onClose={() => setDeleteModalOpen(false)}
+          onDeleteConfirm={() => handleDeleteCommittee(deleteId)}
+          title="committee"
+          button="Delete"
+        />
       </PaperWrapper>
-      <PopupModals
-        modalBody={
-          <AddCommitteeForm
-            onAddCommittee={handleAddCommittee}
-            setRefreshPage={setRefreshPage}
-          />
-        }
-        isOpen={isAddCommittee}
-        title={`Add Committee`}
-        setIsOpen={setIsAddCommittee}
-        width={500}
-      />
     </>
   );
 };

@@ -125,11 +125,17 @@ const FoodBeveragePage = () => {
   };
 
   const columns = [
-    { field: "serialNo", headerName: "#", width: 150 },
+    {
+      field: "serialNo",
+      headerName: "#",
+      width: 150,
+      headerClassName: "super-app-theme--header",
+    },
     {
       field: "foodBeverageName",
       headerName: "Name",
       width: 900,
+      headerClassName: "super-app-theme--header",
     },
     {
       field: "action",
@@ -160,6 +166,7 @@ const FoodBeveragePage = () => {
           </Tooltip>
         </Box>
       ),
+      headerClassName: "super-app-theme--header",
     },
   ];
 
@@ -231,6 +238,15 @@ const FoodBeveragePage = () => {
             rowsPerPageOptions={[5]}
             disableSelectionOnClick
             rowHeight={40}
+            sx={{
+              "& .super-app-theme--header": {
+                backgroundColor: "#006400",
+                // backgroundColor: "rgba(255, 223, 0, 1)",
+                color: "#fff",
+                fontWeight: "600",
+                fontSize: "16px",
+              },
+            }}
           />
         </div>
       )}
