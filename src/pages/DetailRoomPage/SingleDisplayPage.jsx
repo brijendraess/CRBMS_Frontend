@@ -11,7 +11,8 @@ import {
 import React, { useEffect, useState } from "react";
 import flag2 from "../../assets/flag2.webp";
 import flag from "../../assets/flag.png";
-
+import FullscreenIcon from "@mui/icons-material/Fullscreen";
+import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
 import Carousel from "../../components/Carousel/Carousel";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,8 +23,6 @@ import { timeDifference } from "../../utils/utils";
 import { DataGrid } from "@mui/x-data-grid";
 import GroupsIcon from "@mui/icons-material/Groups";
 import axios from "axios";
-import FullscreenOutlinedIcon from "@mui/icons-material/FullscreenOutlined";
-import FullscreenExitOutlinedIcon from "@mui/icons-material/FullscreenExitOutlined";
 
 const Wrapper = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -455,8 +454,9 @@ const SingleDisplayPage = () => {
 
                 // Header styles
                 "& .super-app-theme--header": {
-                  backgroundColor: "rgba(255, 223, 0, 1)",
-                  color: "red",
+                  backgroundColor: "#006400",
+                  // backgroundColor: "rgba(255, 223, 0, 1)",
+                  color: "#fff",
                   fontWeight: "600",
                   fontSize: "16px",
                 },

@@ -3,12 +3,13 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import { useDispatch } from "react-redux";
 
 const AddMembersToCommittee = ({ id, members }) => {
   const [users, setUsers] = useState([]);
   const [selectedUserIds, setSelectedUserIds] = useState([]);
   const [showDeleted, setShowDeleted] = useState(true);
-
+  const dispatch = useDispatch();
   const filteredUsers = users.filter((user) => !user.deletedAt);
 
   console.log(filteredUsers);
@@ -16,35 +17,33 @@ const AddMembersToCommittee = ({ id, members }) => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        showLoading();
+        dispatch(showLoading());
         const response = await axios.get(`/api/v1/user/users`);
         if (response.data.success) {
           setUsers(response.data.data.users.rows);
         }
-        hideLoading();
+        dispatch(hideLoading());
       } catch (error) {
-        hideLoading();
+        dispatch(hideLoading());
         console.error("Error fetching users:", error);
         toast.error("Failed to fetch users");
       }
     };
-
     fetchUsers();
   }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      showLoading();
+      dispatch(showLoading());
       if (selectedUserIds.length === 0) {
         toast.error("Please select at least one user to add.");
         return;
       }
 
-      // Construct the payload
       const payload = {
-        committeeId: id, // `id` is passed as a prop for the committee ID
-        userIds: selectedUserIds, // Array of selected user IDs
+        committeeId: id,
+        userIds: selectedUserIds,
       };
 
       const response = await axios.post(
@@ -57,10 +56,9 @@ const AddMembersToCommittee = ({ id, members }) => {
       } else {
         toast.error("Failed to add members to the committee.");
       }
-      hideLoading();
-      console.log("Response:", response.data.data);
+      dispatch(hideLoading());
     } catch (error) {
-      hideLoading();
+      dispatch(hideLoading());
       console.error("Error adding members:", error);
       toast.error("Failed to add members. Please try again.");
     }

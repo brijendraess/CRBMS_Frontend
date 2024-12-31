@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { PaperWrapper, RightContent } from "../../Style";
+import { PaperWrapper } from "../../Style";
 import { useSelector } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
@@ -58,19 +58,59 @@ const Notification = () => {
   };
 
   const columns = [
-    { field: "type", headerName: "Type", width: 90 },
-    { field: "message", headerName: "Message", width: 280 },
-    { field: "location", headerName: "Location", width: 150 },
-    { field: "room", headerName: "Room", width: 150 },
-    { field: "subject", headerName: "Subject", width: 150 },
-    { field: "agenda", headerName: "Agenda", width: 140 },
-    { field: "meetingDate", headerName: "Date", width: 140 },
-    { field: "meetingTime", headerName: "Meeting Time", width: 140 },
+    {
+      field: "type",
+      headerName: "Type",
+      width: 90,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "message",
+      headerName: "Message",
+      width: 280,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "location",
+      headerName: "Location",
+      width: 150,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "room",
+      headerName: "Room",
+      width: 150,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "subject",
+      headerName: "Subject",
+      width: 150,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "agenda",
+      headerName: "Agenda",
+      width: 140,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "meetingDate",
+      headerName: "Date",
+      width: 140,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "meetingTime",
+      headerName: "Meeting Time",
+      width: 140,
+      headerClassName: "super-app-theme--header",
+    },
     {
       field: "action",
       headerName: "Action",
       width: 150,
-
+      headerClassName: "super-app-theme--header",
       renderCell: (params) => (
         <Box display="flex" alignItems="center" gap={1}>
           <Tooltip title="Delete">
@@ -124,7 +164,7 @@ const Notification = () => {
     fetchNotification();
   }, [refreshPage]);
   return (
-    <RightContent>
+    <>
       <PaperWrapper>
         <h2>Meeting Notification</h2>
         <DataGrid
@@ -133,6 +173,15 @@ const Notification = () => {
           pageSize={10}
           rowsPerPageOptions={[10, 20, 50]}
           rowHeight={50}
+          sx={{
+            "& .super-app-theme--header": {
+              backgroundColor: "#006400",
+              // backgroundColor: "rgba(255, 223, 0, 1)",
+              color: "#fff",
+              fontWeight: "600",
+              fontSize: "16px",
+            },
+          }}
         />
       </PaperWrapper>
       <DeleteModal
@@ -141,7 +190,7 @@ const Notification = () => {
         onDeleteConfirm={handleDelete}
         button={"Delete"}
       />
-    </RightContent>
+    </>
   );
 };
 

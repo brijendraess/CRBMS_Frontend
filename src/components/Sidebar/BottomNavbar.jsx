@@ -37,7 +37,7 @@ const BottomNavBar = () => {
           key={item.id}
           to={item.path}
           style={{
-            width: "40px",
+            width: "35px",
             padding: 0,
             display: "flex",
             alignItems: "center",
