@@ -42,7 +42,7 @@ import NotificationsMenu from "../Notifications/NotificationsMenu";
 import { notifications } from "../../LeftPaneldata";
 import PopupModals from "../Common Components/Modals/Popup/PopupModals";
 import ProfilePage from "../../pages/ProfilePage/ProfilePage";
-import ResetPassword from "../../pages/ProfilePage/ResetPassword";
+import ResetPasswordFromProfile from "../../pages/ProfilePage/ResetPasswordFromProfile";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 
 const Header = () => {
@@ -53,7 +53,7 @@ const Header = () => {
   const [notificationsAnchor, setNotificationsAnchor] = useState(null);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [notificationList, setNotificationList] = useState([]);
-  const [unReadCount,setUnReadCount]=useState(0);
+  const [unReadCount, setUnReadCount] = useState(0);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isResetPasswordOpen, setIsResetPasswordOpen] = useState(false);
   const navigate = useNavigate();
@@ -93,8 +93,9 @@ const Header = () => {
         const endpoint = `/api/v1/notification/limited-notification`;
         const response = await axios.get(endpoint, { withCredentials: true });
         setUnReadCount(
-          response.data.notification?.filter((data) => data.isRead===false)?.length
-        )
+          response.data.notification?.filter((data) => data.isRead === false)
+            ?.length
+        );
         setNotificationList(
           response.data.notification?.map((data) => {
             const timeDifference = dayjs().diff(dayjs(data?.createdAt), "hour");
@@ -240,7 +241,7 @@ const Header = () => {
           component="li"
           sx={{ marginTop: "15px", marginBottom: "15px" }}
         />
-        {/* <MenuItem onClick={handleEdit} sx={{ color: "black" }}>
+        <MenuItem onClick={handleEdit} sx={{ color: "black" }}>
           <ListItemIcon>
             <PersonOutlineOutlinedIcon
               fontSize="small"
@@ -254,7 +255,7 @@ const Header = () => {
             <KeyOutlinedIcon fontSize="small" sx={{ color: "black" }} />
           </ListItemIcon>
           Reset Password
-        </MenuItem> */}
+        </MenuItem>
         <MenuItem onClick={handleLogout} sx={{ color: "red" }}>
           <ListItemIcon>
             <Logout fontSize="small" sx={{ color: "red" }} />
@@ -277,13 +278,16 @@ const Header = () => {
           horizontal: "right",
         }}
       >
-        <NotificationsMenu notifications={notificationList} unReadCount={unReadCount} />
+        <NotificationsMenu
+          notifications={notificationList}
+          unReadCount={unReadCount}
+        />
       </Popover>
 
       <PopupModals
         isOpen={isEditOpen}
         setIsOpen={setIsEditOpen}
-        title={"Update My Profile"}
+        title={"My Profile"}
         modalBody={<ProfilePage user={user} />}
       />
 
@@ -291,7 +295,7 @@ const Header = () => {
         isOpen={isResetPasswordOpen}
         setIsOpen={setIsResetPasswordOpen}
         title={"Reset Password"}
-        modalBody={<ResetPassword user={user} />}
+        modalBody={<ResetPasswordFromProfile user={user} />}
       />
     </header>
   );

@@ -5,6 +5,13 @@
   top: 60px;
   left: 0px;
   background: #fff;
+  /* background: linear-gradient(
+    to top,
+    #006400,
+    #9f1010,
+    #ff0000,
+    rgb(208, 133, 133)
+  ); */
   display: flex;
   flex-direction: column;
   justify-content: space-between;

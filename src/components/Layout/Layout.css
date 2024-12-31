@@ -29,8 +29,8 @@
 
 .outlet-content {
   margin-top: 50px;
-  padding: 10px 10px 0 10px;
-  /* position: fixed; */
+  padding: 10px 10px 5px 10px;
+  background-image: url("../../assets/wallpaper.webp");
 }
 @media (max-width: 768px) {
   .content {

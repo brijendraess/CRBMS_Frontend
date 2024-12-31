@@ -1,28 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   TextField,
   Button,
   Autocomplete,
   Avatar,
-  styled,
   IconButton,
+  Chip,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import axios from "axios";
 import toast from "react-hot-toast";
 import PhotoCameraOutlinedIcon from "@mui/icons-material/PhotoCameraOutlined";
+import { useDispatch } from "react-redux";
+import { showLoading, hideLoading } from "../../Redux/alertSlicer";
 
-const Input = styled("input")({
-  display: "none",
-});
-
-const ProfilePage = ({ user }) => {
+const ProfilePage = ({ user, committees = [] }) => {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: user?.email || "",
     phoneNumber: user?.phoneNumber || "",
     fullname: user?.fullname || "",
     avatarPath: user?.avatarPath || "",
-    committee: user?.committee || null,
+    committees: user?.committees || [],
   });
 
   const [imagePreview, setImagePreview] = useState(
@@ -31,26 +30,47 @@ const ProfilePage = ({ user }) => {
       : null
   );
 
-  const committees = [
-    "Finance Committee",
-    "Event Management",
-    "HR Committee",
-    "IT Support",
-  ]; // Replace with your actual committee list
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        dispatch(showLoading());
+        const response = await axios.get(`/api/v1/user/${user?.id}`);
+        const result = response.data.data;
+
+        setFormData({
+          email: result.email || "",
+          phoneNumber: result.phoneNumber || "",
+          fullname: result.fullname || "",
+          avatarPath: result.avatarPath || "",
+          committees: result.committees || [],
+        });
+
+        setImagePreview(
+          result.avatarPath
+            ? `${import.meta.env.VITE_API_URL}/${result.avatarPath}`
+            : null
+        );
+      } catch (error) {
+        toast.error("Failed to fetch user data.");
+      } finally {
+        dispatch(hideLoading());
+      }
+    };
+
+    if (user?.id) {
+      fetchUserData();
+    }
+  }, [user?.id, dispatch]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleAutocompleteChange = (event, value) => {
-    setFormData({ ...formData, committee: value });
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setFormData({ ...formData, avatarPath: file });
+      setFormData((prev) => ({ ...prev, avatarPath: file }));
       setImagePreview(URL.createObjectURL(file));
     }
   };
@@ -59,8 +79,10 @@ const ProfilePage = ({ user }) => {
     e.preventDefault();
     const form = new FormData();
     form.append("fullname", formData.fullname);
-    form.append("avatar", formData.avatarPath); // Assuming backend expects this key
-    form.append("committee", formData.committee);
+    if (formData.avatarPath instanceof File) {
+      form.append("avatar", formData.avatarPath);
+    }
+    form.append("committees", JSON.stringify(formData.committees));
 
     try {
       const response = await axios.post("/api/v1/user/update-profile", form, {
@@ -84,47 +106,35 @@ const ProfilePage = ({ user }) => {
   return (
     <form onSubmit={handleSubmit} style={{ padding: "1rem" }}>
       <Grid container spacing={2}>
-        <Grid size={6}>
-          <TextField
-            label="Email"
-            value={formData.email}
-            fullWidth
-            InputProps={{
-              readOnly: true,
-            }}
-            disabled
-          />
+        <Grid size={12}>
+          <TextField label="Email" value={formData.email} fullWidth disabled />
         </Grid>
         <Grid size={6}>
           <TextField
             label="Phone Number"
             value={formData.phoneNumber}
             fullWidth
-            InputProps={{
-              readOnly: true,
-            }}
             disabled
           />
         </Grid>
-        <Grid size={12}>
+        <Grid size={6}>
           <TextField
             label="Full Name"
             name="fullname"
             value={formData.fullname}
             onChange={handleInputChange}
             fullWidth
+            disabled
           />
         </Grid>
         <Grid size={12}>
-          <Autocomplete
-            options={committees}
-            getOptionLabel={(option) => option}
-            value={formData.committee}
-            onChange={handleAutocompleteChange}
-            renderInput={(params) => (
-              <TextField {...params} label="Committee" fullWidth />
-            )}
-          />
+          {formData.committees.length > 0 ? (
+            formData.committees.map((committee, index) => (
+              <Chip key={index} label={committee} sx={{ margin: 0.5 }} />
+            ))
+          ) : (
+            <p>No committees assigned.</p>
+          )}
         </Grid>
         <Grid
           size={12}
@@ -142,27 +152,27 @@ const ProfilePage = ({ user }) => {
             style={{ display: "none" }}
           />
           <label htmlFor="avatar-upload">
-            <Avatar
-              src={imagePreview}
-              alt="Profile Picture"
-              sx={{ width: 100, height: 100 }}
-            >
-              <IconButton component="span" color="primary">
+            <IconButton component="span" color="primary">
+              <Avatar
+                src={imagePreview}
+                alt="Profile Picture"
+                sx={{ width: 100, height: 100 }}
+              >
                 <PhotoCameraOutlinedIcon fontSize="large" />
-              </IconButton>
-            </Avatar>
+              </Avatar>
+            </IconButton>
           </label>
         </Grid>
         <Grid
           size={12}
           sx={{
             display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "end",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
           <Button variant="contained" color="primary" type="submit">
-            Save Changes
+            Update Profile Picture
           </Button>
         </Grid>
       </Grid>

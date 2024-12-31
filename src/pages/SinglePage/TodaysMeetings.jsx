@@ -221,9 +221,9 @@ const TodaysMeetings = () => {
         agenda: meeting.agenda,
         private: meeting.isPrivate,
         notes: meeting.notes,
-        meetingDate: meeting.meetingDate,
-        startTime: startTime.format("HH:mm:ss"),
-        endTime: endTime.format("HH:mm:ss"),
+        meetingDate: meetingDate,
+        startTime: startTime.format("HH:mm"),
+        endTime: endTime.format("HH:mm"),
         duration: timeDiff,
         roomName: meeting.Room.name,
         roomLocation: meeting.Room.Location.locationName,
@@ -282,64 +282,62 @@ const TodaysMeetings = () => {
     {
       field: "subject",
       headerName: "Subject",
-      maxWidth: 300,
-      flex: 1,
+      maxWidth: 100,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "roomName",
       headerName: "Room",
-      width: 200,
-      flex: 1,
+      width: 400,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "roomLocation",
       headerName: "Location",
-      width: 125,
+      width: 200,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "startTime",
-      headerName: "Start Time",
-      width: 125,
+      headerName: "Start",
+      width: 100,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "endTime",
-      headerName: "End Time",
-      width: 125,
+      headerName: "End",
+      width: 100,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "duration",
       headerName: "Duration",
-      width: 100,
+      width: 125,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "organizerName",
       headerName: "Organizer",
-      width: 125,
+      width: 200,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "progress",
       headerName: "Time Remaining",
-      width: 300,
+      width: 260,
       renderCell: renderProgressBar,
       headerClassName: "super-app-theme--header",
     },
-    {
-      field: "",
-      headerName: (
-        <Button style={{ color: "BLACK" }} onClick={handleFullScreen}>
-          {isFullScreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
-        </Button>
-      ),
-      width: 100,
-      headerClassName: "super-app-theme--header",
-    },
+    // {
+    //   field: "",
+    //   headerName: (
+    //     <Button style={{ color: "BLACK" }} onClick={handleFullScreen}>
+    //       {isFullScreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
+    //     </Button>
+    //   ),
+    //   width: 100,
+    //   headerClassName: "super-app-theme--header",
+    // },
   ];
 
   return (
@@ -365,7 +363,29 @@ const TodaysMeetings = () => {
       <Item
         style={{
           display: "flex",
-          height: "100vh",
+          height: "8vh",
+          width: "100%",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Typography
+          variant="h4"
+          component="h4"
+          textAlign={"center"}
+          width={"90%"}
+          fontWeight="700"
+        >
+          Today's Meeting
+        </Typography>
+        <Button style={{ color: "BLACK" }} onClick={handleFullScreen}>
+          {isFullScreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
+        </Button>
+      </Item>
+      <Item
+        style={{
+          display: "flex",
+          height: "92vh",
           width: "100%",
           justifyContent: "space-between",
           alignItems: "center",

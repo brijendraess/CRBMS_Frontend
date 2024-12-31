@@ -41,16 +41,20 @@ const MembersPage = () => {
   const [isViewOpen, setIsViewOpen] = useState(false);
   const [viewId, setViewId] = useState("");
   const [refreshPage, setRefreshPage] = useState(0);
+
   const filteredUsers = users
     .filter((user) => (showDeleted ? true : !user.deletedAt))
     .map((user) => ({ ...user, isAdmin: user.isAdmin ? "Admin" : "User" }));
+
   const dispatch = useDispatch();
+
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
+
   const fetchUsers = async () => {
     try {
       dispatch(showLoading());
       const response = await axios.get(`/api/v1/user/users?page=1&limit=10`);
-
+      console.log(response.data.data.users.rows);
       if (response.data.success) {
         setUsers(response.data.data.users.rows);
       }
@@ -147,6 +151,7 @@ const MembersPage = () => {
       field: "avatarPath",
       headerName: "Avatar",
       flex: 0.25,
+      headerClassName: "super-app-theme--header",
       renderCell: (params) =>
         params.value ? (
           <>
@@ -162,15 +167,39 @@ const MembersPage = () => {
           />
         ),
     },
-    { field: "fullname", headerName: "Full Name", flex: 1 },
-    { field: "email", headerName: "Email", flex: 1 },
-    { field: "userName", headerName: "User name", flex: 1 },
-    { field: "phoneNumber", headerName: "Phone Number", flex: 1 },
-    { field: "isAdmin", headerName: "Role", flex: 0.5 },
+    {
+      field: "fullname",
+      headerName: "Full Name",
+      flex: 1,
+      headerClassName: "super-app-theme--header",
+    },
+    { field: "userName", 
+      headerName: "User name", 
+      flex: 1, headerClassName: 
+      "super-app-theme--header", },
+    {
+      field: "email",
+      headerName: "Email",
+      flex: 1,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "phoneNumber",
+      headerName: "Phone Number",
+      flex: 1,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "isAdmin",
+      headerName: "Role",
+      flex: 0.5,
+      headerClassName: "super-app-theme--header",
+    },
     {
       field: "action",
       flex: 0.5,
       headerName: "Action",
+      headerClassName: "super-app-theme--header",
       renderCell: (params) => (
         <div style={{ display: "flex", gap: "10px" }}>
           <Tooltip title="Update">
@@ -274,15 +303,22 @@ const MembersPage = () => {
               initialState={{
                 pagination: {
                   paginationModel: {
-                    pageSize: 10,
+                    pageSize: 12,
                   },
                 },
               }}
-              pageSizeOptions={[10]}
+              pageSizeOptions={[12]}
               height="100%"
               sx={{
                 "& .MuiDataGrid-cell:focus": {
                   outline: "none",
+                },
+                "& .super-app-theme--header": {
+                  backgroundColor: "#006400",
+                  // backgroundColor: "rgba(255, 223, 0, 1)",
+                  color: "#fff",
+                  fontWeight: "600",
+                  fontSize: "16px",
                 },
               }}
               getRowClassName={(params) => {

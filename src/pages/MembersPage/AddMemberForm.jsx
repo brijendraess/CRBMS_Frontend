@@ -56,14 +56,14 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
     }
   };
 
-  // Formik setup
+
   const formik = useFormik({
     initialValues: {
       fullname: "",
       email: "",
       role: true,
       phoneNumber: "",
-      committee: [], // Array of committee IDs
+      committee: [],
       avatar: "",
       password: "",
       userName:"",

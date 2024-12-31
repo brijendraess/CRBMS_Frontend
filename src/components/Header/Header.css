@@ -1,7 +1,14 @@
 header {
   width: 100%;
   height: 60px;
-  background-color: #fff;
+  /* background: linear-gradient(
+    to left,
+    #006400,
+    #9f1010,
+    #ff0000,
+    rgb(208, 133, 133)
+  ); */
+  background: #fff;
   position: fixed;
   top: 0;
   left: 0;
@@ -9,6 +16,7 @@ header {
   display: flex;
   align-items: center;
 }
+
 .headerWrapper {
   display: flex;
   flex-direction: row;
