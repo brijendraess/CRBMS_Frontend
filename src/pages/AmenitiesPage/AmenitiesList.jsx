@@ -118,6 +118,8 @@ const AmenitiesList = () => {
     {
       field: "serialNo",
       headerName: "#",
+      disableColumnMenu: true,
+      hideSortIcons: true,
       width: 50,
       headerClassName: "super-app-theme--header",
     },
@@ -136,6 +138,8 @@ const AmenitiesList = () => {
     {
       field: "action",
       headerName: "Action",
+      disableColumnMenu: true,
+      hideSortIcons: true,
       width: 300,
       renderCell: (params) => (
         <Box height={"40px"} display="flex" alignItems="center" gap={2}>
