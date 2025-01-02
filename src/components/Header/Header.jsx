@@ -10,7 +10,6 @@ import {
   Badge,
   Button,
   Divider,
-  FormControlLabel,
   ListItemIcon,
   Menu,
   MenuItem,
@@ -22,7 +21,6 @@ import {
 // ICONS
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import MenuOutlined from "@mui/icons-material/MenuOutlined";
-import SearchBox from "../SearchBox/SearchBox";
 import FullscreenOutlinedIcon from "@mui/icons-material/FullscreenOutlined";
 import FullscreenExitOutlinedIcon from "@mui/icons-material/FullscreenExitOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
@@ -39,11 +37,11 @@ import { MyContext } from "../Layout/Layout";
 
 // Notifications Menu Component
 import NotificationsMenu from "../Notifications/NotificationsMenu";
-import { notifications } from "../../LeftPaneldata";
 import PopupModals from "../Common Components/Modals/Popup/PopupModals";
 import ProfilePage from "../../pages/ProfilePage/ProfilePage";
 import ResetPasswordFromProfile from "../../pages/ProfilePage/ResetPasswordFromProfile";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import CheckAndShowImage from "../Common Components/CustomImage/showImage";
 
 const Header = () => {
   const context = useContext(MyContext);
@@ -208,14 +206,7 @@ const Header = () => {
               <Tooltip title="My Account">
                 <div className="profileImage">
                   <span className="profilePhoto">
-                    <img
-                      src={
-                        user?.avatarPath
-                          ? `${import.meta.env.VITE_API_URL}/${user?.avatarPath}`
-                          : unknownUser
-                      }
-                      alt="My Pic"
-                    />
+                  <CheckAndShowImage imageUrl={`${import.meta.env.VITE_API_URL}/${user?.avatarPath}`} />
                   </span>
                 </div>
               </Tooltip>
