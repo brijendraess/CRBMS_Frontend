@@ -199,6 +199,7 @@ const DetailRoomPage = () => {
       dispatch(showLoading());
       const response = await axios.get(`/api/v1/rooms/${id}`);
       setRoom(response.data.data.room[0]);
+      console.log(response.data.data.room[0]);
       dispatch(hideLoading());
     } catch (error) {
       dispatch(hideLoading());
@@ -219,7 +220,7 @@ const DetailRoomPage = () => {
         meetingDate: meeting.meetingDate,
         endTime: meeting.endTime, // 45 minutes duration
         duration: timeDiff,
-        organizerName: meeting.User.fullname,
+        organizerName: meeting.User?.fullname,
         status: meeting.status,
       };
     });
@@ -294,6 +295,7 @@ const DetailRoomPage = () => {
                 justifyContent: "flex-start",
                 alignItems: "center",
                 gap: "50px",
+                padding: "5px",
               }}
             >
               <Typography
@@ -303,6 +305,7 @@ const DetailRoomPage = () => {
                 gap={1}
                 display={"flex"}
                 alignItems={"center"}
+                lineHeight={1}
               >
                 <LocationOnOutlinedIcon fontSize="medium" />
                 {room?.Location?.locationName}
@@ -315,6 +318,7 @@ const DetailRoomPage = () => {
                 gap={1}
                 display={"flex"}
                 alignItems={"center"}
+                lineHeight={1}
               >
                 <GroupsIcon fontSize="medium" />
                 {room.capacity} people

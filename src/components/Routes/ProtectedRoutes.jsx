@@ -3,6 +3,7 @@ import { setUser } from "../../Redux/authSlicer";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
+import Loader from "../Common Components/Loader/Loader";
 
 const ProtectedRoutes = ({ children }) => {
   const [loading, setLoading] = useState(true);
@@ -31,12 +32,12 @@ const ProtectedRoutes = ({ children }) => {
     if (!user) {
       getUser();
     } else {
-      setLoading(false); // Ensure we stop loading once user is available
+      setLoading(false);
     }
   }, [user]);
 
   if (loading) {
-    return <div>Loading...</div>; // Optionally show a loader while checking auth
+    return <Loader />;
   }
 
   return user ? children : <Navigate to="/login" />;

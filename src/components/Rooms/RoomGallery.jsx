@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Box, Avatar, IconButton } from "@mui/material";
 import { DeleteOutlineOutlined as DeleteIcon } from "@mui/icons-material";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Button, Grid2, Typography, Paper } from "@mui/material";
@@ -24,19 +24,20 @@ export default function RoomGallery({ room }) {
   const [images, setImages] = useState([]);
   const [previewUrls, setPreviewUrls] = useState([]);
   const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const fetchRoomsGalleryData = async () => {
     try {
-      showLoading();
+      dispatch(showLoading());
       const response = await axios.get(
         `api/v1/rooms/single-room-gallery/${room?.id}`
       );
       setRoomGallery(response.data.data?.roomGallery);
-      hideLoading();
+      dispatch(hideLoading());
     } catch (error) {
       toast.error("Something Went Wrong");
       console.error("Error fetching room data:", error);
-      hideLoading();
+      dispatch(hideLoading());
     }
   };
 
@@ -50,21 +51,22 @@ export default function RoomGallery({ room }) {
 
   const handleDeleteGallery = async () => {
     try {
-      showLoading();
+      dispatch(showLoading());
       const response = await axios.delete(
         `/api/v1/rooms/delete-room-gallery/${deleteId}`
       );
       if (response.status === 200) {
         toast.success("Room deleted successfully");
       }
-      hideLoading();
+      dispatch(hideLoading());
     } catch (error) {
+      dispatch(hideLoading());
       console.error("Error deleting user:", error);
       toast.error("Failed to delete user");
     } finally {
+      dispatch(hideLoading());
       setRefreshPage(Math.random());
       handleDeleteClose();
-      hideLoading();
     }
   };
 
@@ -92,7 +94,7 @@ export default function RoomGallery({ room }) {
     }
 
     try {
-      showLoading();
+      dispatch(showLoading());
       const response = await axios.post(
         "api/v1/rooms/add-room-gallery",
         formData,
@@ -103,10 +105,10 @@ export default function RoomGallery({ room }) {
       toast.success(response.data.message);
       setRefreshPage(Math.random());
       setPreviewUrls([]);
-      hideLoading();
+      dispatch(hideLoading());
     } catch (error) {
       console.error("Upload error:", error);
-      hideLoading();
+      dispatch(hideLoading());
     }
   };
 
