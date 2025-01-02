@@ -153,7 +153,9 @@ const MeetingLogs = () => {
     {
       field: "action",
       headerName: "Action",
-      width: 200,
+      disableColumnMenu: true,
+      hideSortIcons: true,
+      width: 150,
       headerClassName: "super-app-theme--header",
       renderCell: (params) => (
         <Box

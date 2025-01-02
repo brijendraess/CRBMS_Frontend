@@ -93,12 +93,15 @@ const RoomAmenities = ({ room }) => {
   };
 
   const columns = [
-    { field: "id", headerName: "S No.", width: 60 },
+    { field: "id", headerName: "S No.",disableColumnMenu: true,
+      hideSortIcons: true, width: 60 },
     { field: "name", headerName: "Name", width: 100 },
     { field: "quantity", headerName: "Quantity", width: 100 },
     {
       field: "actions",
       headerName: "Actions",
+      disableColumnMenu: true,
+      hideSortIcons: true,
       width: 150,
       sortable: false,
       renderCell: (params) => (

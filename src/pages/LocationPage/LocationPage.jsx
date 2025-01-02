@@ -24,6 +24,7 @@ import LocationCard from "./LocationCard";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import PageHeader from "../../components/Common Components/PageHeader/PageHeader";
 import { useDispatch } from "react-redux";
+import CheckAndShowImage from "../../components/Common Components/CustomImage/showImage";
 
 const LocationPage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -124,27 +125,18 @@ const LocationPage = () => {
     {
       field: "serialNo",
       headerName: "#",
+      disableColumnMenu: true,
+      hideSortIcons: true,
       width: 100,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "locationImagePath",
       headerName: "Image",
+      disableColumnMenu: true,
+      hideSortIcons: true,
       width: 200,
-      renderCell: (params) =>
-        params.value ? (
-          <>
-            <img
-              src={`${import.meta.env.VITE_API_URL}/${params.value}`}
-              alt="avatar"
-              style={{ width: "35px", height: "35px", borderRadius: "50%" }}
-            />
-          </>
-        ) : (
-          <AccountCircleRoundedIcon
-            style={{ width: "35px", height: "35px", borderRadius: "50%" }}
-          />
-        ),
+      renderCell: (params) =><CheckAndShowImage imageUrl={`${import.meta.env.VITE_API_URL}/${params.value}`} />,
       headerClassName: "super-app-theme--header",
     },
     {
@@ -156,6 +148,8 @@ const LocationPage = () => {
     {
       field: "action",
       headerName: "Action",
+      disableColumnMenu: true,
+      hideSortIcons: true,
       width: 150,
 
       renderCell: (params) => (

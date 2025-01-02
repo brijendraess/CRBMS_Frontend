@@ -109,6 +109,8 @@ const Notification = () => {
     {
       field: "action",
       headerName: "Action",
+      disableColumnMenu: true,
+      hideSortIcons: true,
       width: 150,
       headerClassName: "super-app-theme--header",
       renderCell: (params) => (

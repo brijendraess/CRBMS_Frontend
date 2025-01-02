@@ -130,7 +130,7 @@ const AddCommitteeForm = ({
           color="primary"
           fullWidth
           sx={{ mt: 2 }}
-          disabled={isLoading || !formik.isValid}
+          disabled={!formik.isValid}
         >
           {committeeId ? "Update Committee" : "Add Committee"}
         </Button>

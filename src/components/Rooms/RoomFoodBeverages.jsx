@@ -91,11 +91,19 @@ const RoomFoodBeverages = ({ room }) => {
   };
 
   const columns = [
-    { field: "id", headerName: "S No.", width: 60 },
+    {
+      field: "id",
+      headerName: "S No.",
+      disableColumnMenu: true,
+      hideSortIcons: true,
+      width: 60,
+    },
     { field: "foodBeverageName", headerName: "Name", width: 300 },
     {
       field: "actions",
       headerName: "Actions",
+      disableColumnMenu: true,
+      hideSortIcons: true,
       width: 100,
       sortable: false,
       renderCell: (params) => (
