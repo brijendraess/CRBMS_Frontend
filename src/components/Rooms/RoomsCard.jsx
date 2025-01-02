@@ -263,7 +263,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
                 sx={{
                   borderRadius: "0 0 0px 10px",
                   flex: 1,
-                  minWidth: "45px",
+                  minWidth: "40px",
                 }}
                 size="small"
               >
@@ -278,7 +278,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
                   background: "white",
                   color: "black",
                   flex: 1,
-                  minWidth: "45px",
+                  minWidth: "40px",
                 }}
                 size="small"
               >
@@ -293,7 +293,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
                   background: "white",
                   color: "black",
                   flex: 1,
-                  minWidth: "45px",
+                  minWidth: "40px",
                 }}
                 size="small"
               >
@@ -308,7 +308,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
                   background: "white",
                   color: "black",
                   flex: 1,
-                  minWidth: "45px",
+                  minWidth: "40px",
                 }}
                 size="small"
               >
@@ -323,7 +323,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
                   background: "white",
                   color: "black",
                   flex: 1,
-                  minWidth: "45px",
+                  minWidth: "40px",
                 }}
                 size="small"
               >
@@ -337,7 +337,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
                   background: "white",
                   color: "black",
                   flex: 1,
-                  minWidth: "45px",
+                  minWidth: "40px",
                 }}
                 size="small"
               >
@@ -352,7 +352,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
                   borderRadius: "0 0 10px 0px",
                   background: "red",
                   flex: 1,
-                  minWidth: "45px",
+                  minWidth: "40px",
                 }}
                 size="small"
               >

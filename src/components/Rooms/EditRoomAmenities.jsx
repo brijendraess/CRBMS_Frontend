@@ -62,7 +62,9 @@ const EditRoomAmenities = ({
     const fetchAmenities = async () => {
       try {
         showLoading();
-        const response = await axios.get("api/v1/amenity/get-all-active-amenities");
+        const response = await axios.get(
+          "api/v1/amenity/get-all-active-amenities"
+        );
         const amenities = response.data.data.result.map((amenity) => {
           return { id: amenity.id, label: amenity.name };
         });
@@ -79,56 +81,54 @@ const EditRoomAmenities = ({
   }, []);
 
   return (
-    <div className="pop-content w-100">
-      <Box
-        component="form"
-        onSubmit={handleSubmit}
-        sx={{
-          maxWidth: 500,
-          margin: "auto",
-          borderRadius: 3,
-        }}
-      >
-        <FormControl sx={{ m: 1, width: "100%" }}>
-          <InputLabel id="demo-multiple-name-label">Amenity Name</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="amenityId"
-            name="amenityId"
-            value={formData.amenityId}
-            label="Amenity Name"
-            required
-            size="small"
-            onChange={handleChange}
-          >
-            {amenitiesList.map((amenity) => (
-              <MenuItem value={amenity.id}>{amenity.label}</MenuItem>
-            ))}
-          </Select>
-          <TextField
-            label="Quantity"
-            type="number"
-            name="quantity" // Match the key in formData
-            value={formData.quantity} // Access the correct value
-            onChange={handleChange}
-            fullWidth
-            required
-            margin="normal"
-            size="small"
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            onClick={() => handleSubmit()}
-            fullWidth
-            sx={{ mt: 2 }}
-          >
-            Save
-          </Button>
-        </FormControl>
-      </Box>
-    </div>
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      sx={{
+        maxWidth: 500,
+        margin: "auto",
+        borderRadius: 3,
+      }}
+    >
+      <FormControl sx={{ m: 1, width: "100%" }}>
+        <InputLabel id="demo-multiple-name-label">Amenity Name</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="amenityId"
+          name="amenityId"
+          value={formData.amenityId}
+          label="Amenity Name"
+          required
+          size="small"
+          onChange={handleChange}
+        >
+          {amenitiesList.map((amenity) => (
+            <MenuItem value={amenity.id}>{amenity.label}</MenuItem>
+          ))}
+        </Select>
+        <TextField
+          label="Quantity"
+          type="number"
+          name="quantity" // Match the key in formData
+          value={formData.quantity} // Access the correct value
+          onChange={handleChange}
+          fullWidth
+          required
+          margin="normal"
+          size="small"
+        />
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          onClick={() => handleSubmit()}
+          fullWidth
+          sx={{ mt: 2 }}
+        >
+          Save
+        </Button>
+      </FormControl>
+    </Box>
   );
 };
 
