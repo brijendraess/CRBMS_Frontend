@@ -4,8 +4,8 @@
 }
 
 .sidebarWrapper {
-  width: 15%;
-  flex: 0 0 15%;
+  width: 20%;
+  flex: 0 0 20%;
   transition: all 0.3s ease-in-out;
 }
 
@@ -16,8 +16,8 @@
 }
 
 .content {
-  width: 85%;
-  flex: 0 0 85%;
+  width: 80%;
+  flex: 0 0 80%;
   transition: all 0.3s ease-in-out;
 }
 

@@ -99,31 +99,31 @@ const MeetingLogs = () => {
     {
       field: "subject",
       headerName: "Subject",
-      width: 90,
+      width: 150,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "agenda",
       headerName: "Agenda",
-      width: 90,
+      width: 200,
       headerClassName: "super-app-theme--header",
     },
-    {
-      field: "notes",
-      headerName: "Notes",
-      width: 100,
-      headerClassName: "super-app-theme--header",
-    },
+    // {
+    //   field: "notes",
+    //   headerName: "Notes",
+    //   width: 100,
+    //   headerClassName: "super-app-theme--header",
+    // },
     {
       field: "startTime",
       headerName: "Start Time",
-      width: 140,
+      width: 125,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "endTime",
       headerName: "End Time",
-      width: 150,
+      width: 125,
       headerClassName: "super-app-theme--header",
     },
     {
@@ -135,13 +135,13 @@ const MeetingLogs = () => {
     {
       field: "roomLocation",
       headerName: "Room Location",
-      width: 140,
+      width: 200,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "organizerName",
       headerName: "Organizer",
-      width: 130,
+      width: 200,
       headerClassName: "super-app-theme--header",
     },
     {
@@ -153,18 +153,22 @@ const MeetingLogs = () => {
     {
       field: "action",
       headerName: "Action",
-      width: 150,
+      width: 200,
       headerClassName: "super-app-theme--header",
       renderCell: (params) => (
         <Box
-          display="flex"
           alignItems="center"
-          sx={{ display: params.row.status !== "cancelled" ? "block" : "none" }}
-          gap={1}
+          sx={{
+            display: params.row.status !== "cancelled" ? "flex" : "none",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+          }}
+          gap={"10px"}
         >
           <Tooltip title="Edit meeting">
             <EditOutlinedIcon
-              className="cursor"
+              // className="cursor"
               color="success"
               onClick={() => handleEdit(params.row.roomId, params.row.id)}
               style={{ cursor: "pointer" }}
