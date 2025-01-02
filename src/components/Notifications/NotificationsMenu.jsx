@@ -11,6 +11,7 @@ import {
   Button,
   Divider,
 } from "@mui/material";
+import CheckAndShowImage from "../Common Components/CustomImage/showImage";
 
 const NotificationsMenu = ({ notifications,unReadCount }) => {
 
@@ -41,7 +42,7 @@ const NotificationsMenu = ({ notifications,unReadCount }) => {
         }}
       >
         <Typography variant="p" sx={{ fontWeight: "bold" }}>
-          Meetings({unReadCount})
+          Meetings logs({unReadCount})
         </Typography>
       </Box>
 
@@ -84,7 +85,7 @@ const NotificationItem = ({ avatar, name, action, item, time }) => {
   return (
     <ListItem alignItems="flex-start" sx={{ padding: "8px 16px" }}>
       <ListItemAvatar>
-        <Avatar alt={name} src={avatar} />
+      <CheckAndShowImage imageUrl={avatar} />
       </ListItemAvatar>
       <ListItemText
         primary={
