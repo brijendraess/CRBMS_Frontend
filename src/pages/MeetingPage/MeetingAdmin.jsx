@@ -62,7 +62,7 @@ const MeetingAdmin = ({ isAdmin }) => {
     const end = dayjs(meeting.endTime);
 
     switch (filter) {
-      case "ongoing":
+      case "start":
         return start.isBefore(now) && end.isAfter(now);
       case "completed":
         return end.isBefore(now);
@@ -167,7 +167,7 @@ const MeetingAdmin = ({ isAdmin }) => {
                   size="small"
                 >
                   <MenuItem value="all">All</MenuItem>
-                  <MenuItem value="ongoing">Ongoing</MenuItem>
+                  <MenuItem value="start">Start</MenuItem>
                   <MenuItem value="completed">Completed</MenuItem>
                   <MenuItem value="today">Today</MenuItem>
                   <MenuItem value="tomorrow">Tomorrow</MenuItem>

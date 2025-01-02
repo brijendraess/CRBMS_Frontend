@@ -76,7 +76,7 @@ const MeetingApproval = ({ updatedBookingId, meetingUpdatedStatus, setRefreshPag
       >
         <MenuItem value={"pending"}>pending</MenuItem>
         <MenuItem value={"scheduled"}>scheduled</MenuItem>
-        <MenuItem value={"ongoing"}>ongoing</MenuItem>
+        <MenuItem value={"start"}>Start</MenuItem>
         <MenuItem value={"completed"}>completed</MenuItem>
         <MenuItem value={"cancelled"}>cancelled</MenuItem>
       </Select>

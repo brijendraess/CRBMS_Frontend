@@ -86,7 +86,7 @@ const renderProgressBar = (params) => {
 
   if (status === "Completed") progress = 100;
   else if (status === "In Progress") progress = 33;
-  else if (status === "Scheduled") progress = 0;
+  else if (status === "scheduled") progress = 0;
 
   let color = "success";
   if (progress >= 33 && progress <= 66) color = "info";
