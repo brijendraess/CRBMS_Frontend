@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import RoomsCard from "../../components/Rooms/RoomsCard";
-import { Grid2 } from "@mui/material";
+import { Box, Grid2, useMediaQuery } from "@mui/material";
 import axios from "axios";
 import toast from "react-hot-toast";
 import "./RoomsPage.css";
@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AddOutlinedIcon } from "../../components/Common Components/CustomButton/CustomIcon";
 import PageHeader from "../../components/Common Components/PageHeader/PageHeader";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import ResponsiveFilter from "../../components/Responsive Components/Filter/ResponsiveFilter";
 
 const RoomsPage = () => {
   const [roomsData, setRoomsData] = useState([]); // State for rooms data
@@ -99,6 +100,9 @@ const RoomsPage = () => {
   const handleAvailabilityChange = (event) => {
     setIsAvailable(event.target.value);
   };
+
+  const isSmallScreen = useMediaQuery("(max-width: 768px)");
+
   return (
     <>
       <PaperWrapper>
@@ -107,21 +111,44 @@ const RoomsPage = () => {
           icon={AddOutlinedIcon}
           func={setIsAddOpen}
           title={"Add New Room"}
-        />
+        >
+          {isSmallScreen ? (
+            <ResponsiveFilter
+              handleChangeAmenities={handleChangeAmenities}
+              selectedAmenities={selectedAmenities}
+              amenitiesList={amenitiesList}
+              handleStartTimeChange={handleStartTimeChange}
+              meetingStartTime={meetingStartTime}
+              setMeetingEndingTime={setMeetingEndingTime}
+              meetingEndingTime={meetingEndingTime}
+              handleChangeCapacity={handleChangeCapacity}
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+              capacity={capacity}
+            />
+          ) : (
+            ""
+          )}
+        </PageHeader>
         <MainContainer>
-          <RoomFilter
-            handleChangeAmenities={handleChangeAmenities}
-            selectedAmenities={selectedAmenities}
-            amenitiesList={amenitiesList}
-            handleStartTimeChange={handleStartTimeChange}
-            meetingStartTime={meetingStartTime}
-            setMeetingEndingTime={setMeetingEndingTime}
-            meetingEndingTime={meetingEndingTime}
-            handleChangeCapacity={handleChangeCapacity}
-            selectedDate={selectedDate}
-            setSelectedDate={setSelectedDate}
-            capacity={capacity}
-          />
+          {isSmallScreen ? (
+            ""
+          ) : (
+            <RoomFilter
+              handleChangeAmenities={handleChangeAmenities}
+              selectedAmenities={selectedAmenities}
+              amenitiesList={amenitiesList}
+              handleStartTimeChange={handleStartTimeChange}
+              meetingStartTime={meetingStartTime}
+              setMeetingEndingTime={setMeetingEndingTime}
+              meetingEndingTime={meetingEndingTime}
+              handleChangeCapacity={handleChangeCapacity}
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+              capacity={capacity}
+            />
+          )}
+
           <Grid2
             container
             columnSpacing={3}

@@ -100,9 +100,9 @@ const RoomFoodBeverages = ({ room }) => {
       sortable: false,
       renderCell: (params) => (
         <Box>
-          {/* <IconButton color="primary" onClick={() => handleEdit(params.row.uid)}>
+          <IconButton color="primary" onClick={() => handleEdit(params.row.uid)}>
             <EditOutlinedIcon />
-          </IconButton> */}
+          </IconButton>
           <IconButton color="error" onClick={() => handleOpen(params.row.uid)}>
             <DeleteIcon />
           </IconButton>
