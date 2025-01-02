@@ -18,13 +18,12 @@ const CheckAndShowImage = ({ imageUrl }) => {
       checkImage(imageUrl);
     }
   }, [imageUrl]);
-  console.log(imageExists)
 
   return (
     <>
       {imageExists === null && <p>Checking image...</p>}
       {imageExists && <img
-              src={`${import.meta.env.VITE_API_URL}/${imageUrl}`}
+              src={imageUrl}
               alt="avatar"
               style={{ width: "35px", height: "35px", borderRadius: "50%" }}
             />}

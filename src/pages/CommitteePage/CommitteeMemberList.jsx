@@ -21,7 +21,6 @@ const CommitteeMemberList = () => {
   const { committeeId } = useParams();
   const location = useLocation();
   const { committee, heading } = location.state || {};
-  console.log(location);
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -82,6 +81,8 @@ const CommitteeMemberList = () => {
     {
       field: "avatarPath",
       headerName: "Avatar",
+      disableColumnMenu: true,
+      hideSortIcons: true,
       width: 150,
       renderCell: (params) => (
         <img
@@ -118,6 +119,8 @@ const CommitteeMemberList = () => {
     {
       field: "Actions",
       headerName: "Action",
+      disableColumnMenu: true,
+      hideSortIcons: true,
       width: 200,
       renderCell: (params) =>
         user?.isAdmin ? (

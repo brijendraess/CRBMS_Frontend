@@ -148,9 +148,11 @@ const MembersPage = () => {
     {
       field: "avatarPath",
       headerName: "Avatar",
+      disableColumnMenu: true,
+      hideSortIcons: true,
       flex: 0.25,
       headerClassName: "super-app-theme--header",
-      renderCell: (params) =><CheckAndShowImage imageUrl={params.value} />
+      renderCell: (params) =><CheckAndShowImage imageUrl={`${import.meta.env.VITE_API_URL}/${params.value}`} />
     },
     {
       field: "fullname",
@@ -184,6 +186,8 @@ const MembersPage = () => {
       field: "action",
       flex: 0.5,
       headerName: "Action",
+      disableColumnMenu: true,
+      hideSortIcons: true,
       headerClassName: "super-app-theme--header",
       renderCell: (params) => (
         <div style={{ display: "flex", gap: "10px" }}>

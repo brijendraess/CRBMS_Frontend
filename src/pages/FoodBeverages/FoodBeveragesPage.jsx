@@ -128,6 +128,8 @@ const FoodBeveragePage = () => {
     {
       field: "serialNo",
       headerName: "#",
+      disableColumnMenu: true,
+      hideSortIcons: true,
       width: 150,
       headerClassName: "super-app-theme--header",
     },
@@ -140,6 +142,8 @@ const FoodBeveragePage = () => {
     {
       field: "action",
       headerName: "Action",
+      disableColumnMenu: true,
+      hideSortIcons: true,
       width: 150,
 
       renderCell: (params) => (

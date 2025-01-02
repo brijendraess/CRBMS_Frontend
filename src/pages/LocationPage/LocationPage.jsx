@@ -124,12 +124,16 @@ const LocationPage = () => {
     {
       field: "serialNo",
       headerName: "#",
+      disableColumnMenu: true,
+      hideSortIcons: true,
       width: 100,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "locationImagePath",
       headerName: "Image",
+      disableColumnMenu: true,
+      hideSortIcons: true,
       width: 200,
       renderCell: (params) =>
         params.value ? (
@@ -156,6 +160,8 @@ const LocationPage = () => {
     {
       field: "action",
       headerName: "Action",
+      disableColumnMenu: true,
+      hideSortIcons: true,
       width: 150,
 
       renderCell: (params) => (
