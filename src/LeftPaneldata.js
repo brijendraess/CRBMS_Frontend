@@ -129,7 +129,7 @@ export const meetings = [
     endTime: "12:30:00", // 1 hour duration
     duration: "1 hour",
     organizerName: "Bob Lee",
-    status: "Scheduled",
+    status: "scheduled",
   },
   {
     id: 5,
@@ -138,7 +138,7 @@ export const meetings = [
     endTime: "13:30:00", // 45 minutes duration
     duration: "45 minutes",
     organizerName: "Cathy Brown",
-    status: "Scheduled",
+    status: "scheduled",
   },
 ];
 

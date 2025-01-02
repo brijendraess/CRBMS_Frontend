@@ -99,8 +99,8 @@ const renderProgressBar = (params) => {
   let progress = 0;
 
   if (status === "Completed") progress = percentage;
-  else if (status === "ongoing") progress = percentage;
-  else if (status === "Scheduled") progress = 0;
+  else if (status === "start") progress = percentage;
+  else if (status === "scheduled") progress = 0;
 
   const getCustomColor = (percentage) => {
     if (percentage >= 0 && percentage <= 10)
@@ -225,7 +225,6 @@ const SingleDisplayPage = () => {
       dispatch(showLoading());
       const response = await axios.get(`/api/v1/rooms/${id}`);
       setRoom(response.data.data.room[0]);
-      console.log(response.data.data.room[0]);
       dispatch(hideLoading());
     } catch (error) {
       dispatch(hideLoading());

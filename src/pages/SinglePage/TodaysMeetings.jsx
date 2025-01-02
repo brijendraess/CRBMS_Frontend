@@ -76,8 +76,8 @@ const renderProgressBar = (params) => {
    let progress = 0;
 
   if (status === "Completed") progress = percentage;
-  else if (status === "ongoing") progress = percentage;
-  else if (status === "Scheduled") progress = 0;
+  else if (status === "start") progress = percentage;
+  else if (status === "scheduled") progress = 0;
 
   const getCustomColor = (percentage) => {
     if (percentage >= 0 && percentage <= 10)

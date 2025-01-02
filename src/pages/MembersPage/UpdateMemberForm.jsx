@@ -47,7 +47,6 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
           axios.get(`/api/v1/user/${id}`),
           axios.get("/api/v1/committee/active-committee"),
         ]);
-        console.log(userResponse.data.data);
         const userData = userResponse.data.data;
         const committees = committeesResponse.data.data.committees || [];
         setAvailableCommittees(committees);
@@ -105,7 +104,7 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
         .required("Select at least one committee"),
     }),
     onSubmit: async (values) => {
-      console.log("Form Submitted:", values);
+      //console.log("Form Submitted:", values);
       try {
         dispatch(showLoading());
         // Extract committee IDs
@@ -119,7 +118,6 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
         formData.append("isAdmin", values.isAdmin);
         formData.append("committees", committeeIds);
         if (values.profileImage) formData.append("profileImage", values.profileImage);
-
         const response = await axios.put(
           `/api/v1/user/update-profile/${id}`,
           formData,

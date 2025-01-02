@@ -16,7 +16,6 @@ import axios from "axios";
 import DeleteModal from "../../components/Common Components/Modals/Delete/DeleteModal";
 import "./MembersPage.css";
 import { PersonAddAlt1Rounded } from "@mui/icons-material";
-import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import PopupModals from "../../components/Common Components/Modals/Popup/PopupModals";
 import AddMemberForm from "./AddMemberForm";
 import UpdateMemberForm from "./UpdateMemberForm";
@@ -29,6 +28,7 @@ import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import UserCard from "../../components/Cards/UserCard";
 import PageHeader from "../../components/Common Components/PageHeader/PageHeader";
 import { useDispatch } from "react-redux";
+import CheckAndShowImage from "../../components/Common Components/CustomImage/showImage";
 
 const MembersPage = () => {
   const [users, setUsers] = useState([]);
@@ -54,7 +54,6 @@ const MembersPage = () => {
     try {
       dispatch(showLoading());
       const response = await axios.get(`/api/v1/user/users?page=1&limit=10`);
-      console.log(response.data.data.users.rows);
       if (response.data.success) {
         setUsers(response.data.data.users.rows);
       }
@@ -95,7 +94,6 @@ const MembersPage = () => {
       const response = await axios.delete(
         `/api/v1/user/soft-delete/${deleteId}`
       );
-      console.log(response);
       if (response.status === 200) {
         toast.success("User deleted successfully");
         setUsers((prevUsers) =>
@@ -152,20 +150,7 @@ const MembersPage = () => {
       headerName: "Avatar",
       flex: 0.25,
       headerClassName: "super-app-theme--header",
-      renderCell: (params) =>
-        params.value ? (
-          <>
-            <img
-              src={`${import.meta.env.VITE_API_URL}/${params.value}`}
-              alt="avatar"
-              style={{ width: "35px", height: "35px", borderRadius: "50%" }}
-            />
-          </>
-        ) : (
-          <AccountCircleRoundedIcon
-            style={{ width: "35px", height: "35px", borderRadius: "50%" }}
-          />
-        ),
+      renderCell: (params) =><CheckAndShowImage imageUrl={params.value} />
     },
     {
       field: "fullname",

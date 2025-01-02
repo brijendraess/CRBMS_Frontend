@@ -12,9 +12,7 @@ const Sidebar = () => {
   const { isSidebarVisible, setIsSidebarVisible } = useContext(MyContext);
   const { user } = useSelector((state) => state.user);
   const { state } = userIsAdmin; // Access state data;
-  const isAdmin = state?state:user?.isAdmin
-  const menuToBeRendered = isAdmin ? adminSideBarData : userSideBarData;
-
+  const menuToBeRendered = user?.isAdmin ? adminSideBarData : userSideBarData;
   return (
     <div className={`sidebar ${isSidebarVisible ? "close" : ""}`}>
       <ul className="menu-item">

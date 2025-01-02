@@ -95,16 +95,16 @@ const CalenderPage = () => {
           );
 
           return {
-            title: meeting.subject,
+            title: meeting?.subject,
             start: startDateTime,
             end: endDateTime,
-            description: meeting.notes || "",
+            description: meeting?.notes || "",
             location: meeting?.Room?.Location?.locationName || "",
-            organizer: meeting.User.fullname || "N/A",
-            organizerId: meeting.organizerId,
-            roomId: meeting.roomId,
-            bookingId: meeting.id,
-            isCanceled: meeting.status,
+            organizer: meeting?.User?.fullname || "N/A",
+            organizerId: meeting?.organizerId,
+            roomId: meeting?.roomId,
+            bookingId: meeting?.id,
+            isCanceled: meeting?.status,
           };
         });
 

@@ -29,7 +29,6 @@ import MeetingLogs from "./pages/MeetingLogs/MeetingLogs";
 import ReportPage from "./pages/ReportPage/ReportPage";
 import FoodBeveragePage from "./pages/FoodBeverages/FoodBeveragesPage";
 import Notification from "./pages/Notification/NotificationPage";
-import TabScreenDetailPage from "./pages/DetailRoomPage/TabScreenDetailPage";
 import SingleDisplayPage from "./pages/DetailRoomPage/SingleDisplayPage";
 
 const AppRouter = () => {
