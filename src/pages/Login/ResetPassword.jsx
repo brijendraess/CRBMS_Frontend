@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate, useParams } from "react-router-dom";
-import Input from "../../components/Common Components/Input/Input";
+import Input from "../../components/Common/Input/Input";
 import toast from "react-hot-toast";
 import { Lock } from "@mui/icons-material";
 import axios from "axios";

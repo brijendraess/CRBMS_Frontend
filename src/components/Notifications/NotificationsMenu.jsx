@@ -11,7 +11,7 @@ import {
   Button,
   Divider,
 } from "@mui/material";
-import CheckAndShowImage from "../Common Components/CustomImage/showImage";
+import CheckAndShowImage from "../Common/CustomImage/showImage";
 
 const NotificationsMenu = ({ notifications,unReadCount }) => {
 

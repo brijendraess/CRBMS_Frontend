@@ -12,7 +12,7 @@ import { DeleteOutline, People as PeopleIcon } from "@mui/icons-material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import DeleteModal from "../Common Components/Modals/Delete/DeleteModal";
+import DeleteModal from "../Common/Modals/Delete/DeleteModal";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";

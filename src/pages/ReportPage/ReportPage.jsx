@@ -6,7 +6,7 @@ import Grid from "@mui/material/Grid2";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
-import PageHeader from "../../components/Common Components/PageHeader/PageHeader";
+import PageHeader from "../../components/Common/PageHeader/PageHeader";
 
 const ReportPage = () => {
   const [counts, setCounts] = useState({

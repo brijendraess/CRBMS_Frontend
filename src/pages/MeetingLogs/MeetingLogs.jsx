@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import PageHeader from "../../components/Common Components/PageHeader/PageHeader";
+import PageHeader from "../../components/Common/PageHeader/PageHeader";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { Box, Tooltip } from "@mui/material";
 import { makeStyles } from "@mui/styles";
@@ -13,11 +13,11 @@ import {
   EditOutlinedIcon,
   EventBusyOutlinedIcon,
   HistoryOutlinedIcon,
-} from "../../components/Common Components/CustomButton/CustomIcon";
-import PopupModals from "../../components/Common Components/Modals/Popup/PopupModals";
+} from "../../components/Common/CustomButton/CustomIcon";
+import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import MeetingFormEdit from "../MeetingPage/MeetingFormEdit";
 import MeetingFormPostPone from "../MeetingPage/MeetingFormPostPone";
-import CancelMeetingModal from "../../components/Common Components/Modals/Delete/CancelMeetingModal";
+import CancelMeetingModal from "../../components/Common/Modals/Delete/CancelMeetingModal";
 import MeetingApproval from "../MeetingPage/MeetingApproval";
 
 const MeetingLogs = () => {
@@ -99,55 +99,55 @@ const MeetingLogs = () => {
     {
       field: "subject",
       headerName: "Subject",
-      width: 90,
+      flex:1,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "agenda",
       headerName: "Agenda",
-      width: 90,
+      flex:1,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "notes",
       headerName: "Notes",
-      width: 100,
+      flex:1,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "startTime",
       headerName: "Start Time",
-      width: 140,
+      flex:1,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "endTime",
       headerName: "End Time",
-      width: 150,
+      flex:1,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "meetingDate",
       headerName: "Meeting Date",
-      width: 150,
+      flex:1,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "roomLocation",
       headerName: "Room Location",
-      width: 140,
+      flex:1,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "organizerName",
       headerName: "Organizer",
-      width: 130,
+      flex:1,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "status",
       headerName: "Status",
-      width: 100,
+      flex:1,
       headerClassName: "super-app-theme--header",
     },
     {
@@ -155,7 +155,7 @@ const MeetingLogs = () => {
       headerName: "Action",
       disableColumnMenu: true,
       hideSortIcons: true,
-      width: 150,
+      flex:1,
       headerClassName: "super-app-theme--header",
       renderCell: (params) => (
         <Box

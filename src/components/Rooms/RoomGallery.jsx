@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 import { Button, Grid2, Typography, Paper } from "@mui/material";
 import { useEffect } from "react";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
-import DeleteModal from "../Common Components/Modals/Delete/DeleteModal";
+import DeleteModal from "../Common/Modals/Delete/DeleteModal";
 import { useDropzone } from "react-dropzone";
 
 export default function RoomGallery({ room }) {

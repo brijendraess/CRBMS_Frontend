@@ -17,7 +17,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { PhotoCameraIcon } from "../../components/Common Components/CustomButton/CustomIcon";
+import { PhotoCameraIcon } from "../../components/Common/CustomButton/CustomIcon";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 

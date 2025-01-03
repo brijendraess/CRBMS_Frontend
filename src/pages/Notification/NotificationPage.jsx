@@ -5,8 +5,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { Box, Switch, Tooltip } from "@mui/material";
-import { DeleteIcon } from "../../components/Common Components/CustomButton/CustomIcon";
-import DeleteModal from "../../components/Common Components/Modals/Delete/DeleteModal";
+import { DeleteIcon } from "../../components/Common/CustomButton/CustomIcon";
+import DeleteModal from "../../components/Common/Modals/Delete/DeleteModal";
 
 const Notification = () => {
   const { user } = useSelector((state) => state.user);

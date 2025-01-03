@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./Login.css";
 import { motion } from "framer-motion";
 import ebizLogo from "../../assets/Images/ebizlogo.png";
-import Input from "../../components/Common Components/Input/Input";
+import Input from "../../components/Common/Input/Input";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";

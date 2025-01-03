@@ -6,7 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import axios from "axios";
 import { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
-import Loader from "./components/Common Components/Loader/Loader";
+import Loader from "./components/Common/Loader/Loader";
 import AppRouter from "./router";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;

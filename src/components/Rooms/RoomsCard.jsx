@@ -7,17 +7,19 @@ import {
   CardActions,
   Chip,
   Tooltip,
+  FormControlLabel,
+  Switch,
 } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import PopupModals from "../Common Components/Modals/Popup/PopupModals";
+import PopupModals from "../Common/Modals/Popup/PopupModals";
 import RoomGallery from "./RoomGallery";
 import RoomAmenities from "./RoomAmenities";
 import toast from "react-hot-toast";
 import EditRoomForm from "./EditRoom";
 import MeetingForm from "../../pages/MeetingPage/MeetingForm";
-import DeleteModal from "../Common Components/Modals/Delete/DeleteModal";
+import DeleteModal from "../Common/Modals/Delete/DeleteModal";
 import axios from "axios";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import {
@@ -32,7 +34,7 @@ import {
   LocationOnOutlinedIcon,
   QrCodeOutlinedIcon,
   VisibilityOutlinedIcon,
-} from "../Common Components/CustomButton/CustomIcon";
+} from "../Common/CustomButton/CustomIcon";
 import RoomFoodBeverages from "./RoomFoodBeverages";
 import BarCode from "../../pages/BarCodePage/BarCode";
 
@@ -46,6 +48,9 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
   const [isBarCodeOpen, setIsBarCodeOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+   const [sanitationStatus, setSanitationStatus] = useState(
+      room.sanitationStatus
+    );
   const [isEditOpen, setIsEditOpen] = useState(false);
   const { user } = useSelector((state) => state.user);
   const [urlData, setUrlData] = React.useState("Not Found");
@@ -80,6 +85,22 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
     setIsDeleteOpen(true);
     setDeleteId(id);
   };
+
+  const handleSanitationStatusChange =async (event,roomId) => {
+   // formik.setFieldValue("sanitationStatus", event.target.checked);
+   console.log(roomId);
+   if(user?.isAdmin){
+    setSanitationStatus(event.target.checked);
+    const response = await axios.put(
+      `api/v1/rooms/update-sanitation-status/${roomId}`,
+      {
+        status:event.target.checked
+      }
+    );
+    toast.success("Sanitation status updated Successfully");
+   }
+  };
+
   const dispatch = useDispatch();
   const handleDeleteRoom = async () => {
     try {
@@ -229,7 +250,15 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
             <Tooltip title="Sanitation Status">
               <CleaningServicesIcon />
             </Tooltip>{" "}
-            {room.sanitationStatus ? "Yes" : "No"}
+            <FormControlLabel
+                      control={
+                        <Switch
+                          checked={sanitationStatus}
+                          name="sanitationStatus"
+                          onChange={(event) => handleSanitationStatusChange(event,room?.id)}
+                        />
+                      }
+                    />
           </Typography>
 
           <Typography

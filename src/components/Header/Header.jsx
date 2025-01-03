@@ -37,11 +37,11 @@ import { MyContext } from "../Layout/Layout";
 
 // Notifications Menu Component
 import NotificationsMenu from "../Notifications/NotificationsMenu";
-import PopupModals from "../Common Components/Modals/Popup/PopupModals";
+import PopupModals from "../Common/Modals/Popup/PopupModals";
 import ProfilePage from "../../pages/ProfilePage/ProfilePage";
 import ResetPasswordFromProfile from "../../pages/ProfilePage/ResetPasswordFromProfile";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
-import CheckAndShowImage from "../Common Components/CustomImage/showImage";
+import CheckAndShowImage from "../Common/CustomImage/showImage";
 
 const Header = () => {
   const context = useContext(MyContext);

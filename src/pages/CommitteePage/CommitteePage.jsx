@@ -15,10 +15,10 @@ import {
 import axios from "axios";
 import CommitteeCard from "../../components/CommitteeCard/CommitteeCard";
 import { PaperWrapper } from "../../Style";
-import PopupModals from "../../components/Common Components/Modals/Popup/PopupModals";
+import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import AddCommitteeForm from "./AddCommitteeForm";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import PageHeader from "../../components/Common Components/PageHeader/PageHeader";
+import PageHeader from "../../components/Common/PageHeader/PageHeader";
 import toast from "react-hot-toast";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useNavigate } from "react-router-dom";
@@ -26,7 +26,7 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { DataGrid } from "@mui/x-data-grid";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import PeopleIcon from "@mui/icons-material/People";
-import DeleteModal from "../../components/Common Components/Modals/Delete/DeleteModal";
+import DeleteModal from "../../components/Common/Modals/Delete/DeleteModal";
 import { useDispatch } from "react-redux";
 
 const CommitteeManagementMUI = () => {

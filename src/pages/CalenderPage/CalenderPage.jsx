@@ -16,9 +16,9 @@ import {
 } from "@mui/material";
 import "./CalendarPage.css";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
-import PopupModals from "../../components/Common Components/Modals/Popup/PopupModals";
+import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import MeetingFormPostPone from "../MeetingPage/MeetingFormPostPone";
-import CancelMeetingModal from "../../components/Common Components/Modals/Delete/CancelMeetingModal";
+import CancelMeetingModal from "../../components/Common/Modals/Delete/CancelMeetingModal";
 import MeetingFormEdit from "../MeetingPage/MeetingFormEdit";
 
 const CalenderWrapper = styled(Paper)(({ theme }) => ({
