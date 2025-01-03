@@ -5,15 +5,15 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import "./RoomsPage.css";
 import { MainContainer, PaperWrapper } from "../../Style";
-import PopupModals from "../../components/Common Components/Modals/Popup/PopupModals";
+import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import AddRoomForm from "./AddRoomForm";
 import RoomFilter from "./RoomFilter";
 
 import { useDispatch, useSelector } from "react-redux";
-import { AddOutlinedIcon } from "../../components/Common Components/CustomButton/CustomIcon";
-import PageHeader from "../../components/Common Components/PageHeader/PageHeader";
+import { AddOutlinedIcon } from "../../components/Common/CustomButton/CustomIcon";
+import PageHeader from "../../components/Common/PageHeader/PageHeader";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
-import ResponsiveFilter from "../../components/Responsive Components/Filter/ResponsiveFilter";
+import ResponsiveFilter from "../../components/Responsive/Filter/ResponsiveFilter";
 
 const RoomsPage = () => {
   const [roomsData, setRoomsData] = useState([]); // State for rooms data

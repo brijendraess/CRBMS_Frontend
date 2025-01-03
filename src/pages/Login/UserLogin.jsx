@@ -17,7 +17,7 @@ import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 
 //Components
 import { setLoginEmail } from "../../Redux/verifyEmailSlicer";
-import Input from "../../components/Common Components/Input/Input";
+import Input from "../../components/Common/Input/Input";
 
 // Assets Import
 import ebizLogo from "../../assets/Images/ebizlogo.png";

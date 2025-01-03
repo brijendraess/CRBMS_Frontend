@@ -14,7 +14,7 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
 import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
-import CustomButton from "../Common Components/CustomButton/CustomButton";
+import CustomButton from "../Common/CustomButton/CustomButton";
 import { useSelector } from "react-redux";
 
 const CommitteeMemberCard = ({

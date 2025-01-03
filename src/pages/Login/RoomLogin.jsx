@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Lock, Mail } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
-import Input from "../../components/Common Components/Input/Input";
+import Input from "../../components/Common/Input/Input";
 
 const RoomLogin = () => {
   const [room, setRoom] = useState("");

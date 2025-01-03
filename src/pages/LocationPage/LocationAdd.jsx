@@ -2,7 +2,7 @@ import { Avatar, Box, Button, IconButton, TextField } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { PhotoCameraIcon } from "../../components/Common Components/CustomButton/CustomIcon";
+import { PhotoCameraIcon } from "../../components/Common/CustomButton/CustomIcon";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useFormik } from "formik";
 import * as Yup from "yup";

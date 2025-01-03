@@ -18,7 +18,7 @@ import toast from "react-hot-toast";
 import { PopContent } from "../../Style";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
-import { PhotoCameraIcon } from "../../components/Common Components/CustomButton/CustomIcon";
+import { PhotoCameraIcon } from "../../components/Common/CustomButton/CustomIcon";
 import { validateImage } from "../../utils/utils";
 
 const FormWrapper = styled(Paper)(({ theme }) => ({

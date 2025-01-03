@@ -10,21 +10,21 @@ import {
   Grid2,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import PopupModals from "../../components/Common Components/Modals/Popup/PopupModals";
+import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import LocationAdd from "./LocationAdd";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { DeleteOutlineOutlined as DeleteIcon } from "@mui/icons-material";
 import axios from "axios";
 import toast from "react-hot-toast";
 import LocationEdit from "./LocationEdit";
-import CustomButton from "../../components/Common Components/CustomButton/CustomButton";
-import DeleteModal from "../../components/Common Components/Modals/Delete/DeleteModal";
+import CustomButton from "../../components/Common/CustomButton/CustomButton";
+import DeleteModal from "../../components/Common/Modals/Delete/DeleteModal";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import LocationCard from "./LocationCard";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
-import PageHeader from "../../components/Common Components/PageHeader/PageHeader";
+import PageHeader from "../../components/Common/PageHeader/PageHeader";
 import { useDispatch } from "react-redux";
-import CheckAndShowImage from "../../components/Common Components/CustomImage/showImage";
+import CheckAndShowImage from "../../components/Common/CustomImage/showImage";
 
 const LocationPage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -127,7 +127,7 @@ const LocationPage = () => {
       headerName: "#",
       disableColumnMenu: true,
       hideSortIcons: true,
-      width: 100,
+      flex:1,
       headerClassName: "super-app-theme--header",
     },
     {
@@ -135,14 +135,14 @@ const LocationPage = () => {
       headerName: "Image",
       disableColumnMenu: true,
       hideSortIcons: true,
-      width: 200,
+      flex:2,
       renderCell: (params) =><CheckAndShowImage imageUrl={`${import.meta.env.VITE_API_URL}/${params.value}`} />,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "locationName",
       headerName: "Name",
-      width: 500,
+      flex:5,
       headerClassName: "super-app-theme--header",
     },
     {
@@ -150,7 +150,7 @@ const LocationPage = () => {
       headerName: "Action",
       disableColumnMenu: true,
       hideSortIcons: true,
-      width: 150,
+      flex:1,
 
       renderCell: (params) => (
         <Box display="flex" alignItems="center" gap={1}>

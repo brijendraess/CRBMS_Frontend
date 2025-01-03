@@ -17,7 +17,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useDispatch } from "react-redux";
-import { PhotoCameraIcon } from "../Common Components/CustomButton/CustomIcon";
+import { PhotoCameraIcon } from "../Common/CustomButton/CustomIcon";
 import { validateImage } from "../../utils/utils";
 
 const EditRoomForm = ({ room, setRefreshPage, setIsEditOpen }) => {

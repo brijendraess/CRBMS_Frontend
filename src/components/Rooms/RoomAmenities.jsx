@@ -3,14 +3,14 @@ import { DataGrid } from "@mui/x-data-grid";
 import { IconButton, Box } from "@mui/material";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { DeleteOutlineOutlined as DeleteIcon } from "@mui/icons-material";
-import CustomButton from "../Common Components/CustomButton/CustomButton";
+import CustomButton from "../Common/CustomButton/CustomButton";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import PopupModals from "../Common Components/Modals/Popup/PopupModals";
+import PopupModals from "../Common/Modals/Popup/PopupModals";
 import AddRoomAmenities from "./AddRoomAmenities";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import DeleteModal from "../Common Components/Modals/Delete/DeleteModal";
+import DeleteModal from "../Common/Modals/Delete/DeleteModal";
 import EditRoomAmenities from "./EditRoomAmenities";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 

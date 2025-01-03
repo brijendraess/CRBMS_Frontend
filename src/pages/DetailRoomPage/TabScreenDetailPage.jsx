@@ -14,10 +14,10 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useDispatch, useSelector } from "react-redux";
 import Carousel from "../../components/Carousel/Carousel";
 import GroupsIcon from "@mui/icons-material/Groups";
-import { LocationOnOutlinedIcon } from "../../components/Common Components/CustomButton/CustomIcon";
+import { LocationOnOutlinedIcon } from "../../components/Common/CustomButton/CustomIcon";
 import { timeDifference } from "../../utils/utils";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
-import Loader from "../../components/Common Components/Loader/Loader";
+import Loader from "../../components/Common/Loader/Loader";
 import { PaperWrapper } from "../../Style";
 
 const BoxWrapper = styled(Paper)(({ theme }) => ({

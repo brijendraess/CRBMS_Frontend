@@ -10,16 +10,16 @@ import {
   Grid2,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import PopupModals from "../../components/Common Components/Modals/Popup/PopupModals";
+import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import FoodBeverageAdd from "./FoodBeveragesAdd";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { DeleteOutlineOutlined as DeleteIcon } from "@mui/icons-material";
 import axios from "axios";
 import toast from "react-hot-toast";
 import FoodBeverageEdit from "./FoodBeveragesEdit";
-import CustomButton from "../../components/Common Components/CustomButton/CustomButton";
-import DeleteModal from "../../components/Common Components/Modals/Delete/DeleteModal";
-import FoodBeverageCard from "../../components/Responsive Components/FoodBeverageCard/FoodBeverageCard";
+import CustomButton from "../../components/Common/CustomButton/CustomButton";
+import DeleteModal from "../../components/Common/Modals/Delete/DeleteModal";
+import FoodBeverageCard from "../../components/Responsive/FoodBeverageCard/FoodBeverageCard";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 
 const FoodBeveragePage = () => {
@@ -130,13 +130,13 @@ const FoodBeveragePage = () => {
       headerName: "#",
       disableColumnMenu: true,
       hideSortIcons: true,
-      width: 150,
+      flex: 1,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "foodBeverageName",
       headerName: "Name",
-      width: 900,
+      flex: 3,
       headerClassName: "super-app-theme--header",
     },
     {
@@ -144,7 +144,7 @@ const FoodBeveragePage = () => {
       headerName: "Action",
       disableColumnMenu: true,
       hideSortIcons: true,
-      width: 150,
+      flex: 1,
 
       renderCell: (params) => (
         <Box display="flex" alignItems="center" gap={1}>
