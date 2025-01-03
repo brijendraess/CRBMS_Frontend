@@ -9,10 +9,8 @@ import {
 } from "@mui/material";
 import React from "react";
 import CustomButton from "../../components/Common/CustomButton/CustomButton";
-import {
-  EditOutlined as EditOutlinedIcon,
-  DeleteOutlineOutlined as DeleteOutlineOutlinedIcon,
-} from "@mui/icons-material";
+import { DeleteOutlineOutlinedIcon, EditOutlinedIcon } from "../../components/Common/CustomButton/CustomIcon";
+
 
 const LocationCard = ({ location, onEdit, onDelete, onStatusChange }) => {
   return (

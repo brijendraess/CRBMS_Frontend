@@ -9,9 +9,9 @@ import {
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { VisibilityOff, Visibility } from "@mui/icons-material";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { Visibility,VisibilityOff } from "../../components/Common/CustomButton/CustomIcon";
 
 const ResetPasswordFromProfile = () => {
   const [showOldPassword, setShowOldPassword] = useState(false);

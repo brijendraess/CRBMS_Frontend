@@ -1,19 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-
-// Material UI Imports
 import { DataGrid } from "@mui/x-data-grid";
 import { Box, Switch, Tooltip, Grid2, useMediaQuery } from "@mui/material";
-import { DeleteOutlineOutlined as DeleteIcon } from "@mui/icons-material";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-
-// Style Imports
 import "./Amenities.css";
 import { PaperWrapper } from "../../Style";
-
-// Component Imports
 import AmenitiesAdd from "./AmenitiesAdd";
 import DeleteModal from "../../components/Common/Modals/Delete/DeleteModal";
 import AmenitiesEdit from "./AmenitiesEdit";
@@ -22,6 +13,11 @@ import AmenitiesCard from "./AmenitiesCard";
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useDispatch } from "react-redux";
+import {
+  AddOutlinedIcon,
+  EditOutlinedIcon,
+  DeleteOutlineOutlinedIcon,
+} from "../../components/Common/CustomButton/CustomIcon";
 
 const AmenitiesList = () => {
   const [amenities, setAmenities] = useState([]);
@@ -151,7 +147,7 @@ const AmenitiesList = () => {
             />
           </Tooltip>
           <Tooltip title="Delete">
-            <DeleteIcon
+            <DeleteOutlineOutlinedIcon
               color="error"
               onClick={() => handleOpen(params.id)}
               style={{ cursor: "pointer" }}

@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { IconButton, Box } from "@mui/material";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { DeleteOutlineOutlined as DeleteIcon } from "@mui/icons-material";
 import CustomButton from "../Common/CustomButton/CustomButton";
-import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import PopupModals from "../Common/Modals/Popup/PopupModals";
 import AddRoomAmenities from "./AddRoomAmenities";
 import toast from "react-hot-toast";
@@ -13,18 +10,21 @@ import axios from "axios";
 import DeleteModal from "../Common/Modals/Delete/DeleteModal";
 import EditRoomAmenities from "./EditRoomAmenities";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import {
+  DeleteOutlineOutlinedIcon,
+  EditOutlinedIcon,
+  AddOutlinedIcon,
+} from "../Common/CustomButton/CustomIcon";
 
 const RoomAmenities = ({ room }) => {
   const [rows, setRows] = useState([]);
   const [isAmenityQuantityOpen, setIsAmenityQuantityOpen] = useState(false);
   const [refreshPage, setRefreshPage] = useState(0);
-  const [updatedId, setUpdatedId] = useState(null);
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [editId, setEditId] = useState(null);
   const [editInfo, setEditInfo] = useState({});
-  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const handleEdit = (id) => {
@@ -93,8 +93,13 @@ const RoomAmenities = ({ room }) => {
   };
 
   const columns = [
-    { field: "id", headerName: "S No.",disableColumnMenu: true,
-      hideSortIcons: true, width: 60 },
+    {
+      field: "id",
+      headerName: "S No.",
+      disableColumnMenu: true,
+      hideSortIcons: true,
+      width: 60,
+    },
     { field: "name", headerName: "Name", width: 100 },
     { field: "quantity", headerName: "Quantity", width: 100 },
     {
@@ -113,7 +118,7 @@ const RoomAmenities = ({ room }) => {
             <EditOutlinedIcon />
           </IconButton>
           <IconButton color="error" onClick={() => handleOpen(params.row.uid)}>
-            <DeleteIcon />
+            <DeleteOutlineOutlinedIcon />
           </IconButton>
         </Box>
       ),

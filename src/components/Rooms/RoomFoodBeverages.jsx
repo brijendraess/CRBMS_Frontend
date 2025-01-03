@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { IconButton, Box } from "@mui/material";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { DeleteOutlineOutlined as DeleteIcon } from "@mui/icons-material";
 import CustomButton from "../Common/CustomButton/CustomButton";
-import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import PopupModals from "../Common/Modals/Popup/PopupModals";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
@@ -13,6 +10,11 @@ import DeleteModal from "../Common/Modals/Delete/DeleteModal";
 import AddRoomFoodBeverage from "./AddRoomFoodBeverage";
 import EditRoomFoodBeverage from "./EditRoomFoodBeverage";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import {
+  DeleteOutlineOutlinedIcon,
+  EditOutlinedIcon,
+  AddOutlinedIcon,
+} from "../Common/CustomButton/CustomIcon";
 
 const RoomFoodBeverages = ({ room }) => {
   const [rows, setRows] = useState([]);
@@ -108,11 +110,14 @@ const RoomFoodBeverages = ({ room }) => {
       sortable: false,
       renderCell: (params) => (
         <Box>
-          <IconButton color="primary" onClick={() => handleEdit(params.row.uid)}>
+          <IconButton
+            color="primary"
+            onClick={() => handleEdit(params.row.uid)}
+          >
             <EditOutlinedIcon />
           </IconButton>
           <IconButton color="error" onClick={() => handleOpen(params.row.uid)}>
-            <DeleteIcon />
+            <DeleteOutlineOutlinedIcon />
           </IconButton>
         </Box>
       ),

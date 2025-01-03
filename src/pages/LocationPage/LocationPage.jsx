@@ -1,30 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { PaperWrapper } from "../../Style";
-import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import {
-  Box,
-  Switch,
-  Tooltip,
-  Typography,
-  useMediaQuery,
-  Grid2,
-} from "@mui/material";
+import { Box, Switch, Tooltip, useMediaQuery, Grid2 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import LocationAdd from "./LocationAdd";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { DeleteOutlineOutlined as DeleteIcon } from "@mui/icons-material";
 import axios from "axios";
 import toast from "react-hot-toast";
 import LocationEdit from "./LocationEdit";
-import CustomButton from "../../components/Common/CustomButton/CustomButton";
 import DeleteModal from "../../components/Common/Modals/Delete/DeleteModal";
-import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import LocationCard from "./LocationCard";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
 import { useDispatch } from "react-redux";
 import CheckAndShowImage from "../../components/Common/CustomImage/showImage";
+import {
+  AddOutlinedIcon,
+  DeleteOutlineOutlinedIcon,
+  EditOutlinedIcon,
+} from "../../components/Common/CustomButton/CustomIcon";
 
 const LocationPage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -127,7 +120,7 @@ const LocationPage = () => {
       headerName: "#",
       disableColumnMenu: true,
       hideSortIcons: true,
-      flex:1,
+      flex: 1,
       headerClassName: "super-app-theme--header",
     },
     {
@@ -135,14 +128,18 @@ const LocationPage = () => {
       headerName: "Image",
       disableColumnMenu: true,
       hideSortIcons: true,
-      flex:2,
-      renderCell: (params) =><CheckAndShowImage imageUrl={`${import.meta.env.VITE_API_URL}/${params.value}`} />,
+      flex: 2,
+      renderCell: (params) => (
+        <CheckAndShowImage
+          imageUrl={`${import.meta.env.VITE_API_URL}/${params.value}`}
+        />
+      ),
       headerClassName: "super-app-theme--header",
     },
     {
       field: "locationName",
       headerName: "Name",
-      flex:5,
+      flex: 5,
       headerClassName: "super-app-theme--header",
     },
     {
@@ -150,7 +147,7 @@ const LocationPage = () => {
       headerName: "Action",
       disableColumnMenu: true,
       hideSortIcons: true,
-      flex:1,
+      flex: 1,
 
       renderCell: (params) => (
         <Box display="flex" alignItems="center" gap={1}>
@@ -163,7 +160,7 @@ const LocationPage = () => {
             />
           </Tooltip>
           <Tooltip title="Delete">
-            <DeleteIcon
+            <DeleteOutlineOutlinedIcon
               color="error"
               style={{ cursor: "pointer" }}
               onClick={() => handleOpen(params.row.id)}

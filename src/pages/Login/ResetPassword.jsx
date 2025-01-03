@@ -3,12 +3,12 @@ import { motion } from "framer-motion";
 import { useNavigate, useParams } from "react-router-dom";
 import Input from "../../components/Common/Input/Input";
 import toast from "react-hot-toast";
-import { Lock } from "@mui/icons-material";
 import axios from "axios";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useDispatch } from "react-redux";
 import "./Login.css";
 import { Button } from "@mui/material";
+import { Lock } from "../../components/Common/CustomButton/CustomIcon";
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");

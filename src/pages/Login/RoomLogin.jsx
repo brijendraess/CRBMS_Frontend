@@ -1,16 +1,13 @@
 import React, { useState } from "react";
 import "./Login.css";
 import { motion } from "framer-motion";
-import { Lock, Mail } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import Input from "../../components/Common/Input/Input";
+import { Mail, Lock } from "../../components/Common/CustomButton/CustomIcon";
 
 const RoomLogin = () => {
   const [room, setRoom] = useState("");
   const [password, setPassword] = useState("");
-
-  // const { login, isLoading, error } = useAuthStore();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -34,7 +31,6 @@ const RoomLogin = () => {
               value={room}
               onChange={(e) => setEmail(e.target.value)}
             />
-
             <Input
               icon={Lock}
               type="password"
@@ -42,19 +38,13 @@ const RoomLogin = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            {/* {error && (
-              <p className="error">{error}</p>
-            )} */}
             <div className="loginButtonBox">
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="loginButton"
                 type="submit"
-                // disabled={isLoading}
               >
-                {/* {isLoading ? <RotateLeftIcon className="loaderIcon" /> : "Login"} */}
-                {/* <RotateLeftIcon className="loaderIcon" /> */}
                 Login
               </motion.button>
             </div>

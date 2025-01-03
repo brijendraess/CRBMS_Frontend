@@ -8,14 +8,17 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { DeleteOutline, People as PeopleIcon } from "@mui/icons-material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteModal from "../Common/Modals/Delete/DeleteModal";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import {
+  DeleteOutlineIcon,
+  EditOutlinedIcon,
+  PeopleIcon,
+} from "../Common/CustomButton/CustomIcon";
 
 const CommitteeCard = ({ committee, setRefreshPage }) => {
   const [hover, setHover] = useState(false);
@@ -149,7 +152,7 @@ const CommitteeCard = ({ committee, setRefreshPage }) => {
               </Tooltip>
 
               <Tooltip title="Delete">
-                <DeleteOutline
+                <DeleteOutlineIcon
                   onClick={handleOpen}
                   sx={{ cursor: "pointer" }}
                   fontSize="medium"

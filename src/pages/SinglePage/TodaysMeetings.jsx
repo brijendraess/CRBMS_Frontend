@@ -9,8 +9,7 @@ import {
   Button,
 } from "@mui/material";
 import "./TodaysMeetings.css";
-import FullscreenIcon from "@mui/icons-material/Fullscreen";
-import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
+
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import flag2 from "../../assets/flag2.webp";
 import dayjs from "dayjs";
@@ -19,6 +18,7 @@ import axios from "axios";
 import { getFormattedDate, getMeetingTimePercentage, timeDifference } from "../../utils/utils";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import { FullscreenExitIcon, FullscreenIcon } from "../../components/Common/CustomButton/CustomIcon";
 dayjs.extend(durationPlugin);
 
 const Item = styled(Paper)(({ theme }) => ({

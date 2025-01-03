@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Box, IconButton, Menu, MenuItem, Paper, styled } from "@mui/material";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import "./InfoCard.css";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import {
+  AccountCircleIcon,
+  MoreVertIcon,
+} from "../Common/CustomButton/CustomIcon";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -55,8 +57,7 @@ const InfoCard = ({
       <Box display="flex" width="100%">
         <Box className="col1">
           <h4 className="text-white">
-            {tittle}{" "}
-            {subHeading && <span>|| {subHeading}</span>}
+            {tittle} {subHeading && <span>|| {subHeading}</span>}
           </h4>
           <span className="number text-white">{count}</span>
         </Box>

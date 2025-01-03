@@ -1,4 +1,3 @@
-import { Radar } from "@mui/icons-material";
 import { Paper, styled, Tooltip } from "@mui/material";
 import React, { useState } from "react";
 import {
@@ -9,6 +8,7 @@ import {
   RadarChart,
   ResponsiveContainer,
 } from "recharts";
+import { Radar } from "../Common/CustomButton/CustomIcon";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,

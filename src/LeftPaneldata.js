@@ -1,13 +1,14 @@
-// icons
-import MeetingRoomOutlinedIcon from "@mui/icons-material/MeetingRoomOutlined";
-import Diversity2Icon from "@mui/icons-material/Diversity2";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-import ChairIcon from "@mui/icons-material/Chair";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
-import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
-import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
-import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
-import FoodBankOutlinedIcon from '@mui/icons-material/FoodBankOutlined';
+import {
+  MeetingRoomOutlinedIcon,
+  Diversity2Icon,
+  ChairIcon,
+  CalendarMonthOutlinedIcon,
+  BarChartOutlinedIcon,
+  PersonOutlineOutlinedIcon,
+  LocationOnOutlinedIcon,
+  HistoryOutlinedIcon,
+  FoodBankOutlinedIcon,
+} from "./components/Common/CustomButton/CustomIcon";
 
 export const adminSideBarData = [
   {
@@ -52,7 +53,7 @@ export const adminSideBarData = [
     icon: FoodBankOutlinedIcon,
     path: "/food-beverages",
   },
-  
+
   {
     id: 8,
     name: "Report & Analytics",

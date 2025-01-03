@@ -11,10 +11,10 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { DeleteOutline, People as PeopleIcon } from "@mui/icons-material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { PeopleIcon } from "../Common/CustomButton/CustomIcon";
 
 const MyComitteeCard = ({ committee, onDelete, setRefreshPage, heading }) => {
   const [hover, setHover] = useState(false);

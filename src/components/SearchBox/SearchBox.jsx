@@ -1,7 +1,8 @@
 import React from "react";
 import "./SearchBox.css";
+import { SearchIcon } from "../Common/CustomButton/CustomIcon";
 
-import SearchIcon from '@mui/icons-material/Search';
+
 
 
 
