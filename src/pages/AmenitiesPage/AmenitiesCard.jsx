@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import CustomButton from "../../components/Common Components/CustomButton/CustomButton";
+import CustomButton from "../../components/Common/CustomButton/CustomButton";
 import {
   EditOutlined as EditOutlinedIcon,
   DeleteOutlineOutlined as DeleteOutlineOutlinedIcon,

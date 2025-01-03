@@ -13,22 +13,22 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import toast from "react-hot-toast";
 import axios from "axios";
-import DeleteModal from "../../components/Common Components/Modals/Delete/DeleteModal";
+import DeleteModal from "../../components/Common/Modals/Delete/DeleteModal";
 import "./MembersPage.css";
 import { PersonAddAlt1Rounded } from "@mui/icons-material";
-import PopupModals from "../../components/Common Components/Modals/Popup/PopupModals";
+import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import AddMemberForm from "./AddMemberForm";
 import UpdateMemberForm from "./UpdateMemberForm";
 import ViewMember from "./ViewMember";
-import CustomButton from "../../components/Common Components/CustomButton/CustomButton";
+import CustomButton from "../../components/Common/CustomButton/CustomButton";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { PaperWrapper } from "../../Style";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import UserCard from "../../components/Cards/UserCard";
-import PageHeader from "../../components/Common Components/PageHeader/PageHeader";
+import PageHeader from "../../components/Common/PageHeader/PageHeader";
 import { useDispatch } from "react-redux";
-import CheckAndShowImage from "../../components/Common Components/CustomImage/showImage";
+import CheckAndShowImage from "../../components/Common/CustomImage/showImage";
 
 const MembersPage = () => {
   const [users, setUsers] = useState([]);

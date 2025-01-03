@@ -3,7 +3,7 @@ import { setUser } from "../../Redux/authSlicer";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
-import Loader from "../Common Components/Loader/Loader";
+import Loader from "../Common/Loader/Loader";
 
 const ProtectedRoutes = ({ children }) => {
   const [loading, setLoading] = useState(true);

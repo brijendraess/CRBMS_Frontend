@@ -8,8 +8,8 @@ import {
   Switch,
   Typography,
 } from "@mui/material";
-import { AdminPanelSettingsOutlinedIcon, BadgeOutlinedIcon, DeleteOutlineOutlinedIcon, EditOutlinedIcon, LocalPhoneOutlinedIcon, MailOutlinedIcon, Person3OutlinedIcon, RemoveRedEyeIcon } from "../Common Components/CustomButton/CustomIcon";
-import CustomButton from "../Common Components/CustomButton/CustomButton";
+import { AdminPanelSettingsOutlinedIcon, BadgeOutlinedIcon, DeleteOutlineOutlinedIcon, EditOutlinedIcon, LocalPhoneOutlinedIcon, MailOutlinedIcon, Person3OutlinedIcon, RemoveRedEyeIcon } from "../Common/CustomButton/CustomIcon";
+import CustomButton from "../Common/CustomButton/CustomButton";
 
 const UserCard = ({
   user,

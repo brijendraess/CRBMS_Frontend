@@ -177,7 +177,7 @@ const ResponsiveFilter = ({
             </Select>
           </FormControl>
           <FormControl fullWidth size="small">
-            <InputLabel id="capacity-label">Seats</InputLabel>
+            <InputLabel id="capacity-label">Capacity</InputLabel>
             <Select
               label="Seats"
               labelId="capacity-label"

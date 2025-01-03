@@ -15,11 +15,11 @@ import { PaperWrapper } from "../../Style";
 
 // Component Imports
 import AmenitiesAdd from "./AmenitiesAdd";
-import DeleteModal from "../../components/Common Components/Modals/Delete/DeleteModal";
+import DeleteModal from "../../components/Common/Modals/Delete/DeleteModal";
 import AmenitiesEdit from "./AmenitiesEdit";
-import PopupModals from "../../components/Common Components/Modals/Popup/PopupModals";
+import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import AmenitiesCard from "./AmenitiesCard";
-import PageHeader from "../../components/Common Components/PageHeader/PageHeader";
+import PageHeader from "../../components/Common/PageHeader/PageHeader";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useDispatch } from "react-redux";
 
