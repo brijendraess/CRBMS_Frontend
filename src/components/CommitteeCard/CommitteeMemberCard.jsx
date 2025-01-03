@@ -8,14 +8,16 @@ import {
   Switch,
   Typography,
 } from "@mui/material";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
-import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
-import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
 import CustomButton from "../Common/CustomButton/CustomButton";
 import { useSelector } from "react-redux";
+import {
+  RemoveRedEyeIcon,
+  EditOutlinedIcon,
+  DeleteOutlineOutlinedIcon,
+  BadgeOutlinedIcon,
+  MailOutlinedIcon,
+  LocalPhoneOutlinedIcon,
+} from "../Common/CustomButton/CustomIcon";
 
 const CommitteeMemberCard = ({
   member,

@@ -1,8 +1,10 @@
 import { Box, Card, Switch, Typography } from "@mui/material";
 import React from "react";
 import CustomButton from "../../Common/CustomButton/CustomButton";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import {
+  EditOutlinedIcon,
+  DeleteOutlineOutlinedIcon,
+} from "../../Common/CustomButton/CustomIcon";
 
 const FoodBeverageCard = ({ food, handleEdit, handleDelete }) => {
   return (

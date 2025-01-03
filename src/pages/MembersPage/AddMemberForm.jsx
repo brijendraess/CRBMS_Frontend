@@ -11,14 +11,13 @@ import {
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { PopContent } from "../../Style";
 import "./MembersPage.css";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import { PhotoCameraIcon,VisibilityOff,Visibility } from "../../components/Common/CustomButton/CustomIcon";
 
 const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
   const [avatarPreview, setAvatarPreview] = useState(null); // Avatar preview

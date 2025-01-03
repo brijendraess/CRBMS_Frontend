@@ -10,21 +10,16 @@ import {
 import React, { useEffect, useState } from "react";
 import flag2 from "../../assets/flag2.webp";
 import flag from "../../assets/flag.png";
-import FullscreenIcon from "@mui/icons-material/Fullscreen";
-import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
 import Carousel from "../../components/Carousel/Carousel";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import Loader from "../../components/Common/Loader/Loader";
-import { LocationOnOutlinedIcon } from "../../components/Common/CustomButton/CustomIcon";
+import { GroupsIcon, LocationOnOutlinedIcon,FullscreenExitOutlinedIcon,FullscreenOutlined } from "../../components/Common/CustomButton/CustomIcon";
 import { getMeetingTimePercentage, timeDifference } from "../../utils/utils";
 import { DataGrid } from "@mui/x-data-grid";
-import GroupsIcon from "@mui/icons-material/Groups";
 import axios from "axios";
 import { createTheme } from "@mui/material/styles";
-import FullscreenExitOutlinedIcon from "@mui/icons-material/FullscreenExitOutlined";
-import { FullscreenOutlined } from "@mui/icons-material";
 
 const Wrapper = styled(Box)(({ theme }) => ({
   display: "flex",

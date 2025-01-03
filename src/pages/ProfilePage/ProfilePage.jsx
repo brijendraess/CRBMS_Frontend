@@ -10,9 +10,9 @@ import {
 import Grid from "@mui/material/Grid2";
 import axios from "axios";
 import toast from "react-hot-toast";
-import PhotoCameraOutlinedIcon from "@mui/icons-material/PhotoCameraOutlined";
 import { useDispatch } from "react-redux";
 import { showLoading, hideLoading } from "../../Redux/alertSlicer";
+import { PhotoCameraOutlinedIcon } from "../../components/Common/CustomButton/CustomIcon";
 
 const ProfilePage = ({ user, committees = [] }) => {
   const dispatch = useDispatch();

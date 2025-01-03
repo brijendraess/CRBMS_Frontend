@@ -9,12 +9,14 @@ import AddMembersToCommittee from "./AddMembersToCommittee";
 import unknownUser from "../../assets/Images/unknownUser.png";
 import { PaperWrapper } from "../../Style";
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
-import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
 import CustomButton from "../../components/Common/CustomButton/CustomButton";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useDispatch, useSelector } from "react-redux";
 import CommitteeMemberCard from "../../components/CommitteeCard/CommitteeMemberCard";
+import {
+  DeleteOutlineIcon,
+  PersonAddOutlinedIcon,
+} from "../../components/Common/CustomButton/CustomIcon";
 
 const CommitteeMemberList = () => {
   const [data, setData] = useState([]);

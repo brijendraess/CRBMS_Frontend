@@ -2,25 +2,18 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-
 // Styles
 import "./Login.css";
 import { motion } from "framer-motion";
-
-// Material UI IMPORTS
-import { Lock, Mail } from "@mui/icons-material";
 import { Button } from "@mui/material";
-
-// REDUX
 import { useDispatch, useSelector } from "react-redux";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
-
 //Components
 import { setLoginEmail } from "../../Redux/verifyEmailSlicer";
 import Input from "../../components/Common/Input/Input";
-
 // Assets Import
 import ebizLogo from "../../assets/Images/ebizlogo.png";
+import { Mail,Lock } from "../../components/Common/CustomButton/CustomIcon";
 
 const UserLogin = () => {
   const [userName, setUserName] = useState("");

@@ -1,11 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./Header.css";
 import { Link, useNavigate } from "react-router-dom";
-import unknownUser from "../../assets/Images/unknownUser.PNG";
-// Images
 import logo from "../../assets/Images/logo.webp";
-
-// MUI
 import {
   Badge,
   Button,
@@ -17,24 +13,12 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-
-// ICONS
-import MenuOpenIcon from "@mui/icons-material/MenuOpen";
-import MenuOutlined from "@mui/icons-material/MenuOutlined";
-import FullscreenOutlinedIcon from "@mui/icons-material/FullscreenOutlined";
-import FullscreenExitOutlinedIcon from "@mui/icons-material/FullscreenExitOutlined";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
-import Logout from "@mui/icons-material/Logout";
-import KeyOutlinedIcon from "@mui/icons-material/KeyOutlined";
-
 // Context and State Management
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import axios from "axios";
 import dayjs from "dayjs";
 import { MyContext } from "../Layout/Layout";
-
 // Notifications Menu Component
 import NotificationsMenu from "../Notifications/NotificationsMenu";
 import PopupModals from "../Common/Modals/Popup/PopupModals";
@@ -42,6 +26,16 @@ import ProfilePage from "../../pages/ProfilePage/ProfilePage";
 import ResetPasswordFromProfile from "../../pages/ProfilePage/ResetPasswordFromProfile";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import CheckAndShowImage from "../Common/CustomImage/showImage";
+import {
+  FullscreenExitOutlinedIcon,
+  MenuOpenIcon,
+  MenuOutlined,
+  FullscreenOutlinedIcon,
+  PersonOutlineOutlinedIcon,
+  NotificationsOutlinedIcon,
+  Logout,
+  KeyOutlinedIcon,
+} from "../Common/CustomButton/CustomIcon";
 
 const Header = () => {
   const context = useContext(MyContext);
@@ -206,7 +200,9 @@ const Header = () => {
               <Tooltip title="My Account">
                 <div className="profileImage">
                   <span className="profilePhoto">
-                  <CheckAndShowImage imageUrl={`${import.meta.env.VITE_API_URL}/${user?.avatarPath}`} />
+                    <CheckAndShowImage
+                      imageUrl={`${import.meta.env.VITE_API_URL}/${user?.avatarPath}`}
+                    />
                   </span>
                 </div>
               </Tooltip>

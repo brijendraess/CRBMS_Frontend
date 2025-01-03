@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { PaperWrapper } from "../../Style";
-import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import {
   Box,
   Switch,
@@ -12,8 +11,6 @@ import {
 import { DataGrid } from "@mui/x-data-grid";
 import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import FoodBeverageAdd from "./FoodBeveragesAdd";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { DeleteOutlineOutlined as DeleteIcon } from "@mui/icons-material";
 import axios from "axios";
 import toast from "react-hot-toast";
 import FoodBeverageEdit from "./FoodBeveragesEdit";
@@ -21,6 +18,11 @@ import CustomButton from "../../components/Common/CustomButton/CustomButton";
 import DeleteModal from "../../components/Common/Modals/Delete/DeleteModal";
 import FoodBeverageCard from "../../components/Responsive/FoodBeverageCard/FoodBeverageCard";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import {
+  AddOutlinedIcon,
+  EditOutlinedIcon,
+  DeleteOutlineOutlinedIcon,
+} from "../../components/Common/CustomButton/CustomIcon";
 
 const FoodBeveragePage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -156,7 +158,7 @@ const FoodBeveragePage = () => {
             />
           </Tooltip>
           <Tooltip title="Delete">
-            <DeleteIcon
+            <DeleteOutlineOutlinedIcon
               color="error"
               style={{ cursor: "pointer" }}
               onClick={() => handleOpen(params.row.id)}

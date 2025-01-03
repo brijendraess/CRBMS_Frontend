@@ -3,9 +3,7 @@ import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
 import { useState } from "react";
-import { Box, Avatar, IconButton } from "@mui/material";
-import { DeleteOutlineOutlined as DeleteIcon } from "@mui/icons-material";
-import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
+import { Box, IconButton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -14,6 +12,7 @@ import { useEffect } from "react";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import DeleteModal from "../Common/Modals/Delete/DeleteModal";
 import { useDropzone } from "react-dropzone";
+import { DeleteOutlineOutlinedIcon } from "../Common/CustomButton/CustomIcon";
 
 export default function RoomGallery({ room }) {
   const [files, setFiles] = useState([]);
@@ -197,7 +196,7 @@ export default function RoomGallery({ room }) {
                   sx={{ color: "rgba(255, 255, 255, 0.54)" }}
                   aria-label={`info about ${item.title}`}
                 >
-                  <DeleteIcon
+                  <DeleteOutlineOutlinedIcon
                     color="error"
                     onClick={() => handleDeleteClick(item.id)}
                     style={{ cursor: "pointer" }}
