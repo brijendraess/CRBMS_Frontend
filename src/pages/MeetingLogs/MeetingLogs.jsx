@@ -114,6 +114,12 @@ const MeetingLogs = () => {
       flex:1,
       headerClassName: "super-app-theme--header",
     },
+    // {
+    //   field: "notes",
+    //   headerName: "Notes",
+    //   width: 100,
+    //   headerClassName: "super-app-theme--header",
+    // },
     {
       field: "startTime",
       headerName: "Start Time",
@@ -159,14 +165,18 @@ const MeetingLogs = () => {
       headerClassName: "super-app-theme--header",
       renderCell: (params) => (
         <Box
-          display="flex"
           alignItems="center"
-          sx={{ display: params.row.status !== "cancelled" ? "block" : "none" }}
-          gap={1}
+          sx={{
+            display: params.row.status !== "cancelled" ? "flex" : "none",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+          }}
+          gap={"10px"}
         >
           <Tooltip title="Edit meeting">
             <EditOutlinedIcon
-              className="cursor"
+              // className="cursor"
               color="success"
               onClick={() => handleEdit(params.row.roomId, params.row.id)}
               style={{ cursor: "pointer" }}
