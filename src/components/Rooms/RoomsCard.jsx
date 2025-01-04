@@ -34,11 +34,13 @@ import {
   LocationOnOutlinedIcon,
   QrCodeOutlinedIcon,
   VisibilityOutlinedIcon,
+  AirlineSeatLegroomExtraOutlinedIcon,
 } from "../Common/CustomButton/CustomIcon";
 import RoomFoodBeverages from "./RoomFoodBeverages";
 import BarCode from "../../pages/BarCodePage/BarCode";
+import StatusSymbol from "../Common/CustomButton/StatusSymbol";
 
-const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
+const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentData }) => {
   const navigate = useNavigate();
   const [hover, setHover] = useState(false);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
@@ -48,9 +50,9 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
   const [isBarCodeOpen, setIsBarCodeOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
-   const [sanitationStatus, setSanitationStatus] = useState(
-      room.sanitationStatus
-    );
+  const [sanitationStatus, setSanitationStatus] = useState(
+    room.sanitationStatus
+  );
   const [isEditOpen, setIsEditOpen] = useState(false);
   const { user } = useSelector((state) => state.user);
   const [urlData, setUrlData] = React.useState("Not Found");
@@ -86,19 +88,18 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
     setDeleteId(id);
   };
 
-  const handleSanitationStatusChange =async (event,roomId) => {
-   // formik.setFieldValue("sanitationStatus", event.target.checked);
-   console.log(roomId);
-   if(user?.isAdmin){
-    setSanitationStatus(event.target.checked);
-    const response = await axios.put(
-      `api/v1/rooms/update-sanitation-status/${roomId}`,
-      {
-        status:event.target.checked
-      }
-    );
-    toast.success("Sanitation status updated Successfully");
-   }
+  const handleSanitationStatusChange = async (event, roomId) => {
+    // formik.setFieldValue("sanitationStatus", event.target.checked);
+    if (user?.isAdmin) {
+      setSanitationStatus(event.target.checked);
+      const response = await axios.put(
+        `api/v1/rooms/update-sanitation-status/${roomId}`,
+        {
+          status: event.target.checked,
+        }
+      );
+      toast.success("Sanitation status updated Successfully");
+    }
   };
 
   const dispatch = useDispatch();
@@ -128,7 +129,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
   useEffect(() => {
     setUrlData(`${import.meta.env.VITE_BARCODE_URL}/rooms/${room?.id}`);
   }, [room]);
-
+  
   return (
     <>
       <Paper
@@ -209,21 +210,6 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
           >
             {room.name}
           </Typography>
-
-          <Typography
-            variant="body2"
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
-            }}
-          >
-            <Tooltip title="Capacity">
-              <GroupsOutlinedIcon />
-            </Tooltip>
-            {room.capacity} People
-          </Typography>
-
           {/* Room Location */}
           <Typography
             variant="body2"
@@ -238,30 +224,50 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
             </Tooltip>
             {room.Location?.locationName || "Unknown Location"}
           </Typography>
-          <Typography
-            variant="body2"
+          <Box
             sx={{
               display: "flex",
-              alignItems: "center",
-              gap: 1,
-              textTransform: "capitalize",
+              justifyContent: "space-between",
+              width: "100%",
             }}
           >
-            <Tooltip title="Sanitation Status">
-              <CleaningServicesIcon />
-            </Tooltip>{" "}
-            <FormControlLabel
-                      control={
-                        <Switch
-                          checked={sanitationStatus}
-                          name="sanitationStatus"
-                          onChange={(event) => handleSanitationStatusChange(event,room?.id)}
-                        />
-                      }
-                    />
+              <Typography
+            variant="body2"
+            sx={{ display: 'flex', alignItems: 'center' }}
+          >
+            <Tooltip title="Capacity">
+              <GroupsOutlinedIcon />
+            </Tooltip>
+            {room.capacity} People
           </Typography>
-
-          <Typography
+            <Typography
+              variant="body2"
+              sx={{ display: 'flex', alignItems: 'center' }}
+            >
+              <Tooltip title="Sanitation Status">
+                <CleaningServicesIcon />
+              </Tooltip>{" "}
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={sanitationStatus}
+                    name="sanitationStatus"
+                    onChange={(event) =>
+                      handleSanitationStatusChange(event, room?.id)
+                    }
+                  />
+                }
+              />
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+           <Typography
             variant="body2"
             sx={{
               display: "flex",
@@ -275,6 +281,17 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage }) => {
             </Tooltip>{" "}
             {room.tolerancePeriod} minutes
           </Typography>
+            <Typography
+              variant="body2"
+              sx={{ display: 'flex', alignItems: 'center' }}
+            >
+              <Tooltip title="Room Status">
+                <AirlineSeatLegroomExtraOutlinedIcon />
+              </Tooltip>{" "}
+              <StatusSymbol meetingCurrentData={meetingCurrentData} />
+            </Typography>
+          </Box>
+          
         </Box>
         <CardActions sx={{ p: 0 }}>
           {user?.isAdmin ? (

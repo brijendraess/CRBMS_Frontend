@@ -58,6 +58,7 @@ import Diversity2Icon from "@mui/icons-material/Diversity2";
 import ChairIcon from "@mui/icons-material/Chair";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
+import AirlineSeatLegroomExtraOutlinedIcon from '@mui/icons-material/AirlineSeatLegroomExtraOutlined';
 
 export {LocationOnOutlinedIcon,
     Radar,
@@ -122,5 +123,6 @@ export {LocationOnOutlinedIcon,
     DeleteOutlineIcon,
     SearchIcon,
     CloseIcon,
+    AirlineSeatLegroomExtraOutlinedIcon,
 
 }
