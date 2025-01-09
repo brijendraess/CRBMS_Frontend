@@ -12,7 +12,9 @@ import {
   Popover,
   Tooltip,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
+import Joyride from "react-joyride";
 // Context and State Management
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
@@ -35,12 +37,14 @@ import {
   NotificationsOutlinedIcon,
   Logout,
   KeyOutlinedIcon,
+  LiveHelpOutlinedIcon,
+  InfoOutlinedIcon,
 } from "../Common/CustomButton/CustomIcon";
+import OnboardingPopup from "../JoyrideCarouselTour/OnBoardingPopup";
 
 const Header = () => {
   const context = useContext(MyContext);
   const { user } = useSelector((state) => state.user);
-
   const [menuAnchor, setMenuAnchor] = useState(null);
   const [notificationsAnchor, setNotificationsAnchor] = useState(null);
   const [isFullScreen, setIsFullScreen] = useState(false);
@@ -49,6 +53,16 @@ const Header = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isResetPasswordOpen, setIsResetPasswordOpen] = useState(false);
   const navigate = useNavigate();
+  const [isHelpPopupOpen, setIsHelpPopupOpen] = useState(false);
+  const isSmallScreen = useMediaQuery("(max-width: 768px)");
+
+  const handleOpenPopup = () => {
+    setIsHelpPopupOpen(true); // Open the popup
+  };
+
+  const handleClosePopup = () => {
+    setIsHelpPopupOpen(false); // Close the popup
+  };
 
   // Common Function to Toggle Menus
   const handleMenuToggle = (anchorSetter) => (event) => {
@@ -142,6 +156,7 @@ const Header = () => {
   const handleResetPassword = () => {
     setIsResetPasswordOpen(true);
   };
+
   return (
     <header>
       <div className="container-fluid w-100">
@@ -158,6 +173,7 @@ const Header = () => {
           <div className="part2 col-lg-2 col-md-2 col-sm-3 col-xs-3">
             <Tooltip title="Menu Bar">
               <Button
+                id="sidebar-icon"
                 className="rounded-circle"
                 onClick={() =>
                   context.setIsSidebarVisible(!context.isSidebarVisible)
@@ -174,7 +190,34 @@ const Header = () => {
           </div>
           {/* Action Buttons */}
           <div className="col-lg-6 col-md-4 col-sm-4 col-xs-3 d-flex align-items-center justify-content-end gap-2">
+            {isSmallScreen ? (
+              ""
+            ) : (
+              <Button
+                id="joyride-application-tour"
+                className="rounded-circle"
+                onClick={handleOpenPopup}
+              >
+                <Tooltip title="Help">
+                  <InfoOutlinedIcon />
+                </Tooltip>
+              </Button>
+            )}
+            {/* <Button
+              id="joyride-application-tour"
+              className="rounded-circle"
+              onClick={handleOpenPopup}
+            >
+              <Tooltip title="Help">
+                <LiveHelpOutlinedIcon />
+              </Tooltip>
+            </Button> */}
+            <OnboardingPopup
+              open={isHelpPopupOpen}
+              onClose={handleClosePopup}
+            />
             <Button
+              id="notification-icon"
               className="rounded-circle"
               onClick={handleMenuToggle(setNotificationsAnchor)}
             >
@@ -184,7 +227,11 @@ const Header = () => {
                 </Badge>
               </Tooltip>
             </Button>
-            <Button className="rounded-circle" onClick={handleFullScreen}>
+            <Button
+              id="fullscreen-icon"
+              className="rounded-circle"
+              onClick={handleFullScreen}
+            >
               <Tooltip title="Full Screen">
                 {isFullScreen ? (
                   <FullscreenExitOutlinedIcon />
@@ -194,6 +241,7 @@ const Header = () => {
               </Tooltip>
             </Button>
             <Button
+              id="my-account"
               className="myAccWrapper"
               onClick={handleMenuToggle(setMenuAnchor)}
             >
@@ -228,6 +276,16 @@ const Header = () => {
           component="li"
           sx={{ marginTop: "15px", marginBottom: "15px" }}
         />
+        {isSmallScreen ? (
+          <MenuItem onClick={handleOpenPopup} sx={{ color: "black" }}>
+            <ListItemIcon>
+              <InfoOutlinedIcon fontSize="small" sx={{ color: "black" }} />
+            </ListItemIcon>
+            Help
+          </MenuItem>
+        ) : (
+          ""
+        )}
         <MenuItem onClick={handleEdit} sx={{ color: "black" }}>
           <ListItemIcon>
             <PersonOutlineOutlinedIcon

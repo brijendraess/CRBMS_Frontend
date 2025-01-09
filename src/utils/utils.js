@@ -19,13 +19,20 @@ const getFormattedDate = () => {
 };
 
 const timeDifference = (time1, time2) => {
-  const date1 = new Date(`1970-01-01T${time1}`); // Convert time1 to a Date object
-  const date2 = new Date(`1970-01-01T${time2}`); // Convert time2 to a Date object
-  const diffMs = Math.abs(date2 - date1); // Difference in milliseconds
-  const diffMinutes = Math.floor(diffMs / (1000 * 60));
-  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-  return `${diffHours}h ${diffMinutes}min`;
+  const date1 = new Date(`1970-01-01T${time1}`); // Ensure seconds and UTC
+  let date2 = new Date(`1970-01-01T${time2}`);
+
+  if (date2 < date1) {
+    // Handle case where time2 is past midnight
+    date2.setDate(date2.getDate() + 1);
+  }
+
+  const diffMs = date2 - date1; // Difference in milliseconds
+  const diffHours = diffMs / (1000 * 60 * 60); // Convert to decimal hours
+
+  return `${diffHours.toFixed(1)} hrs`; // Format to 1 decimal place
 };
+
 
 const fetchUsers = async (toast, setEmailsList) => {
   try {
@@ -98,4 +105,12 @@ function getMeetingTimePercentage(startTime, endTime) {
   }
 }
 
-export { checkFileExists, getFormattedDate, timeDifference, fetchUsers,fetchActiveCommittee,validateImage,getMeetingTimePercentage };
+export {
+  checkFileExists,
+  getFormattedDate,
+  timeDifference,
+  fetchUsers,
+  fetchActiveCommittee,
+  validateImage,
+  getMeetingTimePercentage,
+};

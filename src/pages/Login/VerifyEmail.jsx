@@ -97,8 +97,8 @@ const VerifyEmail = () => {
       if (response.data.success) {
         const fullname = response.data.data?.user?.fullname || "User";
         navigate("/home", { state: response.data?.data?.user?.isAdmin });
-        // toast.success(`Welcome Back, ${fullname}`);
-        toast.success(`${fullname}, You Have 4 New Meeting Notifications`);
+        toast.success(`Welcome Back, ${fullname}`);
+        // toast.success(`${fullname}, You Have 4 New Meeting Notifications`);
         // Clear stored email after successful verification
         localStorage.removeItem("verifyLoginEmail");
       }
@@ -128,7 +128,7 @@ const VerifyEmail = () => {
           withCredentials: true,
         }
       );
-      
+
       if (response.data.success) {
         toast.success("OTP resent successfully");
         setIsResendDisabled(true);

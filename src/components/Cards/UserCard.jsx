@@ -5,10 +5,20 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
+  Paper,
   Switch,
   Typography,
 } from "@mui/material";
-import { AdminPanelSettingsOutlinedIcon, BadgeOutlinedIcon, DeleteOutlineOutlinedIcon, EditOutlinedIcon, LocalPhoneOutlinedIcon, MailOutlinedIcon, Person3OutlinedIcon, RemoveRedEyeIcon } from "../Common/CustomButton/CustomIcon";
+import {
+  AdminPanelSettingsOutlinedIcon,
+  BadgeOutlinedIcon,
+  DeleteOutlineOutlinedIcon,
+  EditOutlinedIcon,
+  LocalPhoneOutlinedIcon,
+  MailOutlinedIcon,
+  Person3OutlinedIcon,
+  RemoveRedEyeIcon,
+} from "../Common/CustomButton/CustomIcon";
 import CustomButton from "../Common/CustomButton/CustomButton";
 
 const UserCard = ({
@@ -20,12 +30,15 @@ const UserCard = ({
   children,
 }) => {
   return (
-    <Card sx={{ width: 320 }}>
+    <Card
+      elevation={2}
+      sx={{ width: 300, border: "1px solid #00000021", padding: "5px" }}
+    >
       <CardActionArea>
         <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>
           <CardMedia
             component="img"
-            height="150"
+            height="100"
             image={
               user.avatarPath
                 ? `${import.meta.env.VITE_API_URL}/${user.avatarPath}`
@@ -35,7 +48,7 @@ const UserCard = ({
             sx={{
               objectFit: "contain",
               background: "#bfc9c957",
-              width: "150px",
+              width: "100px",
               borderRadius: "50%",
             }}
           />
@@ -46,12 +59,11 @@ const UserCard = ({
             component="div"
             sx={{
               display: "flex",
-              alignItems: "center",
               gap: "10px",
               fontSize: "18px",
             }}
           >
-            <BadgeOutlinedIcon fontSize="small" sx={{ marginBottom: "6px" }} />
+            <BadgeOutlinedIcon fontSize="small" />
             {user.fullname}
           </Typography>
           <Typography
@@ -59,12 +71,11 @@ const UserCard = ({
             component="div"
             sx={{
               display: "flex",
-              alignItems: "center",
               gap: "10px",
               fontSize: "14px",
             }}
           >
-            <Person3OutlinedIcon fontSize="small" sx={{ marginBottom: "6px" }} />
+            <Person3OutlinedIcon fontSize="small" />
             {user.userName}
           </Typography>
           <Typography
@@ -72,12 +83,11 @@ const UserCard = ({
             component="div"
             sx={{
               display: "flex",
-              alignItems: "center",
               gap: "10px",
               fontSize: "14px",
             }}
           >
-            <MailOutlinedIcon fontSize="small" sx={{ marginBottom: "6px" }} />
+            <MailOutlinedIcon fontSize="small" />
             {user.email}
           </Typography>
           <Typography
@@ -86,15 +96,11 @@ const UserCard = ({
             component="div"
             sx={{
               display: "flex",
-              alignItems: "center",
               gap: "10px",
               fontSize: "14px",
             }}
           >
-            <LocalPhoneOutlinedIcon
-              fontSize="small"
-              sx={{ marginBottom: "6px" }}
-            />
+            <LocalPhoneOutlinedIcon fontSize="small" />
             {user.phoneNumber}
           </Typography>
           <Typography
@@ -102,26 +108,24 @@ const UserCard = ({
             component="div"
             sx={{
               display: "flex",
-              alignItems: "center",
               gap: "10px",
               fontSize: "14px",
             }}
           >
-            <AdminPanelSettingsOutlinedIcon
-            fontSize="small"
-            sx={{ marginBottom: "6px" }}
-             />
+            <AdminPanelSettingsOutlinedIcon fontSize="small" />
             {user.isAdmin}
           </Typography>
         </CardContent>
       </CardActionArea>
-      <Box
+      <Paper
+        elevation={4}
         sx={{
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "space-evenly",
           alignItems: "center",
-          padding: "8px",
+          // padding: "8px",
           gap: "10px",
+          background: "#6464641f",
         }}
       >
         {handleView && (
@@ -161,7 +165,7 @@ const UserCard = ({
           />
         )}
         {children}
-      </Box>
+      </Paper>
     </Card>
   );
 };

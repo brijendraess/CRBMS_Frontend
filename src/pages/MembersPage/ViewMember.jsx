@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { PopContent } from "../../Style";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 

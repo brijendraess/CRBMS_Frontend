@@ -92,6 +92,7 @@ const RoomFilter = ({
       <FormControl sx={{ marginRight: "10px", minWidth: 100 }} size="small">
         <InputLabel id="demo-select-small-label">Capacity</InputLabel>
         <Select
+          label="Capacity"
           labelId="demo-select-small-label"
           id="demo-select-small"
           value={capacity}

@@ -12,12 +12,7 @@ const CustomButton = ({
   const isSm = useMediaQuery("(max-width:960px)");
   const isMd = useMediaQuery("(max-width:1280px)");
 
-  // Determine size based on breakpoints
-  const buttonSize = isXs
-    ? "small"
-    : isSm
-    ? "medium"
-    : "large";
+  const buttonSize = isXs ? "small" : isSm ? "medium" : "large";
 
   return (
     <IconButton

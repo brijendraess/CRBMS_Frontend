@@ -5,13 +5,14 @@ import { useSelector } from "react-redux";
 
 const PageHeader = ({ heading, icon, func, children, title }) => {
   const { user } = useSelector((state) => state.user);
+
   return (
     <Box
       sx={{
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        marginBottom: "10px",
+        height: "50px",
       }}
     >
       <Typography
@@ -25,15 +26,15 @@ const PageHeader = ({ heading, icon, func, children, title }) => {
             md: "22px",
             lg: "24px",
             xl: "26px",
-            
           },
           fontWeight: 500,
           lineHeight: 1.5,
           color: "#2E2E2E",
         }}
       >
-        {heading ? heading : "Page Header"}
+        {heading || "Page Header"}
       </Typography>
+
       {user?.isAdmin && (
         <Box display="flex" alignItems="center" justifyContent="center" gap={2}>
           {children}

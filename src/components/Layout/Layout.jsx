@@ -31,7 +31,6 @@ const Layout = () => {
           )}
 
           {/* Bottom Navigation Bar for mobile screens */}
-          {isMobile && <BottomNavBar />}
 
           {/* Main content */}
           <main
@@ -44,6 +43,7 @@ const Layout = () => {
             </div>
           </main>
         </div>
+        {isMobile && <BottomNavBar />}
       </MyContext.Provider>
     </>
   );

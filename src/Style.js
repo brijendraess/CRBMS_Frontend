@@ -28,10 +28,10 @@ export const PaperWrapper = styled(Paper)(({ theme }) => ({
   padding: "10px",
   marginTop: "10px",
   width: "100%",
-  height: `calc(100vh - 75px)`,
-  overflow: "scroll",
+  height: `calc(100vh - 80px)`,
+  overflowY: "auto",
   [theme.breakpoints.down("md")]: {
-    height: `calc(100vh - 100px)`,
+    height: `calc(100vh - 56px - 62px)`,
     marginTop: "0px",
   },
 }));

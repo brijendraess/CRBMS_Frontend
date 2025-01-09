@@ -30,6 +30,7 @@ import ReportPage from "./pages/ReportPage/ReportPage";
 import FoodBeveragePage from "./pages/FoodBeverages/FoodBeveragesPage";
 import Notification from "./pages/Notification/NotificationPage";
 import SingleDisplayPage from "./pages/DetailRoomPage/SingleDisplayPage";
+import NotFound from "./pages/NotFoundPage/NotFound";
 
 const AppRouter = () => {
   return (
@@ -111,6 +112,7 @@ const AppRouter = () => {
         <Route path="/notification-all" element={<Notification />} />
         <Route path="/rooms/:id" element={<DetailRoomPage />} />
       </Route>
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
