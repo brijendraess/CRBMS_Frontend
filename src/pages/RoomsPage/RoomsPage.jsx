@@ -17,6 +17,7 @@ import ResponsiveFilter from "../../components/Responsive/Filter/ResponsiveFilte
 
 const RoomsPage = () => {
   const [roomsData, setRoomsData] = useState([]); // State for rooms data
+  const [meetingCurrentData, setMeetingCurrentData] = useState([]); // State for rooms data
   const [capacity, setCapacity] = useState("");
   const [isAvailable, setIsAvailable] = useState("all"); // Default to 'all'
   const [selectedAmenities, setSelectedAmenities] = useState([]);
@@ -49,6 +50,16 @@ const RoomsPage = () => {
     }
   };
 
+  const fetchMeetingData = async () => {
+    try {
+      const response = await axios.get(`api/v1/rooms/all-current-meeting`);
+      setMeetingCurrentData(response.data.data.result);
+    } catch (error) {
+      toast.error("Something Went Wrong");
+      console.error("Error fetching current meeting data:", error);
+    }
+  };
+
   // Handle Start Time Change
   const handleStartTimeChange = (newStartTime) => {
     setMeetingStartTime(newStartTime);
@@ -70,6 +81,12 @@ const RoomsPage = () => {
 
   useEffect(() => {
     fetchAmenitiesData();
+  }, []);
+
+  useEffect(() => {
+    fetchMeetingData();
+    const timer = setTimeout(fetchMeetingData, 10000);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -170,6 +187,13 @@ const RoomsPage = () => {
                   <RoomsCard
                     room={room}
                     setRefreshPage={setRefreshPage}
+                    meetingCurrentData={
+                      meetingCurrentData
+                        ? meetingCurrentData.filter(
+                            (data) => data?.roomId === room?.id
+                          )
+                        : []
+                    }
                     setDeleteUpdateStatus={setDeleteUpdateStatus}
                   />
                 </Grid2>

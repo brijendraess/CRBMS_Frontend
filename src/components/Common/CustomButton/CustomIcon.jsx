@@ -58,6 +58,7 @@ import Diversity2Icon from "@mui/icons-material/Diversity2";
 import ChairIcon from "@mui/icons-material/Chair";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
+<<<<<<< HEAD
 import LiveHelpOutlinedIcon from "@mui/icons-material/LiveHelpOutlined";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
@@ -130,3 +131,73 @@ export {
   CloseIcon,
   LiveHelpOutlinedIcon,
 };
+=======
+import AirlineSeatLegroomExtraOutlinedIcon from '@mui/icons-material/AirlineSeatLegroomExtraOutlined';
+
+export {LocationOnOutlinedIcon,
+    Radar,
+    MeetingRoomOutlinedIcon,
+    Diversity2Icon,
+    ChairIcon,
+    CalendarMonthOutlinedIcon,
+    BarChartOutlinedIcon,
+    AccountCircleRoundedIcon,
+    MenuOpenIcon,
+    MenuOutlined,
+    FullscreenOutlinedIcon,
+    PersonOutlineOutlinedIcon,
+    NotificationsOutlinedIcon,
+    Logout,
+    KeyOutlinedIcon,
+    AccountCircleIcon,
+    MoreVertIcon,
+    KeyboardArrowDownIcon,
+    KeyboardArrowUpIcon,
+    FilterAltOffOutlinedIcon,
+    FilterAltOutlinedIcon,
+    GroupsOutlinedIcon,
+    VisibilityOutlinedIcon, 
+    CollectionsIcon,
+    Groups2OutlinedIcon,
+    EditOutlinedIcon,
+    CleaningServicesIcon,
+    ExtensionIcon,
+    DeleteIcon,
+    AddOutlinedIcon,
+    PhotoCameraIcon,
+    Visibility,
+    VisibilityOff,
+    FoodBankOutlinedIcon,
+    HistoryOutlinedIcon,
+    EventBusyOutlinedIcon,
+    ApprovalOutlinedIcon,
+    QrCodeOutlinedIcon,
+    RemoveRedEyeIcon,
+    DeleteOutlineOutlinedIcon,
+    BadgeOutlinedIcon,
+    MailOutlinedIcon,
+    LocalPhoneOutlinedIcon, 
+    AdminPanelSettingsOutlinedIcon,
+    Person3OutlinedIcon,
+    VisibilityIcon,
+    VisibilityOffIcon,
+    FullscreenIcon,
+    FullscreenExitIcon,
+    PhotoCameraOutlinedIcon,
+    PersonAddAlt1Rounded,
+    Lock,
+    Mail,
+    RotateLeftIcon,
+    ArrowLeft,
+    GroupsIcon,
+    FullscreenExitOutlinedIcon,
+    FullscreenOutlined,
+    PeopleIcon,
+    PersonAddOutlinedIcon,
+    DeleteOutlineIcon,
+    SearchIcon,
+    CloseIcon,
+    AirlineSeatLegroomExtraOutlinedIcon,
+
+}
+>>>>>>> f041cc1c82fab9b6523cf5917e4a2772fbd722a7
