@@ -136,7 +136,7 @@ const Notification = () => {
   useEffect(() => {
     const fetchNotification = async () => {
       try {
-        const endpoint = user?.isAdmin
+        const endpoint = user?.UserType?.isAdmin==='admin'
           ? `/api/v1/notification/all-notification`
           : `/api/v1/notification/all-notification`;
         const response = await axios.get(endpoint, { withCredentials: true });

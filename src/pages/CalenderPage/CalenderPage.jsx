@@ -77,7 +77,7 @@ const CalenderPage = () => {
     const fetchMeetings = async () => {
       try {
         showLoading();
-        const endpoint = user?.isAdmin
+        const endpoint = user?.UserType?.isAdmin==='admin'
           ? "/api/v1/meeting/get-all-admin-meeting"
           : "/api/v1/meeting/get-all-my-meeting";
 
@@ -117,7 +117,7 @@ const CalenderPage = () => {
     };
 
     fetchMeetings();
-  }, [user?.isAdmin]); // Add dependency to re-run when user changes
+  }, [user?.UserType?.isAdmin]); // Add dependency to re-run when user changes
 
   const handleViewChange = (view) => {
     setLastView(view);
@@ -294,7 +294,7 @@ const CalenderPage = () => {
                   >
                     Postpone
                   </Button>
-                  {/* {user?.isAdmin && ( */}
+                  {user?.UserType?.isAdmin==='admin' && (
                   <Button
                     onClick={() =>
                       handleEdit(selectedEvent.roomId, selectedEvent.bookingId)
@@ -305,7 +305,7 @@ const CalenderPage = () => {
                   >
                     Edit
                   </Button>
-                  {/* )} */}
+                   )} 
                 </Box>
               ))}
           </DialogContent>

@@ -1,20 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Tooltip,
   BottomNavigation,
   BottomNavigationAction,
 } from "@mui/material";
 import { NavLink, useLocation } from "react-router-dom";
-import { adminSideBarData, userSideBarData } from "../../LeftPaneldata";
+import {  getSideBarMenuContent } from "../../LeftPaneldata";
 import { useSelector } from "react-redux";
 import "./BottomNavbar.css";
 
 const BottomNavBar = () => {
   const userIsAdmin = useLocation();
   const { user } = useSelector((state) => state.user);
-  const { state } = userIsAdmin; // Access state data
-  const isAdmin = state ? state : user?.isAdmin;
-  const menuToBeRendered = isAdmin ? adminSideBarData : userSideBarData;
+    const [menuToBeRendered,setMenuToBeRendered]=useState([])
+
+  useEffect(async()=>{
+    const sidebar = await getSideBarMenuContent(user);
+    setMenuToBeRendered({...menuToBeRendered,sidebar})
+  },[user])
 
   const location = useLocation();
   const currentPath = location.pathname;
@@ -32,7 +35,7 @@ const BottomNavBar = () => {
         justifyContent: "space-evenly",
       }}
     >
-      {menuToBeRendered.map((item) => (
+      {menuToBeRendered?.sidebar?.length&& menuToBeRendered?.sidebar?.map((item) => (
         <NavLink
           key={item.id}
           to={item.path}

@@ -23,7 +23,7 @@ import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useNavigate } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 import DeleteModal from "../../components/Common/Modals/Delete/DeleteModal";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import {
   AddOutlinedIcon,
   EditOutlinedIcon,
@@ -42,6 +42,7 @@ const CommitteeManagementMUI = () => {
   const [selectedCommitteeId, setSelectedCommitteeId] = useState(null);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const { user } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
 
@@ -151,7 +152,7 @@ const CommitteeManagementMUI = () => {
             height: "100%",
           }}
         >
-          <Tooltip title="Delete">
+          {user.UserType.committeeModule&&user.UserType.committeeModule.split(",").includes("delete")&&<Tooltip title="Delete">
             <DeleteOutlineOutlinedIcon
               onClick={() => {
                 setDeleteId(params.row.id);
@@ -161,8 +162,8 @@ const CommitteeManagementMUI = () => {
               fontSize="medium"
               color="error"
             />
-          </Tooltip>
-          <Tooltip title="Edit">
+          </Tooltip>}
+          {user.UserType.committeeModule&&user.UserType.committeeModule.split(",").includes("edit")&&<Tooltip title="Edit">
             <EditOutlinedIcon
               color="success"
               onClick={() => {
@@ -171,8 +172,8 @@ const CommitteeManagementMUI = () => {
               }}
               sx={{ cursor: "pointer" }}
             />
-          </Tooltip>
-          <Tooltip title="Change Status">
+          </Tooltip>}
+          {user.UserType.committeeModule&&user.UserType.committeeModule.split(",").includes("changeStatus")&&<Tooltip title="Change Status">
             <Switch
               size="small"
               checked={!!params.row.status}
@@ -180,7 +181,7 @@ const CommitteeManagementMUI = () => {
                 handleChangeStatus(params.row.id, !!params.row.status)
               }
             />
-          </Tooltip>
+          </Tooltip>}
           <Tooltip title="View all members">
             <Chip
               label={`${params.row.CommitteeMembers?.length || 0}`}
@@ -205,6 +206,7 @@ const CommitteeManagementMUI = () => {
           icon={AddOutlinedIcon}
           func={setIsAddCommittee}
           title="Add New Committee"
+          statusIcon={user.UserType.committeeModule&&user.UserType.committeeModule.split(",").includes("add")}
         >
           <FormControl style={{ marginRight: "5 px", width: "100px" }}>
             <InputLabel id="filter-select-label">Show</InputLabel>

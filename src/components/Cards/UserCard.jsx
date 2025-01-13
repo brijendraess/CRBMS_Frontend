@@ -111,7 +111,7 @@ const UserCard = ({
             fontSize="small"
             sx={{ marginBottom: "6px" }}
              />
-            {user.isAdmin}
+            {user?.UserType?.userTypeName}
           </Typography>
         </CardContent>
       </CardActionArea>
