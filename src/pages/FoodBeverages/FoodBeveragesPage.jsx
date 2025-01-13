@@ -18,6 +18,7 @@ import CustomButton from "../../components/Common/CustomButton/CustomButton";
 import DeleteModal from "../../components/Common/Modals/Delete/DeleteModal";
 import FoodBeverageCard from "../../components/Responsive/FoodBeverageCard/FoodBeverageCard";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import { useDispatch,useSelector } from "react-redux";
 import {
   AddOutlinedIcon,
   EditOutlinedIcon,
@@ -32,6 +33,7 @@ const FoodBeveragePage = () => {
   const [open, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [refreshPage, setRefreshPage] = useState(0);
+  const { user } = useSelector((state) => state.user);
   const isSmallScreen = useMediaQuery("(max-width:768px)");
 
   useEffect(() => {
@@ -150,26 +152,26 @@ const FoodBeveragePage = () => {
 
       renderCell: (params) => (
         <Box display="flex" alignItems="center" gap={1}>
-          <Tooltip title="Edit">
+          {user.UserType.foodBeverageModule&&user.UserType.foodBeverageModule.split(",").includes("edit")&&<Tooltip title="Edit">
             <EditOutlinedIcon
               color="success"
               onClick={() => handleEdit(params.row.id)}
               style={{ cursor: "pointer" }}
             />
-          </Tooltip>
-          <Tooltip title="Delete">
+          </Tooltip>}
+          {user.UserType.foodBeverageModule&&user.UserType.foodBeverageModule.split(",").includes("delete")&&<Tooltip title="Delete">
             <DeleteOutlineOutlinedIcon
               color="error"
               style={{ cursor: "pointer" }}
               onClick={() => handleOpen(params.row.id)}
             />
-          </Tooltip>
-          <Tooltip title="Change Status">
+          </Tooltip>}
+          {user.UserType.foodBeverageModule&&user.UserType.foodBeverageModule.split(",").includes("changeStatus")&&<Tooltip title="Change Status">
             <Switch
               checked={params.row.status}
               onChange={() => handleStatusChange(params.row.id)}
             />
-          </Tooltip>
+          </Tooltip>}
         </Box>
       ),
       headerClassName: "super-app-theme--header",
@@ -203,14 +205,14 @@ const FoodBeveragePage = () => {
         >
           Food beverage
         </Typography>
-        <CustomButton
+        {user.UserType.foodBeverageModule&&user.UserType.foodBeverageModule.split(",").includes("add")&&<CustomButton
           onClick={() => setIsAddOpen(true)}
           title={"Add New Room"}
           placement={"left"}
           Icon={AddOutlinedIcon}
           fontSize={"medium"}
           background={"rgba(3, 176, 48, 0.68)"}
-        />
+        />}
       </Box>
       {isSmallScreen && (
         <Grid2

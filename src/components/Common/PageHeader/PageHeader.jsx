@@ -3,7 +3,7 @@ import React from "react";
 import CustomButton from "../CustomButton/CustomButton";
 import { useSelector } from "react-redux";
 
-const PageHeader = ({ heading, icon, func, children, title }) => {
+const PageHeader = ({ heading, icon, func, children, title,statusIcon }) => {
   const { user } = useSelector((state) => state.user);
   return (
     <Box
@@ -34,10 +34,9 @@ const PageHeader = ({ heading, icon, func, children, title }) => {
       >
         {heading ? heading : "Page Header"}
       </Typography>
-      {user?.isAdmin && (
         <Box display="flex" alignItems="center" justifyContent="center" gap={2}>
           {children}
-          {func && (
+          {func && statusIcon && (
             <CustomButton
               onClick={() => func(true)}
               title={title || "Add"}
@@ -48,7 +47,7 @@ const PageHeader = ({ heading, icon, func, children, title }) => {
             />
           )}
         </Box>
-      )}
+      {/* )} */}
     </Box>
   );
 };

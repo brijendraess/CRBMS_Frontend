@@ -30,6 +30,7 @@ import ReportPage from "./pages/ReportPage/ReportPage";
 import FoodBeveragePage from "./pages/FoodBeverages/FoodBeveragesPage";
 import Notification from "./pages/Notification/NotificationPage";
 import SingleDisplayPage from "./pages/DetailRoomPage/SingleDisplayPage";
+import UserTypeSettings from "./pages/UserType/UserTypeSettings";
 
 const AppRouter = () => {
   return (
@@ -102,6 +103,7 @@ const AppRouter = () => {
         <Route path="/book-meeting/:id" element={<MeetingForm />} />
         <Route path="/location" element={<LocationPage />} />
         <Route path="/food-beverages" element={<FoodBeveragePage />} />
+        <Route path="/user-role" element={<UserTypeSettings />} />
         <Route path="/logs" element={<MeetingLogs />} />
         <Route
           path="/view-committee/:committeeId"

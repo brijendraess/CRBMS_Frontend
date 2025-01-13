@@ -36,7 +36,6 @@ const UserLogin = () => {
         }
       );
       dispatch(hideLoading());
-      console.log(response.data.success)
       if (response.data.success) {
         dispatch(setLoginEmail(userName));
         navigate("/verify-email");

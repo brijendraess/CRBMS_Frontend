@@ -90,7 +90,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
 
   const handleSanitationStatusChange = async (event, roomId) => {
     // formik.setFieldValue("sanitationStatus", event.target.checked);
-    if (user?.isAdmin) {
+    if (user?.UserType?.isAdmin==='admin') {
       setSanitationStatus(event.target.checked);
       const response = await axios.put(
         `api/v1/rooms/update-sanitation-status/${roomId}`,
@@ -247,7 +247,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
               <Tooltip title="Sanitation Status">
                 <CleaningServicesIcon />
               </Tooltip>{" "}
-              <FormControlLabel
+              {user.UserType.roomModule&&user.UserType.roomModule.split(",").includes("sanitization")?<FormControlLabel
                 control={
                   <Switch
                     checked={sanitationStatus}
@@ -257,7 +257,16 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
                     }
                   />
                 }
-              />
+              />:
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={sanitationStatus}
+                    name="sanitationStatus"
+                  />
+                }
+              />}
+
             </Typography>
           </Box>
           <Box
@@ -294,14 +303,14 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
           
         </Box>
         <CardActions sx={{ p: 0 }}>
-          {user?.isAdmin ? (
+          {user?.UserType?.isAdmin==='admin' ? (
             <Box
               sx={{
                 display: "flex",
                 width: "100%",
               }}
             >
-              <Button
+              {user.UserType.roomModule&&user.UserType.roomModule.split(",").includes("view")&&<Button
                 fullWidth
                 variant="contained"
                 onClick={handleCardClick}
@@ -314,8 +323,8 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
                 size="small"
               >
                 <VisibilityOutlinedIcon color="white" className="cursor" />
-              </Button>
-              <Button
+              </Button>}
+              {user.UserType.roomModule&&user.UserType.roomModule.split(",").includes("gallery")&&<Button
                 fullWidth
                 variant="contained"
                 title="Room Gallery"
@@ -329,8 +338,8 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
                 size="small"
               >
                 <CollectionsIcon color="white" className="cursor" />
-              </Button>
-              <Button
+              </Button>}
+              {user.UserType.roomModule&&user.UserType.roomModule.split(",").includes("amenities")&&<Button
                 fullWidth
                 variant="contained"
                 title="Room Amenities"
@@ -344,8 +353,8 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
                 size="small"
               >
                 <Groups2OutlinedIcon color="white" className="cursor" />
-              </Button>
-              <Button
+              </Button>}
+              {user.UserType.roomModule&&user.UserType.roomModule.split(",").includes("foodbeverage")&&<Button
                 fullWidth
                 variant="contained"
                 title="Room Food & Beverages"
@@ -359,8 +368,8 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
                 size="small"
               >
                 <FoodBankOutlinedIcon color="white" className="cursor" />
-              </Button>
-              <Button
+              </Button>}
+              {user.UserType.roomModule&&user.UserType.roomModule.split(",").includes("barcode")&&<Button
                 fullWidth
                 variant="contained"
                 title="Barcode"
@@ -374,8 +383,8 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
                 size="small"
               >
                 <QrCodeOutlinedIcon color="white" className="cursor" />
-              </Button>
-              <Button
+              </Button>}
+              {user.UserType.roomModule&&user.UserType.roomModule.split(",").includes("edit")&&<Button
                 variant="contained"
                 title="Edit Room"
                 onClick={handleRoomEdit}
@@ -388,8 +397,8 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
                 size="small"
               >
                 <EditOutlinedIcon color="white" className="cursor" />
-              </Button>
-              <Button
+              </Button>}
+              {user.UserType.roomModule&&user.UserType.roomModule.split(",").includes("delete")&&<Button
                 fullWidth
                 title="Delete Room"
                 variant="contained"
@@ -403,7 +412,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
                 size="small"
               >
                 <DeleteIcon />
-              </Button>
+              </Button>}
             </Box>
           ) : (
             <Box

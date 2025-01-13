@@ -394,7 +394,7 @@ const DetailRoomPage = () => {
               </Wrapper>
             </Box>
           </BoxWrapper>
-          {!user.isAdmin && (
+          {!user?.UserType?.isAdmin==='admin' && (
             <Box>
               <Button onClick={handleBookNowClick} variant="contained">
                 Book Now

@@ -22,8 +22,16 @@ import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import UserCard from "../../components/Cards/UserCard";
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import CheckAndShowImage from "../../components/Common/CustomImage/showImage";
-import { DeleteOutlineOutlinedIcon, EditOutlinedIcon, PersonAddAlt1Rounded, VisibilityIcon, VisibilityOffIcon, VisibilityOutlinedIcon } from "../../components/Common/CustomButton/CustomIcon";
+import {
+  DeleteOutlineOutlinedIcon,
+  EditOutlinedIcon,
+  PersonAddAlt1Rounded,
+  VisibilityIcon,
+  VisibilityOffIcon,
+  VisibilityOutlinedIcon,
+} from "../../components/Common/CustomButton/CustomIcon";
 
 const MembersPage = () => {
   const [users, setUsers] = useState([]);
@@ -36,11 +44,10 @@ const MembersPage = () => {
   const [isViewOpen, setIsViewOpen] = useState(false);
   const [viewId, setViewId] = useState("");
   const [refreshPage, setRefreshPage] = useState(0);
-
+  const { user } = useSelector((state) => state.user);
   const filteredUsers = users
     .filter((user) => (showDeleted ? true : !user.deletedAt))
-    .map((user) => ({ ...user, isAdmin: user.isAdmin ? "Admin" : "User" }));
-
+    .map((user) => ({ ...user, userType: user?.UserType?.userTypeName }));
   const dispatch = useDispatch();
 
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
@@ -147,7 +154,11 @@ const MembersPage = () => {
       hideSortIcons: true,
       flex: 0.25,
       headerClassName: "super-app-theme--header",
-      renderCell: (params) =><CheckAndShowImage imageUrl={`${import.meta.env.VITE_API_URL}/${params.value}`} />
+      renderCell: (params) => (
+        <CheckAndShowImage
+          imageUrl={`${import.meta.env.VITE_API_URL}/${params.value}`}
+        />
+      ),
     },
     {
       field: "fullname",
@@ -155,10 +166,12 @@ const MembersPage = () => {
       flex: 1,
       headerClassName: "super-app-theme--header",
     },
-    { field: "userName", 
-      headerName: "User name", 
-      flex: 1, headerClassName: 
-      "super-app-theme--header", },
+    {
+      field: "userName",
+      headerName: "User name",
+      flex: 1,
+      headerClassName: "super-app-theme--header",
+    },
     {
       field: "email",
       headerName: "Email",
@@ -172,7 +185,7 @@ const MembersPage = () => {
       headerClassName: "super-app-theme--header",
     },
     {
-      field: "isAdmin",
+      field: "userType",
       headerName: "Role",
       flex: 0.5,
       headerClassName: "super-app-theme--header",
@@ -186,29 +199,29 @@ const MembersPage = () => {
       headerClassName: "super-app-theme--header",
       renderCell: (params) => (
         <div style={{ display: "flex", gap: "10px" }}>
-          <Tooltip title="Update">
+          {user.UserType.userModule&&user.UserType.userModule.split(",").includes("edit")&&<Tooltip title="Update">
             <EditOutlinedIcon
               className="cursor"
               color="success"
               onClick={() => handleEdit(params.id)}
             />
-          </Tooltip>
-          <Tooltip title="View">
+          </Tooltip>}
+          {user.UserType.userModule&&user.UserType.userModule.split(",").includes("view")&&<Tooltip title="View">
             <VisibilityOutlinedIcon
               color="secondary"
               className="cursor"
               onClick={() => handleView(params.id)}
             />
-          </Tooltip>
-          <div className="delete">
+          </Tooltip>}
+          {user.UserType.userModule&&user.UserType.userModule.split(",").includes("delete")&&<div className="delete">
             <Tooltip title="Delete">
               <DeleteOutlineOutlinedIcon
                 color="error"
                 onClick={() => handleOpen(params.id)}
               />
             </Tooltip>
-          </div>
-          <div className="delete">
+          </div>}
+          {user.UserType.userModule&&user.UserType.userModule.split(",").includes("changeStatus")&&<div className="delete">
             <Tooltip title="Change Status">
               <Switch
                 checked={params.row.isBlocked}
@@ -217,7 +230,7 @@ const MembersPage = () => {
                 }
               />
             </Tooltip>
-          </div>
+          </div>}
         </div>
       ),
     },
@@ -230,8 +243,9 @@ const MembersPage = () => {
           heading={"Users"}
           icon={PersonAddAlt1Rounded}
           func={setIsOpen}
+          statusIcon={user.UserType.userModule&&user.UserType.userModule.split(",").includes("add")}
         >
-          <CustomButton
+         {user.UserType.userModule&&user.UserType.userModule.split(",").includes("changeStatus")&& <CustomButton
             onClick={() => setShowDeleted(!showDeleted)}
             title={
               showDeleted ? "Hide All Deleted Users" : "Show All Deleted Users"
@@ -240,7 +254,7 @@ const MembersPage = () => {
             fontSize={isSmallScreen ? "small" : "medium"}
             background={"#1976d291"}
             placement={"left"}
-          />
+          />}
         </PageHeader>
         {isSmallScreen ? (
           <Grid2
@@ -333,7 +347,6 @@ const MembersPage = () => {
           />
         }
       />
-
       <PopupModals
         isOpen={isEditOpen}
         setIsOpen={setIsEditOpen}
