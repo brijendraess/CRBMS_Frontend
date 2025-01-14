@@ -60,6 +60,7 @@ import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import AirlineSeatLegroomExtraOutlinedIcon from '@mui/icons-material/AirlineSeatLegroomExtraOutlined';
 import SettingsApplicationsOutlinedIcon from '@mui/icons-material/SettingsApplicationsOutlined';
+import DesignServicesOutlinedIcon from '@mui/icons-material/DesignServicesOutlined';
 
 export {LocationOnOutlinedIcon,
     Radar,
@@ -125,6 +126,7 @@ export {LocationOnOutlinedIcon,
     SearchIcon,
     CloseIcon,
     AirlineSeatLegroomExtraOutlinedIcon,
-    SettingsApplicationsOutlinedIcon
+    SettingsApplicationsOutlinedIcon,
+    DesignServicesOutlinedIcon
 
 }

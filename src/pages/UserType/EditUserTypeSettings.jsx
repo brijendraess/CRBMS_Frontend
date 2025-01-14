@@ -233,7 +233,6 @@ const EditUserTypeSettings = ({
             values.roomFoodBeverage,
             values.roomBarcode,
             values.roomSanitization
-           
           ),
           locationModule: userRoleStringManipulation(
             values.locationAdd,
@@ -938,75 +937,75 @@ const EditUserTypeSettings = ({
             label="View"
           />
           <FormControlLabel
-                      control={
-                        <Checkbox
-                          color="primary"
-                          name="roomGallery"
-                          checked={formik.values.roomGallery} 
-                           onChange={(e) => {
-                            formik.setFieldValue("roomGallery", e.target.checked);
-                          }} 
-                          onBlur={formik.handleBlur} 
-                        />
-                      }
-                      label="Gallery"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          color="primary"
-                          name="roomAmenities"
-                          checked={formik.values.roomAmenities} 
-                           onChange={(e) => {
-                            formik.setFieldValue("roomAmenities", e.target.checked);
-                          }} 
-                          onBlur={formik.handleBlur} 
-                        />
-                      }
-                      label="Amenities"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          color="primary"
-                          name="roomFoodBeverage"
-                          checked={formik.values.roomFoodBeverage} 
-                           onChange={(e) => {
-                            formik.setFieldValue("roomFoodBeverage", e.target.checked);
-                          }} 
-                          onBlur={formik.handleBlur} 
-                        />
-                      }
-                      label="Food Beverage"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          color="primary"
-                          name="roomBarcode"
-                          checked={formik.values.roomBarcode} 
-                           onChange={(e) => {
-                            formik.setFieldValue("roomBarcode", e.target.checked);
-                          }} 
-                          onBlur={formik.handleBlur} 
-                        />
-                      }
-                      label="BarCode"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          color="primary"
-                          name="roomSanitization"
-                          checked={formik.values.roomSanitization} 
-                           onChange={(e) => {
-                            formik.setFieldValue("roomSanitization", e.target.checked);
-                          }} 
-                          onBlur={formik.handleBlur} 
-                        />
-                      }
-                      label="Sanitization"
-                    />
+            control={
+              <Checkbox
+                color="primary"
+                name="roomGallery"
+                checked={formik.values.roomGallery}
+                onChange={(e) => {
+                  formik.setFieldValue("roomGallery", e.target.checked);
+                }}
+                onBlur={formik.handleBlur}
+              />
+            }
+            label="Gallery"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                color="primary"
+                name="roomAmenities"
+                checked={formik.values.roomAmenities}
+                onChange={(e) => {
+                  formik.setFieldValue("roomAmenities", e.target.checked);
+                }}
+                onBlur={formik.handleBlur}
+              />
+            }
+            label="Amenities"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                color="primary"
+                name="roomFoodBeverage"
+                checked={formik.values.roomFoodBeverage}
+                onChange={(e) => {
+                  formik.setFieldValue("roomFoodBeverage", e.target.checked);
+                }}
+                onBlur={formik.handleBlur}
+              />
+            }
+            label="Food Beverage"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                color="primary"
+                name="roomBarcode"
+                checked={formik.values.roomBarcode}
+                onChange={(e) => {
+                  formik.setFieldValue("roomBarcode", e.target.checked);
+                }}
+                onBlur={formik.handleBlur}
+              />
+            }
+            label="BarCode"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                color="primary"
+                name="roomSanitization"
+                checked={formik.values.roomSanitization}
+                onChange={(e) => {
+                  formik.setFieldValue("roomSanitization", e.target.checked);
+                }}
+                onBlur={formik.handleBlur}
+              />
+            }
+            label="Sanitization"
+          />
         </Box>
         <Box display="flex" gap={2}>
           <Typography
