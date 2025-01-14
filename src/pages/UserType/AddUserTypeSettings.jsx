@@ -18,7 +18,11 @@ import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useSelector } from "react-redux";
-import { userRoleStringManipulation, userRoleStringMeetingManipulation, userRoleStringRoomManipulation } from "../../utils/utils";
+import {
+  userRoleStringManipulation,
+  userRoleStringMeetingManipulation,
+  userRoleStringRoomManipulation,
+} from "../../utils/utils";
 
 const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
   const { user } = useSelector((state) => state.user);
@@ -31,12 +35,12 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
       userEdit: "",
       userDelete: "",
       userView: "",
-      userChangeStatus:"",
+      userChangeStatus: "",
       committeeAdd: "",
       committeeEdit: "",
       committeeDelete: "",
       committeeView: "",
-      committeeChangeStatus:"",
+      committeeChangeStatus: "",
 
       committeeMemberDelete: "",
       committeeMemberView: "",
@@ -60,13 +64,13 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
       locationEdit: "",
       locationDelete: "",
       locationView: "",
-      locationChangeStatus:"",
+      locationChangeStatus: "",
 
       meetingLogsEdit: "",
-      meetingLogsView:"",
+      meetingLogsView: "",
       meetingLogsPostpone: "",
       meetingLogsCancel: "",
-      meetingLogsApproval:"",
+      meetingLogsApproval: "",
 
       foodBeverageAdd: "",
       foodBeverageEdit: "",
@@ -95,7 +99,7 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
       userEdit: Yup.boolean().optional(),
       userDelete: Yup.boolean().optional(),
       userView: Yup.boolean().optional(),
-      userChangeStatus:Yup.boolean().optional(),
+      userChangeStatus: Yup.boolean().optional(),
       committeeAdd: Yup.boolean().optional(),
       committeeEdit: Yup.boolean().optional(),
       committeeDelete: Yup.boolean().optional(),
@@ -129,7 +133,7 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
       meetingLogsView: Yup.boolean().optional(),
       meetingLogsPostpone: Yup.boolean().optional(),
       meetingLogsCancel: Yup.boolean().optional(),
-      meetingLogsApproval:Yup.boolean().optional(),
+      meetingLogsApproval: Yup.boolean().optional(),
 
       foodBeverageAdd: Yup.boolean().optional(),
       foodBeverageEdit: Yup.boolean().optional(),
@@ -151,28 +155,32 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
         const submittedData = {
           userTypeName: values.userTypeName,
           calendarModule: userRoleStringManipulation(
-            false,false,false,values.calendarView,false
+            false,
+            false,
+            false,
+            values.calendarView,
+            false
           ),
           userModule: userRoleStringManipulation(
             values.userAdd,
             values.userEdit,
             values.userDelete,
             values.userView,
-            values.userChangeStatus,
+            values.userChangeStatus
           ),
           committeeModule: userRoleStringManipulation(
             values.committeeAdd,
             values.committeeEdit,
             values.committeeDelete,
             values.committeeView,
-            values.committeeChangeStatus,
+            values.committeeChangeStatus
           ),
           committeeMemberModule: userRoleStringManipulation(
             false,
             false,
             values.committeeMemberDelete,
             values.committeeMemberView,
-            false,
+            false
           ),
           amenitiesModule: userRoleStringManipulation(
             values.amenitiesAdd,
@@ -191,7 +199,6 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
             values.roomFoodBeverage,
             values.roomBarcode,
             values.roomSanitization
-           
           ),
           locationModule: userRoleStringManipulation(
             values.locationAdd,
@@ -205,24 +212,28 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
             values.meetingLogsView,
             values.meetingLogsPostpone,
             values.meetingLogsCancel,
-            values.meetingLogsApproval,
+            values.meetingLogsApproval
           ),
           foodBeverageModule: userRoleStringManipulation(
             values.foodBeverageAdd,
             values.foodBeverageEdit,
             values.foodBeverageDelete,
             values.foodBeverageView,
-            values.foodBeverageChangeStatus,
+            values.foodBeverageChangeStatus
           ),
           reportModule: userRoleStringManipulation(
-            false,false,false,values.reportView,false
+            false,
+            false,
+            false,
+            values.reportView,
+            false
           ),
           userRoleModule: userRoleStringManipulation(
             values.userRoleAdd,
             values.userRoleEdit,
             values.userRoleDelete,
             values.userRoleView,
-            values.userRoleChangeStatus,
+            values.userRoleChangeStatus
           ),
           status: values.status,
           createdBy: values.createdBy,
@@ -256,9 +267,9 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
           <TextField
             label="User Roll Name"
             name="userTypeName"
-            value={formik.values.userTypeName} 
-            onChange={formik.handleChange} 
-            onBlur={formik.handleBlur} 
+            value={formik.values.userTypeName}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             error={
               formik.touched.userTypeName && Boolean(formik.errors.userTypeName)
             } // Show error if touched and invalid
@@ -286,7 +297,7 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
                 formik.handleChange(e);
 
                 if (e.target.value === "normal") {
-                  formik.setFieldValue("calendarView", true);             
+                  formik.setFieldValue("calendarView", true);
                   formik.setFieldValue("roomView", true);
                   formik.setFieldValue("userAdd", "");
                   formik.setFieldValue("userEdit", "");
@@ -298,7 +309,7 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
                   formik.setFieldValue("committeeDelete", "");
                   formik.setFieldValue("committeeView", true);
                   formik.setFieldValue("committeeChangeStatus", true);
-                  
+
                   formik.setFieldValue("committeeMemberDelete", "");
                   formik.setFieldValue("committeeMemberView", true);
 
@@ -315,19 +326,19 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
                   formik.setFieldValue("roomFoodBeverage", "");
                   formik.setFieldValue("roomBarcode", "");
                   formik.setFieldValue("roomSanitization", "");
-               
+
                   formik.setFieldValue("locationAdd", "");
                   formik.setFieldValue("locationEdit", "");
                   formik.setFieldValue("locationDelete", "");
                   formik.setFieldValue("locationView", "");
                   formik.setFieldValue("locationChangeStatus", "");
-                 
+
                   formik.setFieldValue("meetingLogsEdit", "");
                   formik.setFieldValue("meetingLogsView", "");
                   formik.setFieldValue("meetingLogsPostpone", "");
                   formik.setFieldValue("meetingLogsCancel", "");
                   formik.setFieldValue("meetingLogsApproval", "");
-                  
+
                   formik.setFieldValue("foodBeverageAdd", "");
                   formik.setFieldValue("foodBeverageEdit", "");
                   formik.setFieldValue("foodBeverageDelete", "");
@@ -340,7 +351,7 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
                   formik.setFieldValue("userRoleDelete", "");
                   formik.setFieldValue("userRoleView", "");
                   formik.setFieldValue("userRoleChangeStatus", "");
-                }else  if (e.target.value === "admin") {
+                } else if (e.target.value === "admin") {
                   formik.setFieldValue("calendarView", true);
                   formik.setFieldValue("userAdd", true);
                   formik.setFieldValue("userEdit", true);
@@ -375,17 +386,17 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
                   formik.setFieldValue("roomDelete", true);
                   formik.setFieldValue("roomView", true);
                   values.gallery,
-                  values.amenities,
-                  values.foodBeverage,
-                  values.barcode,
-                  values.sanitization
+                    values.amenities,
+                    values.foodBeverage,
+                    values.barcode,
+                    values.sanitization;
 
                   formik.setFieldValue("locationAdd", true);
                   formik.setFieldValue("locationEdit", true);
                   formik.setFieldValue("locationDelete", true);
                   formik.setFieldValue("locationView", true);
                   formik.setFieldValue("locationChangeStatus", true);
-                 
+
                   formik.setFieldValue("meetingLogsEdit", true);
                   formik.setFieldValue("meetingLogsView", true);
                   formik.setFieldValue("meetingLogsPostpone", true);
@@ -404,9 +415,9 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
                   formik.setFieldValue("userRoleDelete", true);
                   formik.setFieldValue("userRoleView", true);
                   formik.setFieldValue("userRoleChangeStatus", true);
-                }else  if (e.target.value === "visitor") {
-                  formik.setFieldValue("calendarView", true);             
-                 
+                } else if (e.target.value === "visitor") {
+                  formik.setFieldValue("calendarView", true);
+
                   formik.setFieldValue("roomView", true);
                   formik.setFieldValue("userAdd", "");
                   formik.setFieldValue("userEdit", "");
@@ -435,14 +446,13 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
                   formik.setFieldValue("roomFoodBeverage", "");
                   formik.setFieldValue("roomBarcode", "");
                   formik.setFieldValue("roomSanitization", "");
-                 
 
                   formik.setFieldValue("locationAdd", "");
                   formik.setFieldValue("locationEdit", "");
                   formik.setFieldValue("locationDelete", "");
                   formik.setFieldValue("locationView", "");
                   formik.setFieldValue("locationChangeStatus", "");
-                  
+
                   formik.setFieldValue("meetingLogsEdit", "");
                   formik.setFieldValue("meetingLogsView", "");
                   formik.setFieldValue("meetingLogsPostpone", "");
@@ -497,7 +507,7 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
                   formik.setFieldValue("locationDelete", "");
                   formik.setFieldValue("locationView", "");
                   formik.setFieldValue("locationChangeStatus", "");
-                 
+
                   formik.setFieldValue("meetingLogsEdit", "");
                   formik.setFieldValue("meetingLogsView", "");
                   formik.setFieldValue("meetingLogsPostpone", "");
@@ -547,11 +557,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="calendarView"
-                checked={formik.values.calendarView} 
-                 onChange={(e) => {
+                checked={formik.values.calendarView}
+                onChange={(e) => {
                   formik.setFieldValue("calendarView", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="View"
@@ -569,11 +579,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="userAdd"
-                checked={formik.values.userAdd} 
-                 onChange={(e) => {
+                checked={formik.values.userAdd}
+                onChange={(e) => {
                   formik.setFieldValue("userAdd", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Add"
@@ -583,11 +593,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="userEdit"
-                checked={formik.values.userEdit} 
-                 onChange={(e) => {
+                checked={formik.values.userEdit}
+                onChange={(e) => {
                   formik.setFieldValue("userEdit", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Edit"
@@ -597,11 +607,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="userDelete"
-                checked={formik.values.userDelete} 
-                 onChange={(e) => {
+                checked={formik.values.userDelete}
+                onChange={(e) => {
                   formik.setFieldValue("userDelete", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Delete"
@@ -611,11 +621,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="userView"
-                checked={formik.values.userView} 
-                 onChange={(e) => {
+                checked={formik.values.userView}
+                onChange={(e) => {
                   formik.setFieldValue("userView", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="View"
@@ -625,11 +635,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="userChangeStatus"
-                checked={formik.values.userChangeStatus} 
-                 onChange={(e) => {
+                checked={formik.values.userChangeStatus}
+                onChange={(e) => {
                   formik.setFieldValue("userChangeStatus", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Status"
@@ -647,11 +657,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="committeeAdd"
-                checked={formik.values.committeeAdd} 
-                 onChange={(e) => {
+                checked={formik.values.committeeAdd}
+                onChange={(e) => {
                   formik.setFieldValue("committeeAdd", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Add"
@@ -661,11 +671,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="committeeEdit"
-                checked={formik.values.committeeEdit} 
-                 onChange={(e) => {
+                checked={formik.values.committeeEdit}
+                onChange={(e) => {
                   formik.setFieldValue("committeeEdit", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Edit"
@@ -675,11 +685,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="committeeDelete"
-                checked={formik.values.committeeDelete} 
-                 onChange={(e) => {
+                checked={formik.values.committeeDelete}
+                onChange={(e) => {
                   formik.setFieldValue("committeeDelete", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Delete"
@@ -689,29 +699,32 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="committeeView"
-                checked={formik.values.committeeView} 
-                 onChange={(e) => {
+                checked={formik.values.committeeView}
+                onChange={(e) => {
                   formik.setFieldValue("committeeView", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="View"
           />
-         <FormControlLabel
+          <FormControlLabel
             control={
               <Checkbox
                 color="primary"
                 name="committeeChangeStatus"
-                checked={formik.values.committeeChangeStatus} 
-                 onChange={(e) => {
-                  formik.setFieldValue("committeeChangeStatus", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                checked={formik.values.committeeChangeStatus}
+                onChange={(e) => {
+                  formik.setFieldValue(
+                    "committeeChangeStatus",
+                    e.target.checked
+                  );
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Status"
-          /> 
+          />
         </Box>
         <Box display="flex" gap={2}>
           <Typography
@@ -720,17 +733,20 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
           >
             Committee member
           </Typography>
-         
+
           <FormControlLabel
             control={
               <Checkbox
                 color="primary"
                 name="committeeMemberDelete"
-                checked={formik.values.committeeMemberDelete} 
-                 onChange={(e) => {
-                  formik.setFieldValue("committeeMemberDelete", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                checked={formik.values.committeeMemberDelete}
+                onChange={(e) => {
+                  formik.setFieldValue(
+                    "committeeMemberDelete",
+                    e.target.checked
+                  );
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Delete"
@@ -740,11 +756,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="committeeMemberView"
-                checked={formik.values.committeeMemberView} 
-                 onChange={(e) => {
+                checked={formik.values.committeeMemberView}
+                onChange={(e) => {
                   formik.setFieldValue("committeeMemberView", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="View"
@@ -762,11 +778,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="amenitiesAdd"
-                checked={formik.values.amenitiesAdd} 
-                 onChange={(e) => {
+                checked={formik.values.amenitiesAdd}
+                onChange={(e) => {
                   formik.setFieldValue("amenitiesAdd", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Add"
@@ -776,11 +792,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="amenitiesEdit"
-                checked={formik.values.amenitiesEdit} 
-                 onChange={(e) => {
+                checked={formik.values.amenitiesEdit}
+                onChange={(e) => {
                   formik.setFieldValue("amenitiesEdit", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Edit"
@@ -790,11 +806,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="amenitiesDelete"
-                checked={formik.values.amenitiesDelete} 
-                 onChange={(e) => {
+                checked={formik.values.amenitiesDelete}
+                onChange={(e) => {
                   formik.setFieldValue("amenitiesDelete", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Delete"
@@ -804,29 +820,32 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="amenitiesView"
-                checked={formik.values.amenitiesView} 
-                 onChange={(e) => {
+                checked={formik.values.amenitiesView}
+                onChange={(e) => {
                   formik.setFieldValue("amenitiesView", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="View"
           />
-         <FormControlLabel
+          <FormControlLabel
             control={
               <Checkbox
                 color="primary"
                 name="amenitiesChangeStatus"
-                checked={formik.values.amenitiesChangeStatus} 
-                 onChange={(e) => {
-                  formik.setFieldValue("amenitiesChangeStatus", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                checked={formik.values.amenitiesChangeStatus}
+                onChange={(e) => {
+                  formik.setFieldValue(
+                    "amenitiesChangeStatus",
+                    e.target.checked
+                  );
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Status"
-          /> 
+          />
         </Box>
         <Box display="flex" gap={2}>
           <Typography
@@ -840,11 +859,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="roomAdd"
-                checked={formik.values.roomAdd} 
-                 onChange={(e) => {
+                checked={formik.values.roomAdd}
+                onChange={(e) => {
                   formik.setFieldValue("roomAdd", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Add"
@@ -854,11 +873,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="roomEdit"
-                checked={formik.values.roomEdit} 
-                 onChange={(e) => {
+                checked={formik.values.roomEdit}
+                onChange={(e) => {
                   formik.setFieldValue("roomEdit", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Edit"
@@ -868,11 +887,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="roomDelete"
-                checked={formik.values.roomDelete} 
-                 onChange={(e) => {
+                checked={formik.values.roomDelete}
+                onChange={(e) => {
                   formik.setFieldValue("roomDelete", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Delete"
@@ -882,11 +901,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="roomView"
-                checked={formik.values.roomView} 
-                 onChange={(e) => {
+                checked={formik.values.roomView}
+                onChange={(e) => {
                   formik.setFieldValue("roomView", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="View"
@@ -896,11 +915,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="roomGallery"
-                checked={formik.values.roomGallery} 
-                 onChange={(e) => {
+                checked={formik.values.roomGallery}
+                onChange={(e) => {
                   formik.setFieldValue("roomGallery", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Gallery"
@@ -910,11 +929,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="roomAmenities"
-                checked={formik.values.roomAmenities} 
-                 onChange={(e) => {
+                checked={formik.values.roomAmenities}
+                onChange={(e) => {
                   formik.setFieldValue("roomAmenities", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Amenities"
@@ -924,11 +943,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="roomFoodBeverage"
-                checked={formik.values.roomFoodBeverage} 
-                 onChange={(e) => {
+                checked={formik.values.roomFoodBeverage}
+                onChange={(e) => {
                   formik.setFieldValue("roomFoodBeverage", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Food Beverage"
@@ -938,11 +957,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="roomBarcode"
-                checked={formik.values.roomBarcode} 
-                 onChange={(e) => {
+                checked={formik.values.roomBarcode}
+                onChange={(e) => {
                   formik.setFieldValue("roomBarcode", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="BarCode"
@@ -952,11 +971,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="roomSanitization"
-                checked={formik.values.roomSanitization} 
-                 onChange={(e) => {
+                checked={formik.values.roomSanitization}
+                onChange={(e) => {
                   formik.setFieldValue("roomSanitization", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Sanitization"
@@ -974,11 +993,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="locationAdd"
-                checked={formik.values.locationAdd} 
-                 onChange={(e) => {
+                checked={formik.values.locationAdd}
+                onChange={(e) => {
                   formik.setFieldValue("locationAdd", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Add"
@@ -988,11 +1007,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="locationEdit"
-                checked={formik.values.locationEdit} 
-                 onChange={(e) => {
+                checked={formik.values.locationEdit}
+                onChange={(e) => {
                   formik.setFieldValue("locationEdit", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Edit"
@@ -1002,11 +1021,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="locationDelete"
-                checked={formik.values.locationDelete} 
-                 onChange={(e) => {
+                checked={formik.values.locationDelete}
+                onChange={(e) => {
                   formik.setFieldValue("locationDelete", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Delete"
@@ -1016,60 +1035,65 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="locationView"
-                checked={formik.values.locationView} 
-                 onChange={(e) => {
+                checked={formik.values.locationView}
+                onChange={(e) => {
                   formik.setFieldValue("locationView", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="View"
           />
-        <FormControlLabel
+          <FormControlLabel
             control={
               <Checkbox
                 color="primary"
                 name="locationChangeStatus"
-                checked={formik.values.locationChangeStatus} 
-                 onChange={(e) => {
-                  formik.setFieldValue("locationChangeStatus", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                checked={formik.values.locationChangeStatus}
+                onChange={(e) => {
+                  formik.setFieldValue(
+                    "locationChangeStatus",
+                    e.target.checked
+                  );
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Status"
-          />  
+          />
         </Box>
         <Box display="flex" gap={2}>
           <Typography
             component={"h6"}
             sx={{ fontWeight: "bold", marginRight: "12.75%" }}
-          > Meeting Logs
+          >
+            {" "}
+            Meeting Logs
           </Typography>
           <FormControlLabel
             control={
               <Checkbox
                 color="primary"
                 name="meetingLogsEdit"
-                checked={formik.values.meetingLogsEdit} 
-                 onChange={(e) => {
+                checked={formik.values.meetingLogsEdit}
+                onChange={(e) => {
                   formik.setFieldValue("meetingLogsEdit", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Edit"
           />
-           <FormControlLabel
+          <FormControlLabel
             control={
               <Checkbox
                 color="primary"
                 name="meetingLogsView"
-                checked={formik.values.meetingLogsView} 
-                 onChange={(e) => {
+                checked={formik.values.meetingLogsView}
+                onChange={(e) => {
                   formik.setFieldValue("meetingLogsView", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="View"
@@ -1079,25 +1103,25 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="meetingLogsPostpone"
-                checked={formik.values.meetingLogsPostpone} 
-                 onChange={(e) => {
+                checked={formik.values.meetingLogsPostpone}
+                onChange={(e) => {
                   formik.setFieldValue("meetingLogsPostpone", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Postpone"
-          /> 
+          />
           <FormControlLabel
             control={
               <Checkbox
                 color="primary"
                 name="meetingLogsCancel"
-                checked={formik.values.meetingLogsCancel} 
-                 onChange={(e) => {
+                checked={formik.values.meetingLogsCancel}
+                onChange={(e) => {
                   formik.setFieldValue("meetingLogsCancel", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Cancel"
@@ -1107,11 +1131,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="meetingLogsApproval"
-                checked={formik.values.meetingLogsApproval} 
-                 onChange={(e) => {
+                checked={formik.values.meetingLogsApproval}
+                onChange={(e) => {
                   formik.setFieldValue("meetingLogsApproval", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Approval"
@@ -1126,11 +1150,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="foodBeverageAdd"
-                checked={formik.values.foodBeverageAdd} 
-                 onChange={(e) => {
+                checked={formik.values.foodBeverageAdd}
+                onChange={(e) => {
                   formik.setFieldValue("foodBeverageAdd", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Add"
@@ -1140,11 +1164,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="foodBeverageEdit"
-                checked={formik.values.foodBeverageEdit} 
-                 onChange={(e) => {
+                checked={formik.values.foodBeverageEdit}
+                onChange={(e) => {
                   formik.setFieldValue("foodBeverageEdit", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Edit"
@@ -1154,11 +1178,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="foodBeverageDelete"
-                checked={formik.values.foodBeverageDelete} 
-                 onChange={(e) => {
+                checked={formik.values.foodBeverageDelete}
+                onChange={(e) => {
                   formik.setFieldValue("foodBeverageDelete", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Delete"
@@ -1168,11 +1192,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="foodBeverageView"
-                checked={formik.values.foodBeverageView} 
-                 onChange={(e) => {
+                checked={formik.values.foodBeverageView}
+                onChange={(e) => {
                   formik.setFieldValue("foodBeverageView", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="View"
@@ -1182,11 +1206,14 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="foodBeverageChangeStatus"
-                checked={formik.values.foodBeverageChangeStatus} 
-                 onChange={(e) => {
-                  formik.setFieldValue("foodBeverageChangeStatus", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                checked={formik.values.foodBeverageChangeStatus}
+                onChange={(e) => {
+                  formik.setFieldValue(
+                    "foodBeverageChangeStatus",
+                    e.target.checked
+                  );
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Status"
@@ -1204,11 +1231,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="reportView"
-                checked={formik.values.reportView} 
-                 onChange={(e) => {
+                checked={formik.values.reportView}
+                onChange={(e) => {
                   formik.setFieldValue("reportView", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="View"
@@ -1226,11 +1253,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="userRoleAdd"
-                checked={formik.values.userRoleAdd} 
-                 onChange={(e) => {
+                checked={formik.values.userRoleAdd}
+                onChange={(e) => {
                   formik.setFieldValue("userRoleAdd", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Add"
@@ -1240,11 +1267,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="userRoleEdit"
-                checked={formik.values.userRoleEdit} 
-                 onChange={(e) => {
+                checked={formik.values.userRoleEdit}
+                onChange={(e) => {
                   formik.setFieldValue("userRoleEdit", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Edit"
@@ -1254,11 +1281,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="userRoleDelete"
-                checked={formik.values.userRoleDelete} 
-                 onChange={(e) => {
+                checked={formik.values.userRoleDelete}
+                onChange={(e) => {
                   formik.setFieldValue("userRoleDelete", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Delete"
@@ -1268,11 +1295,11 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="userRoleView"
-                checked={formik.values.userRoleView} 
-                 onChange={(e) => {
+                checked={formik.values.userRoleView}
+                onChange={(e) => {
                   formik.setFieldValue("userRoleView", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="View"
@@ -1282,11 +1309,14 @@ const AddUserTypeSettings = ({ setRefreshPage, setIsAddOpen }) => {
               <Checkbox
                 color="primary"
                 name="userRoleChangeStatus"
-                checked={formik.values.userRoleChangeStatus} 
-                 onChange={(e) => {
-                  formik.setFieldValue("userRoleChangeStatus", e.target.checked);
-                }} 
-                onBlur={formik.handleBlur} 
+                checked={formik.values.userRoleChangeStatus}
+                onChange={(e) => {
+                  formik.setFieldValue(
+                    "userRoleChangeStatus",
+                    e.target.checked
+                  );
+                }}
+                onBlur={formik.handleBlur}
               />
             }
             label="Status"

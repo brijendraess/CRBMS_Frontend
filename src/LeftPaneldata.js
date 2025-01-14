@@ -9,6 +9,7 @@ import {
   HistoryOutlinedIcon,
   FoodBankOutlinedIcon,
   SettingsApplicationsOutlinedIcon,
+  DesignServicesOutlinedIcon,
 } from "./components/Common/CustomButton/CustomIcon";
 
 const getSideBarMenuContent = async (user) => {
@@ -42,7 +43,7 @@ const getSideBarMenuContent = async (user) => {
 
      if (user.UserType.committeeModule&&user.UserType.committeeModule.split(",").includes("view") && user.UserType.isAdmin !=='admin') {
       sideBarData.push({
-        id: 3,
+        id: 4,
         name: "My Committee",
         icon: Diversity2Icon,
         path: "/my-committee",
@@ -51,7 +52,7 @@ const getSideBarMenuContent = async (user) => {
 
     if (user.UserType.amenitiesModule&&user.UserType.amenitiesModule.split(",").includes("view")) {
       sideBarData.push({
-        id: 4,
+        id: 5,
         name: "Amenities",
         icon: ChairIcon,
         path: "/amenities",
@@ -59,7 +60,7 @@ const getSideBarMenuContent = async (user) => {
     }
     if (user.UserType.roomModule&&user.UserType.roomModule.split(",").includes("view") && user.UserType.isAdmin==='admin') {
       sideBarData.push({
-        id: 5,
+        id: 6,
         name: "Rooms",
         icon: MeetingRoomOutlinedIcon,
         path: "/rooms",
@@ -68,7 +69,7 @@ const getSideBarMenuContent = async (user) => {
 
     if (user.UserType.roomModule&&user.UserType.roomModule.split(",").includes("view") && user.UserType.isAdmin!=='admin') {
       sideBarData.push({
-        id: 2,
+        id: 7,
         name: "Book A Room",
         icon: MeetingRoomOutlinedIcon,
         path: "/rooms",
@@ -113,6 +114,14 @@ const getSideBarMenuContent = async (user) => {
         name: "Meeting Logs",
         icon: HistoryOutlinedIcon,
         path: "/logs",
+      });
+    }
+    if (user.UserType.servicesModule&&user.UserType.servicesModule.split(",").includes("view")) {
+      sideBarData.push({
+        id: 8,
+        name: "Services",
+        icon: DesignServicesOutlinedIcon,
+        path: "/services",
       });
     }
     return sideBarData;
