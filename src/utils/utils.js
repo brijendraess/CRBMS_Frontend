@@ -34,10 +34,6 @@ const timeDifference = (time1, time2) => {
 };
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> ccb43e432cbecdbe83b96072f0b66450e3777fec
 const fetchUsers = async (toast, setEmailsList) => {
   try {
     const response = await axios.get("/api/v1/user/users");
@@ -109,12 +105,6 @@ function getMeetingTimePercentage(startTime, endTime) {
   }
 }
 
-<<<<<<< HEAD
-export {
-  checkFileExists,
-  getFormattedDate,
-  timeDifference,
-=======
 const userRoleStringManipulation=(
   addData=false,
   editData=false,
@@ -226,15 +216,10 @@ const userRoleStringRoomManipulation=(
 export { checkFileExists, 
   getFormattedDate, 
   timeDifference, 
->>>>>>> ccb43e432cbecdbe83b96072f0b66450e3777fec
   fetchUsers,
   fetchActiveCommittee,
   validateImage,
   getMeetingTimePercentage,
-<<<<<<< HEAD
-};
-=======
 userRoleStringManipulation,
 userRoleStringMeetingManipulation,
 userRoleStringRoomManipulation };
->>>>>>> ccb43e432cbecdbe83b96072f0b66450e3777fec
