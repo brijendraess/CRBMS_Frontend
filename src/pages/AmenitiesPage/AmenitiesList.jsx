@@ -144,6 +144,7 @@ const AmenitiesList = () => {
               style={{ cursor: "pointer" }}
               color="success"
               onClick={() => handleEdit(params.id)}
+              className="amenity-edit"
             />
           </Tooltip>
           <Tooltip title="Delete">
@@ -151,12 +152,14 @@ const AmenitiesList = () => {
               color="error"
               onClick={() => handleOpen(params.id)}
               style={{ cursor: "pointer" }}
+              className="amenity-delete"
             />
           </Tooltip>
           <Tooltip title="Change Status">
             <Switch
               checked={params.row.status}
               onChange={() => handleStatusChange(params.row.id)}
+              className="amenity-switch"
             />
           </Tooltip>
         </Box>
@@ -174,6 +177,7 @@ const AmenitiesList = () => {
         heading={"Amenities"}
         icon={AddOutlinedIcon}
         func={setIsAddOpen}
+        nameOfTheClass="add-amenity"
       />
       {/* Render AmenitiesCard only on small screens */}
       {isSmallScreen && (

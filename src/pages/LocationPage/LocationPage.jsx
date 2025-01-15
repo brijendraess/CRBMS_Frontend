@@ -153,7 +153,7 @@ const LocationPage = () => {
         <Box display="flex" alignItems="center" gap={1}>
           <Tooltip title="Edit">
             <EditOutlinedIcon
-              className="cursor"
+              className="location-edit"
               color="success"
               onClick={() => handleEdit(params.row.id)}
               style={{ cursor: "pointer" }}
@@ -161,6 +161,7 @@ const LocationPage = () => {
           </Tooltip>
           <Tooltip title="Delete">
             <DeleteOutlineOutlinedIcon
+              className="location-delete"
               color="error"
               style={{ cursor: "pointer" }}
               onClick={() => handleOpen(params.row.id)}
@@ -168,6 +169,7 @@ const LocationPage = () => {
           </Tooltip>
           <Tooltip title="Change Status">
             <Switch
+              className="location-switch"
               checked={params.row.status}
               onChange={() => handleStatusChange(params.row.id)}
             />
@@ -185,6 +187,7 @@ const LocationPage = () => {
         icon={AddOutlinedIcon}
         title={"Add"}
         func={setIsAddOpen}
+        nameOfTheClass="add-location"
       />
       {isSmallScreen ? (
         <Grid2

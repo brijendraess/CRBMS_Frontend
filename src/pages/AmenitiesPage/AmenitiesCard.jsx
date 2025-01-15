@@ -9,7 +9,10 @@ import {
 } from "@mui/material";
 import React from "react";
 import CustomButton from "../../components/Common/CustomButton/CustomButton";
-import { DeleteOutlineOutlinedIcon,EditOutlinedIcon } from "../../components/Common/CustomButton/CustomIcon";
+import {
+  DeleteOutlineOutlinedIcon,
+  EditOutlinedIcon,
+} from "../../components/Common/CustomButton/CustomIcon";
 
 const AmenitiesCard = ({
   amenity,
@@ -18,7 +21,7 @@ const AmenitiesCard = ({
   handleStatusChange,
 }) => {
   return (
-    <Card sx={{ width: 320 }}>
+    <Card sx={{ width: 320 }} className="amenity-card">
       <CardActionArea>
         <CardContent>
           <Typography
@@ -58,6 +61,7 @@ const AmenitiesCard = ({
             Icon={EditOutlinedIcon}
             fontSize={"small"}
             background={"rgba(8, 90, 232, 0.62)"}
+            nameOfTheClass="amenity-edit"
           />
           <CustomButton
             title={"Delete Amenity"}
@@ -66,10 +70,12 @@ const AmenitiesCard = ({
             Icon={DeleteOutlineOutlinedIcon}
             fontSize={"small"}
             background={"rgba(231, 26, 7, 0.77)"}
+            nameOfTheClass="amenity-delete"
           />
           <Switch
             checked={amenity.status}
             onChange={() => handleStatusChange(amenity.id)} // Handle status change for this amenity
+            className="amenity-switch"
           />
         </Box>
       </CardActions>

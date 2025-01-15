@@ -23,6 +23,7 @@ import {
   EditOutlinedIcon,
   DeleteOutlineOutlinedIcon,
 } from "../../components/Common/CustomButton/CustomIcon";
+import PageHeader from "../../components/Common/PageHeader/PageHeader";
 
 const FoodBeveragePage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -155,6 +156,7 @@ const FoodBeveragePage = () => {
               color="success"
               onClick={() => handleEdit(params.row.id)}
               style={{ cursor: "pointer" }}
+              className="food-edit"
             />
           </Tooltip>
           <Tooltip title="Delete">
@@ -162,12 +164,14 @@ const FoodBeveragePage = () => {
               color="error"
               style={{ cursor: "pointer" }}
               onClick={() => handleOpen(params.row.id)}
+              className="food-delete"
             />
           </Tooltip>
           <Tooltip title="Change Status">
             <Switch
               checked={params.row.status}
               onChange={() => handleStatusChange(params.row.id)}
+              className="food-switch"
             />
           </Tooltip>
         </Box>
@@ -178,40 +182,12 @@ const FoodBeveragePage = () => {
 
   return (
     <PaperWrapper>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          marginBottom: "10px",
-        }}
-      >
-        <Typography
-          variant="h1"
-          component="h1"
-          sx={{
-            marginRight: "20px",
-            fontSize: {
-              xs: "16px",
-              sm: "18px",
-              md: "22px",
-            },
-            fontWeight: 500,
-            lineHeight: 1.5,
-            color: "#2E2E2E",
-          }}
-        >
-          Food beverage
-        </Typography>
-        <CustomButton
-          onClick={() => setIsAddOpen(true)}
-          title={"Add New Room"}
-          placement={"left"}
-          Icon={AddOutlinedIcon}
-          fontSize={"medium"}
-          background={"rgba(3, 176, 48, 0.68)"}
-        />
-      </Box>
+      <PageHeader
+        heading={"Food & Beverages"}
+        icon={AddOutlinedIcon}
+        func={setIsAddOpen}
+        nameOfTheClass="add-food"
+      />
       {isSmallScreen && (
         <Grid2
           container

@@ -26,11 +26,13 @@ const RoomFilter = ({
   selectedDate,
   setSelectedDate,
   capacity,
+  nameOfTheFilterClass,
 }) => {
   return (
     <ContentHeader
       sx={{ position: "sticky", marginBottom: "20px" }}
       elevation={8}
+      className={nameOfTheFilterClass}
     >
       <DatePicker
         value={selectedDate}

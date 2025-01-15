@@ -7,6 +7,7 @@ const CustomButton = ({
   background,
   Icon,
   fontSize,
+  nameOfTheClass,
 }) => {
   const isXs = useMediaQuery("(max-width:600px)");
   const isSm = useMediaQuery("(max-width:960px)");
@@ -25,6 +26,7 @@ const CustomButton = ({
         background: background,
       }}
       size={buttonSize}
+      className={nameOfTheClass}
     >
       {Icon && <Icon fontSize={fontSize} sx={{ color: "black" }} />}
     </IconButton>

@@ -31,6 +31,7 @@ const UserCard = ({
 }) => {
   return (
     <Card
+      className="user-card"
       elevation={2}
       sx={{ width: 300, border: "1px solid #00000021", padding: "5px" }}
     >
@@ -130,6 +131,7 @@ const UserCard = ({
       >
         {handleView && (
           <CustomButton
+            nameOfTheClass="view-button"
             title={"View User"}
             placement={"top"}
             onClick={() => handleView(user.id)}
@@ -140,6 +142,7 @@ const UserCard = ({
         )}
         {handleEdit && (
           <CustomButton
+            nameOfTheClass="edit-button"
             title={"Edit User"}
             placement={"top"}
             onClick={() => handleEdit(user.id)}
@@ -150,6 +153,7 @@ const UserCard = ({
         )}
         {handleDelete && (
           <CustomButton
+            nameOfTheClass="delete-button"
             title={"Delete User"}
             placement={"top"}
             onClick={() => handleDelete(user.id)}
@@ -160,6 +164,7 @@ const UserCard = ({
         )}
         {handleBlockStatusChange && (
           <Switch
+            className="switch-button"
             checked={user.isBlocked}
             onChange={() => handleBlockStatusChange(user.id, user.isBlocked)}
           />

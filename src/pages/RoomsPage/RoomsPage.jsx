@@ -128,6 +128,7 @@ const RoomsPage = () => {
           icon={AddOutlinedIcon}
           func={setIsAddOpen}
           title={"Add New Room"}
+          nameOfTheClass="add-room"
         >
           {isSmallScreen ? (
             <ResponsiveFilter
@@ -142,6 +143,7 @@ const RoomsPage = () => {
               selectedDate={selectedDate}
               setSelectedDate={setSelectedDate}
               capacity={capacity}
+              nameOfTheFilterClass="room-filter-responsive"
             />
           ) : (
             ""
@@ -163,6 +165,7 @@ const RoomsPage = () => {
               selectedDate={selectedDate}
               setSelectedDate={setSelectedDate}
               capacity={capacity}
+              nameOfTheFilterClass="room-filter"
             />
           )}
 

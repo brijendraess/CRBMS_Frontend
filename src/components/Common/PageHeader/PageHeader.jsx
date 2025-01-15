@@ -3,7 +3,14 @@ import React from "react";
 import CustomButton from "../CustomButton/CustomButton";
 import { useSelector } from "react-redux";
 
-const PageHeader = ({ heading, icon, func, children, title }) => {
+const PageHeader = ({
+  heading,
+  icon,
+  func,
+  children,
+  title,
+  nameOfTheClass,
+}) => {
   const { user } = useSelector((state) => state.user);
 
   return (
@@ -14,6 +21,7 @@ const PageHeader = ({ heading, icon, func, children, title }) => {
         justifyContent: "space-between",
         height: "50px",
       }}
+      className="page-header"
     >
       <Typography
         variant="h1"
@@ -40,6 +48,7 @@ const PageHeader = ({ heading, icon, func, children, title }) => {
           {children}
           {func && (
             <CustomButton
+              nameOfTheClass={nameOfTheClass}
               onClick={() => func(true)}
               title={title || "Add"}
               placement={"left"}

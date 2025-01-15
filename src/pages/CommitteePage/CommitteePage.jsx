@@ -160,6 +160,7 @@ const CommitteeManagementMUI = () => {
               sx={{ cursor: "pointer" }}
               fontSize="medium"
               color="error"
+              className="committee-delete"
             />
           </Tooltip>
           <Tooltip title="Edit">
@@ -170,6 +171,7 @@ const CommitteeManagementMUI = () => {
                 setIsEditOpen(true);
               }}
               sx={{ cursor: "pointer" }}
+              className="committee-edit"
             />
           </Tooltip>
           <Tooltip title="Change Status">
@@ -179,6 +181,7 @@ const CommitteeManagementMUI = () => {
               onChange={() =>
                 handleChangeStatus(params.row.id, !!params.row.status)
               }
+              className="committee-switch"
             />
           </Tooltip>
           <Tooltip title="View all members">
@@ -190,6 +193,7 @@ const CommitteeManagementMUI = () => {
               icon={<PeopleIcon />}
               onClick={() => handleNavigateToMemberList(params.row.id)}
               sx={{ cursor: "pointer", padding: "5px" }}
+              className="committee-view"
             />
           </Tooltip>
         </div>
@@ -205,8 +209,12 @@ const CommitteeManagementMUI = () => {
           icon={AddOutlinedIcon}
           func={setIsAddCommittee}
           title="Add New Committee"
+          nameOfTheClass="add-committee"
         >
-          <FormControl style={{ marginRight: "5 px", width: "100px" }}>
+          <FormControl
+            className="committee-filter"
+            style={{ marginRight: "5 px", width: "100px" }}
+          >
             <InputLabel id="filter-select-label">Show</InputLabel>
             <Select
               labelId="filter-select-label"

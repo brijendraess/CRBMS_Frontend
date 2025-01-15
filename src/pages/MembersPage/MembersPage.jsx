@@ -247,6 +247,7 @@ const MembersPage = () => {
           heading="Users"
           icon={PersonAddAlt1Rounded}
           func={setIsOpen}
+          nameOfTheClass="add-user"
         >
           <CustomButton
             onClick={() => setShowDeleted(!showDeleted)}
@@ -255,6 +256,7 @@ const MembersPage = () => {
             }
             Icon={showDeleted ? VisibilityIcon : VisibilityOffIcon}
             background="#1976d291"
+            nameOfTheClass="deleted-user"
           />
         </PageHeader>
 

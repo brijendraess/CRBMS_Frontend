@@ -99,6 +99,7 @@ const CommitteeCard = ({ committee, setRefreshPage }) => {
         background: "#fafafa80",
         justifyContent: "space-between",
       }}
+      className="committee-card"
     >
       <CardActionArea
         sx={{
@@ -143,20 +144,13 @@ const CommitteeCard = ({ committee, setRefreshPage }) => {
                 alignItems: "center",
               }}
             >
-              <Tooltip title="Change Status">
-                <Switch
-                  size="small"
-                  checked={!!committee.status}
-                  onChange={handleChangeStatus}
-                />
-              </Tooltip>
-
               <Tooltip title="Delete">
                 <DeleteOutlineIcon
                   onClick={handleOpen}
                   sx={{ cursor: "pointer" }}
                   fontSize="medium"
                   color="error"
+                  className="committee-delete"
                 />
               </Tooltip>
               <Tooltip title="Edit">
@@ -164,6 +158,7 @@ const CommitteeCard = ({ committee, setRefreshPage }) => {
                   color="success"
                   onClick={() => setIsEditOpen(true)}
                   sx={{ cursor: "pointer" }}
+                  className="committee-edit"
                 />
               </Tooltip>
             </Box>
@@ -179,7 +174,7 @@ const CommitteeCard = ({ committee, setRefreshPage }) => {
             sx={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "flex-end",
+              justifyContent: "space-between",
             }}
           >
             <Tooltip title="View all members">
@@ -191,6 +186,15 @@ const CommitteeCard = ({ committee, setRefreshPage }) => {
                 icon={<PeopleIcon />}
                 onClick={handleView}
                 sx={{ cursor: "pointer", padding: "5px" }}
+                className="committee-view"
+              />
+            </Tooltip>
+            <Tooltip title="Change Status">
+              <Switch
+                size="small"
+                checked={!!committee.status}
+                onChange={handleChangeStatus}
+                className="committee-switch"
               />
             </Tooltip>
           </Box>

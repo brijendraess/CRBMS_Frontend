@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./Header.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/Images/logo.webp";
 import {
   Badge,
@@ -14,13 +14,14 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import Joyride from "react-joyride";
+
 // Context and State Management
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import axios from "axios";
 import dayjs from "dayjs";
 import { MyContext } from "../Layout/Layout";
+
 // Notifications Menu Component
 import NotificationsMenu from "../Notifications/NotificationsMenu";
 import PopupModals from "../Common/Modals/Popup/PopupModals";
@@ -42,6 +43,12 @@ import {
 } from "../Common/CustomButton/CustomIcon";
 import OnboardingPopup from "../JoyrideCarouselTour/OnBoardingPopup";
 
+// Driver.js
+import { driver } from "driver.js";
+import "driver.js/dist/driver.css";
+import guideSteps from "../Driver/guideSteps";
+import "../Driver/DriverTour.css";
+
 const Header = () => {
   const context = useContext(MyContext);
   const { user } = useSelector((state) => state.user);
@@ -55,6 +62,21 @@ const Header = () => {
   const navigate = useNavigate();
   const [isHelpPopupOpen, setIsHelpPopupOpen] = useState(false);
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
+  const location = useLocation();
+
+  const handleStartGuide = () => {
+    const driverObj = driver({
+      overlayColor: "black",
+      overlayOpacity: "0.8",
+      prevBtnText: "← Go Back",
+      popoverClass: "driverjs-theme",
+      // showProgress: true,
+      // showLoading: true,
+      steps: guideSteps[location.pathname]?.(isSmallScreen),
+      animate: true,
+    });
+    driverObj.drive(); // Start the guide
+  };
 
   const handleOpenPopup = () => {
     setIsHelpPopupOpen(true); // Open the popup
@@ -196,7 +218,8 @@ const Header = () => {
               <Button
                 id="joyride-application-tour"
                 className="rounded-circle"
-                onClick={handleOpenPopup}
+                // onClick={handleOpenPopup}
+                onClick={handleStartGuide}
               >
                 <Tooltip title="Help">
                   <InfoOutlinedIcon />
@@ -263,7 +286,7 @@ const Header = () => {
       <Menu
         anchorEl={menuAnchor}
         open={Boolean(menuAnchor)}
-        onClose={handleMenuToggle(setMenuAnchor)}
+        onClose={() => setMenuAnchor(null)}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
@@ -277,7 +300,13 @@ const Header = () => {
           sx={{ marginTop: "15px", marginBottom: "15px" }}
         />
         {isSmallScreen ? (
-          <MenuItem onClick={handleOpenPopup} sx={{ color: "black" }}>
+          <MenuItem
+            onClick={() => {
+              handleStartGuide();
+              setMenuAnchor(null);
+            }}
+            sx={{ color: "black" }}
+          >
             <ListItemIcon>
               <InfoOutlinedIcon fontSize="small" sx={{ color: "black" }} />
             </ListItemIcon>
@@ -286,7 +315,13 @@ const Header = () => {
         ) : (
           ""
         )}
-        <MenuItem onClick={handleEdit} sx={{ color: "black" }}>
+        <MenuItem
+          onClick={() => {
+            handleEdit();
+            setMenuAnchor(null);
+          }}
+          sx={{ color: "black" }}
+        >
           <ListItemIcon>
             <PersonOutlineOutlinedIcon
               fontSize="small"
@@ -295,13 +330,25 @@ const Header = () => {
           </ListItemIcon>
           Profile
         </MenuItem>
-        <MenuItem onClick={handleResetPassword} sx={{ color: "black" }}>
+        <MenuItem
+          onClick={() => {
+            handleResetPassword();
+            setMenuAnchor(null);
+          }}
+          sx={{ color: "black" }}
+        >
           <ListItemIcon>
             <KeyOutlinedIcon fontSize="small" sx={{ color: "black" }} />
           </ListItemIcon>
           Reset Password
         </MenuItem>
-        <MenuItem onClick={handleLogout} sx={{ color: "red" }}>
+        <MenuItem
+          onClick={() => {
+            handleLogout();
+            setMenuAnchor(null);
+          }}
+          sx={{ color: "red" }}
+        >
           <ListItemIcon>
             <Logout fontSize="small" sx={{ color: "red" }} />
           </ListItemIcon>

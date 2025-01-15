@@ -40,7 +40,12 @@ import RoomFoodBeverages from "./RoomFoodBeverages";
 import BarCode from "../../pages/BarCodePage/BarCode";
 import StatusSymbol from "../Common/CustomButton/StatusSymbol";
 
-const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentData }) => {
+const RoomsCard = ({
+  room,
+  setDeleteUpdateStatus,
+  setRefreshPage,
+  meetingCurrentData,
+}) => {
   const navigate = useNavigate();
   const [hover, setHover] = useState(false);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
@@ -129,10 +134,11 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
   useEffect(() => {
     setUrlData(`${import.meta.env.VITE_BARCODE_URL}/rooms/${room?.id}`);
   }, [room]);
-  
+
   return (
     <>
       <Paper
+        className="room-card"
         elevation={hover ? 20 : 4}
         sx={{
           position: "relative",
@@ -231,23 +237,24 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
               width: "100%",
             }}
           >
-              <Typography
-            variant="body2"
-            sx={{ display: 'flex', alignItems: 'center' }}
-          >
-            <Tooltip title="Capacity">
-              <GroupsOutlinedIcon />
-            </Tooltip>
-            {room.capacity} People
-          </Typography>
             <Typography
               variant="body2"
-              sx={{ display: 'flex', alignItems: 'center' }}
+              sx={{ display: "flex", alignItems: "center" }}
+            >
+              <Tooltip title="Capacity">
+                <GroupsOutlinedIcon />
+              </Tooltip>
+              {room.capacity} People
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{ display: "flex", alignItems: "center" }}
             >
               <Tooltip title="Sanitation Status">
                 <CleaningServicesIcon />
               </Tooltip>{" "}
               <FormControlLabel
+                className="room-sanitation"
                 control={
                   <Switch
                     checked={sanitationStatus}
@@ -267,23 +274,23 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
               width: "100%",
             }}
           >
-           <Typography
-            variant="body2"
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
-              textTransform: "capitalize",
-            }}
-          >
-            <Tooltip title="Tolerance Period">
-              <ExtensionIcon />
-            </Tooltip>{" "}
-            {room.tolerancePeriod} minutes
-          </Typography>
             <Typography
               variant="body2"
-              sx={{ display: 'flex', alignItems: 'center' }}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+                textTransform: "capitalize",
+              }}
+            >
+              <Tooltip title="Tolerance Period">
+                <ExtensionIcon />
+              </Tooltip>{" "}
+              {room.tolerancePeriod} minutes
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{ display: "flex", alignItems: "center" }}
             >
               <Tooltip title="Room Status">
                 <AirlineSeatLegroomExtraOutlinedIcon />
@@ -291,7 +298,6 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
               <StatusSymbol meetingCurrentData={meetingCurrentData} />
             </Typography>
           </Box>
-          
         </Box>
         <CardActions sx={{ p: 0 }}>
           {user?.isAdmin ? (
@@ -302,6 +308,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
               }}
             >
               <Button
+                className="room-view"
                 fullWidth
                 variant="contained"
                 onClick={handleCardClick}
@@ -316,6 +323,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
                 <VisibilityOutlinedIcon color="white" className="cursor" />
               </Button>
               <Button
+                className="room-gallery"
                 fullWidth
                 variant="contained"
                 title="Room Gallery"
@@ -331,6 +339,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
                 <CollectionsIcon color="white" className="cursor" />
               </Button>
               <Button
+                className="room-amenities"
                 fullWidth
                 variant="contained"
                 title="Room Amenities"
@@ -346,6 +355,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
                 <Groups2OutlinedIcon color="white" className="cursor" />
               </Button>
               <Button
+                className="room-food"
                 fullWidth
                 variant="contained"
                 title="Room Food & Beverages"
@@ -361,6 +371,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
                 <FoodBankOutlinedIcon color="white" className="cursor" />
               </Button>
               <Button
+                className="room-barcode"
                 fullWidth
                 variant="contained"
                 title="Barcode"
@@ -376,6 +387,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
                 <QrCodeOutlinedIcon color="white" className="cursor" />
               </Button>
               <Button
+                className="room-edit"
                 variant="contained"
                 title="Edit Room"
                 onClick={handleRoomEdit}
@@ -390,6 +402,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
                 <EditOutlinedIcon color="white" className="cursor" />
               </Button>
               <Button
+                className="room-delete"
                 fullWidth
                 title="Delete Room"
                 variant="contained"
@@ -421,6 +434,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
                 sx={{
                   borderRadius: "0",
                 }}
+                className="room-user-view"
               >
                 View More
               </Button>
@@ -432,6 +446,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
                   borderRadius: "0",
                   bgcolor: "red",
                 }}
+                className="room-user-book-now"
               >
                 Book Now
               </Button>
