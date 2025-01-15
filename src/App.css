@@ -66,6 +66,12 @@ a {
 .MuiToolbar-root .MuiInputBase-root svg {
   color: #f6f6f9 !important;
 }
+
+.MuiDataGrid-scrollbarFiller--header {
+  background-color: #006400;
+}
+
+
 .MuiDataGrid-footerContainer {
   background-color: #006400;
   color: #f6f6f9 !important;
