@@ -23,6 +23,7 @@ import { validateImage } from "../../utils/utils";
 const EditRoomForm = ({ room, setRefreshPage, setIsEditOpen }) => {
   const [roomImagePreview, setRoomImagePreview] = useState(null);
   const [locationList, setLocationList] = useState([]);
+  const [servicesList, setServicesList] = useState([]);
   const [roomImageError, setRoomImageError] = useState("");
   const [sanitationStatus, setSanitationStatus] = useState(
     room.sanitationStatus
@@ -40,6 +41,13 @@ const EditRoomForm = ({ room, setRefreshPage, setIsEditOpen }) => {
         const locations = response.data.data.result.map((location) => {
           return { id: location.id, label: location.locationName };
         });
+
+        // This is for services section
+        const responseServices = await axios.get("api/v1/services/active");
+        const services = responseServices.data.data.result.map((service) => {
+          return { id: service.id, label: service.servicesName };
+        });
+        setServicesList(services);
         setLocationList(locations);
         dispatch(hideLoading());
       } catch (error) {
@@ -60,6 +68,7 @@ const EditRoomForm = ({ room, setRefreshPage, setIsEditOpen }) => {
     initialValues: {
       name: room.name,
       location: { id: room.Location.id, label: room.Location.locationName },
+      services: { id: room.Service.id, label: room.Service.servicesName },
       capacity: room.capacity,
       tolerancePeriod: room.tolerancePeriod,
       sanitationPeriod: room.sanitationPeriod,
@@ -73,6 +82,10 @@ const EditRoomForm = ({ room, setRefreshPage, setIsEditOpen }) => {
       location: Yup.object({
         id: Yup.string().required("Id is required"),
         label: Yup.string().required("label is required"),
+      }),
+      services: Yup.object({
+        id: Yup.string().required("Id is required"),
+        label: Yup.string().required("services is required"),
       }),
       capacity: Yup.number()
         .required("Capacity is required")
@@ -99,20 +112,17 @@ const EditRoomForm = ({ room, setRefreshPage, setIsEditOpen }) => {
         formData.append("sanitationPeriod", values.sanitationPeriod);
         formData.append("description", values.description);
         formData.append("location", values.location.id);
+        formData.append("services", values.services.id);
         formData.append("sanitationStatus", sanitationStatus);
         formData.append("isAvailable", isAvailable);
         if (values.roomImage) formData.append("roomImage", values.roomImage);
 
-        await axios.put(
-          `api/v1/rooms/edit-room/${room.id}`,
-          formData,
-          {
-            withCredentials: true,
-            headers: {
-              "Content-Type": "multipart/form-data", 
-            },
-          }
-        );
+        await axios.put(`api/v1/rooms/edit-room/${room.id}`, formData, {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
 
         toast.success("Room updated successfully");
         resetForm();
@@ -162,7 +172,7 @@ const EditRoomForm = ({ room, setRefreshPage, setIsEditOpen }) => {
     formik.setFieldValue("isAvailable", event.target.checked);
     setIsAvailable(event.target.checked);
   };
-  
+
   return (
     <Box component="form" onSubmit={formik.handleSubmit}>
       <Box display="flex" justifyContent="space-between">
@@ -176,6 +186,25 @@ const EditRoomForm = ({ room, setRefreshPage, setIsEditOpen }) => {
           helperText={formik.touched.name && formik.errors.name}
           style={{ marginRight: 8, flex: 1 }}
           size="small"
+        />
+        <Autocomplete
+          id="services"
+          name="services"
+          style={{ marginTop: 15, flex: 1 }}
+          size="small"
+          margin="normal"
+          options={servicesList}
+          getOptionLabel={(servicesList) => servicesList.label}
+          value={formik.values.services}
+          onChange={(_, newValue) => formik.setFieldValue("services", newValue)}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Select Services"
+              error={formik.touched.services && Boolean(formik.errors.services)}
+              helperText={formik.touched.services && formik.errors.services}
+            />
+          )}
         />
       </Box>
       <Box display="flex" justifyContent="space-between">
@@ -302,9 +331,7 @@ const EditRoomForm = ({ room, setRefreshPage, setIsEditOpen }) => {
         />
         <label htmlFor="room-image-upload">
           <IconButton component="span" color="primary">
-            <PhotoCameraIcon
-              fontSize="medium"
-            />
+            <PhotoCameraIcon fontSize="medium" />
           </IconButton>
         </label>
       </Box>

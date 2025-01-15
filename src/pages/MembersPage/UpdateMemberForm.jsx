@@ -33,46 +33,65 @@ const FormWrapper = styled(Paper)(({ theme }) => ({
 }));
 
 const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
-  //const { id } = useParams();
   const [availableCommittees, setAvailableCommittees] = useState([]);
+  const [availableServices, setAvailableServices] = useState([]);
   const [profileImagePreview, setProfileImagePreview] = useState(null);
   const [profileImageError, setProfileImageError] = useState("");
   const [userCommittees, setUserCommittees] = useState([]);
+  const [userDataList, setUserDataList] = useState([]);
+  const [formDataList, setFormDataList] = useState({});
+  const [userServices, setUserServices] = useState([]);
   const [activeRole, setActiveRole] = useState([]); // List of available active role
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         dispatch(showLoading());
-        const [userResponse, committeesResponse, userRoleResponse] =
-          await Promise.all([
-            axios.get(`/api/v1/user/${id}`),
-            axios.get("/api/v1/committee/active-committee"),
-            axios.get("/api/v1/user-type/active"),
-          ]);
+        const [
+          userResponse,
+          committeesResponse,
+          userRoleResponse,
+          servicesResponse,
+        ] = await Promise.all([
+          axios.get(`/api/v1/user/${id}`),
+          axios.get("/api/v1/committee/active-committee"),
+          axios.get("/api/v1/user-type/active"),
+          await axios.get("/api/v1/services/active"),
+        ]);
         const userData = userResponse.data.data;
         const committees = committeesResponse.data.data.committees || [];
+        const services = servicesResponse.data.data.result || [];
         const userRole = userRoleResponse.data.data.result || [];
         setAvailableCommittees(committees);
+        setAvailableServices(services);
         setActiveRole(userRole);
+        setUserDataList(userData);
 
         // Find the full committee objects that match the user's committee names
         const userCommitteeObjects = userData.committees
-          .map((committeeName) =>
-            committees.find((committee) => committee.name === committeeName)
+          ?.map((committeeName) =>
+            committees?.find((committee) => committee.name === committeeName)
           )
-          .filter(Boolean);
+          ?.filter(Boolean);
 
+        // Find the full services objects that match the user's committee names
+        const userServicesObjects = userData.services
+          ?.map((servicesName) =>
+            services?.find((service) => service.servicesName === servicesName)
+          )
+          ?.filter(Boolean);
         // Set initial values with committee objects
-        formik.setValues({
+        setFormDataList({
           fullname: userData.fullname,
           email: userData.email,
           phoneNumber: userData.phoneNumber,
-          user_type: userData.user_type,
+          user_type: userData.user_type.id,
           committees: userCommitteeObjects,
+          services: userServicesObjects,
         });
 
         setUserCommittees(userCommitteeObjects);
+        setUserServices(userServicesObjects);
         setProfileImagePreview(
           `${import.meta.env.VITE_API_URL}/${userData?.avatarPath}`
         );
@@ -83,18 +102,20 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
         console.error("Error fetching data:", error);
       }
     };
-
+    if (id) 
     fetchUserData();
   }, [id]);
 
   const formik = useFormik({
     initialValues: {
-      fullname: "",
-      email: "",
-      phoneNumber: "",
-      user_type: "",
-      committees: [],
+      fullname: formDataList?.fullname||"",
+          email: formDataList?.email||"",
+          phoneNumber: formDataList?.phoneNumber||"",
+          user_type: formDataList?.user_type||"",
+          committees: formDataList?.committees||[],
+          services: formDataList?.services||[],
     },
+    enableReinitialize: true,
     validationSchema: Yup.object({
       fullname: Yup.string().required("Name is required"),
       email: Yup.string()
@@ -106,14 +127,18 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
         .length(10, "Phone number must be 10 digits"),
       committees: Yup.array()
         .of(Yup.object())
-        .required("Select at least one committee"),
+        .required("Select at least one service"),
+      services: Yup.array()
+        .of(Yup.object())
+        .required("Select at least one service"),
     }),
     onSubmit: async (values) => {
-      //console.log("Form Submitted:", values);
+      console.log("Form Submitted:", values);
       try {
         dispatch(showLoading());
         // Extract committee IDs
         const committeeIds = values.committees.map((committee) => committee.id);
+        const servicesIds = values.services.map((service) => service.id);
 
         // Create payload object
         const formData = new FormData();
@@ -122,6 +147,7 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
         formData.append("phoneNumber", values.phoneNumber);
         formData.append("user_type", values.user_type);
         formData.append("committees", committeeIds);
+        formData.append("services", servicesIds);
         if (values.profileImage)
           formData.append("profileImage", values.profileImage);
         const response = await axios.put(
@@ -214,7 +240,7 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
           name="user_type"
           fullWidth
           select
-          value={formik.values.user_type}
+          value={formik.values?.user_type|| ""}
           onChange={(event) => {
             formik.setFieldValue("user_type", event.target.value);
           }}
@@ -224,9 +250,54 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
           size="small"
         >
           {activeRole?.map((user_type) => (
-            <MenuItem value={user_type.id}>{user_type.userTypeName}</MenuItem>
+            <MenuItem key={user_type.id} value={user_type.id}>{user_type.userTypeName}</MenuItem>
           ))}
         </TextField>
+
+        <Autocomplete
+          disableCloseOnSelect
+          multiple
+          id="services"
+          options={availableServices}
+          value={formik.values.services}
+          getOptionLabel={(option) => option.servicesName || ""}
+          onChange={(_, selectedServices) => {
+            formik.setFieldValue("services", selectedServices);
+          }}
+          isOptionEqualToValue={(option, value) => option.id === value.id}
+          renderInput={(params) => (
+            <TextField
+              marginTop={2}
+              {...params}
+              label="Select Services"
+              error={formik.touched.services && Boolean(formik.errors.services)}
+              helperText={formik.touched.services && formik.errors.services}
+            />
+          )}
+          slotProps={{
+            listbox: {
+              style: { maxHeight: 150, overflowY: "scroll" },
+            },
+          }}
+          style={{ marginTop: "1rem" }}
+          renderTags={(selected) => {
+            return selected.length > 0 ? (
+              <span>{selected.length} selected</span>
+            ) : null;
+          }}
+          renderOption={(props, option, { selected }) => (
+            <li
+              {...props}
+              style={{
+                backgroundColor: selected ? "#e0f7fa" : "inherit",
+                fontWeight: selected ? "bold" : "normal",
+                fontSize: "14px",
+              }}
+            >
+              {option.servicesName}
+            </li>
+          )}
+        />
 
         <Autocomplete
           disableCloseOnSelect
@@ -238,7 +309,7 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
           onChange={(_, selectedCommittees) => {
             formik.setFieldValue("committees", selectedCommittees);
           }}
-          isOptionEqualToValue={(option, value) => option.id === value.id}
+          isOptionEqualToValue={(option, value) => option?.id === value?.id}
           renderInput={(params) => (
             <TextField
               marginTop={2}
