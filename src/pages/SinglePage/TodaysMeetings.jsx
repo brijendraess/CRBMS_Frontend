@@ -15,10 +15,17 @@ import flag2 from "../../assets/flag2.webp";
 import dayjs from "dayjs";
 import durationPlugin from "dayjs/plugin/duration";
 import axios from "axios";
-import { getFormattedDate, getMeetingTimePercentage, timeDifference } from "../../utils/utils";
+import {
+  getFormattedDate,
+  getMeetingTimePercentage,
+  timeDifference,
+} from "../../utils/utils";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
-import { FullscreenExitIcon, FullscreenIcon } from "../../components/Common/CustomButton/CustomIcon";
+import {
+  FullscreenExitIcon,
+  FullscreenIcon,
+} from "../../components/Common/CustomButton/CustomIcon";
 dayjs.extend(durationPlugin);
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -51,7 +58,6 @@ const theme = createTheme({
   },
 });
 
-
 const colorMap = {
   A: { row: "#ffecec", bar: "#ff4d4d" }, // Light Red
   B: { row: "#fff5e6", bar: "#ffa500" }, // Light Orange
@@ -70,10 +76,10 @@ const getColorByProgress = (progress) => {
 
 const renderProgressBar = (params) => {
   const status = params.row.status;
-   const meetingStartTime = `${params.row.meetingDate}T${params.row.startTime}Z`; // ISO 8601 format
-   const meetingEndTime = `${params.row.meetingDate}T${params.row.endTime}Z`;
-   const percentage = getMeetingTimePercentage(meetingStartTime, meetingEndTime);
-   let progress = 0;
+  const meetingStartTime = `${params.row.meetingDate}T${params.row.startTime}Z`; // ISO 8601 format
+  const meetingEndTime = `${params.row.meetingDate}T${params.row.endTime}Z`;
+  const percentage = getMeetingTimePercentage(meetingStartTime, meetingEndTime);
+  let progress = 0;
 
   if (status === "Completed") progress = percentage;
   else if (status === "start") progress = percentage;
@@ -214,6 +220,7 @@ const TodaysMeetings = () => {
       let startTime = dayjs(`${meetingDate}T${meeting.startTime}`);
       const endTime = dayjs(`${meetingDate}T${meeting.endTime}`);
       const timeDiff = timeDifference(meeting?.startTime, meeting?.endTime);
+      console.log(timeDiff);
 
       meetings.push({
         meetingId: meeting.id,

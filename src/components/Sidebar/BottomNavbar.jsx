@@ -1,71 +1,80 @@
 import React, { useEffect, useState } from "react";
-import {
-  Tooltip,
-  BottomNavigation,
-  BottomNavigationAction,
-} from "@mui/material";
+import { Box, Tabs, Tab } from "@mui/material";
 import { NavLink, useLocation } from "react-router-dom";
-import {  getSideBarMenuContent } from "../../LeftPaneldata";
+import { getSideBarMenuContent } from "../../LeftPaneldata";
 import { useSelector } from "react-redux";
-import "./BottomNavbar.css";
+import { tabsClasses } from "@mui/material/Tabs";
 
 const BottomNavBar = () => {
-  const userIsAdmin = useLocation();
   const { user } = useSelector((state) => state.user);
-    const [menuToBeRendered,setMenuToBeRendered]=useState([])
-
-  useEffect(async()=>{
-    const sidebar = await getSideBarMenuContent(user);
-    setMenuToBeRendered({...menuToBeRendered,sidebar})
-  },[user])
-
   const location = useLocation();
+  const [menuToBeRendered, setMenuToBeRendered] = useState([]);
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    const fetchMenu = async () => {
+      const sidebar = await getSideBarMenuContent(user);
+      setMenuToBeRendered(sidebar);
+    };
+
+    fetchMenu();
+  }, [user]);
+
   const currentPath = location.pathname;
 
+  // Handle tab change
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   return (
-    <BottomNavigation
+    <Box
       sx={{
-        width: "100%",
         position: "fixed",
         bottom: 0,
+        width: "100%",
         backgroundColor: "#fff",
-        zIndex: 1000,
         boxShadow: "0px -2px 10px rgba(0,0,0,0.1)",
-        display: "flex",
-        justifyContent: "space-evenly",
+        zIndex: 1000,
       }}
     >
-      {menuToBeRendered?.sidebar?.length&& menuToBeRendered?.sidebar?.map((item) => (
-        <NavLink
-          key={item.id}
-          to={item.path}
-          style={{
-            width: "35px",
-            padding: 0,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            height: "56px",
+      {menuToBeRendered?.length > 0 && (
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          variant="scrollable"
+          // scrollButtons
+          scrollButtons
+          allowScrollButtonsMobile
+          aria-label="scrollable tabs for navigation"
+          sx={{
+            [`& .${tabsClasses.scrollButtons}`]: {
+              "&.Mui-disabled": { opacity: 0.3 },
+            },
+            "& .MuiTab-root": {
+              minWidth: "50px",
+            },
           }}
         >
-          <Tooltip title={item.name} placement="top">
-            <BottomNavigationAction
+          {menuToBeRendered.map((item, index) => (
+            <Tab
+              key={item.id}
               icon={React.createElement(item.icon)}
+              label={item.label}
+              wrapped
+              component={NavLink}
+              to={item.path}
               sx={{
                 color: currentPath === item.path ? "#1976d2" : "gray",
                 "&.Mui-selected": {
                   color: "#1976d2",
                 },
-
-                "&.MuiButtonBase-root": {
-                  minWidth: "40px",
-                },
               }}
             />
-          </Tooltip>
-        </NavLink>
-      ))}
-    </BottomNavigation>
+          ))}
+        </Tabs>
+      )}
+    </Box>
   );
 };
 

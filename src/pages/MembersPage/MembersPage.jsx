@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Box,
   Typography,
@@ -146,7 +146,6 @@ const MembersPage = () => {
   };
 
   const columns = [
-    // { field: "id", headerName: "ID", width: 90 },
     {
       field: "avatarPath",
       headerName: "Avatar",
@@ -192,16 +191,23 @@ const MembersPage = () => {
     },
     {
       field: "action",
-      flex: 0.5,
+      flex: 1,
       headerName: "Action",
       disableColumnMenu: true,
       hideSortIcons: true,
       headerClassName: "super-app-theme--header",
       renderCell: (params) => (
-        <div style={{ display: "flex", gap: "10px" }}>
+        <div
+          style={{
+            display: "flex",
+            gap: "10px",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           {user.UserType.userModule&&user.UserType.userModule.split(",").includes("edit")&&<Tooltip title="Update">
             <EditOutlinedIcon
-              className="cursor"
+              className="tour-edit"
               color="success"
               onClick={() => handleEdit(params.id)}
             />
@@ -209,13 +215,14 @@ const MembersPage = () => {
           {user.UserType.userModule&&user.UserType.userModule.split(",").includes("view")&&<Tooltip title="View">
             <VisibilityOutlinedIcon
               color="secondary"
-              className="cursor"
+              className="tour-view"
               onClick={() => handleView(params.id)}
             />
           </Tooltip>}
           {user.UserType.userModule&&user.UserType.userModule.split(",").includes("delete")&&<div className="delete">
             <Tooltip title="Delete">
               <DeleteOutlineOutlinedIcon
+              className="tour-delete"
                 color="error"
                 onClick={() => handleOpen(params.id)}
               />
@@ -224,6 +231,7 @@ const MembersPage = () => {
           {user.UserType.userModule&&user.UserType.userModule.split(",").includes("changeStatus")&&<div className="delete">
             <Tooltip title="Change Status">
               <Switch
+              className="tour-block"
                 checked={params.row.isBlocked}
                 onChange={() =>
                   handleBlockStatusChange(params.row.id, params.row.isBlocked)
@@ -240,9 +248,10 @@ const MembersPage = () => {
     <>
       <PaperWrapper>
         <PageHeader
-          heading={"Users"}
+          heading="Users"
           icon={PersonAddAlt1Rounded}
           func={setIsOpen}
+          nameOfTheClass="add-user"
           statusIcon={user.UserType.userModule&&user.UserType.userModule.split(",").includes("add")}
         >
          {user.UserType.userModule&&user.UserType.userModule.split(",").includes("changeStatus")&& <CustomButton
@@ -253,19 +262,22 @@ const MembersPage = () => {
             Icon={showDeleted ? VisibilityIcon : VisibilityOffIcon}
             fontSize={isSmallScreen ? "small" : "medium"}
             background={"#1976d291"}
+            nameOfTheClass="deleted-user"
             placement={"left"}
           />}
         </PageHeader>
+
         {isSmallScreen ? (
           <Grid2
             container
             spacing={2}
             sx={{
-              borderRadius: "20px",
               position: "relative",
               top: "10px",
               alignItems: "center",
               justifyContent: "center",
+              // maxHeight: "100%",
+              overflowY: "auto",
             }}
           >
             {filteredUsers.length > 0 ? (
@@ -329,6 +341,7 @@ const MembersPage = () => {
           </Box>
         )}
       </PaperWrapper>
+
       <DeleteModal
         open={open}
         onClose={handleClose}

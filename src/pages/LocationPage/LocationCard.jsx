@@ -9,8 +9,10 @@ import {
 } from "@mui/material";
 import React from "react";
 import CustomButton from "../../components/Common/CustomButton/CustomButton";
-import { DeleteOutlineOutlinedIcon, EditOutlinedIcon } from "../../components/Common/CustomButton/CustomIcon";
-
+import {
+  DeleteOutlineOutlinedIcon,
+  EditOutlinedIcon,
+} from "../../components/Common/CustomButton/CustomIcon";
 
 const LocationCard = ({ location, onEdit, onDelete, onStatusChange }) => {
   return (
@@ -24,6 +26,7 @@ const LocationCard = ({ location, onEdit, onDelete, onStatusChange }) => {
         height: "125px",
         maxHeight: "150px",
       }}
+      className="location-card"
     >
       <CardMedia
         component="img"
@@ -65,6 +68,7 @@ const LocationCard = ({ location, onEdit, onDelete, onStatusChange }) => {
               Icon={EditOutlinedIcon}
               fontSize="small"
               background="rgba(8, 90, 232, 0.62)"
+              nameOfTheClass="location-edit"
             />
             <CustomButton
               title="Delete Location"
@@ -73,10 +77,12 @@ const LocationCard = ({ location, onEdit, onDelete, onStatusChange }) => {
               Icon={DeleteOutlineOutlinedIcon}
               fontSize="small"
               background="rgba(231, 26, 7, 0.77)"
+              nameOfTheClass="location-delete"
             />
             <Switch
               checked={location.status || false}
               onChange={() => onStatusChange(location.id)} // Handle status change
+              className="location-switch"
             />
           </Box>
         </CardActions>

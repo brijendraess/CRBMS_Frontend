@@ -22,7 +22,7 @@ const PopupModals = ({
         onClose={closeDialog}
         style={{
           height: {
-            xs: "500px",
+            xs: "300px",
             sm: "500px",
             md: "500px",
             lg: "500px",

@@ -128,6 +128,7 @@ const RoomsPage = () => {
           icon={AddOutlinedIcon}
           func={setIsAddOpen}
           title={"Add New Room"}
+          nameOfTheClass="add-room"
           statusIcon={user.UserType.roomModule&&user.UserType.roomModule.split(",").includes("add")}
         >
           {isSmallScreen ? (
@@ -143,6 +144,7 @@ const RoomsPage = () => {
               selectedDate={selectedDate}
               setSelectedDate={setSelectedDate}
               capacity={capacity}
+              nameOfTheFilterClass="room-filter-responsive"
             />
           ) : (
             ""
@@ -164,6 +166,7 @@ const RoomsPage = () => {
               selectedDate={selectedDate}
               setSelectedDate={setSelectedDate}
               capacity={capacity}
+              nameOfTheFilterClass="room-filter"
             />
           )}
 

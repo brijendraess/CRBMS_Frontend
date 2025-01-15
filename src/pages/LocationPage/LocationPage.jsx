@@ -154,7 +154,7 @@ const LocationPage = () => {
         <Box display="flex" alignItems="center" gap={1}>
           {user.UserType.locationModule&&user.UserType.locationModule.split(",").includes("edit")&&<Tooltip title="Edit">
             <EditOutlinedIcon
-              className="cursor"
+              className="location-edit"
               color="success"
               onClick={() => handleEdit(params.row.id)}
               style={{ cursor: "pointer" }}
@@ -162,6 +162,7 @@ const LocationPage = () => {
           </Tooltip>}
           {user.UserType.locationModule&&user.UserType.locationModule.split(",").includes("delete")&&<Tooltip title="Delete">
             <DeleteOutlineOutlinedIcon
+              className="location-delete"
               color="error"
               style={{ cursor: "pointer" }}
               onClick={() => handleOpen(params.row.id)}
@@ -169,6 +170,7 @@ const LocationPage = () => {
           </Tooltip>}
           {user.UserType.locationModule&&user.UserType.locationModule.split(",").includes("changeStatus")&&<Tooltip title="Change Status">
             <Switch
+              className="location-switch"
               checked={params.row.status}
               onChange={() => handleStatusChange(params.row.id)}
             />
@@ -186,6 +188,7 @@ const LocationPage = () => {
         icon={AddOutlinedIcon}
         title={"Add"}
         func={setIsAddOpen}
+        nameOfTheClass="add-location"
         statusIcon={user.UserType.locationModule&&user.UserType.locationModule.split(",").includes("add")}
       />
       {isSmallScreen ? (

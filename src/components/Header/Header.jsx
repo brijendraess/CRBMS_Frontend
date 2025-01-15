@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./Header.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/Images/logo.webp";
 import {
   Badge,
@@ -12,13 +12,16 @@ import {
   Popover,
   Tooltip,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
+
 // Context and State Management
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import axios from "axios";
 import dayjs from "dayjs";
 import { MyContext } from "../Layout/Layout";
+
 // Notifications Menu Component
 import NotificationsMenu from "../Notifications/NotificationsMenu";
 import PopupModals from "../Common/Modals/Popup/PopupModals";
@@ -35,12 +38,20 @@ import {
   NotificationsOutlinedIcon,
   Logout,
   KeyOutlinedIcon,
+  LiveHelpOutlinedIcon,
+  InfoOutlinedIcon,
 } from "../Common/CustomButton/CustomIcon";
+import OnboardingPopup from "../JoyrideCarouselTour/OnBoardingPopup";
+
+// Driver.js
+import { driver } from "driver.js";
+import "driver.js/dist/driver.css";
+import guideSteps from "../Driver/guideSteps";
+import "../Driver/DriverTour.css";
 
 const Header = () => {
   const context = useContext(MyContext);
   const { user } = useSelector((state) => state.user);
-
   const [menuAnchor, setMenuAnchor] = useState(null);
   const [notificationsAnchor, setNotificationsAnchor] = useState(null);
   const [isFullScreen, setIsFullScreen] = useState(false);
@@ -49,6 +60,31 @@ const Header = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isResetPasswordOpen, setIsResetPasswordOpen] = useState(false);
   const navigate = useNavigate();
+  const [isHelpPopupOpen, setIsHelpPopupOpen] = useState(false);
+  const isSmallScreen = useMediaQuery("(max-width: 768px)");
+  const location = useLocation();
+
+  const handleStartGuide = () => {
+    const driverObj = driver({
+      overlayColor: "black",
+      overlayOpacity: "0.8",
+      prevBtnText: "← Go Back",
+      popoverClass: "driverjs-theme",
+      // showProgress: true,
+      // showLoading: true,
+      steps: guideSteps[location.pathname]?.(isSmallScreen),
+      animate: true,
+    });
+    driverObj.drive(); // Start the guide
+  };
+
+  const handleOpenPopup = () => {
+    setIsHelpPopupOpen(true); // Open the popup
+  };
+
+  const handleClosePopup = () => {
+    setIsHelpPopupOpen(false); // Close the popup
+  };
 
   // Common Function to Toggle Menus
   const handleMenuToggle = (anchorSetter) => (event) => {
@@ -142,6 +178,7 @@ const Header = () => {
   const handleResetPassword = () => {
     setIsResetPasswordOpen(true);
   };
+
   return (
     <header>
       <div className="container-fluid w-100">
@@ -158,6 +195,7 @@ const Header = () => {
           <div className="part2 col-lg-2 col-md-2 col-sm-3 col-xs-3">
             <Tooltip title="Menu Bar">
               <Button
+                id="sidebar-icon"
                 className="rounded-circle"
                 onClick={() =>
                   context.setIsSidebarVisible(!context.isSidebarVisible)
@@ -174,7 +212,35 @@ const Header = () => {
           </div>
           {/* Action Buttons */}
           <div className="col-lg-6 col-md-4 col-sm-4 col-xs-3 d-flex align-items-center justify-content-end gap-2">
+            {isSmallScreen ? (
+              ""
+            ) : (
+              <Button
+                id="joyride-application-tour"
+                className="rounded-circle"
+                // onClick={handleOpenPopup}
+                onClick={handleStartGuide}
+              >
+                <Tooltip title="Help">
+                  <InfoOutlinedIcon />
+                </Tooltip>
+              </Button>
+            )}
+            {/* <Button
+              id="joyride-application-tour"
+              className="rounded-circle"
+              onClick={handleOpenPopup}
+            >
+              <Tooltip title="Help">
+                <LiveHelpOutlinedIcon />
+              </Tooltip>
+            </Button> */}
+            <OnboardingPopup
+              open={isHelpPopupOpen}
+              onClose={handleClosePopup}
+            />
             <Button
+              id="notification-icon"
               className="rounded-circle"
               onClick={handleMenuToggle(setNotificationsAnchor)}
             >
@@ -184,7 +250,11 @@ const Header = () => {
                 </Badge>
               </Tooltip>
             </Button>
-            <Button className="rounded-circle" onClick={handleFullScreen}>
+            <Button
+              id="fullscreen-icon"
+              className="rounded-circle"
+              onClick={handleFullScreen}
+            >
               <Tooltip title="Full Screen">
                 {isFullScreen ? (
                   <FullscreenExitOutlinedIcon />
@@ -194,6 +264,7 @@ const Header = () => {
               </Tooltip>
             </Button>
             <Button
+              id="my-account"
               className="myAccWrapper"
               onClick={handleMenuToggle(setMenuAnchor)}
             >
@@ -215,7 +286,7 @@ const Header = () => {
       <Menu
         anchorEl={menuAnchor}
         open={Boolean(menuAnchor)}
-        onClose={handleMenuToggle(setMenuAnchor)}
+        onClose={() => setMenuAnchor(null)}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
@@ -228,7 +299,29 @@ const Header = () => {
           component="li"
           sx={{ marginTop: "15px", marginBottom: "15px" }}
         />
-        <MenuItem onClick={handleEdit} sx={{ color: "black" }}>
+        {isSmallScreen ? (
+          <MenuItem
+            onClick={() => {
+              handleStartGuide();
+              setMenuAnchor(null);
+            }}
+            sx={{ color: "black" }}
+          >
+            <ListItemIcon>
+              <InfoOutlinedIcon fontSize="small" sx={{ color: "black" }} />
+            </ListItemIcon>
+            Help
+          </MenuItem>
+        ) : (
+          ""
+        )}
+        <MenuItem
+          onClick={() => {
+            handleEdit();
+            setMenuAnchor(null);
+          }}
+          sx={{ color: "black" }}
+        >
           <ListItemIcon>
             <PersonOutlineOutlinedIcon
               fontSize="small"
@@ -237,13 +330,25 @@ const Header = () => {
           </ListItemIcon>
           Profile
         </MenuItem>
-        <MenuItem onClick={handleResetPassword} sx={{ color: "black" }}>
+        <MenuItem
+          onClick={() => {
+            handleResetPassword();
+            setMenuAnchor(null);
+          }}
+          sx={{ color: "black" }}
+        >
           <ListItemIcon>
             <KeyOutlinedIcon fontSize="small" sx={{ color: "black" }} />
           </ListItemIcon>
           Reset Password
         </MenuItem>
-        <MenuItem onClick={handleLogout} sx={{ color: "red" }}>
+        <MenuItem
+          onClick={() => {
+            handleLogout();
+            setMenuAnchor(null);
+          }}
+          sx={{ color: "red" }}
+        >
           <ListItemIcon>
             <Logout fontSize="small" sx={{ color: "red" }} />
           </ListItemIcon>

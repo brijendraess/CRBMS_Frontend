@@ -11,7 +11,7 @@ export const MyContext = createContext();
 const Layout = () => {
   const [isSidebarVisible, setIsSidebarVisible] = useState(true);
 
-  // Check if the screen width is less than or equal to 768px (mobile view)
+  // Checks if the screen width is less than or equal to 768px (mobile view)
   const isMobile = useMediaQuery("(max-width:768px)");
 
   return (
@@ -29,11 +29,6 @@ const Layout = () => {
               <Sidebar />
             </div>
           )}
-
-          {/* Bottom Navigation Bar for mobile screens */}
-          {isMobile && <BottomNavBar />}
-
-          {/* Main content */}
           <main
             className={`${
               isSidebarVisible && !isMobile ? "contentToggle" : "content"
@@ -44,6 +39,7 @@ const Layout = () => {
             </div>
           </main>
         </div>
+        {isMobile && <BottomNavBar />}
       </MyContext.Provider>
     </>
   );

@@ -12,7 +12,7 @@ import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import AmenitiesCard from "./AmenitiesCard";
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   AddOutlinedIcon,
   EditOutlinedIcon,
@@ -28,7 +28,7 @@ const AmenitiesList = () => {
   const [deleteId, setDeleteId] = useState(null);
   const [isRefreshed, setIsRefreshed] = useState(0);
   const dispatch = useDispatch();
-   const { user } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   // Fetch amenities only when component mounts
   useEffect(() => {
     const fetchAmenities = async () => {
@@ -140,26 +140,40 @@ const AmenitiesList = () => {
       width: 300,
       renderCell: (params) => (
         <Box height={"40px"} display="flex" alignItems="center" gap={2}>
-          {user.UserType.amenitiesModule&&user.UserType.amenitiesModule.split(",").includes("edit")&&<Tooltip title="Edit">
-            <EditOutlinedIcon
-              style={{ cursor: "pointer" }}
-              color="success"
-              onClick={() => handleEdit(params.id)}
-            />
-          </Tooltip>}
-          {user.UserType.amenitiesModule&&user.UserType.amenitiesModule.split(",").includes("delete")&&<Tooltip title="Delete">
-            <DeleteOutlineOutlinedIcon
-              color="error"
-              onClick={() => handleOpen(params.id)}
-              style={{ cursor: "pointer" }}
-            />
-          </Tooltip>}
-         { user.UserType.amenitiesModule&&user.UserType.amenitiesModule.split(",").includes("changeStatus")&&<Tooltip title="Change Status">
-            <Switch
-              checked={params.row.status}
-              onChange={() => handleStatusChange(params.row.id)}
-            />
-          </Tooltip>}
+          {user.UserType.amenitiesModule &&
+            user.UserType.amenitiesModule.split(",").includes("edit") && (
+              <Tooltip title="Edit">
+                <EditOutlinedIcon
+                  style={{ cursor: "pointer" }}
+                  color="success"
+                  onClick={() => handleEdit(params.id)}
+                  className="amenity-edit"
+                />
+              </Tooltip>
+            )}
+          {user.UserType.amenitiesModule &&
+            user.UserType.amenitiesModule.split(",").includes("delete") && (
+              <Tooltip title="Delete">
+                <DeleteOutlineOutlinedIcon
+                  color="error"
+                  onClick={() => handleOpen(params.id)}
+                  style={{ cursor: "pointer" }}
+                  className="amenity-delete"
+                />
+              </Tooltip>
+            )}
+          {user.UserType.amenitiesModule &&
+            user.UserType.amenitiesModule
+              .split(",")
+              .includes("changeStatus") && (
+              <Tooltip title="Change Status">
+                <Switch
+                  checked={params.row.status}
+                  onChange={() => handleStatusChange(params.row.id)}
+                  className="amenity-switch"
+                />
+              </Tooltip>
+            )}
         </Box>
       ),
       headerClassName: "super-app-theme--header",
@@ -175,7 +189,11 @@ const AmenitiesList = () => {
         heading={"Amenities"}
         icon={AddOutlinedIcon}
         func={setIsAddOpen}
-        statusIcon={user.UserType.amenitiesModule&&user.UserType.amenitiesModule.split(",").includes("add")}
+        nameOfTheClass="add-amenity"
+        statusIcon={
+          user.UserType.amenitiesModule &&
+          user.UserType.amenitiesModule.split(",").includes("add")
+        }
       />
       {/* Render AmenitiesCard only on small screens */}
       {isSmallScreen && (

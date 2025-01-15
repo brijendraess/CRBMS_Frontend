@@ -71,6 +71,7 @@ const ResponsiveFilter = ({
   selectedDate,
   setSelectedDate,
   capacity,
+  nameOfTheFilterClass
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -86,6 +87,7 @@ const ResponsiveFilter = ({
   return (
     <>
       <Button
+        className={nameOfTheFilterClass}
         id="filter-button"
         aria-controls={open ? "responsive-filter-menu" : undefined}
         aria-haspopup="true"
