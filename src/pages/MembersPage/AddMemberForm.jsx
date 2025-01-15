@@ -17,11 +17,16 @@ import { PopContent } from "../../Style";
 import "./MembersPage.css";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
-import { PhotoCameraIcon,VisibilityOff,Visibility } from "../../components/Common/CustomButton/CustomIcon";
+import {
+  PhotoCameraIcon,
+  VisibilityOff,
+  Visibility,
+} from "../../components/Common/CustomButton/CustomIcon";
 
 const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
   const [avatarPreview, setAvatarPreview] = useState(null); // Avatar preview
   const [committees, setCommittees] = useState([]); // List of available active committees
+  const [services, setServices] = useState([]); // List of available active services
   const [showPassword, setShowPassword] = useState(false); // Password visibility toggle
   const [activeRole, setActiveRole] = useState([]); // List of available active role
 
@@ -43,7 +48,18 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
         console.error("Error fetching committees:", error);
       }
     };
-
+    const fetchServices = async () => {
+      try {
+        dispatch(showLoading());
+        const response = await axios.get("/api/v1/services/active");
+        setServices(response?.data?.data?.result || []); // Store services
+        dispatch(hideLoading());
+      } catch (error) {
+        dispatch(hideLoading());
+        toast.error("Failed to fetch services");
+        console.error("Error fetching services:", error);
+      }
+    };
     const fetchUserRole = async () => {
       try {
         dispatch(showLoading());
@@ -56,11 +72,10 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
         console.error("Error fetching user type:", error);
       }
     };
-    fetchUserRole()
+    fetchServices();
+    fetchUserRole();
     fetchCommittees();
   }, []);
-
-  
 
   // Handle avatar change and preview
   const handleAvatarChange = (event) => {
@@ -71,7 +86,6 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
     }
   };
 
-
   const formik = useFormik({
     initialValues: {
       fullname: "",
@@ -79,9 +93,10 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
       user_type: "",
       phoneNumber: "",
       committee: [],
+      setServices: [],
       avatar: "",
       password: "",
-      userName:"",
+      userName: "",
     },
     validationSchema: Yup.object({
       fullname: Yup.string().required("Full name is required"),
@@ -98,11 +113,14 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
       committee: Yup.array()
         .of(Yup.string().required("Committee ID is required"))
         .min(1, "Select at least one committee"),
+      services: Yup.array()
+        .of(Yup.string().required("services ID is required"))
+        .min(1, "Select at least one services"),
     }),
     onSubmit: async (values, { resetForm }) => {
       try {
         dispatch(showLoading());
-        //console.log("Submitted data : ", values);
+        console.log("Submitted data : ", values);
         const formData = new FormData();
         formData.append("fullname", values.fullname);
         formData.append("email", values.email);
@@ -111,7 +129,8 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
         formData.append("password", values.password);
         formData.append("userName", values.userName);
         formData.append("committee", JSON.stringify(values.committee));
-       // console.log(formData);
+         formData.append("services", JSON.stringify(values.services));
+        // console.log(formData);
         if (values.avatar) {
           formData.append("avatar", values.avatar);
         }
@@ -121,7 +140,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
           })
           .then(() => {
             toast.success(
-              "User registered and added to committees successfully"
+              "User registered successfully"
             );
             setRefreshPage(Math.random());
             setIsOpen(false);
@@ -153,7 +172,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
           />
         </Box>
         <Box display="flex" justifyContent="space-between" mb={2}>
-        <TextField
+          <TextField
             label="Email"
             name="email"
             value={formik.values.email}
@@ -162,6 +181,52 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
             helperText={formik.touched.email && formik.errors.email}
             style={{ marginRight: 8, flex: 1 }}
             size="small"
+          />
+          <Autocomplete
+            disableCloseOnSelect
+            multiple
+            id="services"
+            size="small"
+            style={{ marginRight: 8, flex: 1 }}
+            options={services.map((service)=>{return {name:service.servicesName,id:service.id}})}
+            value={services.filter((service) =>
+              formik.values.services?.includes(service.id)
+            )}
+            getOptionLabel={(option) => option.name || option.id}
+            onChange={(_, selectedOptions) => {
+              formik.setFieldValue(
+                "services",
+                selectedOptions.map((option) => option.id)
+              );
+            }}
+            isOptionEqualToValue={(option, value) => option.id === value.id}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Select Services"
+                error={
+                  formik.touched.services && Boolean(formik.errors.services)
+                }
+                helperText={formik.touched.services && formik.errors.services}
+              />
+            )}
+            renderTags={(tagValue, getTagProps) => {
+              if (tagValue.length === 0) {
+                return null;
+              }
+              return <span>{tagValue.length} selected</span>;
+            }}
+            renderOption={(props, option, { selected }) => (
+              <li
+                {...props}
+                style={{
+                  backgroundColor: selected ? "#e0f7fa" : "inherit", // Change the color when selected
+                  fontWeight: selected ? "bold" : "normal", // Optional: Make text bold when selected
+                }}
+              >
+                {option.name}
+              </li>
+            )}
           />
         </Box>
         {/* Email and Password */}
@@ -224,8 +289,9 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
             style={{ marginRight: 8, flex: 1 }}
             size="small"
           >
-
-            {activeRole?.map((user_type)=><MenuItem value={user_type.id}>{user_type.userTypeName}</MenuItem>)}
+            {activeRole?.map((user_type) => (
+              <MenuItem value={user_type.id}>{user_type.userTypeName}</MenuItem>
+            ))}
           </TextField>
 
           <TextField
