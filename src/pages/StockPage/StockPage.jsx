@@ -213,8 +213,8 @@ const StockPage = () => {
                 fontSize: "16px",
               },
             }}
-            showCellVerticalBorder
-            showColumnVerticalBorder
+            // showCellVerticalBorder
+            // showColumnVerticalBorder
           />
         </Box>
 
@@ -246,8 +246,8 @@ const StockPage = () => {
                 fontSize: "16px",
               },
             }}
-            showCellVerticalBorder
-            showColumnVerticalBorder
+            // showCellVerticalBorder
+            // showColumnVerticalBorder
           />
         </Box>
       </Grid>
