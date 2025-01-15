@@ -95,7 +95,7 @@ const RoomsCard = ({
 
   const handleSanitationStatusChange = async (event, roomId) => {
     // formik.setFieldValue("sanitationStatus", event.target.checked);
-    if (user?.isAdmin) {
+    if (user?.UserType?.isAdmin === "admin") {
       setSanitationStatus(event.target.checked);
       const response = await axios.put(
         `api/v1/rooms/update-sanitation-status/${roomId}`,
@@ -253,18 +253,30 @@ const RoomsCard = ({
               <Tooltip title="Sanitation Status">
                 <CleaningServicesIcon />
               </Tooltip>{" "}
-              <FormControlLabel
-                className="room-sanitation"
-                control={
-                  <Switch
-                    checked={sanitationStatus}
-                    name="sanitationStatus"
-                    onChange={(event) =>
-                      handleSanitationStatusChange(event, room?.id)
-                    }
-                  />
-                }
-              />
+              {user.UserType.roomModule &&
+              user.UserType.roomModule.split(",").includes("sanitization") ? (
+                <FormControlLabel
+                  className="room-sanitation"
+                  control={
+                    <Switch
+                      checked={sanitationStatus}
+                      name="sanitationStatus"
+                      onChange={(event) =>
+                        handleSanitationStatusChange(event, room?.id)
+                      }
+                    />
+                  }
+                />
+              ) : (
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={sanitationStatus}
+                      name="sanitationStatus"
+                    />
+                  }
+                />
+              )}
             </Typography>
           </Box>
           <Box
@@ -300,123 +312,146 @@ const RoomsCard = ({
           </Box>
         </Box>
         <CardActions sx={{ p: 0 }}>
-          {user?.isAdmin ? (
+          {user?.UserType?.isAdmin === "admin" ? (
             <Box
               sx={{
                 display: "flex",
                 width: "100%",
               }}
             >
-              <Button
-                className="room-view"
-                fullWidth
-                variant="contained"
-                onClick={handleCardClick}
-                title="View Room"
-                sx={{
-                  borderRadius: "0 0 0px 10px",
-                  flex: 1,
-                  minWidth: "40px",
-                }}
-                size="small"
-              >
-                <VisibilityOutlinedIcon color="white" className="cursor" />
-              </Button>
-              <Button
-                className="room-gallery"
-                fullWidth
-                variant="contained"
-                title="Room Gallery"
-                onClick={handleGallery}
-                sx={{
-                  background: "white",
-                  color: "black",
-                  flex: 1,
-                  minWidth: "40px",
-                }}
-                size="small"
-              >
-                <CollectionsIcon color="white" className="cursor" />
-              </Button>
-              <Button
-                className="room-amenities"
-                fullWidth
-                variant="contained"
-                title="Room Amenities"
-                onClick={handleAmenities}
-                sx={{
-                  background: "white",
-                  color: "black",
-                  flex: 1,
-                  minWidth: "40px",
-                }}
-                size="small"
-              >
-                <Groups2OutlinedIcon color="white" className="cursor" />
-              </Button>
-              <Button
-                className="room-food"
-                fullWidth
-                variant="contained"
-                title="Room Food & Beverages"
-                onClick={handleFoodBeverage}
-                sx={{
-                  background: "white",
-                  color: "black",
-                  flex: 1,
-                  minWidth: "40px",
-                }}
-                size="small"
-              >
-                <FoodBankOutlinedIcon color="white" className="cursor" />
-              </Button>
-              <Button
-                className="room-barcode"
-                fullWidth
-                variant="contained"
-                title="Barcode"
-                onClick={handleBarCode}
-                sx={{
-                  background: "white",
-                  color: "black",
-                  flex: 1,
-                  minWidth: "40px",
-                }}
-                size="small"
-              >
-                <QrCodeOutlinedIcon color="white" className="cursor" />
-              </Button>
-              <Button
-                className="room-edit"
-                variant="contained"
-                title="Edit Room"
-                onClick={handleRoomEdit}
-                sx={{
-                  background: "white",
-                  color: "black",
-                  flex: 1,
-                  minWidth: "40px",
-                }}
-                size="small"
-              >
-                <EditOutlinedIcon color="white" className="cursor" />
-              </Button>
-              <Button
-                className="room-delete"
-                fullWidth
-                title="Delete Room"
-                variant="contained"
-                onClick={() => handleDeleteClick(room.id)}
-                sx={{
-                  borderRadius: "0 0 10px 0px",
-                  background: "red",
-                  flex: 1,
-                  minWidth: "40px",
-                }}
-                size="small"
-              >
-                <DeleteIcon />
-              </Button>
+              {user.UserType.roomModule &&
+                user.UserType.roomModule.split(",").includes("view") && (
+                  <Button
+                    className="room-view"
+                    fullWidth
+                    variant="contained"
+                    onClick={handleCardClick}
+                    title="View Room"
+                    sx={{
+                      borderRadius: "0 0 0px 10px",
+                      flex: 1,
+                      minWidth: "40px",
+                    }}
+                    size="small"
+                  >
+                    <VisibilityOutlinedIcon color="white" className="cursor" />
+                  </Button>
+                )}
+              {user.UserType.roomModule &&
+                user.UserType.roomModule.split(",").includes("gallery") && (
+                  <Button
+                    className="room-gallery"
+                    fullWidth
+                    variant="contained"
+                    title="Room Gallery"
+                    onClick={handleGallery}
+                    sx={{
+                      background: "white",
+                      color: "black",
+                      flex: 1,
+                      minWidth: "40px",
+                    }}
+                    size="small"
+                  >
+                    <CollectionsIcon color="white" className="cursor" />
+                  </Button>
+                )}
+              {user.UserType.roomModule &&
+                user.UserType.roomModule.split(",").includes("amenities") && (
+                  <Button
+                    className="room-amenities"
+                    fullWidth
+                    variant="contained"
+                    title="Room Amenities"
+                    onClick={handleAmenities}
+                    sx={{
+                      background: "white",
+                      color: "black",
+                      flex: 1,
+                      minWidth: "40px",
+                    }}
+                    size="small"
+                  >
+                    <Groups2OutlinedIcon color="white" className="cursor" />
+                  </Button>
+                )}
+              {user.UserType.roomModule &&
+                user.UserType.roomModule
+                  .split(",")
+                  .includes("foodbeverage") && (
+                  <Button
+                    className="room-food"
+                    fullWidth
+                    variant="contained"
+                    title="Room Food & Beverages"
+                    onClick={handleFoodBeverage}
+                    sx={{
+                      background: "white",
+                      color: "black",
+                      flex: 1,
+                      minWidth: "40px",
+                    }}
+                    size="small"
+                  >
+                    <FoodBankOutlinedIcon color="white" className="cursor" />
+                  </Button>
+                )}
+              {user.UserType.roomModule &&
+                user.UserType.roomModule.split(",").includes("barcode") && (
+                  <Button
+                    className="room-barcode"
+                    fullWidth
+                    variant="contained"
+                    title="Barcode"
+                    onClick={handleBarCode}
+                    sx={{
+                      background: "white",
+                      color: "black",
+                      flex: 1,
+                      minWidth: "40px",
+                    }}
+                    size="small"
+                  >
+                    <QrCodeOutlinedIcon color="white" className="cursor" />
+                  </Button>
+                )}
+              {user.UserType.roomModule &&
+                user.UserType.roomModule.split(",").includes("edit") && (
+                  <Button
+                    className="room-edit"
+                    variant="contained"
+                    title="Edit Room"
+                    onClick={handleRoomEdit}
+                    sx={{
+                      background: "white",
+                      color: "black",
+                      flex: 1,
+                      minWidth: "40px",
+                    }}
+                    size="small"
+                  >
+                    <EditOutlinedIcon color="white" className="cursor" />
+                  </Button>
+                )}
+              {user.UserType.roomModule &&
+                user.UserType.roomModule.split(",").includes("delete") && (
+                  <Button
+                    className="room-delete"
+                    fullWidth
+                    title="Delete Room"
+                    variant="contained"
+                    onClick={() => handleDeleteClick(room.id)}
+                    sx={{
+                      borderRadius: "0 0 10px 0px",
+                      background: "red",
+                      flex: 1,
+                      minWidth: "40px",
+                    }}
+                    size="small"
+                  >
+                    <DeleteIcon />
+                  </Button>
+                )}
             </Box>
           ) : (
             <Box

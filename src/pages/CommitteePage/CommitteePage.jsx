@@ -23,7 +23,7 @@ import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useNavigate } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 import DeleteModal from "../../components/Common/Modals/Delete/DeleteModal";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   AddOutlinedIcon,
   EditOutlinedIcon,
@@ -42,6 +42,7 @@ const CommitteeManagementMUI = () => {
   const [selectedCommitteeId, setSelectedCommitteeId] = useState(null);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const { user } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
 
@@ -151,39 +152,50 @@ const CommitteeManagementMUI = () => {
             height: "100%",
           }}
         >
-          <Tooltip title="Delete">
-            <DeleteOutlineOutlinedIcon
-              onClick={() => {
-                setDeleteId(params.row.id);
-                setDeleteModalOpen(true);
-              }}
-              sx={{ cursor: "pointer" }}
-              fontSize="medium"
-              color="error"
-              className="committee-delete"
-            />
-          </Tooltip>
-          <Tooltip title="Edit">
-            <EditOutlinedIcon
-              color="success"
-              onClick={() => {
-                setSelectedCommitteeId(params.row.id);
-                setIsEditOpen(true);
-              }}
-              sx={{ cursor: "pointer" }}
-              className="committee-edit"
-            />
-          </Tooltip>
-          <Tooltip title="Change Status">
-            <Switch
-              size="small"
-              checked={!!params.row.status}
-              onChange={() =>
-                handleChangeStatus(params.row.id, !!params.row.status)
-              }
-              className="committee-switch"
-            />
-          </Tooltip>
+          {user.UserType.committeeModule &&
+            user.UserType.committeeModule.split(",").includes("delete") && (
+              <Tooltip title="Delete">
+                <DeleteOutlineOutlinedIcon
+                  onClick={() => {
+                    setDeleteId(params.row.id);
+                    setDeleteModalOpen(true);
+                  }}
+                  sx={{ cursor: "pointer" }}
+                  fontSize="medium"
+                  color="error"
+                  className="committee-delete"
+                />
+              </Tooltip>
+            )}
+          {user.UserType.committeeModule &&
+            user.UserType.committeeModule.split(",").includes("edit") && (
+              <Tooltip title="Edit">
+                <EditOutlinedIcon
+                  color="success"
+                  onClick={() => {
+                    setSelectedCommitteeId(params.row.id);
+                    setIsEditOpen(true);
+                  }}
+                  sx={{ cursor: "pointer" }}
+                  className="committee-edit"
+                />
+              </Tooltip>
+            )}
+          {user.UserType.committeeModule &&
+            user.UserType.committeeModule
+              .split(",")
+              .includes("changeStatus") && (
+              <Tooltip title="Change Status">
+                <Switch
+                  size="small"
+                  checked={!!params.row.status}
+                  onChange={() =>
+                    handleChangeStatus(params.row.id, !!params.row.status)
+                  }
+                  className="committee-switch"
+                />
+              </Tooltip>
+            )}
           <Tooltip title="View all members">
             <Chip
               label={`${params.row.CommitteeMembers?.length || 0}`}
@@ -210,6 +222,10 @@ const CommitteeManagementMUI = () => {
           func={setIsAddCommittee}
           title="Add New Committee"
           nameOfTheClass="add-committee"
+          statusIcon={
+            user.UserType.committeeModule &&
+            user.UserType.committeeModule.split(",").includes("add")
+          }
         >
           <FormControl
             className="committee-filter"

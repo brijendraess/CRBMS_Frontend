@@ -125,7 +125,7 @@ const CommitteeMemberList = () => {
       hideSortIcons: true,
       width: 200,
       renderCell: (params) =>
-        user?.isAdmin ? (
+        user.UserType.committeeMemberModule&&user.UserType.committeeMemberModule.split(",").includes("delete") && user?.UserType?.isAdmin==='admin' ? (
           <Tooltip title="Remove User">
             <DeleteOutlineIcon
               color="error"
@@ -147,9 +147,10 @@ const CommitteeMemberList = () => {
         icon={PersonAddOutlinedIcon}
         func={setIsAddMemberOpen}
         title={"Add User to Committee"}
+        statusIcon={user.UserType.committeeMemberModule&&user.UserType.committeeMemberModule.split(",").includes("add")}
       />
       {isSmallScreen ? (
-        <Grid2
+        <Grid2 
           container
           spacing={2}
           sx={{

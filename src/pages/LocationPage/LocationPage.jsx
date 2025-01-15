@@ -11,7 +11,7 @@ import DeleteModal from "../../components/Common/Modals/Delete/DeleteModal";
 import LocationCard from "./LocationCard";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import CheckAndShowImage from "../../components/Common/CustomImage/showImage";
 import {
   AddOutlinedIcon,
@@ -27,6 +27,7 @@ const LocationPage = () => {
   const [open, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [refreshPage, setRefreshPage] = useState(0);
+  const { user } = useSelector((state) => state.user);
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
   const dispatch = useDispatch();
   useEffect(() => {
@@ -151,29 +152,29 @@ const LocationPage = () => {
 
       renderCell: (params) => (
         <Box display="flex" alignItems="center" gap={1}>
-          <Tooltip title="Edit">
+          {user.UserType.locationModule&&user.UserType.locationModule.split(",").includes("edit")&&<Tooltip title="Edit">
             <EditOutlinedIcon
               className="location-edit"
               color="success"
               onClick={() => handleEdit(params.row.id)}
               style={{ cursor: "pointer" }}
             />
-          </Tooltip>
-          <Tooltip title="Delete">
+          </Tooltip>}
+          {user.UserType.locationModule&&user.UserType.locationModule.split(",").includes("delete")&&<Tooltip title="Delete">
             <DeleteOutlineOutlinedIcon
               className="location-delete"
               color="error"
               style={{ cursor: "pointer" }}
               onClick={() => handleOpen(params.row.id)}
             />
-          </Tooltip>
-          <Tooltip title="Change Status">
+          </Tooltip>}
+          {user.UserType.locationModule&&user.UserType.locationModule.split(",").includes("changeStatus")&&<Tooltip title="Change Status">
             <Switch
               className="location-switch"
               checked={params.row.status}
               onChange={() => handleStatusChange(params.row.id)}
             />
-          </Tooltip>
+          </Tooltip>}
         </Box>
       ),
       headerClassName: "super-app-theme--header",
@@ -188,6 +189,7 @@ const LocationPage = () => {
         title={"Add"}
         func={setIsAddOpen}
         nameOfTheClass="add-location"
+        statusIcon={user.UserType.locationModule&&user.UserType.locationModule.split(",").includes("add")}
       />
       {isSmallScreen ? (
         <Grid2

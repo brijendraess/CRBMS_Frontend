@@ -12,7 +12,7 @@ import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import AmenitiesCard from "./AmenitiesCard";
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   AddOutlinedIcon,
   EditOutlinedIcon,
@@ -28,6 +28,7 @@ const AmenitiesList = () => {
   const [deleteId, setDeleteId] = useState(null);
   const [isRefreshed, setIsRefreshed] = useState(0);
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
   // Fetch amenities only when component mounts
   useEffect(() => {
     const fetchAmenities = async () => {
@@ -122,13 +123,13 @@ const AmenitiesList = () => {
     {
       field: "name",
       headerName: "Amenity Name",
-      width: 300,
+      width: 200,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "description",
       headerName: "Description",
-      width: 800,
+      width: 620,
       headerClassName: "super-app-theme--header",
     },
     {
@@ -139,29 +140,40 @@ const AmenitiesList = () => {
       width: 300,
       renderCell: (params) => (
         <Box height={"40px"} display="flex" alignItems="center" gap={2}>
-          <Tooltip title="Edit">
-            <EditOutlinedIcon
-              style={{ cursor: "pointer" }}
-              color="success"
-              onClick={() => handleEdit(params.id)}
-              className="amenity-edit"
-            />
-          </Tooltip>
-          <Tooltip title="Delete">
-            <DeleteOutlineOutlinedIcon
-              color="error"
-              onClick={() => handleOpen(params.id)}
-              style={{ cursor: "pointer" }}
-              className="amenity-delete"
-            />
-          </Tooltip>
-          <Tooltip title="Change Status">
-            <Switch
-              checked={params.row.status}
-              onChange={() => handleStatusChange(params.row.id)}
-              className="amenity-switch"
-            />
-          </Tooltip>
+          {user.UserType.amenitiesModule &&
+            user.UserType.amenitiesModule.split(",").includes("edit") && (
+              <Tooltip title="Edit">
+                <EditOutlinedIcon
+                  style={{ cursor: "pointer" }}
+                  color="success"
+                  onClick={() => handleEdit(params.id)}
+                  className="amenity-edit"
+                />
+              </Tooltip>
+            )}
+          {user.UserType.amenitiesModule &&
+            user.UserType.amenitiesModule.split(",").includes("delete") && (
+              <Tooltip title="Delete">
+                <DeleteOutlineOutlinedIcon
+                  color="error"
+                  onClick={() => handleOpen(params.id)}
+                  style={{ cursor: "pointer" }}
+                  className="amenity-delete"
+                />
+              </Tooltip>
+            )}
+          {user.UserType.amenitiesModule &&
+            user.UserType.amenitiesModule
+              .split(",")
+              .includes("changeStatus") && (
+              <Tooltip title="Change Status">
+                <Switch
+                  checked={params.row.status}
+                  onChange={() => handleStatusChange(params.row.id)}
+                  className="amenity-switch"
+                />
+              </Tooltip>
+            )}
         </Box>
       ),
       headerClassName: "super-app-theme--header",
@@ -178,6 +190,10 @@ const AmenitiesList = () => {
         icon={AddOutlinedIcon}
         func={setIsAddOpen}
         nameOfTheClass="add-amenity"
+        statusIcon={
+          user.UserType.amenitiesModule &&
+          user.UserType.amenitiesModule.split(",").includes("add")
+        }
       />
       {/* Render AmenitiesCard only on small screens */}
       {isSmallScreen && (

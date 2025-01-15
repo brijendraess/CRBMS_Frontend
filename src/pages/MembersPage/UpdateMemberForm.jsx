@@ -38,18 +38,23 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
   const [profileImagePreview, setProfileImagePreview] = useState(null);
   const [profileImageError, setProfileImageError] = useState("");
   const [userCommittees, setUserCommittees] = useState([]);
+  const [activeRole, setActiveRole] = useState([]); // List of available active role
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         dispatch(showLoading());
-        const [userResponse, committeesResponse] = await Promise.all([
-          axios.get(`/api/v1/user/${id}`),
-          axios.get("/api/v1/committee/active-committee"),
-        ]);
+        const [userResponse, committeesResponse, userRoleResponse] =
+          await Promise.all([
+            axios.get(`/api/v1/user/${id}`),
+            axios.get("/api/v1/committee/active-committee"),
+            axios.get("/api/v1/user-type/active"),
+          ]);
         const userData = userResponse.data.data;
         const committees = committeesResponse.data.data.committees || [];
+        const userRole = userRoleResponse.data.data.result || [];
         setAvailableCommittees(committees);
+        setActiveRole(userRole);
 
         // Find the full committee objects that match the user's committee names
         const userCommitteeObjects = userData.committees
@@ -63,7 +68,7 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
           fullname: userData.fullname,
           email: userData.email,
           phoneNumber: userData.phoneNumber,
-          isAdmin: userData.isAdmin,
+          user_type: userData.user_type,
           committees: userCommitteeObjects,
         });
 
@@ -78,7 +83,7 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
         console.error("Error fetching data:", error);
       }
     };
-    
+
     fetchUserData();
   }, [id]);
 
@@ -87,7 +92,7 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
       fullname: "",
       email: "",
       phoneNumber: "",
-      isAdmin: "",
+      user_type: "",
       committees: [],
     },
     validationSchema: Yup.object({
@@ -115,9 +120,10 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
         formData.append("fullname", values.fullname);
         formData.append("email", values.email);
         formData.append("phoneNumber", values.phoneNumber);
-        formData.append("isAdmin", values.isAdmin);
+        formData.append("user_type", values.user_type);
         formData.append("committees", committeeIds);
-        if (values.profileImage) formData.append("profileImage", values.profileImage);
+        if (values.profileImage)
+          formData.append("profileImage", values.profileImage);
         const response = await axios.put(
           `/api/v1/user/update-profile/${id}`,
           formData,
@@ -205,20 +211,21 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
 
         <TextField
           label="Role"
-          name="isAdmin"
+          name="user_type"
           fullWidth
           select
-          value={formik.values.isAdmin}
+          value={formik.values.user_type}
           onChange={(event) => {
-            formik.setFieldValue("isAdmin", event.target.value === "true");
+            formik.setFieldValue("user_type", event.target.value);
           }}
-          error={formik.touched.isAdmin && Boolean(formik.errors.isAdmin)}
-          helperText={formik.touched.isAdmin && formik.errors.isAdmin}
+          error={formik.touched.user_type && Boolean(formik.errors.user_type)}
+          helperText={formik.touched.user_type && formik.errors.user_type}
           style={{ marginRight: 8, flex: 1 }}
           size="small"
         >
-          <MenuItem value="false">User</MenuItem>
-          <MenuItem value="true">Admin</MenuItem>
+          {activeRole?.map((user_type) => (
+            <MenuItem value={user_type.id}>{user_type.userTypeName}</MenuItem>
+          ))}
         </TextField>
 
         <Autocomplete

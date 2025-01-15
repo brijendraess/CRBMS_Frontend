@@ -10,26 +10,25 @@ import {
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
-import FoodBeverageAdd from "./FoodBeveragesAdd";
+import ServicesAdd from "./ServicesAdd";
 import axios from "axios";
 import toast from "react-hot-toast";
-import FoodBeverageEdit from "./FoodBeveragesEdit";
+import ServicesEdit from "./ServicesEdit";
 import CustomButton from "../../components/Common/CustomButton/CustomButton";
 import DeleteModal from "../../components/Common/Modals/Delete/DeleteModal";
-import FoodBeverageCard from "../../components/Responsive/FoodBeverageCard/FoodBeverageCard";
+import ServicesCard from "../../components/Responsive/Services/ServicesCard";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import {
   AddOutlinedIcon,
   EditOutlinedIcon,
   DeleteOutlineOutlinedIcon,
 } from "../../components/Common/CustomButton/CustomIcon";
-import PageHeader from "../../components/Common/PageHeader/PageHeader";
 
-const FoodBeveragePage = () => {
+const ServicesPage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(false);
-  const [foodBeverage, setFoodBeverage] = useState([]);
+  const [services, setServices] = useState([]);
   const [updatedId, setUpdatedId] = useState(null);
   const [open, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
@@ -38,28 +37,28 @@ const FoodBeveragePage = () => {
   const isSmallScreen = useMediaQuery("(max-width:768px)");
 
   useEffect(() => {
-    const fetchFoodBeverages = async () => {
+    const fetchServices = async () => {
       try {
         showLoading();
         const response = await axios.get(
-          "/api/v1/food-beverages/food-beverage"
+          "/api/v1/services/all"
         );
-        const foodBeverageWithSerial = response.data.data.foodBeverages.map(
-          (foodBeverage, index) => ({
-            ...foodBeverage,
+        const servicesWithSerial = response.data.data.result.map(
+          (services, index) => ({
+            ...services,
             serialNo: index + 1,
           })
         );
-        setFoodBeverage(foodBeverageWithSerial);
+        setServices(servicesWithSerial);
         hideLoading();
       } catch (error) {
         hideLoading();
         toast.error("Something Went Wrong");
-        console.error("Error fetching foodBeverages:", error);
+        console.error("Error fetching services:", error);
       }
     };
 
-    fetchFoodBeverages();
+    fetchServices();
   }, [refreshPage]);
 
   const handleEdit = (id) => {
@@ -76,24 +75,24 @@ const FoodBeveragePage = () => {
     try {
       showLoading();
       await axios.delete(
-        `/api/v1/food-beverages/food-beverage/delete/${deleteId}`
+        `/api/v1/services/delete/${deleteId}`
       );
 
       handleClose(false);
       setRefreshPage(Math.random());
-      toast.success("Food beverage deleted successfully!");
+      toast.success("Services deleted successfully!");
       hideLoading();
     } catch (error) {
       hideLoading();
-      toast.error("Failed to delete foodBeverage!");
-      console.error("Error deleting foodBeverage:", error);
+      toast.error("Failed to delete services!");
+      console.error("Error deleting services:", error);
     }
   };
 
-  const handleUpdateSuccess = (updatedFoodBeverage) => {
-    setFoodBeverage((prev) =>
+  const handleUpdateSuccess = (updatedServices) => {
+    setServices((prev) =>
       prev.map((loc) =>
-        loc.id === updatedFoodBeverage.id ? updatedFoodBeverage : loc
+        loc.id === updatedServices.id ? updatedServices : loc
       )
     );
     setIsEditOpen(false);
@@ -108,24 +107,24 @@ const FoodBeveragePage = () => {
     try {
       showLoading();
       const response = await axios.patch(
-        `/api/v1/food-beverages/food-beverage/${id}/status`
+        `/api/v1/services/changeStatus/${id}`
       );
-      const updatedFoodBeverage = response.data.data.foodBeverage;
+      const updatedServices = response.data.data.result;
 
-      setFoodBeverage((prev) =>
+      setServices((prev) =>
         prev.map((loc) =>
-          loc.id === id ? { ...loc, status: updatedFoodBeverage.status } : loc
+          loc.id === id ? { ...loc, status: updatedServices.status } : loc
         )
       );
 
       toast.success(
-        `Food beverage status changed to ${updatedFoodBeverage.status ? "Active" : "Inactive"}`
+        `Services status changed to ${updatedServices.status ? "Active" : "Inactive"}`
       );
       hideLoading();
     } catch (error) {
       hideLoading();
       console.error("Error changing status:", error);
-      toast.error("Failed to change foodBeverage status!");
+      toast.error("Failed to change services status!");
     }
   };
 
@@ -139,7 +138,7 @@ const FoodBeveragePage = () => {
       headerClassName: "super-app-theme--header",
     },
     {
-      field: "foodBeverageName",
+      field: "servicesName",
       headerName: "Name",
       flex: 3,
       headerClassName: "super-app-theme--header",
@@ -153,40 +152,26 @@ const FoodBeveragePage = () => {
 
       renderCell: (params) => (
         <Box display="flex" alignItems="center" gap={1}>
-          {user.UserType.foodBeverageModule &&
-            user.UserType.foodBeverageModule.split(",").includes("edit") && (
-              <Tooltip title="Edit">
-                <EditOutlinedIcon
-                  color="success"
-                  onClick={() => handleEdit(params.row.id)}
-                  style={{ cursor: "pointer" }}
-                  className="food-edit"
-                />
-              </Tooltip>
-            )}
-          {user.UserType.foodBeverageModule &&
-            user.UserType.foodBeverageModule.split(",").includes("delete") && (
-              <Tooltip title="Delete">
-                <DeleteOutlineOutlinedIcon
-                  color="error"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => handleOpen(params.row.id)}
-                  className="food-delete"
-                />
-              </Tooltip>
-            )}
-          {user.UserType.foodBeverageModule &&
-            user.UserType.foodBeverageModule
-              .split(",")
-              .includes("changeStatus") && (
-              <Tooltip title="Change Status">
-                <Switch
-                  checked={params.row.status}
-                  onChange={() => handleStatusChange(params.row.id)}
-                  className="food-switch"
-                />
-              </Tooltip>
-            )}
+          {user.UserType.servicesModule&&user.UserType.servicesModule.split(",").includes("edit")&&<Tooltip title="Edit">
+            <EditOutlinedIcon
+              color="success"
+              onClick={() => handleEdit(params.row.id)}
+              style={{ cursor: "pointer" }}
+            />
+          </Tooltip>}
+          {user.UserType.servicesModule&&user.UserType.servicesModule.split(",").includes("delete")&&<Tooltip title="Delete">
+            <DeleteOutlineOutlinedIcon
+              color="error"
+              style={{ cursor: "pointer" }}
+              onClick={() => handleOpen(params.row.id)}
+            />
+          </Tooltip>}
+          {user.UserType.servicesModule&&user.UserType.servicesModule.split(",").includes("changeStatus")&&<Tooltip title="Change Status">
+            <Switch
+              checked={params.row.status}
+              onChange={() => handleStatusChange(params.row.id)}
+            />
+          </Tooltip>}
         </Box>
       ),
       headerClassName: "super-app-theme--header",
@@ -195,16 +180,42 @@ const FoodBeveragePage = () => {
 
   return (
     <PaperWrapper>
-      <PageHeader
-        heading={"Food & Beverages"}
-        icon={AddOutlinedIcon}
-        func={setIsAddOpen}
-        nameOfTheClass="add-food"
-        statusIcon={
-          user.UserType.foodBeverageModule &&
-          user.UserType.foodBeverageModule.split(",").includes("add")
-        }
-      />
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: "10px",
+        }}
+      >
+        <Typography
+          variant="h1"
+          component="h1"
+          sx={{
+            marginRight: "20px",
+            fontSize: {
+              xs: "16px",
+              sm: "18px",
+              md: "22px",
+            },
+            fontWeight: 500,
+            lineHeight: 1.5,
+            color: "#2E2E2E",
+          }}
+        >
+          Services
+        </Typography>
+        {user.UserType.servicesModule&&user.UserType.servicesModule.split(",").includes("add")&&
+        <CustomButton
+          onClick={() => setIsAddOpen(true)}
+          title={"Add Service"}
+          placement={"left"}
+          Icon={AddOutlinedIcon}
+          fontSize={"medium"}
+          background={"rgba(3, 176, 48, 0.68)"}
+          statusIcon={user.UserType.servicesModule&&user.UserType.servicesModule.split(",").includes("add")}
+        />}
+      </Box>
       {isSmallScreen && (
         <Grid2
           container
@@ -217,10 +228,10 @@ const FoodBeveragePage = () => {
             justifyContent: "center",
           }}
         >
-          {foodBeverage.map((food) => (
-            <FoodBeverageCard
-              key={food.id}
-              food={food}
+          {services.map((services) => (
+            <ServicesCard
+              key={services.id}
+              services={services}
               handleEdit={handleEdit}
               handleDelete={handleOpen}
               handleStatusChange={handleStatusChange}
@@ -231,7 +242,7 @@ const FoodBeveragePage = () => {
       {!isSmallScreen && (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <DataGrid
-            rows={foodBeverage}
+            rows={services}
             columns={columns}
             pageSize={5}
             rowsPerPageOptions={[5]}
@@ -252,9 +263,9 @@ const FoodBeveragePage = () => {
       <PopupModals
         isOpen={isAddOpen}
         setIsOpen={setIsAddOpen}
-        title={"Add Food beverage"}
+        title={"Add Services"}
         modalBody={
-          <FoodBeverageAdd
+          <ServicesAdd
             setRefreshPage={setRefreshPage}
             setIsAddOpen={setIsAddOpen}
           />
@@ -263,15 +274,15 @@ const FoodBeveragePage = () => {
       <PopupModals
         isOpen={isEditOpen}
         setIsOpen={setIsEditOpen}
-        title={"Edit Food beverage"}
+        title={"Edit Services"}
         modalBody={
-          <FoodBeverageEdit
+          <ServicesEdit
             id={updatedId}
             setRefreshPage={setRefreshPage}
             setIsEditOpen={setIsEditOpen}
-            foodBeverageName={
-              foodBeverage.find((loc) => loc.id === updatedId)
-                ?.foodBeverageName || ""
+            servicesName={
+              services.find((loc) => loc.id === updatedId)
+                ?.servicesName || ""
             }
             onSuccess={handleUpdateSuccess}
           />
@@ -287,4 +298,4 @@ const FoodBeveragePage = () => {
   );
 };
 
-export default FoodBeveragePage;
+export default ServicesPage;

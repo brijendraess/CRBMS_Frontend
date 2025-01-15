@@ -10,6 +10,7 @@ const PageHeader = ({
   children,
   title,
   nameOfTheClass,
+  statusIcon
 }) => {
   const { user } = useSelector((state) => state.user);
 
@@ -42,11 +43,9 @@ const PageHeader = ({
       >
         {heading || "Page Header"}
       </Typography>
-
-      {user?.isAdmin && (
         <Box display="flex" alignItems="center" justifyContent="center" gap={2}>
           {children}
-          {func && (
+          {func && statusIcon && (
             <CustomButton
               nameOfTheClass={nameOfTheClass}
               onClick={() => func(true)}
@@ -58,7 +57,7 @@ const PageHeader = ({
             />
           )}
         </Box>
-      )}
+      {/* )} */}
     </Box>
   );
 };

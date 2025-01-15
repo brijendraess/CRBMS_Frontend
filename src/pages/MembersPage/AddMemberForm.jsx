@@ -21,8 +21,9 @@ import { PhotoCameraIcon,VisibilityOff,Visibility } from "../../components/Commo
 
 const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
   const [avatarPreview, setAvatarPreview] = useState(null); // Avatar preview
-  const [committees, setCommittees] = useState([]); // List of available committees
+  const [committees, setCommittees] = useState([]); // List of available active committees
   const [showPassword, setShowPassword] = useState(false); // Password visibility toggle
+  const [activeRole, setActiveRole] = useState([]); // List of available active role
 
   // Toggle password visibility
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -43,8 +44,23 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
       }
     };
 
+    const fetchUserRole = async () => {
+      try {
+        dispatch(showLoading());
+        const response = await axios.get("/api/v1/user-type/active");
+        setActiveRole(response.data.data.result || []); // Store committees
+        dispatch(hideLoading());
+      } catch (error) {
+        dispatch(hideLoading());
+        toast.error("Failed to fetch user type");
+        console.error("Error fetching user type:", error);
+      }
+    };
+    fetchUserRole()
     fetchCommittees();
   }, []);
+
+  
 
   // Handle avatar change and preview
   const handleAvatarChange = (event) => {
@@ -60,7 +76,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
     initialValues: {
       fullname: "",
       email: "",
-      role: true,
+      user_type: "",
       phoneNumber: "",
       committee: [],
       avatar: "",
@@ -72,7 +88,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
       email: Yup.string()
         .email("Invalid email format")
         .required("Email is required"),
-      role: Yup.boolean().required("Role is required"),
+      user_type: Yup.string().required("Role is required"),
       phoneNumber: Yup.string()
         .matches(/^\d+$/, "Phone number must contain only digits")
         .required("Phone number is required")
@@ -86,11 +102,11 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
     onSubmit: async (values, { resetForm }) => {
       try {
         dispatch(showLoading());
-        console.log("Submitted data : ", values);
+        //console.log("Submitted data : ", values);
         const formData = new FormData();
         formData.append("fullname", values.fullname);
         formData.append("email", values.email);
-        formData.append("role", values.role);
+        formData.append("user_type", values.user_type);
         formData.append("phoneNumber", values.phoneNumber);
         formData.append("password", values.password);
         formData.append("userName", values.userName);
@@ -120,7 +136,6 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
       }
     },
   });
-
   return (
     <PopContent>
       <Box component="form" onSubmit={formik.handleSubmit}>
@@ -198,19 +213,19 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
         <Box display="flex" justifyContent="space-between" mb={2}>
           <TextField
             label="Role"
-            name="role"
+            name="user_type"
             select
-            value={formik.values.role}
+            value={formik.values.user_type}
             onChange={(event) => {
-              formik.setFieldValue("role", event.target.value === "true");
+              formik.setFieldValue("user_type", event.target.value);
             }}
-            error={formik.touched.role && Boolean(formik.errors.role)}
-            helperText={formik.touched.role && formik.errors.role}
+            error={formik.touched.user_type && Boolean(formik.errors.user_type)}
+            helperText={formik.touched.user_type && formik.errors.user_type}
             style={{ marginRight: 8, flex: 1 }}
             size="small"
           >
-            <MenuItem value="false">User</MenuItem>
-            <MenuItem value="true">Admin</MenuItem>
+
+            {activeRole?.map((user_type)=><MenuItem value={user_type.id}>{user_type.userTypeName}</MenuItem>)}
           </TextField>
 
           <TextField

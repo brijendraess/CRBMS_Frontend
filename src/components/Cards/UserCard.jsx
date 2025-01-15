@@ -113,8 +113,11 @@ const UserCard = ({
               fontSize: "14px",
             }}
           >
-            <AdminPanelSettingsOutlinedIcon fontSize="small" />
-            {user.isAdmin}
+            <AdminPanelSettingsOutlinedIcon
+              fontSize="small"
+              sx={{ marginBottom: "6px" }}
+            />
+            {user?.UserType?.userTypeName}
           </Typography>
         </CardContent>
       </CardActionArea>

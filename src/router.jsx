@@ -31,6 +31,8 @@ import FoodBeveragePage from "./pages/FoodBeverages/FoodBeveragesPage";
 import Notification from "./pages/Notification/NotificationPage";
 import SingleDisplayPage from "./pages/DetailRoomPage/SingleDisplayPage";
 import NotFound from "./pages/NotFoundPage/NotFound";
+import UserTypeSettings from "./pages/UserType/UserTypeSettings";
+import ServicesPage from "./pages/Services/ServicesPage";
 
 const AppRouter = () => {
   return (
@@ -103,6 +105,7 @@ const AppRouter = () => {
         <Route path="/book-meeting/:id" element={<MeetingForm />} />
         <Route path="/location" element={<LocationPage />} />
         <Route path="/food-beverages" element={<FoodBeveragePage />} />
+        <Route path="/user-role" element={<UserTypeSettings />} />
         <Route path="/logs" element={<MeetingLogs />} />
         <Route
           path="/view-committee/:committeeId"
@@ -110,6 +113,7 @@ const AppRouter = () => {
         />
         <Route path="/view/:id" element={<ViewMember />} />
         <Route path="/notification-all" element={<Notification />} />
+        <Route path="services" element={<ServicesPage />} />
         <Route path="/rooms/:id" element={<DetailRoomPage />} />
       </Route>
       <Route path="*" element={<NotFound />} />

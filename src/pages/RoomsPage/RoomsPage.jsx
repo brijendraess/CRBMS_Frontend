@@ -129,6 +129,7 @@ const RoomsPage = () => {
           func={setIsAddOpen}
           title={"Add New Room"}
           nameOfTheClass="add-room"
+          statusIcon={user.UserType.roomModule&&user.UserType.roomModule.split(",").includes("add")}
         >
           {isSmallScreen ? (
             <ResponsiveFilter

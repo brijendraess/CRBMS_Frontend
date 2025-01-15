@@ -34,6 +34,10 @@ const timeDifference = (time1, time2) => {
 };
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> ccb43e432cbecdbe83b96072f0b66450e3777fec
 const fetchUsers = async (toast, setEmailsList) => {
   try {
     const response = await axios.get("/api/v1/user/users");
@@ -105,12 +109,132 @@ function getMeetingTimePercentage(startTime, endTime) {
   }
 }
 
+<<<<<<< HEAD
 export {
   checkFileExists,
   getFormattedDate,
   timeDifference,
+=======
+const userRoleStringManipulation=(
+  addData=false,
+  editData=false,
+  deleteData=false,
+  viewData=false,
+  changeStatusData=false
+)=>{
+
+  let arrData=[];
+  if(addData){
+    arrData.push('add')
+  }
+  if(editData){
+    arrData.push('edit')
+  }
+  if(deleteData){
+    arrData.push('delete')
+  }
+  if(viewData){
+    arrData.push('view')
+  }
+  if(changeStatusData){
+    arrData.push('changeStatus')
+  }
+  if(arrData.length>0){
+    return arrData.join(",");
+  }else{
+    return "";
+  }
+
+}
+
+const userRoleStringMeetingManipulation=(editData=false,viewData=false,postponeData=false,cancelData=false,approvalData=false)=>{
+
+  let arrData=[];
+ 
+  if(editData){
+    arrData.push('edit')
+  }
+  if(viewData){
+    arrData.push('view')
+  }
+  if(postponeData){
+    arrData.push('postpone')
+  }
+  
+  if(cancelData){
+    arrData.push('cancel')
+  }
+  if(approvalData){
+    arrData.push('approval')
+  }
+  if(arrData.length>0){
+    return arrData.join(",");
+  }else{
+    return "";
+  }
+
+}
+
+const userRoleStringRoomManipulation=(
+  addData=false,
+  editData=false,
+  deleteData=false,
+  viewData=false,
+  galleryData=false,
+  amenitiesData=false,
+  foodBeverageData=false,
+  barcodeData=false,
+  sanitizationData=false
+)=>{
+
+  let arrData=[];
+  if(addData){
+    arrData.push('add')
+  }
+  if(editData){
+    arrData.push('edit')
+  }
+  if(deleteData){
+    arrData.push('delete')
+  }
+  if(viewData){
+    arrData.push('view')
+  }
+  if(galleryData){
+    arrData.push('gallery')
+  }
+  if(amenitiesData){
+    arrData.push('amenities')
+  }
+  if(foodBeverageData){
+    arrData.push('foodbeverage')
+  }
+  if(barcodeData){
+    arrData.push('barcode')
+  }
+  if(sanitizationData){
+    arrData.push('sanitization')
+  }
+  if(arrData.length>0){
+    return arrData.join(",");
+  }else{
+    return "";
+  }
+
+}
+
+export { checkFileExists, 
+  getFormattedDate, 
+  timeDifference, 
+>>>>>>> ccb43e432cbecdbe83b96072f0b66450e3777fec
   fetchUsers,
   fetchActiveCommittee,
   validateImage,
   getMeetingTimePercentage,
+<<<<<<< HEAD
 };
+=======
+userRoleStringManipulation,
+userRoleStringMeetingManipulation,
+userRoleStringRoomManipulation };
+>>>>>>> ccb43e432cbecdbe83b96072f0b66450e3777fec

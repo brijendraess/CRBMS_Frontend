@@ -114,12 +114,6 @@ const MeetingLogs = () => {
       flex: 1,
       headerClassName: "super-app-theme--header",
     },
-    // {
-    //   field: "notes",
-    //   headerName: "Notes",
-    //   width: 100,
-    //   headerClassName: "super-app-theme--header",
-    // },
     {
       field: "startTime",
       headerName: "Start Time",
@@ -174,14 +168,15 @@ const MeetingLogs = () => {
           }}
           gap={"10px"}
         >
-          <Tooltip title="Edit meeting">
+          {user.UserType.meetingLogsModule&&user.UserType.meetingLogsModule.split(",").includes("edit")&&<Tooltip title="Edit meeting">
             <EditOutlinedIcon
               className="meeting-logs-edit"
               color="success"
               onClick={() => handleEdit(params.row.roomId, params.row.id)}
               style={{ cursor: "pointer" }}
             />
-          </Tooltip>
+          </Tooltip>}
+          {user.UserType.meetingLogsModule&&user.UserType.meetingLogsModule.split(",").includes("postpone")&&
           <Tooltip title="Postpone meeting">
             <HistoryOutlinedIcon
               className="meeting-logs-postpone"
@@ -189,7 +184,8 @@ const MeetingLogs = () => {
               style={{ cursor: "pointer" }}
               onClick={() => handlePostpone(params.row.roomId, params.row.id)}
             />
-          </Tooltip>
+          </Tooltip>}
+          {user.UserType.meetingLogsModule&&user.UserType.meetingLogsModule.split(",").includes("cancel")&&
           <Tooltip title="Cancel meeting">
             <EventBusyOutlinedIcon
               className="meeting-logs-cancel"
@@ -199,8 +195,8 @@ const MeetingLogs = () => {
                 handleCancelMeeting(params.row.roomId, params.row.id)
               }
             />
-          </Tooltip>
-          {user.isAdmin && (
+          </Tooltip>}
+          {user.UserType.isAdmin==='admin' &&user.UserType.meetingLogsModule&&user.UserType.meetingLogsModule.split(",").includes("approval") && (
             <Tooltip title="Change the status of meeting">
               <ApprovalOutlinedIcon
                 className="meeting-logs-approve"
@@ -245,11 +241,11 @@ const MeetingLogs = () => {
   useEffect(() => {
     if (updatedRoomId) fetchRoomsData();
   }, [updatedRoomId, updatedBookingId, refreshPage]);
-
+console.log(user)
   useEffect(() => {
     const fetchMeetings = async () => {
       try {
-        const endpoint = user?.isAdmin
+        const endpoint = user?.UserType?.isAdmin==='admin'
           ? "/api/v1/meeting/get-all-admin-meeting"
           : "/api/v1/meeting/get-all-my-meeting";
         const response = await axios.get(endpoint, { withCredentials: true });
@@ -280,7 +276,7 @@ const MeetingLogs = () => {
     };
 
     fetchMeetings();
-  }, [user?.isAdmin, refreshPage]);
+  }, [user?.UserType?.isAdmin, refreshPage]);
 
   const useStyles = makeStyles({
     rowCancelled: {

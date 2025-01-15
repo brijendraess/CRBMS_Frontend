@@ -96,7 +96,7 @@ const CommitteeMemberCard = ({
           </Typography>
         </CardContent>
       </CardActionArea>
-      {user?.isAdmin ? (
+      {user?.UserType?.isAdmin ==='admin'? (
         <Box
           sx={{
             display: "flex",
