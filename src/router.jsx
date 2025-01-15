@@ -30,8 +30,10 @@ import ReportPage from "./pages/ReportPage/ReportPage";
 import FoodBeveragePage from "./pages/FoodBeverages/FoodBeveragesPage";
 import Notification from "./pages/Notification/NotificationPage";
 import SingleDisplayPage from "./pages/DetailRoomPage/SingleDisplayPage";
+import NotFound from "./pages/NotFoundPage/NotFound";
 import UserTypeSettings from "./pages/UserType/UserTypeSettings";
 import ServicesPage from "./pages/Services/ServicesPage";
+import StockPage from "./pages/StockPage/StockPage";
 
 const AppRouter = () => {
   return (
@@ -114,7 +116,9 @@ const AppRouter = () => {
         <Route path="/notification-all" element={<Notification />} />
         <Route path="services" element={<ServicesPage />} />
         <Route path="/rooms/:id" element={<DetailRoomPage />} />
+        <Route path="/stocks" element={<StockPage />} />
       </Route>
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };

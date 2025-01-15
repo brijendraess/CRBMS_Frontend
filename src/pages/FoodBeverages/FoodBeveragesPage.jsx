@@ -18,12 +18,13 @@ import CustomButton from "../../components/Common/CustomButton/CustomButton";
 import DeleteModal from "../../components/Common/Modals/Delete/DeleteModal";
 import FoodBeverageCard from "../../components/Responsive/FoodBeverageCard/FoodBeverageCard";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   AddOutlinedIcon,
   EditOutlinedIcon,
   DeleteOutlineOutlinedIcon,
 } from "../../components/Common/CustomButton/CustomIcon";
+import PageHeader from "../../components/Common/PageHeader/PageHeader";
 
 const FoodBeveragePage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -152,26 +153,40 @@ const FoodBeveragePage = () => {
 
       renderCell: (params) => (
         <Box display="flex" alignItems="center" gap={1}>
-          {user.UserType.foodBeverageModule&&user.UserType.foodBeverageModule.split(",").includes("edit")&&<Tooltip title="Edit">
-            <EditOutlinedIcon
-              color="success"
-              onClick={() => handleEdit(params.row.id)}
-              style={{ cursor: "pointer" }}
-            />
-          </Tooltip>}
-          {user.UserType.foodBeverageModule&&user.UserType.foodBeverageModule.split(",").includes("delete")&&<Tooltip title="Delete">
-            <DeleteOutlineOutlinedIcon
-              color="error"
-              style={{ cursor: "pointer" }}
-              onClick={() => handleOpen(params.row.id)}
-            />
-          </Tooltip>}
-          {user.UserType.foodBeverageModule&&user.UserType.foodBeverageModule.split(",").includes("changeStatus")&&<Tooltip title="Change Status">
-            <Switch
-              checked={params.row.status}
-              onChange={() => handleStatusChange(params.row.id)}
-            />
-          </Tooltip>}
+          {user.UserType.foodBeverageModule &&
+            user.UserType.foodBeverageModule.split(",").includes("edit") && (
+              <Tooltip title="Edit">
+                <EditOutlinedIcon
+                  color="success"
+                  onClick={() => handleEdit(params.row.id)}
+                  style={{ cursor: "pointer" }}
+                  className="food-edit"
+                />
+              </Tooltip>
+            )}
+          {user.UserType.foodBeverageModule &&
+            user.UserType.foodBeverageModule.split(",").includes("delete") && (
+              <Tooltip title="Delete">
+                <DeleteOutlineOutlinedIcon
+                  color="error"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handleOpen(params.row.id)}
+                  className="food-delete"
+                />
+              </Tooltip>
+            )}
+          {user.UserType.foodBeverageModule &&
+            user.UserType.foodBeverageModule
+              .split(",")
+              .includes("changeStatus") && (
+              <Tooltip title="Change Status">
+                <Switch
+                  checked={params.row.status}
+                  onChange={() => handleStatusChange(params.row.id)}
+                  className="food-switch"
+                />
+              </Tooltip>
+            )}
         </Box>
       ),
       headerClassName: "super-app-theme--header",
@@ -180,40 +195,16 @@ const FoodBeveragePage = () => {
 
   return (
     <PaperWrapper>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          marginBottom: "10px",
-        }}
-      >
-        <Typography
-          variant="h1"
-          component="h1"
-          sx={{
-            marginRight: "20px",
-            fontSize: {
-              xs: "16px",
-              sm: "18px",
-              md: "22px",
-            },
-            fontWeight: 500,
-            lineHeight: 1.5,
-            color: "#2E2E2E",
-          }}
-        >
-          Food beverage
-        </Typography>
-        {user.UserType.foodBeverageModule&&user.UserType.foodBeverageModule.split(",").includes("add")&&<CustomButton
-          onClick={() => setIsAddOpen(true)}
-          title={"Add New Room"}
-          placement={"left"}
-          Icon={AddOutlinedIcon}
-          fontSize={"medium"}
-          background={"rgba(3, 176, 48, 0.68)"}
-        />}
-      </Box>
+      <PageHeader
+        heading={"Food & Beverages"}
+        icon={AddOutlinedIcon}
+        func={setIsAddOpen}
+        nameOfTheClass="add-food"
+        statusIcon={
+          user.UserType.foodBeverageModule &&
+          user.UserType.foodBeverageModule.split(",").includes("add")
+        }
+      />
       {isSmallScreen && (
         <Grid2
           container

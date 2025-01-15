@@ -52,6 +52,27 @@ a {
   background-color: #555; /* Darker color when hovering */
 }
 
+.MuiTablePagination-selectLabel {
+  margin: 0 !important;
+  color: #f6f6f9 !important;
+}
+
+.MuiTablePagination-displayedRows {
+  margin: 0 !important;
+  color: #f6f6f9 !important;
+}
+
+.MuiToolbar-root .MuiInputBase-root,
+.MuiToolbar-root .MuiInputBase-root svg {
+  color: #f6f6f9 !important;
+}
+.MuiDataGrid-footerContainer {
+  background-color: #006400;
+  color: #f6f6f9 !important;
+}
+.MuiTablePagination-actions svg {
+  color: #f6f6f9 !important;
+}
 /* .spinner-parent {
   display: flex;
   justify-content: center;

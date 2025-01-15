@@ -40,7 +40,12 @@ import RoomFoodBeverages from "./RoomFoodBeverages";
 import BarCode from "../../pages/BarCodePage/BarCode";
 import StatusSymbol from "../Common/CustomButton/StatusSymbol";
 
-const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentData }) => {
+const RoomsCard = ({
+  room,
+  setDeleteUpdateStatus,
+  setRefreshPage,
+  meetingCurrentData,
+}) => {
   const navigate = useNavigate();
   const [hover, setHover] = useState(false);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
@@ -90,7 +95,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
 
   const handleSanitationStatusChange = async (event, roomId) => {
     // formik.setFieldValue("sanitationStatus", event.target.checked);
-    if (user?.UserType?.isAdmin==='admin') {
+    if (user?.UserType?.isAdmin === "admin") {
       setSanitationStatus(event.target.checked);
       const response = await axios.put(
         `api/v1/rooms/update-sanitation-status/${roomId}`,
@@ -129,10 +134,11 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
   useEffect(() => {
     setUrlData(`${import.meta.env.VITE_BARCODE_URL}/rooms/${room?.id}`);
   }, [room]);
-  
+
   return (
     <>
       <Paper
+        className="room-card"
         elevation={hover ? 20 : 4}
         sx={{
           position: "relative",
@@ -231,42 +237,46 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
               width: "100%",
             }}
           >
-              <Typography
-            variant="body2"
-            sx={{ display: 'flex', alignItems: 'center' }}
-          >
-            <Tooltip title="Capacity">
-              <GroupsOutlinedIcon />
-            </Tooltip>
-            {room.capacity} People
-          </Typography>
             <Typography
               variant="body2"
-              sx={{ display: 'flex', alignItems: 'center' }}
+              sx={{ display: "flex", alignItems: "center" }}
+            >
+              <Tooltip title="Capacity">
+                <GroupsOutlinedIcon />
+              </Tooltip>
+              {room.capacity} People
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{ display: "flex", alignItems: "center" }}
             >
               <Tooltip title="Sanitation Status">
                 <CleaningServicesIcon />
               </Tooltip>{" "}
-              {user.UserType.roomModule&&user.UserType.roomModule.split(",").includes("sanitization")?<FormControlLabel
-                control={
-                  <Switch
-                    checked={sanitationStatus}
-                    name="sanitationStatus"
-                    onChange={(event) =>
-                      handleSanitationStatusChange(event, room?.id)
-                    }
-                  />
-                }
-              />:
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={sanitationStatus}
-                    name="sanitationStatus"
-                  />
-                }
-              />}
-
+              {user.UserType.roomModule &&
+              user.UserType.roomModule.split(",").includes("sanitization") ? (
+                <FormControlLabel
+                  className="room-sanitation"
+                  control={
+                    <Switch
+                      checked={sanitationStatus}
+                      name="sanitationStatus"
+                      onChange={(event) =>
+                        handleSanitationStatusChange(event, room?.id)
+                      }
+                    />
+                  }
+                />
+              ) : (
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={sanitationStatus}
+                      name="sanitationStatus"
+                    />
+                  }
+                />
+              )}
             </Typography>
           </Box>
           <Box
@@ -276,23 +286,23 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
               width: "100%",
             }}
           >
-           <Typography
-            variant="body2"
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
-              textTransform: "capitalize",
-            }}
-          >
-            <Tooltip title="Tolerance Period">
-              <ExtensionIcon />
-            </Tooltip>{" "}
-            {room.tolerancePeriod} minutes
-          </Typography>
             <Typography
               variant="body2"
-              sx={{ display: 'flex', alignItems: 'center' }}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+                textTransform: "capitalize",
+              }}
+            >
+              <Tooltip title="Tolerance Period">
+                <ExtensionIcon />
+              </Tooltip>{" "}
+              {room.tolerancePeriod} minutes
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{ display: "flex", alignItems: "center" }}
             >
               <Tooltip title="Room Status">
                 <AirlineSeatLegroomExtraOutlinedIcon />
@@ -300,119 +310,148 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
               <StatusSymbol meetingCurrentData={meetingCurrentData} />
             </Typography>
           </Box>
-          
         </Box>
         <CardActions sx={{ p: 0 }}>
-          {user?.UserType?.isAdmin==='admin' ? (
+          {user?.UserType?.isAdmin === "admin" ? (
             <Box
               sx={{
                 display: "flex",
                 width: "100%",
               }}
             >
-              {user.UserType.roomModule&&user.UserType.roomModule.split(",").includes("view")&&<Button
-                fullWidth
-                variant="contained"
-                onClick={handleCardClick}
-                title="View Room"
-                sx={{
-                  borderRadius: "0 0 0px 10px",
-                  flex: 1,
-                  minWidth: "40px",
-                }}
-                size="small"
-              >
-                <VisibilityOutlinedIcon color="white" className="cursor" />
-              </Button>}
-              {user.UserType.roomModule&&user.UserType.roomModule.split(",").includes("gallery")&&<Button
-                fullWidth
-                variant="contained"
-                title="Room Gallery"
-                onClick={handleGallery}
-                sx={{
-                  background: "white",
-                  color: "black",
-                  flex: 1,
-                  minWidth: "40px",
-                }}
-                size="small"
-              >
-                <CollectionsIcon color="white" className="cursor" />
-              </Button>}
-              {user.UserType.roomModule&&user.UserType.roomModule.split(",").includes("amenities")&&<Button
-                fullWidth
-                variant="contained"
-                title="Room Amenities"
-                onClick={handleAmenities}
-                sx={{
-                  background: "white",
-                  color: "black",
-                  flex: 1,
-                  minWidth: "40px",
-                }}
-                size="small"
-              >
-                <Groups2OutlinedIcon color="white" className="cursor" />
-              </Button>}
-              {user.UserType.roomModule&&user.UserType.roomModule.split(",").includes("foodbeverage")&&<Button
-                fullWidth
-                variant="contained"
-                title="Room Food & Beverages"
-                onClick={handleFoodBeverage}
-                sx={{
-                  background: "white",
-                  color: "black",
-                  flex: 1,
-                  minWidth: "40px",
-                }}
-                size="small"
-              >
-                <FoodBankOutlinedIcon color="white" className="cursor" />
-              </Button>}
-              {user.UserType.roomModule&&user.UserType.roomModule.split(",").includes("barcode")&&<Button
-                fullWidth
-                variant="contained"
-                title="Barcode"
-                onClick={handleBarCode}
-                sx={{
-                  background: "white",
-                  color: "black",
-                  flex: 1,
-                  minWidth: "40px",
-                }}
-                size="small"
-              >
-                <QrCodeOutlinedIcon color="white" className="cursor" />
-              </Button>}
-              {user.UserType.roomModule&&user.UserType.roomModule.split(",").includes("edit")&&<Button
-                variant="contained"
-                title="Edit Room"
-                onClick={handleRoomEdit}
-                sx={{
-                  background: "white",
-                  color: "black",
-                  flex: 1,
-                  minWidth: "40px",
-                }}
-                size="small"
-              >
-                <EditOutlinedIcon color="white" className="cursor" />
-              </Button>}
-              {user.UserType.roomModule&&user.UserType.roomModule.split(",").includes("delete")&&<Button
-                fullWidth
-                title="Delete Room"
-                variant="contained"
-                onClick={() => handleDeleteClick(room.id)}
-                sx={{
-                  borderRadius: "0 0 10px 0px",
-                  background: "red",
-                  flex: 1,
-                  minWidth: "40px",
-                }}
-                size="small"
-              >
-                <DeleteIcon />
-              </Button>}
+              {user.UserType.roomModule &&
+                user.UserType.roomModule.split(",").includes("view") && (
+                  <Button
+                    className="room-view"
+                    fullWidth
+                    variant="contained"
+                    onClick={handleCardClick}
+                    title="View Room"
+                    sx={{
+                      borderRadius: "0 0 0px 10px",
+                      flex: 1,
+                      minWidth: "40px",
+                    }}
+                    size="small"
+                  >
+                    <VisibilityOutlinedIcon color="white" className="cursor" />
+                  </Button>
+                )}
+              {user.UserType.roomModule &&
+                user.UserType.roomModule.split(",").includes("gallery") && (
+                  <Button
+                    className="room-gallery"
+                    fullWidth
+                    variant="contained"
+                    title="Room Gallery"
+                    onClick={handleGallery}
+                    sx={{
+                      background: "white",
+                      color: "black",
+                      flex: 1,
+                      minWidth: "40px",
+                    }}
+                    size="small"
+                  >
+                    <CollectionsIcon color="white" className="cursor" />
+                  </Button>
+                )}
+              {user.UserType.roomModule &&
+                user.UserType.roomModule.split(",").includes("amenities") && (
+                  <Button
+                    className="room-amenities"
+                    fullWidth
+                    variant="contained"
+                    title="Room Amenities"
+                    onClick={handleAmenities}
+                    sx={{
+                      background: "white",
+                      color: "black",
+                      flex: 1,
+                      minWidth: "40px",
+                    }}
+                    size="small"
+                  >
+                    <Groups2OutlinedIcon color="white" className="cursor" />
+                  </Button>
+                )}
+              {user.UserType.roomModule &&
+                user.UserType.roomModule
+                  .split(",")
+                  .includes("foodbeverage") && (
+                  <Button
+                    className="room-food"
+                    fullWidth
+                    variant="contained"
+                    title="Room Food & Beverages"
+                    onClick={handleFoodBeverage}
+                    sx={{
+                      background: "white",
+                      color: "black",
+                      flex: 1,
+                      minWidth: "40px",
+                    }}
+                    size="small"
+                  >
+                    <FoodBankOutlinedIcon color="white" className="cursor" />
+                  </Button>
+                )}
+              {user.UserType.roomModule &&
+                user.UserType.roomModule.split(",").includes("barcode") && (
+                  <Button
+                    className="room-barcode"
+                    fullWidth
+                    variant="contained"
+                    title="Barcode"
+                    onClick={handleBarCode}
+                    sx={{
+                      background: "white",
+                      color: "black",
+                      flex: 1,
+                      minWidth: "40px",
+                    }}
+                    size="small"
+                  >
+                    <QrCodeOutlinedIcon color="white" className="cursor" />
+                  </Button>
+                )}
+              {user.UserType.roomModule &&
+                user.UserType.roomModule.split(",").includes("edit") && (
+                  <Button
+                    className="room-edit"
+                    variant="contained"
+                    title="Edit Room"
+                    onClick={handleRoomEdit}
+                    sx={{
+                      background: "white",
+                      color: "black",
+                      flex: 1,
+                      minWidth: "40px",
+                    }}
+                    size="small"
+                  >
+                    <EditOutlinedIcon color="white" className="cursor" />
+                  </Button>
+                )}
+              {user.UserType.roomModule &&
+                user.UserType.roomModule.split(",").includes("delete") && (
+                  <Button
+                    className="room-delete"
+                    fullWidth
+                    title="Delete Room"
+                    variant="contained"
+                    onClick={() => handleDeleteClick(room.id)}
+                    sx={{
+                      borderRadius: "0 0 10px 0px",
+                      background: "red",
+                      flex: 1,
+                      minWidth: "40px",
+                    }}
+                    size="small"
+                  >
+                    <DeleteIcon />
+                  </Button>
+                )}
             </Box>
           ) : (
             <Box
@@ -430,6 +469,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
                 sx={{
                   borderRadius: "0",
                 }}
+                className="room-user-view"
               >
                 View More
               </Button>
@@ -441,6 +481,7 @@ const RoomsCard = ({ room, setDeleteUpdateStatus, setRefreshPage,meetingCurrentD
                   borderRadius: "0",
                   bgcolor: "red",
                 }}
+                className="room-user-book-now"
               >
                 Book Now
               </Button>

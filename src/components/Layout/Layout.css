@@ -29,10 +29,16 @@
 
 .outlet-content {
   margin-top: 50px;
-  padding: 10px 10px 5px 10px;
-  background-image: url("../../assets/wallpaper.webp");
+  padding: 10px;
+  /* background-image: url("../../assets/wallpaper.webp"); */
 }
+
 @media (max-width: 768px) {
+  .main {
+    height: calc(100vh - 56px - 56px);
+    margin-top: 56px;
+  }
+
   .content {
     width: 100%;
     flex: 0 0 100%;
@@ -42,5 +48,10 @@
     width: 100%;
     flex: 0 0 100%;
     transition: all 0.3s ease-in-out;
+  }
+  .outlet-content {
+    margin-top: 0px;
+    height: 100%;
+    padding: 5px;
   }
 }

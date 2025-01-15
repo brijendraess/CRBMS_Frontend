@@ -99,55 +99,55 @@ const MeetingLogs = () => {
     {
       field: "subject",
       headerName: "Subject",
-      flex:1,
+      flex: 1,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "agenda",
       headerName: "Agenda",
-      flex:1,
+      flex: 1,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "notes",
       headerName: "Notes",
-      flex:1,
+      flex: 1,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "startTime",
       headerName: "Start Time",
-      flex:1,
+      flex: 1,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "endTime",
       headerName: "End Time",
-      flex:1,
+      flex: 1,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "meetingDate",
       headerName: "Meeting Date",
-      flex:1,
+      flex: 1,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "roomLocation",
       headerName: "Room Location",
-      flex:1,
+      flex: 1,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "organizerName",
       headerName: "Organizer",
-      flex:1,
+      flex: 1,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "status",
       headerName: "Status",
-      flex:1,
+      flex: 1,
       headerClassName: "super-app-theme--header",
     },
     {
@@ -155,7 +155,7 @@ const MeetingLogs = () => {
       headerName: "Action",
       disableColumnMenu: true,
       hideSortIcons: true,
-      flex:1,
+      flex: 1,
       headerClassName: "super-app-theme--header",
       renderCell: (params) => (
         <Box
@@ -170,7 +170,7 @@ const MeetingLogs = () => {
         >
           {user.UserType.meetingLogsModule&&user.UserType.meetingLogsModule.split(",").includes("edit")&&<Tooltip title="Edit meeting">
             <EditOutlinedIcon
-              // className="cursor"
+              className="meeting-logs-edit"
               color="success"
               onClick={() => handleEdit(params.row.roomId, params.row.id)}
               style={{ cursor: "pointer" }}
@@ -179,6 +179,7 @@ const MeetingLogs = () => {
           {user.UserType.meetingLogsModule&&user.UserType.meetingLogsModule.split(",").includes("postpone")&&
           <Tooltip title="Postpone meeting">
             <HistoryOutlinedIcon
+              className="meeting-logs-postpone"
               color="message"
               style={{ cursor: "pointer" }}
               onClick={() => handlePostpone(params.row.roomId, params.row.id)}
@@ -187,6 +188,7 @@ const MeetingLogs = () => {
           {user.UserType.meetingLogsModule&&user.UserType.meetingLogsModule.split(",").includes("cancel")&&
           <Tooltip title="Cancel meeting">
             <EventBusyOutlinedIcon
+              className="meeting-logs-cancel"
               color="error"
               style={{ cursor: "pointer" }}
               onClick={() =>
@@ -197,6 +199,7 @@ const MeetingLogs = () => {
           {user.UserType.isAdmin==='admin' &&user.UserType.meetingLogsModule&&user.UserType.meetingLogsModule.split(",").includes("approval") && (
             <Tooltip title="Change the status of meeting">
               <ApprovalOutlinedIcon
+                className="meeting-logs-approve"
                 color="success"
                 style={{ cursor: "pointer" }}
                 onClick={() =>

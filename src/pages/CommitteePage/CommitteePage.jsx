@@ -23,7 +23,7 @@ import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useNavigate } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 import DeleteModal from "../../components/Common/Modals/Delete/DeleteModal";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   AddOutlinedIcon,
   EditOutlinedIcon,
@@ -152,36 +152,50 @@ const CommitteeManagementMUI = () => {
             height: "100%",
           }}
         >
-          {user.UserType.committeeModule&&user.UserType.committeeModule.split(",").includes("delete")&&<Tooltip title="Delete">
-            <DeleteOutlineOutlinedIcon
-              onClick={() => {
-                setDeleteId(params.row.id);
-                setDeleteModalOpen(true);
-              }}
-              sx={{ cursor: "pointer" }}
-              fontSize="medium"
-              color="error"
-            />
-          </Tooltip>}
-          {user.UserType.committeeModule&&user.UserType.committeeModule.split(",").includes("edit")&&<Tooltip title="Edit">
-            <EditOutlinedIcon
-              color="success"
-              onClick={() => {
-                setSelectedCommitteeId(params.row.id);
-                setIsEditOpen(true);
-              }}
-              sx={{ cursor: "pointer" }}
-            />
-          </Tooltip>}
-          {user.UserType.committeeModule&&user.UserType.committeeModule.split(",").includes("changeStatus")&&<Tooltip title="Change Status">
-            <Switch
-              size="small"
-              checked={!!params.row.status}
-              onChange={() =>
-                handleChangeStatus(params.row.id, !!params.row.status)
-              }
-            />
-          </Tooltip>}
+          {user.UserType.committeeModule &&
+            user.UserType.committeeModule.split(",").includes("delete") && (
+              <Tooltip title="Delete">
+                <DeleteOutlineOutlinedIcon
+                  onClick={() => {
+                    setDeleteId(params.row.id);
+                    setDeleteModalOpen(true);
+                  }}
+                  sx={{ cursor: "pointer" }}
+                  fontSize="medium"
+                  color="error"
+                  className="committee-delete"
+                />
+              </Tooltip>
+            )}
+          {user.UserType.committeeModule &&
+            user.UserType.committeeModule.split(",").includes("edit") && (
+              <Tooltip title="Edit">
+                <EditOutlinedIcon
+                  color="success"
+                  onClick={() => {
+                    setSelectedCommitteeId(params.row.id);
+                    setIsEditOpen(true);
+                  }}
+                  sx={{ cursor: "pointer" }}
+                  className="committee-edit"
+                />
+              </Tooltip>
+            )}
+          {user.UserType.committeeModule &&
+            user.UserType.committeeModule
+              .split(",")
+              .includes("changeStatus") && (
+              <Tooltip title="Change Status">
+                <Switch
+                  size="small"
+                  checked={!!params.row.status}
+                  onChange={() =>
+                    handleChangeStatus(params.row.id, !!params.row.status)
+                  }
+                  className="committee-switch"
+                />
+              </Tooltip>
+            )}
           <Tooltip title="View all members">
             <Chip
               label={`${params.row.CommitteeMembers?.length || 0}`}
@@ -191,6 +205,7 @@ const CommitteeManagementMUI = () => {
               icon={<PeopleIcon />}
               onClick={() => handleNavigateToMemberList(params.row.id)}
               sx={{ cursor: "pointer", padding: "5px" }}
+              className="committee-view"
             />
           </Tooltip>
         </div>
@@ -206,9 +221,16 @@ const CommitteeManagementMUI = () => {
           icon={AddOutlinedIcon}
           func={setIsAddCommittee}
           title="Add New Committee"
-          statusIcon={user.UserType.committeeModule&&user.UserType.committeeModule.split(",").includes("add")}
+          nameOfTheClass="add-committee"
+          statusIcon={
+            user.UserType.committeeModule &&
+            user.UserType.committeeModule.split(",").includes("add")
+          }
         >
-          <FormControl style={{ marginRight: "5 px", width: "100px" }}>
+          <FormControl
+            className="committee-filter"
+            style={{ marginRight: "5 px", width: "100px" }}
+          >
             <InputLabel id="filter-select-label">Show</InputLabel>
             <Select
               labelId="filter-select-label"

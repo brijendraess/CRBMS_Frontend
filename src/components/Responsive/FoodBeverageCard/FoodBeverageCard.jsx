@@ -8,7 +8,7 @@ import {
 
 const FoodBeverageCard = ({ food, handleEdit, handleDelete }) => {
   return (
-    <Card sx={{ width: 320 }}>
+    <Card sx={{ width: 320 }} className="food-card">
       <Typography
         sx={{
           fontSize: "18px",
@@ -33,6 +33,7 @@ const FoodBeverageCard = ({ food, handleEdit, handleDelete }) => {
           Icon={EditOutlinedIcon}
           fontSize={"small"}
           background={"rgba(8, 90, 232, 0.62)"}
+          nameOfTheClass="food-edit"
         />
         <CustomButton
           title={"Delete Food"}
@@ -41,8 +42,9 @@ const FoodBeverageCard = ({ food, handleEdit, handleDelete }) => {
           Icon={DeleteOutlineOutlinedIcon}
           fontSize={"small"}
           background={"rgba(231, 26, 7, 0.77)"}
+          nameOfTheClass="food-delete"
         />
-        <Switch />
+        <Switch className="food-switch" />
       </Box>
     </Card>
   );
