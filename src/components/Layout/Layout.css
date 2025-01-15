@@ -30,7 +30,7 @@
 .outlet-content {
   margin-top: 50px;
   padding: 10px;
-  background-image: url("../../assets/wallpaper.webp");
+  /* background-image: url("../../assets/wallpaper.webp"); */
 }
 
 @media (max-width: 768px) {

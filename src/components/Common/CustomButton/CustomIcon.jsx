@@ -62,8 +62,18 @@ import LiveHelpOutlinedIcon from "@mui/icons-material/LiveHelpOutlined";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import AirlineSeatLegroomExtraOutlinedIcon from "@mui/icons-material/AirlineSeatLegroomExtraOutlined";
+import DesignServicesOutlinedIcon from "@mui/icons-material/DesignServicesOutlined";
+import SettingsApplicationsOutlinedIcon from "@mui/icons-material/SettingsApplicationsOutlined";
+import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
+import RemoveIcon from "@mui/icons-material/Remove";
+import AddIcon from "@mui/icons-material/Add";
 
 export {
+  AddIcon,
+  RemoveIcon,
+  Inventory2OutlinedIcon,
+  DesignServicesOutlinedIcon,
+  SettingsApplicationsOutlinedIcon,
   LocationOnOutlinedIcon,
   InfoOutlinedIcon,
   CloseOutlinedIcon,

@@ -38,7 +38,7 @@
   animation-delay: 400ms;
 }
 
-.text-center button {
+.text-center .notfound-button {
   border: 1px solid white;
   background: transparent;
   outline: none;
@@ -51,7 +51,7 @@
   margin: 20px 0;
 }
 
-.text-center button:hover {
+.text-center .notfound-button:hover {
   background-color: white;
   color: #555;
   cursor: pointer;

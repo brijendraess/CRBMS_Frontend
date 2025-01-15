@@ -29,10 +29,6 @@ const Layout = () => {
               <Sidebar />
             </div>
           )}
-
-          {/* Bottom Navigation Bar for mobile screens */}
-
-          {/* Main content */}
           <main
             className={`${
               isSidebarVisible && !isMobile ? "contentToggle" : "content"

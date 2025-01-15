@@ -23,6 +23,7 @@ const NotFound = () => {
           unavailable.
         </p>
         <button
+          className="notfound-button"
           type="button"
           name="button"
           onClick={() => (window.location.href = "/")}

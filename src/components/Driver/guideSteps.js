@@ -1,4 +1,32 @@
 const guideSteps = {
+  "/meeting-calendar": (isSmallScreen) => [
+    {
+      element: ".rbc-calendar",
+      popover: {
+        title: "Meeting Calendar",
+        description: "This is the calendar view of meetings and events.",
+        position: "bottom",
+      },
+    },
+    {
+      element: ".rbc-toolbar",
+      popover: {
+        title: "Navigation Toolbar",
+        description:
+          "Use this toolbar to navigate to today, go back, or move forward.",
+        position: "middle",
+      },
+    },
+    {
+      element: ".rbc-event",
+      popover: {
+        title: "Meeting/Event",
+        description:
+          "This indicates a scheduled meeting or event on the calendar.",
+        position: "middle",
+      },
+    },
+  ],
   "/members": (isSmallScreen) => [
     {
       element: ".page-header .add-user",
@@ -104,34 +132,6 @@ const guideSteps = {
             },
           },
         ]),
-  ],
-  "/meeting-calendar": (isSmallScreen) => [
-    {
-      element: ".rbc-calendar",
-      popover: {
-        title: "Meeting Calendar",
-        description: "This is the calendar view of meetings and events.",
-        position: "bottom",
-      },
-    },
-    {
-      element: ".rbc-toolbar",
-      popover: {
-        title: "Navigation Toolbar",
-        description:
-          "Use this toolbar to navigate to today, go back, or move forward.",
-        position: "middle",
-      },
-    },
-    {
-      element: ".rbc-event",
-      popover: {
-        title: "Meeting/Event",
-        description:
-          "This indicates a scheduled meeting or event on the calendar.",
-        position: "middle",
-      },
-    },
   ],
   "/committee": (isSmallScreen) => [
     {
