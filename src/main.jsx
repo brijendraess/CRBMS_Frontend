@@ -13,11 +13,11 @@ import Loader from "./components/Common/Loader/Loader.jsx";
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <ErrorBoundary>
-        <Suspense fallback={<Loader />}>
+      {/* <ErrorBoundary>
+        <Suspense fallback={<Loader />}> */}
           <App />
-        </Suspense>
-      </ErrorBoundary>
+        {/* </Suspense>
+      </ErrorBoundary> */}
     </LocalizationProvider>
   </Provider>
 );
