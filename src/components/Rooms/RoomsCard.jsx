@@ -35,6 +35,7 @@ import {
   QrCodeOutlinedIcon,
   VisibilityOutlinedIcon,
   AirlineSeatLegroomExtraOutlinedIcon,
+  DesignServicesOutlinedIcon,
 } from "../Common/CustomButton/CustomIcon";
 import RoomFoodBeverages from "./RoomFoodBeverages";
 import BarCode from "../../pages/BarCodePage/BarCode";
@@ -308,6 +309,33 @@ const RoomsCard = ({
                 <AirlineSeatLegroomExtraOutlinedIcon />
               </Tooltip>{" "}
               <StatusSymbol meetingCurrentData={meetingCurrentData} />
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <Typography
+              variant="body2"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+                textTransform: "capitalize",
+              }}
+            >
+              <Tooltip title="Tolerance Period">
+                <DesignServicesOutlinedIcon />
+              </Tooltip>{" "}
+              {room.Service?.servicesName}
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{ display: "flex", alignItems: "center" }}
+            >
             </Typography>
           </Box>
         </Box>

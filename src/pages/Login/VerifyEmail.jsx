@@ -29,7 +29,7 @@ const VerifyEmail = () => {
       if (savedEmail) {
         dispatch(setLoginEmail(savedEmail));
       } else {
-        navigate("/meeting-calendar");
+        navigate("/dashboard");
         toast.error("Please login first");
       }
     }

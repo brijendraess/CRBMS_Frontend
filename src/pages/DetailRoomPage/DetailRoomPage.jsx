@@ -14,7 +14,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
 import Carousel from "../../components/Carousel/Carousel";
-import { GroupsIcon, LocationOnOutlinedIcon } from "../../components/Common/CustomButton/CustomIcon";
+import { DesignServicesOutlinedIcon, GroupsIcon, LocationOnOutlinedIcon } from "../../components/Common/CustomButton/CustomIcon";
 import { getMeetingTimePercentage, timeDifference } from "../../utils/utils";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import Loader from "../../components/Common/Loader/Loader";
@@ -198,7 +198,6 @@ const DetailRoomPage = () => {
       dispatch(showLoading());
       const response = await axios.get(`/api/v1/rooms/${id}`);
       setRoom(response.data.data.room[0]);
-      console.log(response.data.data.room[0]);
       dispatch(hideLoading());
     } catch (error) {
       dispatch(hideLoading());
@@ -244,7 +243,7 @@ const DetailRoomPage = () => {
   const handleBookNowClick = () => {
     setIsBookNowOpen(true);
   };
-
+console.log(room)
   return (
     <PaperWrapper sx={{ display: "flex", gap: "5px", flexDirection: "column" }}>
       <Typography
@@ -321,6 +320,18 @@ const DetailRoomPage = () => {
               >
                 <GroupsIcon fontSize="medium" />
                 {room.capacity} people
+              </Typography>
+              <Typography
+                variant="body"
+                fontSize={"13px"}
+                fontWeight={"500"}
+                gap={1}
+                display={"flex"}
+                alignItems={"center"}
+                lineHeight={1}
+              >
+                <DesignServicesOutlinedIcon fontSize="medium" />
+                {room?.Service?.servicesName}
               </Typography>
             </Box>
             <Box

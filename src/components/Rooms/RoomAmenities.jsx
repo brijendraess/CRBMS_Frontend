@@ -52,7 +52,6 @@ const RoomAmenities = ({ room }) => {
         setRows(amenityWithSerial);
         dispatch(hideLoading());
       } catch (error) {
-        toast.success("Something Went Wrong");
         console.error("Error fetching locations:", error);
         dispatch(hideLoading());
       }

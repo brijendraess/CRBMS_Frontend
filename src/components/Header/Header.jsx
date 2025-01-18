@@ -183,7 +183,7 @@ const Header = () => {
         <div className="headerWrapper">
           <div className="col-lg-3 col-md-4 col-sm-4 col-xs-3 part1">
             <Link
-              to={"/meeting-calendar"}
+              to={"/dashboard"}
               className="d-flex align-items-center logo gap-2"
             >
               <img src={logo} alt="logo" />

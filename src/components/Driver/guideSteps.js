@@ -1,5 +1,5 @@
 const guideSteps = {
-  "/meeting-calendar": (isSmallScreen) => [
+  "/dashboard": (isSmallScreen) => [
     {
       element: ".rbc-calendar",
       popover: {
