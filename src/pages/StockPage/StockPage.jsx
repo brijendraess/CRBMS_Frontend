@@ -9,14 +9,12 @@ import {
 } from "../../components/Common/CustomButton/CustomIcon";
 import { makeStyles } from "@mui/styles";
 
-// Custom styles
 const useStyles = makeStyles({
   lowQuantity: {
-    backgroundColor: "#ffcccc !important", // Light red background
+    backgroundColor: "#ffcccc !important",
   },
 });
 
-// Initial Data
 const initialAmenitiesData = [
   { id: 1, serialNo: 1, name: "Chairs", quantity: 10 },
   { id: 2, serialNo: 2, name: "Tables", quantity: 5 },

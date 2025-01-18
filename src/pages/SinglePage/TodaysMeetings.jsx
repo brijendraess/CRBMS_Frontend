@@ -232,8 +232,8 @@ const TodaysMeetings = () => {
         startTime: startTime.format("HH:mm"),
         endTime: endTime.format("HH:mm"),
         duration: timeDiff,
-        roomName: meeting.Room.name,
-        roomLocation: meeting.Room.Location.locationName,
+        roomName: meeting.Room?.name,
+        roomLocation: meeting.Room?.Location.locationName,
         organizerName: meeting.User.fullname,
         progress: Math.floor(Math.random() * 101),
       });

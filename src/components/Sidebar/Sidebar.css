@@ -16,7 +16,7 @@
   flex-direction: column;
   justify-content: space-between;
   max-height: calc(100% - 60px);
-  overflow-x: hidden;
+  overflow: hidden;
   z-index: 999;
   transition: all 0.3s ease-in-out;
 }
@@ -49,7 +49,7 @@
 }
 
 .sidebar .menu-item li.active {
-  background-color: #ebe9e9;
+  background-color: #b8b7b7;
   position: relative;
   transition: all 0.3s ease-in-out;
 }
@@ -62,7 +62,7 @@
   border-radius: 50%;
   top: -40px;
   right: 0;
-  box-shadow: 20px 20px 0 #ebe9e9;
+  box-shadow: 20px 20px 0 #b8b7b7;
   z-index: -1;
   transition: all 0.3s ease-in-out;
 }
@@ -75,7 +75,7 @@
   border-radius: 50%;
   bottom: -40px;
   right: 0;
-  box-shadow: 20px -20px 0 #ebe9e9;
+  box-shadow: 20px -20px 0 #b8b7b7;
   z-index: -1;
   transition: all 0.3s ease-in-out;
 }

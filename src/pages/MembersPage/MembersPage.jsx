@@ -205,40 +205,55 @@ const MembersPage = () => {
             alignItems: "center",
           }}
         >
-          {user.UserType.userModule&&user.UserType.userModule.split(",").includes("edit")&&<Tooltip title="Update">
-            <EditOutlinedIcon
-              className="tour-edit"
-              color="success"
-              onClick={() => handleEdit(params.id)}
-            />
-          </Tooltip>}
-          {user.UserType.userModule&&user.UserType.userModule.split(",").includes("view")&&<Tooltip title="View">
-            <VisibilityOutlinedIcon
-              color="secondary"
-              className="tour-view"
-              onClick={() => handleView(params.id)}
-            />
-          </Tooltip>}
-          {user.UserType.userModule&&user.UserType.userModule.split(",").includes("delete")&&<div className="delete">
-            <Tooltip title="Delete">
-              <DeleteOutlineOutlinedIcon
-              className="tour-delete"
-                color="error"
-                onClick={() => handleOpen(params.id)}
-              />
-            </Tooltip>
-          </div>}
-          {user.UserType.userModule&&user.UserType.userModule.split(",").includes("changeStatus")&&<div className="delete">
-            <Tooltip title="Change Status">
-              <Switch
-              className="tour-block"
-                checked={params.row.isBlocked}
-                onChange={() =>
-                  handleBlockStatusChange(params.row.id, params.row.isBlocked)
-                }
-              />
-            </Tooltip>
-          </div>}
+          {user.UserType.userModule &&
+            user.UserType.userModule.split(",").includes("edit") && (
+              <Tooltip title="Update">
+                <EditOutlinedIcon
+                  className="tour-edit"
+                  color="success"
+                  onClick={() => handleEdit(params.id)}
+                />
+              </Tooltip>
+            )}
+          {user.UserType.userModule &&
+            user.UserType.userModule.split(",").includes("view") && (
+              <Tooltip title="View">
+                <VisibilityOutlinedIcon
+                  color="secondary"
+                  className="tour-view"
+                  onClick={() => handleView(params.id)}
+                />
+              </Tooltip>
+            )}
+          {user.UserType.userModule &&
+            user.UserType.userModule.split(",").includes("delete") && (
+              <div className="delete">
+                <Tooltip title="Delete">
+                  <DeleteOutlineOutlinedIcon
+                    className="tour-delete"
+                    color="error"
+                    onClick={() => handleOpen(params.id)}
+                  />
+                </Tooltip>
+              </div>
+            )}
+          {user.UserType.userModule &&
+            user.UserType.userModule.split(",").includes("changeStatus") && (
+              <div className="delete">
+                <Tooltip title="Change Status">
+                  <Switch
+                    className="tour-block"
+                    checked={params.row.isBlocked}
+                    onChange={() =>
+                      handleBlockStatusChange(
+                        params.row.id,
+                        params.row.isBlocked
+                      )
+                    }
+                  />
+                </Tooltip>
+              </div>
+            )}
         </div>
       ),
     },
@@ -252,9 +267,12 @@ const MembersPage = () => {
           icon={PersonAddAlt1Rounded}
           func={setIsOpen}
           nameOfTheClass="add-user"
-          statusIcon={user.UserType.userModule&&user.UserType.userModule.split(",").includes("add")}
+          statusIcon={
+            user.UserType.userModule &&
+            user.UserType.userModule.split(",").includes("add")
+          }
         >
-         {user.UserType.userModule&&user.UserType.userModule.split(",").includes("changeStatus")&& <CustomButton
+          {/* {user.UserType.userModule&&user.UserType.userModule.split(",").includes("changeStatus")&& <CustomButton
             onClick={() => setShowDeleted(!showDeleted)}
             title={
               showDeleted ? "Hide All Deleted Users" : "Show All Deleted Users"
@@ -264,7 +282,7 @@ const MembersPage = () => {
             background={"#1976d291"}
             nameOfTheClass="deleted-user"
             placement={"left"}
-          />}
+          />} */}
         </PageHeader>
 
         {isSmallScreen ? (
@@ -302,14 +320,14 @@ const MembersPage = () => {
             )}
           </Grid2>
         ) : (
-          <Box sx={{ width: "100%", height: "70vh" }}>
+          <Box sx={{ width: "100%", height: "75vh" }}>
             <DataGrid
               autoPageSize
               showCellVerticalBorder
               showColumnVerticalBorder
               rows={filteredUsers}
               rowHeight={40}
-              columns={[...columns]} 
+              columns={[...columns]}
               initialState={{
                 pagination: {
                   paginationModel: {
@@ -320,22 +338,30 @@ const MembersPage = () => {
               pageSizeOptions={[12]}
               height="100%"
               sx={{
+                borderRadius: "20px",
                 "& .MuiDataGrid-cell:focus": {
                   outline: "none",
                 },
+                // Customize header styles
                 "& .super-app-theme--header": {
                   backgroundColor: "#006400",
-                  // backgroundColor: "rgba(255, 223, 0, 1)",
                   color: "#fff",
                   fontWeight: "600",
                   fontSize: "16px",
                 },
-              }}
-              getRowClassName={(params) => {
-                if (params.row.deletedAt) {
-                  return "delete-row";
-                }
-                return "";
+                // Customize DataGrid border color and thickness
+                "& .MuiDataGrid-root": {
+                  border: "2px solid white", // Change thickness and color
+                },
+                "& .MuiDataGrid-cell": {
+                  borderColor: "white", // Border color for cells
+                },
+                "& .MuiDataGrid-columnHeaders": {
+                  borderBottom: "2px solid white", // Header bottom border
+                },
+                "& .MuiDataGrid-virtualScroller": {
+                  border: "2px solid white", // Scroll area border
+                },
               }}
             />
           </Box>

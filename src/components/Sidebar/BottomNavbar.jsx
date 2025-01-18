@@ -16,7 +16,6 @@ const BottomNavBar = () => {
       const sidebar = await getSideBarMenuContent(user);
       setMenuToBeRendered(sidebar);
     };
-
     fetchMenu();
   }, [user]);
 

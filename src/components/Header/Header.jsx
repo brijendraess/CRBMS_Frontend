@@ -38,10 +38,8 @@ import {
   NotificationsOutlinedIcon,
   Logout,
   KeyOutlinedIcon,
-  LiveHelpOutlinedIcon,
   InfoOutlinedIcon,
 } from "../Common/CustomButton/CustomIcon";
-import OnboardingPopup from "../JoyrideCarouselTour/OnBoardingPopup";
 
 // Driver.js
 import { driver } from "driver.js";
@@ -216,7 +214,6 @@ const Header = () => {
               ""
             ) : (
               <Button
-                id="joyride-application-tour"
                 className="rounded-circle"
                 // onClick={handleOpenPopup}
                 onClick={handleStartGuide}
@@ -226,19 +223,6 @@ const Header = () => {
                 </Tooltip>
               </Button>
             )}
-            {/* <Button
-              id="joyride-application-tour"
-              className="rounded-circle"
-              onClick={handleOpenPopup}
-            >
-              <Tooltip title="Help">
-                <LiveHelpOutlinedIcon />
-              </Tooltip>
-            </Button> */}
-            <OnboardingPopup
-              open={isHelpPopupOpen}
-              onClose={handleClosePopup}
-            />
             <Button
               id="notification-icon"
               className="rounded-circle"
