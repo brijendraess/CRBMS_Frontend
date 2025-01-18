@@ -28,21 +28,22 @@ const InventoryHistory = () => {
     const fetchStock = async () => {
       try {
         const response = await axios.get(`/api/v1/stock/stock-history`);
-
+  
         if (response.data && response.data.data?.result) {
-          // Map the API data into the desired format
-          console.log(response.data.data.result)
-          const stockData = response.data.data.result.map((type, index) => ({
-            id: index + 1,
-            uid: type.id,
-            serialNo: index + 1,
-            name: type?.RoomAmenity?.name,
-            amenityId: type?.RoomAmenity?.id,
-            actionType:type?.stockInOut,
-            adminName:type?.createdBy,
-            quantity: type.stockUsed,
-          }));
-
+          // Use Promise.all to handle async operations in map
+          const stockData = await Promise.all(
+            response.data.data.result.map(async (type, index) => ({
+              id: index + 1,
+              uid: type.id,
+              serialNo: index + 1,
+              name: type?.RoomAmenity?.name,
+              amenityId: type?.RoomAmenity?.id,
+              actionType: type?.stockInOut,
+              adminName: type?.createdBy ? await getUserByName(type?.createdBy) : "",
+              quantity: type.stockUsed,
+            }))
+          );
+  
           // Update state
           setAmenitiesData(stockData);
         } else {
@@ -52,9 +53,10 @@ const InventoryHistory = () => {
         console.error("Error fetching stock data:", error);
       }
     };
-
+  
     fetchStock();
   }, [refreshPage]);
+  
 
   // Column Definitions
   const amenitiesColumn = [

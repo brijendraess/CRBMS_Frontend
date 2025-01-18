@@ -42,6 +42,12 @@ const getUserByName = async (id) => {
   }
 };
 
+// Date string formatting
+const dateStringFormatting=(dateString)=>{
+  const [year, month, day] = dateString.split('-');
+return `${day}/${month}/${year}`;
+}
+
 const fetchUsers = async (toast, setEmailsList) => {
   try {
     const response = await axios.get("/api/v1/user/users");
@@ -240,6 +246,12 @@ const replaceAndUppercase = (str) => {
     .join(" || ");
 };
 
+const disablePastDates = (date) => {
+  const today = new Date(); // Current date
+  today.setHours(0, 0, 0, 0); // Remove time for accurate comparison
+  return date.toDate() < today;
+};
+
 export {
   checkFileExists,
   getFormattedDate,
@@ -254,4 +266,6 @@ export {
   formatTimeShort,
   getUserByName,
   replaceAndUppercase,
+  dateStringFormatting,
+  disablePastDates,
 };
