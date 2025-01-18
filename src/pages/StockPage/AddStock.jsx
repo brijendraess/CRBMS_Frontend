@@ -15,58 +15,43 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 
-const AddRoomAmenities = ({
-  room,
-  setRefreshPage,
-  setIsAmenityQuantityOpen,
-}) => {
+const AddStock = ({ setRefreshPage, setIsAddOpen }) => {
   const { user } = useSelector((state) => state.user);
   const [amenitiesList, setAmenitiesList] = useState([]);
-  const [amenitiesStockCount, setAmenitiesStockCount] = useState(0);
   const dispatch = useDispatch();
 
   // Formik initialization
   const formik = useFormik({
     initialValues: {
-      amenityId: "",
-      quantity: "",
+      stockType: "amenity",
+      stock: "",
+      itemId: "",
     },
     validationSchema: Yup.object({
-      amenityId: Yup.string().required("Please select an amenity"),
-      quantity: Yup.number()
-        .required("Quantity is required")
-        .min(1, "Quantity must be at least 1")
-        .max(amenitiesStockCount,`Quantity must be below from stock(${amenitiesStockCount})`)
-        .typeError("Quantity must be a number"),
+      itemId: Yup.string().required("Please select an amenity"),
+      stock: Yup.number()
+        .required("Stock is required")
+        .min(1, "Stock must be at least 1")
+        .typeError("Stock must be a number"),
     }),
     onSubmit: async (values, { resetForm }) => {
       try {
         dispatch(showLoading());
         const formData = {
           ...values,
-          roomId: room.id,
-          status: true,
           createdBy: user.id,
         };
-        await axios.post("api/v1/rooms/add-amenity-quantity", formData).then(async()=>{
-          await axios.post("api/v1/stock/increment", {
-            stock: -Number(values.quantity),
-            id:"",
-            amenityId:values.amenityId,
-            roomId:room.id,
-            createdBy: user.id,
-          })
-        })
-        toast.success("Quantity added successfully");
+        const result = await axios.post("api/v1/stock/add", formData);
+        toast.success("Stock added successfully");
         setRefreshPage(Math.random());
         resetForm();
         dispatch(hideLoading());
       } catch (err) {
         dispatch(hideLoading());
         toast.error(err.response?.data?.message || "An error occurred");
-        console.error("Error adding amenity quantity:", err);
+        console.error("Error adding amenity stock:", err);
       } finally {
-        setIsAmenityQuantityOpen(false);
+        setIsAddOpen(false);
         dispatch(hideLoading());
       }
     },
@@ -91,26 +76,8 @@ const AddRoomAmenities = ({
       }
     };
 
-    const fetchStockAmenities = async () => {
-      try {
-        showLoading();
-        if(formik.values.amenityId){
-        const response = await axios.get(
-          `api/v1/stock/checkStock/${formik.values.amenityId}`
-        );
-        const amenities = response?.data?.data?.result[0]?.stock
-        setAmenitiesStockCount(amenities?amenities:0);
-      }
-      } catch (error) {
-        console.error("Error fetching amenities:", error);
-      } finally {
-        hideLoading();
-      }
-    };
-
     fetchAmenities();
-    fetchStockAmenities()
-  }, [formik.values.amenityId,formik.values.quantity]);
+  }, []);
 
   return (
     <div className="pop-content w-100">
@@ -125,14 +92,14 @@ const AddRoomAmenities = ({
       >
         <FormControl
           sx={{ m: 1, width: "100%" }}
-          error={!!formik.errors.amenityId && formik.touched.amenityId}
+          error={!!formik.errors.itemId && formik.touched.itemId}
         >
           <InputLabel id="amenity-select-label">Amenity Name</InputLabel>
           <Select
             labelId="amenity-select-label"
-            id="amenityId"
-            name="amenityId"
-            value={formik.values.amenityId}
+            id="itemId"
+            name="itemId"
+            value={formik.values.itemId}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             size="small"
@@ -144,25 +111,25 @@ const AddRoomAmenities = ({
               </MenuItem>
             ))}
           </Select>
-          {formik.touched.amenityId && formik.errors.amenityId && (
+          {formik.touched.itemId && formik.errors.itemId && (
             <p style={{ color: "red", fontSize: "0.875rem" }}>
-              {formik.errors.amenityId}
+              {formik.errors.itemId}
             </p>
           )}
         </FormControl>
         <TextField
-          label="Quantity"
+          label="Stock"
           type="number"
-          name="quantity"
-          value={formik.values.quantity}
+          name="stock"
+          value={formik.values.stock}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           fullWidth
           required
           margin="normal"
           size="small"
-          error={!!formik.errors.quantity && formik.touched.quantity}
-          helperText={formik.touched.quantity && formik.errors.quantity}
+          error={!!formik.errors.stock && formik.touched.stock}
+          helperText={formik.touched.stock && formik.errors.stock}
         />
         <Button
           type="submit"
@@ -171,11 +138,11 @@ const AddRoomAmenities = ({
           fullWidth
           sx={{ mt: 2 }}
         >
-          Add Quantity
+          Add Stock
         </Button>
       </Box>
     </div>
   );
 };
 
-export default AddRoomAmenities;
+export default AddStock;

@@ -15,7 +15,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import Loader from "../../components/Common/Loader/Loader";
-import { GroupsIcon, LocationOnOutlinedIcon,FullscreenExitOutlinedIcon,FullscreenOutlined } from "../../components/Common/CustomButton/CustomIcon";
+import {
+  GroupsIcon,
+  LocationOnOutlinedIcon,
+  FullscreenExitOutlinedIcon,
+  FullscreenOutlined,
+  DesignServicesOutlinedIcon,
+} from "../../components/Common/CustomButton/CustomIcon";
 import { getMeetingTimePercentage, timeDifference } from "../../utils/utils";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
@@ -258,10 +264,11 @@ const SingleDisplayPage = () => {
 
   useEffect(() => {
     getAllMeeting();
-  }, [id, room,refreshPage]);
+  }, [id, room, refreshPage]);
   if (!room) {
     return <Loader />;
   }
+
   return (
     <div
       style={{
@@ -328,8 +335,8 @@ const SingleDisplayPage = () => {
               "linear-gradient(to right, #006400, #ffffff, #ff0000,rgb(158, 24, 24))",
             WebkitBackgroundClip: "text",
             // textShadow: `
-            //   2px 2px 0 green, 
-            //   4px 4px 0 rgba(191, 191, 191, 0.5), 
+            //   2px 2px 0 green,
+            //   4px 4px 0 rgba(191, 191, 191, 0.5),
             //   6px 6px 0 rgba(88, 88, 88, 0.3)
             // `,
           }}
@@ -339,7 +346,11 @@ const SingleDisplayPage = () => {
 
         <Button style={{ color: "white" }} onClick={handleFullScreen}>
           <Tooltip title="Full Screen">
-            {isFullScreen ? <FullscreenExitOutlinedIcon /> : <FullscreenOutlined />}
+            {isFullScreen ? (
+              <FullscreenExitOutlinedIcon />
+            ) : (
+              <FullscreenOutlined />
+            )}
           </Tooltip>
         </Button>
       </Item>
@@ -393,6 +404,18 @@ const SingleDisplayPage = () => {
               >
                 <GroupsIcon fontSize="medium" />
                 {room.capacity} people
+              </Typography>
+              <Typography
+                variant="body"
+                fontSize={"13px"}
+                fontWeight={"500"}
+                gap={1}
+                display={"flex"}
+                alignItems={"center"}
+                lineHeight={1}
+              >
+                <DesignServicesOutlinedIcon fontSize="medium" />
+                {room?.Service?.servicesName}
               </Typography>
             </Box>
             <Box

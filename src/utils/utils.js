@@ -33,6 +33,15 @@ const timeDifference = (time1, time2) => {
   return `${diffHours.toFixed(1)} hrs`; // Format to 1 decimal place
 };
 
+const getUserByName=async(id)=>{
+  if(id){
+  const userDetail=await axios.get(`/api/v1/user/${id}`)
+  return userDetail?.data?.data?.fullname;
+  }else{
+    return "";
+  }
+}
+
 
 const fetchUsers = async (toast, setEmailsList) => {
   try {
@@ -48,6 +57,14 @@ const fetchUsers = async (toast, setEmailsList) => {
     console.error("Error fetching users:", error);
   }
 };
+
+function formatTimeShort(timeString) {
+  const [hours, minutes, seconds] = timeString.split(":").map(Number); // Extract hours, minutes, and seconds
+  const amPm = hours >= 12 ? "PM" : "AM"; // Determine AM or PM
+  const formattedHours = hours % 12 || 12; // Convert to 12-hour format (handle 0 as 12)
+
+  return `${String(formattedHours).padStart(2, "0")}:${String(minutes).padStart(2, "0")} ${amPm}`;
+}
 
 const fetchActiveCommittee = async (toast, setCommitteeList) => {
   try {
@@ -222,4 +239,6 @@ export { checkFileExists,
   getMeetingTimePercentage,
 userRoleStringManipulation,
 userRoleStringMeetingManipulation,
-userRoleStringRoomManipulation };
+userRoleStringRoomManipulation,
+formatTimeShort,
+getUserByName };

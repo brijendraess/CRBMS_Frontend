@@ -24,7 +24,7 @@ const getSideBarMenuContent = async (user) => {
         id: 1,
         name: "Home",
         icon: CalendarMonthOutlinedIcon,
-        path: "/meeting-calendar",
+        path: "/dashboard",
       });
     }
     if (
