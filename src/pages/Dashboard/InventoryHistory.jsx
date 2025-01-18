@@ -32,14 +32,14 @@ const InventoryHistory = () => {
         if (response.data && response.data.data?.result) {
           // Map the API data into the desired format
           console.log(response.data.data.result)
-          const stockData = response.data.data.result.map(async(type, index) => ({
+          const stockData = response.data.data.result.map((type, index) => ({
             id: index + 1,
             uid: type.id,
             serialNo: index + 1,
             name: type?.RoomAmenity?.name,
             amenityId: type?.RoomAmenity?.id,
             actionType:type?.stockInOut,
-            adminName:await getUserByName(type?.createdBy),
+            adminName:type?.createdBy,
             quantity: type.stockUsed,
           }));
 
