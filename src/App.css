@@ -14,7 +14,7 @@
 
 body {
   font-family: "Poppins", sans-serif !important;
-  background: #ebe9e9 !important;
+  background: #b8b7b7 !important;
 }
 
 /* .sidebarWrapper {
@@ -54,17 +54,17 @@ a {
 
 .MuiTablePagination-selectLabel {
   margin: 0 !important;
-  color: #f6f6f9 !important;
+  color: #000 !important;
 }
 
 .MuiTablePagination-displayedRows {
   margin: 0 !important;
-  color: #f6f6f9 !important;
+  color: #000 !important;
 }
 
 .MuiToolbar-root .MuiInputBase-root,
 .MuiToolbar-root .MuiInputBase-root svg {
-  color: #f6f6f9 !important;
+  color: #000 !important;
 }
 
 .MuiDataGrid-scrollbarFiller--header {
@@ -73,11 +73,11 @@ a {
 
 
 .MuiDataGrid-footerContainer {
-  background-color: #006400;
-  color: #f6f6f9 !important;
+  background-color: #86b0c93b;
+  color: #000 !important;
 }
 .MuiTablePagination-actions svg {
-  color: #f6f6f9 !important;
+  color: #000 !important;
 }
 /* .spinner-parent {
   display: flex;

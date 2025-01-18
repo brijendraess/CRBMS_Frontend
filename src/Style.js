@@ -23,7 +23,7 @@ export const MainContainer = styled("div")(({ theme }) => ({
 }));
 
 export const PaperWrapper = styled(Paper)(({ theme }) => ({
-  color: theme.palette.text.secondary,
+  // color: 'white',
   borderRadius: "10px",
   padding: "10px",
   marginTop: "10px",
@@ -34,6 +34,12 @@ export const PaperWrapper = styled(Paper)(({ theme }) => ({
     height: `calc(100vh - 56px - 62px)`,
     marginTop: "0px",
   },
+  backgroundColor: "#85FFBD",
+  backgroundImage: "linear-gradient(45deg, #85FFBD 0%, #FFFB7D 100%)",
+  // background:
+  // "radial-gradient(circle, #005AA7, #FFFDE4)"
+  // "radial-gradient(ellipse, #1E9600, #FFF200,rgb(108, 120, 231))"
+  // "linear-gradient(to left, #a8ff78, #78ffd6)"
 }));
 
 export const PopContent = styled("div")(({ theme }) => ({

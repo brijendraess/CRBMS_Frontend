@@ -24,10 +24,11 @@ import {
 import EditUserTypeSettings from "./EditUserTypeSettings";
 import AddUserTypeSettings from "./AddUserTypeSettings";
 import UserTypeCard from "../../components/Responsive/UserType/UserTypeCard";
+import { useNavigate } from "react-router-dom";
 
 const UserTypeSettings = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const [isAddOpen, setIsAddOpen] = useState(false);
+  // const [isAddOpen, setIsAddOpen] = useState(false);
   const [userRole, setUserRole] = useState([]);
   const [updatedId, setUpdatedId] = useState(null);
   const [open, setOpen] = useState(false);
@@ -35,6 +36,7 @@ const UserTypeSettings = () => {
   const [refreshPage, setRefreshPage] = useState(0);
   const { user } = useSelector((state) => state.user);
   const isSmallScreen = useMediaQuery("(max-width:768px)");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserType = async () => {
@@ -49,7 +51,7 @@ const UserTypeSettings = () => {
           userModule: type.userModule,
           committeeModule: type.committeeModule,
           committeeMemberModule: type.committeeMemberModule,
-          meetingLogsModule:type.meetingLogsModule,
+          meetingLogsModule: type.meetingLogsModule,
           amenitiesModule: type.amenitiesModule,
           roomModule: type.roomModule,
           locationModule: type.locationModule,
@@ -69,10 +71,18 @@ const UserTypeSettings = () => {
     fetchUserType();
   }, [refreshPage]);
 
-  const handleEdit = (id) => {
-    setUpdatedId(id);
-    setIsEditOpen(true);
+  const handleAdd = () => {
+    navigate("/user-role/add-new-role");
   };
+
+  const handleEdit = (id) => {
+    navigate(`/user-role/edit-role/${id}`);
+  };
+
+  // const handleEdit = (id) => {
+  //   setUpdatedId(id);
+  //   setIsEditOpen(true);
+  // };
 
   const handleClose = () => {
     setOpen(false);
@@ -124,7 +134,9 @@ const UserTypeSettings = () => {
       );
 
       toast.success(
-        `User role status changed to ${updatedUserRole.status ? "Active" : "Inactive"}`
+        `User role status changed to ${
+          updatedUserRole.status ? "Active" : "Inactive"
+        }`
       );
       hideLoading();
     } catch (error) {
@@ -140,67 +152,67 @@ const UserTypeSettings = () => {
       headerName: "#",
       disableColumnMenu: true,
       hideSortIcons: true,
-      flex: 0.3,
+      width: 50,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "userTypeName",
       headerName: "User Type",
-      flex: 1,
+      width: 200,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "calendarModule",
       headerName: "Calendar",
-      flex: 1,
+      width: 100,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "userModule",
       headerName: "User",
-      flex: 0.75,
+      width: 300,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "committeeModule",
       headerName: "Committee",
-      flex: 1,
+      width: 300,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "amenitiesModule",
       headerName: "Amenities",
-      flex: 1,
+      width: 300,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "roomModule",
       headerName: "Room",
-      flex: 0.75,
+      width: 600,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "locationModule",
       headerName: "Location",
-      flex: 1,
+      width: 300,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "foodBeverageModule",
       headerName: "foodBeverage",
-      flex: 1,
+      width: 300,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "reportModule",
       headerName: "report",
-      flex: 1,
+      width: 100,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "userRoleModule",
       headerName: "userRole",
-      flex: 1,
+      width: 300,
       headerClassName: "super-app-theme--header",
     },
     {
@@ -208,7 +220,7 @@ const UserTypeSettings = () => {
       headerName: "Action",
       disableColumnMenu: true,
       hideSortIcons: true,
-      flex: 1.3,
+      width: 200,
 
       renderCell: (params) => (
         <Box display="flex" alignItems="center" gap={1}>
@@ -276,86 +288,40 @@ const UserTypeSettings = () => {
         >
           User Role
         </Typography>
-       
-            <CustomButton
-              onClick={() => setIsAddOpen(true)}
-              title={"Add New Room"}
-              placement={"left"}
-              Icon={AddOutlinedIcon}
-              fontSize={"medium"}
-              background={"rgba(3, 176, 48, 0.68)"}
-            />
-          
+        <CustomButton
+          onClick={handleAdd}
+          title={"Add New Room"}
+          placement={"left"}
+          Icon={AddOutlinedIcon}
+          fontSize={"medium"}
+          background={"rgba(3, 176, 48, 0.68)"}
+        />
       </Box>
-      {isSmallScreen && (
-        <Grid2
-          container
-          spacing={2}
+      <Box
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          height: "75vh",
+        }}
+      >
+        <DataGrid
+          rows={userRole}
+          columns={columns}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+          disableSelectionOnClick
+          rowHeight={40}
           sx={{
-            borderRadius: "20px",
-            position: "relative",
-            top: "10px",
-            alignItems: "center",
-            justifyContent: "center",
+            "& .super-app-theme--header": {
+              backgroundColor: "#006400",
+              color: "#fff",
+              fontWeight: "600",
+              fontSize: "16px",
+            },
           }}
-        >
-          {userRole.map((food) => (
-            <UserTypeCard
-              key={food.id}
-              food={food}
-              handleEdit={handleEdit}
-              handleDelete={handleOpen}
-              handleStatusChange={handleStatusChange}
-            />
-          ))}
-        </Grid2>
-      )}
-      {!isSmallScreen && (
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <DataGrid
-            rows={userRole}
-            columns={columns}
-            pageSize={5}
-            rowsPerPageOptions={[5]}
-            disableSelectionOnClick
-            rowHeight={40}
-            sx={{
-              "& .super-app-theme--header": {
-                backgroundColor: "#006400",
-                // backgroundColor: "rgba(255, 223, 0, 1)",
-                color: "#fff",
-                fontWeight: "600",
-                fontSize: "16px",
-              },
-            }}
-          />
-        </div>
-      )}
-      <PopupModals
-        isOpen={isAddOpen}
-        setIsOpen={setIsAddOpen}
-        title={"Add User Role"}
-        modalBody={
-          <AddUserTypeSettings
-            setRefreshPage={setRefreshPage}
-            setIsAddOpen={setIsAddOpen}
-          />
-        }
-      />
-      <PopupModals
-        isOpen={isEditOpen}
-        setIsOpen={setIsEditOpen}
-        title={"Edit User Role"}
-        modalBody={
-          <EditUserTypeSettings
-            id={updatedId}
-            setRefreshPage={setRefreshPage}
-            setIsEditOpen={setIsEditOpen}
-            userRole={userRole.find((role) => role.uid === updatedId)}
-            onSuccess={handleUpdateSuccess}
-          />
-        }
-      />
+        />
+      </Box>
       <DeleteModal
         open={open}
         onClose={handleClose}

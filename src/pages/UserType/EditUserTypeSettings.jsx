@@ -23,6 +23,7 @@ import {
   userRoleStringMeetingManipulation,
   userRoleStringRoomManipulation,
 } from "../../utils/utils";
+import { PaperWrapper } from "../../Style";
 
 const EditUserTypeSettings = ({
   id,
@@ -288,8 +289,9 @@ const EditUserTypeSettings = ({
       }
     },
   });
+
   return (
-    <div className="pop-content w-100">
+    <PaperWrapper>
       <Box
         component="form"
         onSubmit={formik.handleSubmit}
@@ -1357,7 +1359,7 @@ const EditUserTypeSettings = ({
           Save
         </Button>
       </Box>
-    </div>
+    </PaperWrapper>
   );
 };
 

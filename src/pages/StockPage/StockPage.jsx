@@ -16,10 +16,9 @@ import AddStock from "./AddStock";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import toast from "react-hot-toast";
 
-// Custom styles
 const useStyles = makeStyles({
   lowQuantity: {
-    backgroundColor: "#ffcccc !important", // Light red background
+    backgroundColor: "#ffcccc !important",
   },
 });
 

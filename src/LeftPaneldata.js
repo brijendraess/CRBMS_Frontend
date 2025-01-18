@@ -167,14 +167,14 @@ const getSideBarMenuContent = async (user) => {
         path: "/services",
       });
     }
-    {
-      sideBarData.push({
-        id: 13,
-        name: "Inventory",
-        icon: Inventory2OutlinedIcon,
-        path: "/stocks",
-      });
-    }
+    // {
+    //   sideBarData.push({
+    //     id: 13,
+    //     name: "Inventory",
+    //     icon: Inventory2OutlinedIcon,
+    //     path: "/stocks",
+    //   });
+    // }
     return sideBarData;
   } catch (error) {
     console.error("Error fetching sidebar menu content:", error.message);

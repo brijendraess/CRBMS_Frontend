@@ -35,6 +35,8 @@ import UserTypeSettings from "./pages/UserType/UserTypeSettings";
 import ServicesPage from "./pages/Services/ServicesPage";
 import StockPage from "./pages/StockPage/StockPage";
 import DashboardPage from "./pages/Dashboard/DashboardPage";
+import AddUserTypeSettings from "./pages/UserType/AddUserTypeSettings";
+import EditUserTypeSettings from "./pages/UserType/EditUserTypeSettings";
 
 const AppRouter = () => {
   return (
@@ -115,7 +117,15 @@ const AppRouter = () => {
         />
         <Route path="/view/:id" element={<ViewMember />} />
         <Route path="/notification-all" element={<Notification />} />
-        <Route path="services" element={<ServicesPage />} />
+        <Route path="/services" element={<ServicesPage />} />
+        <Route
+          path="/user-role/add-new-role"
+          element={<AddUserTypeSettings />}
+        />
+        <Route
+          path="/user-role/edit-role/:id"
+          element={<EditUserTypeSettings />}
+        />
         <Route path="/rooms/:id" element={<DetailRoomPage />} />
         <Route path="/stocks" element={<StockPage />} />
       </Route>
