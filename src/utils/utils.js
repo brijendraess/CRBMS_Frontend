@@ -33,7 +33,6 @@ const timeDifference = (time1, time2) => {
   return `${diffHours.toFixed(1)} hrs`; // Format to 1 decimal place
 };
 
-
 const fetchUsers = async (toast, setEmailsList) => {
   try {
     const response = await axios.get("/api/v1/user/users");
@@ -105,121 +104,132 @@ function getMeetingTimePercentage(startTime, endTime) {
   }
 }
 
-const userRoleStringManipulation=(
-  addData=false,
-  editData=false,
-  deleteData=false,
-  viewData=false,
-  changeStatusData=false
-)=>{
-
-  let arrData=[];
-  if(addData){
-    arrData.push('add')
+const userRoleStringManipulation = (
+  addData = false,
+  editData = false,
+  deleteData = false,
+  viewData = false,
+  changeStatusData = false
+) => {
+  let arrData = [];
+  if (addData) {
+    arrData.push("add");
   }
-  if(editData){
-    arrData.push('edit')
+  if (editData) {
+    arrData.push("edit");
   }
-  if(deleteData){
-    arrData.push('delete')
+  if (deleteData) {
+    arrData.push("delete");
   }
-  if(viewData){
-    arrData.push('view')
+  if (viewData) {
+    arrData.push("view");
   }
-  if(changeStatusData){
-    arrData.push('changeStatus')
+  if (changeStatusData) {
+    arrData.push("changeStatus");
   }
-  if(arrData.length>0){
+  if (arrData.length > 0) {
     return arrData.join(",");
-  }else{
+  } else {
     return "";
   }
+};
 
-}
+const userRoleStringMeetingManipulation = (
+  editData = false,
+  viewData = false,
+  postponeData = false,
+  cancelData = false,
+  approvalData = false
+) => {
+  let arrData = [];
 
-const userRoleStringMeetingManipulation=(editData=false,viewData=false,postponeData=false,cancelData=false,approvalData=false)=>{
+  if (editData) {
+    arrData.push("edit");
+  }
+  if (viewData) {
+    arrData.push("view");
+  }
+  if (postponeData) {
+    arrData.push("postpone");
+  }
 
-  let arrData=[];
- 
-  if(editData){
-    arrData.push('edit')
+  if (cancelData) {
+    arrData.push("cancel");
   }
-  if(viewData){
-    arrData.push('view')
+  if (approvalData) {
+    arrData.push("approval");
   }
-  if(postponeData){
-    arrData.push('postpone')
-  }
-  
-  if(cancelData){
-    arrData.push('cancel')
-  }
-  if(approvalData){
-    arrData.push('approval')
-  }
-  if(arrData.length>0){
+  if (arrData.length > 0) {
     return arrData.join(",");
-  }else{
+  } else {
     return "";
   }
+};
 
-}
-
-const userRoleStringRoomManipulation=(
-  addData=false,
-  editData=false,
-  deleteData=false,
-  viewData=false,
-  galleryData=false,
-  amenitiesData=false,
-  foodBeverageData=false,
-  barcodeData=false,
-  sanitizationData=false
-)=>{
-
-  let arrData=[];
-  if(addData){
-    arrData.push('add')
+const userRoleStringRoomManipulation = (
+  addData = false,
+  editData = false,
+  deleteData = false,
+  viewData = false,
+  galleryData = false,
+  amenitiesData = false,
+  foodBeverageData = false,
+  barcodeData = false,
+  sanitizationData = false
+) => {
+  let arrData = [];
+  if (addData) {
+    arrData.push("add");
   }
-  if(editData){
-    arrData.push('edit')
+  if (editData) {
+    arrData.push("edit");
   }
-  if(deleteData){
-    arrData.push('delete')
+  if (deleteData) {
+    arrData.push("delete");
   }
-  if(viewData){
-    arrData.push('view')
+  if (viewData) {
+    arrData.push("view");
   }
-  if(galleryData){
-    arrData.push('gallery')
+  if (galleryData) {
+    arrData.push("gallery");
   }
-  if(amenitiesData){
-    arrData.push('amenities')
+  if (amenitiesData) {
+    arrData.push("amenities");
   }
-  if(foodBeverageData){
-    arrData.push('foodbeverage')
+  if (foodBeverageData) {
+    arrData.push("foodbeverage");
   }
-  if(barcodeData){
-    arrData.push('barcode')
+  if (barcodeData) {
+    arrData.push("barcode");
   }
-  if(sanitizationData){
-    arrData.push('sanitization')
+  if (sanitizationData) {
+    arrData.push("sanitization");
   }
-  if(arrData.length>0){
+  if (arrData.length > 0) {
     return arrData.join(",");
-  }else{
+  } else {
     return "";
   }
+};
 
-}
+const replaceAndUppercase = (str) => {
+  return str
+    .replace(/,/g, "|")
+    .split("|")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" || ");
+};
 
-export { checkFileExists, 
-  getFormattedDate, 
-  timeDifference, 
+export {
+  checkFileExists,
+  getFormattedDate,
+  timeDifference,
   fetchUsers,
   fetchActiveCommittee,
   validateImage,
   getMeetingTimePercentage,
-userRoleStringManipulation,
-userRoleStringMeetingManipulation,
-userRoleStringRoomManipulation };
+  userRoleStringManipulation,
+  userRoleStringMeetingManipulation,
+  userRoleStringRoomManipulation,
+  replaceAndUppercase,
+};

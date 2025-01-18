@@ -18,7 +18,7 @@ import toast from "react-hot-toast";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   userRoleStringManipulation,
   userRoleStringMeetingManipulation,
@@ -26,9 +26,15 @@ import {
 } from "../../utils/utils";
 import { Grid2 } from "@mui/material";
 import { PaperWrapper } from "../../Style";
+import { useNavigate } from "react-router-dom";
 
 const AddUserTypeSettings = () => {
   const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const goBack = () => {
+    navigate(-1);
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -160,6 +166,8 @@ const AddUserTypeSettings = () => {
     }),
     onSubmit: async (values, { resetForm }) => {
       //console.log("Submitted values:", values);
+      dispatch(showLoading());
+
       try {
         const submittedData = {
           userTypeName: values.userTypeName,
@@ -252,11 +260,10 @@ const AddUserTypeSettings = () => {
         await axios.post("api/v1/user-type/add-user-type", submittedData);
         toast.success("User role added Successfully");
         resetForm();
-
-        setIsAddOpen(false);
-        hideLoading();
+        dispatch(hideLoading());
+        goBack();
       } catch (err) {
-        hideLoading();
+        dispatch(hideLoading());
         toast.error(err.response?.data?.message || "An error occurred");
         console.error("Error adding user role:", err);
       }
