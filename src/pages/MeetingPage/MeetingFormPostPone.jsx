@@ -12,11 +12,13 @@ import {
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { fetchActiveCommittee, fetchUsers } from "../../utils/utils";
+import { disablePastDates, fetchActiveCommittee, fetchUsers } from "../../utils/utils";
 import dayjs from "dayjs";
 
 const MeetingFormPostPone = ({ updatedBookingId,room,setRefreshPage }) => {
@@ -129,10 +131,12 @@ if(formik.values.startTime&&formik.values.endTime)
     <Box component="form" onSubmit={formik.handleSubmit}>
       {/* Date */}
       <Box display="flex" justifyContent="space-between" gap={1}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
           label="Date"
           value={formik.values.date}
           onChange={(value) => formik.setFieldValue("date", value)}
+          shouldDisableDate={disablePastDates}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -144,6 +148,7 @@ if(formik.values.startTime&&formik.values.endTime)
             />
           )}
         />
+        </LocalizationProvider>
 
         {/* Start Time & End Time */}
         <Box display="flex" justifyContent="space-around" gap={1}>

@@ -19,6 +19,7 @@ import MeetingFormEdit from "../MeetingPage/MeetingFormEdit";
 import MeetingFormPostPone from "../MeetingPage/MeetingFormPostPone";
 import CancelMeetingModal from "../../components/Common/Modals/Delete/CancelMeetingModal";
 import MeetingApproval from "../MeetingPage/MeetingApproval";
+import { dateStringFormatting, formatTimeShort } from "../../utils/utils";
 
 const MeetingLogs = () => {
   const { user } = useSelector((state) => state.user);
@@ -108,18 +109,7 @@ const MeetingLogs = () => {
       flex: 1,
       headerClassName: "super-app-theme--header",
     },
-    // {
-    //   field: "agenda",
-    //   headerName: "Agenda",
-    //   flex: 1,
-    //   headerClassName: "super-app-theme--header",
-    // },
-    // {
-    //   field: "notes",
-    //   headerName: "Notes",
-    //   flex: 1,
-    //   headerClassName: "super-app-theme--header",
-    // },
+
     {
       field: "startTime",
       headerName: "Start Time",
@@ -174,50 +164,61 @@ const MeetingLogs = () => {
           }}
           gap={"10px"}
         >
-          {user.UserType.meetingLogsModule&&user.UserType.meetingLogsModule.split(",").includes("edit")&&<Tooltip title="Edit meeting">
-            <EditOutlinedIcon
-              className="meeting-logs-edit"
-              color="success"
-              onClick={() => handleEdit(params.row.roomId, params.row.id)}
-              style={{ cursor: "pointer" }}
-            />
-          </Tooltip>}
-          {user.UserType.meetingLogsModule&&user.UserType.meetingLogsModule.split(",").includes("postpone")&&
-          <Tooltip title="Postpone meeting">
-            <HistoryOutlinedIcon
-              className="meeting-logs-postpone"
-              color="message"
-              style={{ cursor: "pointer" }}
-              onClick={() => handlePostpone(params.row.roomId, params.row.id)}
-            />
-          </Tooltip>}
-          {user.UserType.meetingLogsModule&&user.UserType.meetingLogsModule.split(",").includes("cancel")&&
-          <Tooltip title="Cancel meeting">
-            <EventBusyOutlinedIcon
-              className="meeting-logs-cancel"
-              color="error"
-              style={{ cursor: "pointer" }}
-              onClick={() =>
-                handleCancelMeeting(params.row.roomId, params.row.id)
-              }
-            />
-          </Tooltip>}
-          {user.UserType.isAdmin==='admin' &&user.UserType.meetingLogsModule&&user.UserType.meetingLogsModule.split(",").includes("approval") && (
-            <Tooltip title="Change the status of meeting">
-              <ApprovalOutlinedIcon
-                className="meeting-logs-approve"
-                color="success"
-                style={{ cursor: "pointer" }}
-                onClick={() =>
-                  handleApproval(
-                    params.row.roomId,
-                    params.row.id,
-                    params.row.status
-                  )
-                }
-              />
-            </Tooltip>
-          )}
+          {user.UserType.meetingLogsModule &&
+            user.UserType.meetingLogsModule.split(",").includes("edit") && (
+              <Tooltip title="Edit meeting">
+                <EditOutlinedIcon
+                  className="meeting-logs-edit"
+                  color="success"
+                  onClick={() => handleEdit(params.row.roomId, params.row.id)}
+                  style={{ cursor: "pointer" }}
+                />
+              </Tooltip>
+            )}
+          {user.UserType.meetingLogsModule &&
+            user.UserType.meetingLogsModule.split(",").includes("postpone") && (
+              <Tooltip title="Postpone meeting">
+                <HistoryOutlinedIcon
+                  className="meeting-logs-postpone"
+                  color="message"
+                  style={{ cursor: "pointer" }}
+                  onClick={() =>
+                    handlePostpone(params.row.roomId, params.row.id)
+                  }
+                />
+              </Tooltip>
+            )}
+          {user.UserType.meetingLogsModule &&
+            user.UserType.meetingLogsModule.split(",").includes("cancel") && (
+              <Tooltip title="Cancel meeting">
+                <EventBusyOutlinedIcon
+                  className="meeting-logs-cancel"
+                  color="error"
+                  style={{ cursor: "pointer" }}
+                  onClick={() =>
+                    handleCancelMeeting(params.row.roomId, params.row.id)
+                  }
+                />
+              </Tooltip>
+            )}
+          {user.UserType.isAdmin === "admin" &&
+            user.UserType.meetingLogsModule &&
+            user.UserType.meetingLogsModule.split(",").includes("approval") && (
+              <Tooltip title="Change the status of meeting">
+                <ApprovalOutlinedIcon
+                  className="meeting-logs-approve"
+                  color="success"
+                  style={{ cursor: "pointer" }}
+                  onClick={() =>
+                    handleApproval(
+                      params.row.roomId,
+                      params.row.id,
+                      params.row.status
+                    )
+                  }
+                />
+              </Tooltip>
+            )}
         </Box>
       ),
     },
@@ -247,13 +248,14 @@ const MeetingLogs = () => {
   useEffect(() => {
     if (updatedRoomId) fetchRoomsData();
   }, [updatedRoomId, updatedBookingId, refreshPage]);
-console.log(user)
+  console.log(user);
   useEffect(() => {
     const fetchMeetings = async () => {
       try {
-        const endpoint = user?.UserType?.isAdmin==='admin'
-          ? "/api/v1/meeting/get-all-admin-meeting"
-          : "/api/v1/meeting/get-all-my-meeting";
+        const endpoint =
+          user?.UserType?.isAdmin === "admin"
+            ? "/api/v1/meeting/get-all-admin-meeting"
+            : "/api/v1/meeting/get-all-my-meeting";
         const response = await axios.get(endpoint, { withCredentials: true });
         const meetings =
           response.data.data.myMeetings || response.data.data.meetings;
@@ -264,9 +266,9 @@ console.log(user)
           roomId: meeting?.Room.id,
           agenda: meeting?.agenda,
           notes: meeting?.notes || "",
-          startTime: meeting?.startTime,
-          endTime: meeting?.endTime,
-          meetingDate: meeting?.meetingDate,
+          startTime: formatTimeShort(meeting?.startTime),
+          endTime: formatTimeShort(meeting?.endTime),
+          meetingDate: dateStringFormatting(meeting?.meetingDate),
           roomLocation: meeting?.Room?.Location?.locationName || "N/A",
           roomName: meeting?.Room?.name || "N/A",
           organizerName: meeting?.User?.fullname || "N/A",

@@ -12,11 +12,13 @@ import {
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { fetchActiveCommittee, fetchUsers } from "../../utils/utils";
+import { disablePastDates, fetchActiveCommittee, fetchUsers } from "../../utils/utils";
 import dayjs from "dayjs";
 
 const MeetingFormEdit = ({ updatedBookingId, room, setRefreshPage }) => {
@@ -144,22 +146,24 @@ const MeetingFormEdit = ({ updatedBookingId, room, setRefreshPage }) => {
     <Box component="form" onSubmit={formik.handleSubmit}>
       {/* Date */}
       <Box display="flex" justifyContent="space-between" gap={1}>
-        <DatePicker
-          label="Date"
-          value={formik.values.date}
-          onChange={(value) => formik.setFieldValue("date", value)}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              margin="normal"
-              fullWidth
-              error={formik.touched.date && Boolean(formik.errors.date)}
-              helperText={formik.touched.date && formik.errors.date}
-              size="small"
-            />
-          )}
-        />
-
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            label="Date"
+            value={formik.values.date}
+            onChange={(value) => formik.setFieldValue("date", value)}
+            shouldDisableDate={disablePastDates}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                margin="normal"
+                fullWidth
+                error={formik.touched.date && Boolean(formik.errors.date)}
+                helperText={formik.touched.date && formik.errors.date}
+                size="small"
+              />
+            )}
+          />
+        </LocalizationProvider>
         {/* Start Time & End Time */}
         <Box display="flex" justifyContent="space-around" gap={1}>
           <TimePicker
