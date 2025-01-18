@@ -226,8 +226,7 @@ const StockPage = () => {
               fontSize: "16px",
             },
           }}
-          showCellVerticalBorder
-          showColumnVerticalBorder
+         
         />
       </Grid>
       <PopupModals

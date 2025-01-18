@@ -103,17 +103,23 @@ const MeetingLogs = () => {
       headerClassName: "super-app-theme--header",
     },
     {
-      field: "agenda",
-      headerName: "Agenda",
+      field: "roomName",
+      headerName: "Room Name",
       flex: 1,
       headerClassName: "super-app-theme--header",
     },
-    {
-      field: "notes",
-      headerName: "Notes",
-      flex: 1,
-      headerClassName: "super-app-theme--header",
-    },
+    // {
+    //   field: "agenda",
+    //   headerName: "Agenda",
+    //   flex: 1,
+    //   headerClassName: "super-app-theme--header",
+    // },
+    // {
+    //   field: "notes",
+    //   headerName: "Notes",
+    //   flex: 1,
+    //   headerClassName: "super-app-theme--header",
+    // },
     {
       field: "startTime",
       headerName: "Start Time",
@@ -262,6 +268,7 @@ console.log(user)
           endTime: meeting?.endTime,
           meetingDate: meeting?.meetingDate,
           roomLocation: meeting?.Room?.Location?.locationName || "N/A",
+          roomName: meeting?.Room?.name || "N/A",
           organizerName: meeting?.User?.fullname || "N/A",
           status: meeting?.status || "N/A",
         }));

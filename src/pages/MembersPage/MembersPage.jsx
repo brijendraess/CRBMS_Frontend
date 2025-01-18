@@ -310,7 +310,7 @@ const MembersPage = () => {
               showColumnVerticalBorder
               rows={filteredUsers}
               rowHeight={40}
-              columns={[...columns]}
+              columns={[...columns]} 
               initialState={{
                 pagination: {
                   paginationModel: {
