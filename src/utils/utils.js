@@ -33,15 +33,14 @@ const timeDifference = (time1, time2) => {
   return `${diffHours.toFixed(1)} hrs`; // Format to 1 decimal place
 };
 
-const getUserByName=async(id)=>{
-  if(id){
-  const userDetail=await axios.get(`/api/v1/user/${id}`)
-  return userDetail?.data?.data?.fullname;
-  }else{
+const getUserByName = async (id) => {
+  if (id) {
+    const userDetail = await axios.get(`/api/v1/user/${id}`);
+    return userDetail?.data?.data?.fullname;
+  } else {
     return "";
   }
-}
-
+};
 
 const fetchUsers = async (toast, setEmailsList) => {
   try {
@@ -63,7 +62,10 @@ function formatTimeShort(timeString) {
   const amPm = hours >= 12 ? "PM" : "AM"; // Determine AM or PM
   const formattedHours = hours % 12 || 12; // Convert to 12-hour format (handle 0 as 12)
 
-  return `${String(formattedHours).padStart(2, "0")}:${String(minutes).padStart(2, "0")} ${amPm}`;
+  return `${String(formattedHours).padStart(2, "0")}:${String(minutes).padStart(
+    2,
+    "0"
+  )} ${amPm}`;
 }
 
 const fetchActiveCommittee = async (toast, setCommitteeList) => {
@@ -122,123 +124,134 @@ function getMeetingTimePercentage(startTime, endTime) {
   }
 }
 
-const userRoleStringManipulation=(
-  addData=false,
-  editData=false,
-  deleteData=false,
-  viewData=false,
-  changeStatusData=false
-)=>{
-
-  let arrData=[];
-  if(addData){
-    arrData.push('add')
+const userRoleStringManipulation = (
+  addData = false,
+  editData = false,
+  deleteData = false,
+  viewData = false,
+  changeStatusData = false
+) => {
+  let arrData = [];
+  if (addData) {
+    arrData.push("add");
   }
-  if(editData){
-    arrData.push('edit')
+  if (editData) {
+    arrData.push("edit");
   }
-  if(deleteData){
-    arrData.push('delete')
+  if (deleteData) {
+    arrData.push("delete");
   }
-  if(viewData){
-    arrData.push('view')
+  if (viewData) {
+    arrData.push("view");
   }
-  if(changeStatusData){
-    arrData.push('changeStatus')
+  if (changeStatusData) {
+    arrData.push("changeStatus");
   }
-  if(arrData.length>0){
+  if (arrData.length > 0) {
     return arrData.join(",");
-  }else{
+  } else {
     return "";
   }
+};
 
-}
+const userRoleStringMeetingManipulation = (
+  editData = false,
+  viewData = false,
+  postponeData = false,
+  cancelData = false,
+  approvalData = false
+) => {
+  let arrData = [];
 
-const userRoleStringMeetingManipulation=(editData=false,viewData=false,postponeData=false,cancelData=false,approvalData=false)=>{
+  if (editData) {
+    arrData.push("edit");
+  }
+  if (viewData) {
+    arrData.push("view");
+  }
+  if (postponeData) {
+    arrData.push("postpone");
+  }
 
-  let arrData=[];
- 
-  if(editData){
-    arrData.push('edit')
+  if (cancelData) {
+    arrData.push("cancel");
   }
-  if(viewData){
-    arrData.push('view')
+  if (approvalData) {
+    arrData.push("approval");
   }
-  if(postponeData){
-    arrData.push('postpone')
-  }
-  
-  if(cancelData){
-    arrData.push('cancel')
-  }
-  if(approvalData){
-    arrData.push('approval')
-  }
-  if(arrData.length>0){
+  if (arrData.length > 0) {
     return arrData.join(",");
-  }else{
+  } else {
     return "";
   }
+};
 
-}
-
-const userRoleStringRoomManipulation=(
-  addData=false,
-  editData=false,
-  deleteData=false,
-  viewData=false,
-  galleryData=false,
-  amenitiesData=false,
-  foodBeverageData=false,
-  barcodeData=false,
-  sanitizationData=false
-)=>{
-
-  let arrData=[];
-  if(addData){
-    arrData.push('add')
+const userRoleStringRoomManipulation = (
+  addData = false,
+  editData = false,
+  deleteData = false,
+  viewData = false,
+  galleryData = false,
+  amenitiesData = false,
+  foodBeverageData = false,
+  barcodeData = false,
+  sanitizationData = false
+) => {
+  let arrData = [];
+  if (addData) {
+    arrData.push("add");
   }
-  if(editData){
-    arrData.push('edit')
+  if (editData) {
+    arrData.push("edit");
   }
-  if(deleteData){
-    arrData.push('delete')
+  if (deleteData) {
+    arrData.push("delete");
   }
-  if(viewData){
-    arrData.push('view')
+  if (viewData) {
+    arrData.push("view");
   }
-  if(galleryData){
-    arrData.push('gallery')
+  if (galleryData) {
+    arrData.push("gallery");
   }
-  if(amenitiesData){
-    arrData.push('amenities')
+  if (amenitiesData) {
+    arrData.push("amenities");
   }
-  if(foodBeverageData){
-    arrData.push('foodbeverage')
+  if (foodBeverageData) {
+    arrData.push("foodbeverage");
   }
-  if(barcodeData){
-    arrData.push('barcode')
+  if (barcodeData) {
+    arrData.push("barcode");
   }
-  if(sanitizationData){
-    arrData.push('sanitization')
+  if (sanitizationData) {
+    arrData.push("sanitization");
   }
-  if(arrData.length>0){
+  if (arrData.length > 0) {
     return arrData.join(",");
-  }else{
+  } else {
     return "";
   }
+};
 
-}
+const replaceAndUppercase = (str) => {
+  return str
+    .replace(/,/g, "|")
+    .split("|")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" || ");
+};
 
-export { checkFileExists, 
-  getFormattedDate, 
-  timeDifference, 
+export {
+  checkFileExists,
+  getFormattedDate,
+  timeDifference,
   fetchUsers,
   fetchActiveCommittee,
   validateImage,
   getMeetingTimePercentage,
-userRoleStringManipulation,
-userRoleStringMeetingManipulation,
-userRoleStringRoomManipulation,
-formatTimeShort,
-getUserByName };
+  userRoleStringManipulation,
+  userRoleStringMeetingManipulation,
+  userRoleStringRoomManipulation,
+  formatTimeShort,
+  getUserByName,
+  replaceAndUppercase,
+};

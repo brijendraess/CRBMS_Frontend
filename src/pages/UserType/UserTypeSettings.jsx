@@ -25,6 +25,7 @@ import EditUserTypeSettings from "./EditUserTypeSettings";
 import AddUserTypeSettings from "./AddUserTypeSettings";
 import UserTypeCard from "../../components/Responsive/UserType/UserTypeCard";
 import { useNavigate } from "react-router-dom";
+import { replaceAndUppercase } from "../../utils/utils";
 
 const UserTypeSettings = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -47,17 +48,19 @@ const UserTypeSettings = () => {
           serialNo: index + 1,
           uid: type.id,
           userTypeName: type.userTypeName,
-          calendarModule: type.calendarModule,
-          userModule: type.userModule,
-          committeeModule: type.committeeModule,
-          committeeMemberModule: type.committeeMemberModule,
-          meetingLogsModule: type.meetingLogsModule,
-          amenitiesModule: type.amenitiesModule,
-          roomModule: type.roomModule,
-          locationModule: type.locationModule,
-          foodBeverageModule: type.foodBeverageModule,
-          reportModule: type.reportModule,
-          userRoleModule: type.userRoleModule,
+          calendarModule: replaceAndUppercase(type.calendarModule),
+          userModule: replaceAndUppercase(type.userModule),
+          committeeModule: replaceAndUppercase(type.committeeModule),
+          committeeMemberModule: replaceAndUppercase(
+            type.committeeMemberModule
+          ),
+          meetingLogsModule: replaceAndUppercase(type.meetingLogsModule),
+          amenitiesModule: replaceAndUppercase(type.amenitiesModule),
+          roomModule: replaceAndUppercase(type.roomModule),
+          locationModule: replaceAndUppercase(type.locationModule),
+          foodBeverageModule: replaceAndUppercase(type.foodBeverageModule),
+          reportModule: replaceAndUppercase(type.reportModule),
+          userRoleModule: replaceAndUppercase(type.userRoleModule),
           isAdmin: type.isAdmin,
           status: type.status,
         }));
@@ -76,13 +79,17 @@ const UserTypeSettings = () => {
   };
 
   const handleEdit = (id) => {
-    navigate(`/user-role/edit-role/${id}`);
-  };
+    const selectedRole = userRole.find((role) => role.uid === id);
+    console.log("Selected Role:", selectedRole);
 
-  // const handleEdit = (id) => {
-  //   setUpdatedId(id);
-  //   setIsEditOpen(true);
-  // };
+    if (selectedRole) {
+      navigate(`/user-role/edit-role/${id}`, {
+        state: { userRole: selectedRole },
+      });
+    } else {
+      toast.error("Failed to find the selected role");
+    }
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -105,14 +112,14 @@ const UserTypeSettings = () => {
     }
   };
 
-  const handleUpdateSuccess = (updatedUserRole) => {
-    setUserRole((prev) =>
-      prev.map((role) =>
-        role.id === updatedUserRole.id ? updatedUserRole : role
-      )
-    );
-    setIsEditOpen(false);
-  };
+  // const handleUpdateSuccess = (updatedUserRole) => {
+  //   setUserRole((prev) =>
+  //     prev.map((role) =>
+  //       role.id === updatedUserRole.id ? updatedUserRole : role
+  //     )
+  //   );
+  //   setIsEditOpen(false);
+  // };
 
   const handleOpen = (id) => {
     setDeleteId(id);

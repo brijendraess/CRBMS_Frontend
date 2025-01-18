@@ -2,9 +2,11 @@ import {
   Box,
   Button,
   Checkbox,
+  Divider,
   FormControl,
   FormControlLabel,
   FormHelperText,
+  Grid2,
   InputLabel,
   MenuItem,
   Select,
@@ -17,22 +19,26 @@ import toast from "react-hot-toast";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   userRoleStringManipulation,
   userRoleStringMeetingManipulation,
   userRoleStringRoomManipulation,
 } from "../../utils/utils";
 import { PaperWrapper } from "../../Style";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const EditUserTypeSettings = ({
-  id,
-  userRole,
-  onSuccess,
-  setRefreshPage,
-  setIsEditOpen,
-}) => {
+const EditUserTypeSettings = () => {
   const { user } = useSelector((state) => state.user);
+
+  const location = useLocation();
+  const { userRole } = location.state || {};
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const goBack = () => {
+    navigate(-1);
+  };
   const formik = useFormik({
     initialValues: {
       userTypeName: userRole?.userTypeName,
@@ -186,6 +192,7 @@ const EditUserTypeSettings = ({
     }),
     onSubmit: async (values, { resetForm }) => {
       //console.log("Submitted values:", values);
+      dispatch(showLoading());
       try {
         const submittedData = {
           userTypeName: values.userTypeName,
@@ -279,11 +286,10 @@ const EditUserTypeSettings = ({
         await axios.put(`api/v1/user-type/edit/${userRole.uid}`, submittedData);
         toast.success("User role update Successfully");
         resetForm(); // Reset form after successful submission
-        setRefreshPage(Math.random());
-        setIsEditOpen(false);
-        hideLoading();
+        goBack();
+        dispatch(hideLoading());
       } catch (err) {
-        hideLoading();
+        dispatch(hideLoading());
         toast.error(err.response?.data?.message || "An error occurred");
         console.error("Error adding user role:", err);
       }
@@ -292,6 +298,9 @@ const EditUserTypeSettings = ({
 
   return (
     <PaperWrapper>
+      <Typography variant="h6" component="h6">
+        Update User Role
+      </Typography>
       <Box
         component="form"
         onSubmit={formik.handleSubmit}
@@ -323,9 +332,11 @@ const EditUserTypeSettings = ({
             fullWidth
             margin="normal"
             error={Boolean(formik.touched.isAdmin && formik.errors.isAdmin)}
+            size="small"
           >
             <InputLabel id="admin-label">User Role</InputLabel>
             <Select
+              label="User Role"
               labelId="admin-label"
               id="isAdmin"
               name="isAdmin"
@@ -574,790 +585,165 @@ const EditUserTypeSettings = ({
             )}
           </FormControl>
         </Box>
-        <Box display="flex" gap={2}>
-          <Typography
-            component={"h6"}
-            sx={{ fontWeight: "bold", marginRight: "10.5%" }}
-          >
-            Calendar
-          </Typography>
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="calendarView"
-                checked={formik.values.calendarView}
-                onChange={(e) => {
-                  formik.setFieldValue("calendarView", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="View"
-          />
-        </Box>
-        <Box display="flex" gap={2}>
-          <Typography
-            component={"h6"}
-            sx={{ fontWeight: "bold", marginRight: "18%" }}
-          >
-            User
-          </Typography>
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="userAdd"
-                checked={formik.values.userAdd}
-                onChange={(e) => {
-                  formik.setFieldValue("userAdd", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Add"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="userEdit"
-                checked={formik.values.userEdit}
-                onChange={(e) => {
-                  formik.setFieldValue("userEdit", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Edit"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="userDelete"
-                checked={formik.values.userDelete}
-                onChange={(e) => {
-                  formik.setFieldValue("userDelete", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Delete"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="userView"
-                checked={formik.values.userView}
-                onChange={(e) => {
-                  formik.setFieldValue("userView", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="View"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="userChangeStatus"
-                checked={formik.values.userChangeStatus}
-                onChange={(e) => {
-                  formik.setFieldValue("userChangeStatus", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="status"
-          />
-        </Box>
-        <Box display="flex" gap={2}>
-          <Typography
-            component={"h6"}
-            sx={{ fontWeight: "bold", marginRight: "8%" }}
-          >
-            Committee
-          </Typography>
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="committeeAdd"
-                checked={formik.values.committeeAdd}
-                onChange={(e) => {
-                  formik.setFieldValue("committeeAdd", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Add"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="committeeEdit"
-                checked={formik.values.committeeEdit}
-                onChange={(e) => {
-                  formik.setFieldValue("committeeEdit", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Edit"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="committeeDelete"
-                checked={formik.values.committeeDelete}
-                onChange={(e) => {
-                  formik.setFieldValue("committeeDelete", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Delete"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="committeeView"
-                checked={formik.values.committeeView}
-                onChange={(e) => {
-                  formik.setFieldValue("committeeView", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="View"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="committeeChangeStatus"
-                checked={formik.values.committeeChangeStatus}
-                onChange={(e) => {
-                  formik.setFieldValue(
-                    "committeeChangeStatus",
-                    e.target.checked
-                  );
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Status"
-          />
-        </Box>
-        <Box display="flex" gap={2}>
-          <Typography
-            component={"h6"}
-            sx={{ fontWeight: "bold", marginRight: "8%" }}
-          >
-            Committee member
-          </Typography>
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="committeeMemberDelete"
-                checked={formik.values.committeeMemberDelete}
-                onChange={(e) => {
-                  formik.setFieldValue(
-                    "committeeMemberDelete",
-                    e.target.checked
-                  );
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Delete"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="committeeMemberView"
-                checked={formik.values.committeeMemberView}
-                onChange={(e) => {
-                  formik.setFieldValue("committeeMemberView", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="View"
-          />
-        </Box>
-        <Box display="flex" gap={2}>
-          <Typography
-            component={"h6"}
-            sx={{ fontWeight: "bold", marginRight: "10%" }}
-          >
-            Amenities
-          </Typography>
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="amenitiesAdd"
-                checked={formik.values.amenitiesAdd}
-                onChange={(e) => {
-                  formik.setFieldValue("amenitiesAdd", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Add"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="amenitiesEdit"
-                checked={formik.values.amenitiesEdit}
-                onChange={(e) => {
-                  formik.setFieldValue("amenitiesEdit", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Edit"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="amenitiesDelete"
-                checked={formik.values.amenitiesDelete}
-                onChange={(e) => {
-                  formik.setFieldValue("amenitiesDelete", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Delete"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="amenitiesView"
-                checked={formik.values.amenitiesView}
-                onChange={(e) => {
-                  formik.setFieldValue("amenitiesView", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="View"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="amenitiesChangeStatus"
-                checked={formik.values.amenitiesChangeStatus}
-                onChange={(e) => {
-                  formik.setFieldValue(
-                    "amenitiesChangeStatus",
-                    e.target.checked
-                  );
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Status"
-          />
-        </Box>
-        <Box display="flex" gap={2}>
-          <Typography
-            component={"h6"}
-            sx={{ fontWeight: "bold", marginRight: "17%" }}
-          >
-            Room
-          </Typography>
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="roomAdd"
-                checked={formik.values.roomAdd}
-                onChange={(e) => {
-                  formik.setFieldValue("roomAdd", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Add"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="roomEdit"
-                checked={formik.values.roomEdit}
-                onChange={(e) => {
-                  formik.setFieldValue("roomEdit", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Edit"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="roomDelete"
-                checked={formik.values.roomDelete}
-                onChange={(e) => {
-                  formik.setFieldValue("roomDelete", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Delete"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="roomView"
-                checked={formik.values.roomView}
-                onChange={(e) => {
-                  formik.setFieldValue("roomView", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="View"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="roomGallery"
-                checked={formik.values.roomGallery}
-                onChange={(e) => {
-                  formik.setFieldValue("roomGallery", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Gallery"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="roomAmenities"
-                checked={formik.values.roomAmenities}
-                onChange={(e) => {
-                  formik.setFieldValue("roomAmenities", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Amenities"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="roomFoodBeverage"
-                checked={formik.values.roomFoodBeverage}
-                onChange={(e) => {
-                  formik.setFieldValue("roomFoodBeverage", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Food Beverage"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="roomBarcode"
-                checked={formik.values.roomBarcode}
-                onChange={(e) => {
-                  formik.setFieldValue("roomBarcode", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="BarCode"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="roomSanitization"
-                checked={formik.values.roomSanitization}
-                onChange={(e) => {
-                  formik.setFieldValue("roomSanitization", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Sanitization"
-          />
-        </Box>
-        <Box display="flex" gap={2}>
-          <Typography
-            component={"h6"}
-            sx={{ fontWeight: "bold", marginRight: "12.75%" }}
-          >
-            Location
-          </Typography>
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="locationAdd"
-                checked={formik.values.locationAdd}
-                onChange={(e) => {
-                  formik.setFieldValue("locationAdd", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Add"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="locationEdit"
-                checked={formik.values.locationEdit}
-                onChange={(e) => {
-                  formik.setFieldValue("locationEdit", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Edit"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="locationDelete"
-                checked={formik.values.locationDelete}
-                onChange={(e) => {
-                  formik.setFieldValue("locationDelete", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Delete"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="locationView"
-                checked={formik.values.locationView}
-                onChange={(e) => {
-                  formik.setFieldValue("locationView", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="View"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="locationChangeStatus"
-                checked={formik.values.locationChangeStatus}
-                onChange={(e) => {
-                  formik.setFieldValue(
-                    "locationChangeStatus",
-                    e.target.checked
-                  );
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Status"
-          />
-        </Box>
-        <Box display="flex" gap={2}>
-          <Typography
-            component={"h6"}
-            sx={{ fontWeight: "bold", marginRight: "12.75%" }}
-          >
-            Meeting Logs
-          </Typography>
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="meetingLogsEdit"
-                checked={formik.values.meetingLogsEdit}
-                onChange={(e) => {
-                  formik.setFieldValue("meetingLogsEdit", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Edit"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="meetingLogsView"
-                checked={formik.values.meetingLogsView}
-                onChange={(e) => {
-                  formik.setFieldValue("meetingLogsView", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="View"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="meetingLogsPostpone"
-                checked={formik.values.meetingLogsPostpone}
-                onChange={(e) => {
-                  formik.setFieldValue("meetingLogsPostpone", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="postpone"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="meetingLogsCancel"
-                checked={formik.values.meetingLogsCancel}
-                onChange={(e) => {
-                  formik.setFieldValue("meetingLogsCancel", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="cancel"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="meetingLogsApproval"
-                checked={formik.values.meetingLogsApproval}
-                onChange={(e) => {
-                  formik.setFieldValue("meetingLogsApproval", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Approval"
-          />
-        </Box>
-        <Box display="flex" gap={2}>
-          <Typography component={"h6"} sx={{ fontWeight: "bold" }}>
-            Food & Beverage
-          </Typography>
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="foodBeverageAdd"
-                checked={formik.values.foodBeverageAdd}
-                onChange={(e) => {
-                  formik.setFieldValue("foodBeverageAdd", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Add"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="foodBeverageEdit"
-                checked={formik.values.foodBeverageEdit}
-                onChange={(e) => {
-                  formik.setFieldValue("foodBeverageEdit", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Edit"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="foodBeverageDelete"
-                checked={formik.values.foodBeverageDelete}
-                onChange={(e) => {
-                  formik.setFieldValue("foodBeverageDelete", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Delete"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="foodBeverageView"
-                checked={formik.values.foodBeverageView}
-                onChange={(e) => {
-                  formik.setFieldValue("foodBeverageView", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="View"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="foodBeverageChangeStatus"
-                checked={formik.values.foodBeverageChangeStatus}
-                onChange={(e) => {
-                  formik.setFieldValue(
-                    "foodBeverageChangeStatus",
-                    e.target.checked
-                  );
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Status"
-          />
-        </Box>
-        <Box display="flex" gap={2}>
-          <Typography
-            component={"h6"}
-            sx={{ fontWeight: "bold", marginRight: "16%" }}
-          >
-            Report
-          </Typography>
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="reportView"
-                checked={formik.values.reportView}
-                onChange={(e) => {
-                  formik.setFieldValue("reportView", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="View"
-          />
-        </Box>
-        <Box display="flex" gap={2}>
-          <Typography
-            component={"h6"}
-            sx={{ fontWeight: "bold", marginRight: "18%" }}
-          >
-            User Role
-          </Typography>
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="userRoleAdd"
-                checked={formik.values.userRoleAdd}
-                onChange={(e) => {
-                  formik.setFieldValue("userRoleAdd", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Add"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="userRoleEdit"
-                checked={formik.values.userRoleEdit}
-                onChange={(e) => {
-                  formik.setFieldValue("userRoleEdit", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Edit"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="userRoleDelete"
-                checked={formik.values.userRoleDelete}
-                onChange={(e) => {
-                  formik.setFieldValue("userRoleDelete", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Delete"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="userRoleView"
-                checked={formik.values.userRoleView}
-                onChange={(e) => {
-                  formik.setFieldValue("userRoleView", e.target.checked);
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="View"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                name="userRoleChangeStatus"
-                checked={formik.values.userRoleChangeStatus}
-                onChange={(e) => {
-                  formik.setFieldValue(
-                    "userRoleChangeStatus",
-                    e.target.checked
-                  );
-                }}
-                onBlur={formik.handleBlur}
-              />
-            }
-            label="Status"
-          />
-        </Box>
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          fullWidth
-          sx={{ mt: 2 }}
+
+        {[
+          {
+            title: "Report",
+            permissions: [{ name: "reportView", label: "View" }],
+          },
+          {
+            title: "Calendar",
+            permissions: [{ name: "calendarView", label: "View" }],
+          },
+          {
+            title: "Committee Member",
+            permissions: [
+              { name: "committeeMemberView", label: "View" },
+              { name: "committeeMemberDelete", label: "Delete" },
+            ],
+          },
+          {
+            title: "User",
+            permissions: [
+              { name: "userView", label: "View" },
+              { name: "userDelete", label: "Delete" },
+              { name: "userAdd", label: "Add" },
+              { name: "userEdit", label: "Edit" },
+              { name: "userChangeStatus", label: "Status" },
+            ],
+          },
+          {
+            title: "Committee",
+            permissions: [
+              { name: "committeeView", label: "View" },
+              { name: "committeeDelete", label: "Delete" },
+              { name: "committeeAdd", label: "Add" },
+              { name: "committeeEdit", label: "Edit" },
+              { name: "committeeChangeStatus", label: "Status" },
+            ],
+          },
+          {
+            title: "Amenities",
+            permissions: [
+              { name: "amenitiesView", label: "View" },
+              { name: "amenitiesDelete", label: "Delete" },
+              { name: "amenitiesAdd", label: "Add" },
+              { name: "amenitiesEdit", label: "Edit" },
+              { name: "amenitiesChangeStatus", label: "Status" },
+            ],
+          },
+          {
+            title: "Location",
+            permissions: [
+              { name: "locationView", label: "View" },
+              { name: "locationDelete", label: "Delete" },
+              { name: "locationAdd", label: "Add" },
+              { name: "locationEdit", label: "Edit" },
+              { name: "locationChangeStatus", label: "Status" },
+            ],
+          },
+          {
+            title: "User Role",
+            permissions: [
+              { name: "userRoleView", label: "View" },
+              { name: "userRoleDelete", label: "Delete" },
+              { name: "userRoleAdd", label: "Add" },
+              { name: "userRoleEdit", label: "Edit" },
+              { name: "userRoleChangeStatus", label: "Status" },
+            ],
+          },
+          {
+            title: "Food & Beverages",
+            permissions: [
+              { name: "foodBeverageView", label: "View" },
+              { name: "foodBeverageDelete", label: "Delete" },
+              { name: "foodBeverageAdd", label: "Add" },
+              { name: "foodBeverageEdit", label: "Edit" },
+              { name: "foodBeverageChangeStatus", label: "Status" },
+            ],
+          },
+          {
+            title: "Meeting Logs",
+            permissions: [
+              { name: "meetingLogsView", label: "View" },
+              { name: "meetingLogsCancel", label: "Cancel" },
+              { name: "meetingLogsEdit", label: "Edit" },
+              { name: "meetingLogsApproval", label: "Approval" },
+              { name: "meetingLogsPostpone", label: "Postpone" },
+            ],
+          },
+          {
+            title: "Room",
+            permissions: [
+              { name: "roomAdd", label: "Add" },
+              { name: "roomEdit", label: "Edit" },
+              { name: "roomDelete", label: "Delete" },
+              { name: "roomView", label: "View" },
+              { name: "roomGallery", label: "Gallery" },
+              { name: "roomAmenities", label: "Amenities" },
+              { name: "roomBarcode", label: "BarCode" },
+              { name: "roomSanitization", label: "Sanitization" },
+              { name: "roomFoodBeverage", label: "Food Beverage" },
+            ],
+          },
+        ].map((section) => (
+          <>
+            <Grid2
+              container
+              columnSpacing={2}
+              rowSpacing={1}
+              alignItems="center"
+            >
+              <Grid2 item xs={12} md={3} sx={{ minWidth: "200px" }}>
+                <Typography component="h6" sx={{ fontWeight: "bold" }}>
+                  {section.title}
+                </Typography>
+              </Grid2>
+              {section.permissions.map((permission) => (
+                <Grid2 item xs={6} sm={4} md={2} key={permission.name}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        size="small"
+                        color="primary"
+                        name={permission.name}
+                        checked={formik.values[permission.name]}
+                        onChange={(e) =>
+                          formik.setFieldValue(
+                            permission.name,
+                            e.target.checked
+                          )
+                        }
+                        onBlur={formik.handleBlur}
+                      />
+                    }
+                    label={permission.label}
+                  />
+                </Grid2>
+              ))}
+            </Grid2>
+            <Divider sx={{ opacity: 1, color: "#000" }} />
+          </>
+        ))}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            mt: 5,
+          }}
         >
-          Save
-        </Button>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            sx={{
+              width: "200px",
+            }}
+          >
+            Save
+          </Button>
+        </Box>
       </Box>
     </PaperWrapper>
   );
