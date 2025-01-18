@@ -212,7 +212,8 @@ const MembersPage = () => {
               onClick={() => handleEdit(params.id)}
             />
           </Tooltip>}
-          {user.UserType.userModule&&user.UserType.userModule.split(",").includes("view")&&<Tooltip title="View">
+          {user.UserType.userModule&&user.UserType.userModule.split(",").includes("view")&&
+          <Tooltip title="View">
             <VisibilityOutlinedIcon
               color="secondary"
               className="tour-view"

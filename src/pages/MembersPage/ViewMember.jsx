@@ -15,7 +15,6 @@ import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 
 const ViewMember = ({ id }) => {
-  //const { id } = useParams();
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
@@ -25,7 +24,6 @@ const ViewMember = ({ id }) => {
         dispatch(showLoading());
         const response = await axios.get(`/api/v1/user/${id}`);
         const result = response.data.data;
-
         // Format data (directly mapping committees since it's already an array)
         const formattedData = {
           id: result.id,
@@ -34,6 +32,7 @@ const ViewMember = ({ id }) => {
           phoneNumber: result.phoneNumber,
           avatarPath: result.avatarPath,
           committees: result.committees,
+          services: result.services,
         };
 
         setUserData(formattedData);
@@ -78,7 +77,7 @@ const ViewMember = ({ id }) => {
       </Box>
     );
   }
-
+  
   return (
     <>
       <Box
@@ -120,7 +119,7 @@ const ViewMember = ({ id }) => {
         <Divider textAlign="left" mt>
           <Chip label="Committee" size="large" />
         </Divider>
-        {userData.committees.length > 0 ? (
+        {userData.committees&&userData.committees.length > 0 ? (
           <div style={{ maxHeight: "120px", overflow: "scroll" }}>
             <Grid2 container spacing={2} mt={3}>
               {userData.committees.map((committee, index) => (
@@ -133,6 +132,26 @@ const ViewMember = ({ id }) => {
         ) : (
           <Typography variant="body2" color="textSecondary" mt={3}>
             No committees assigned.
+          </Typography>
+        )}
+      </Box>
+      <Box width="100%" maxWidth="800px" mt={4}>
+        <Divider textAlign="left" mt>
+          <Chip label="Services" size="large" />
+        </Divider>
+        {userData.services&&userData.services.length > 0 ? (
+          <div style={{ maxHeight: "120px", overflow: "scroll" }}>
+            <Grid2 container spacing={2} mt={3}>
+              {userData.services.map((service, index) => (
+                <Grid2 item xs={12} sm={6} md={4} key={index}>
+                  <Chip label={service} variant="outlined" />
+                </Grid2>
+              ))}
+            </Grid2>
+          </div>
+        ) : (
+          <Typography variant="body2" color="textSecondary" mt={3}>
+            No services assigned.
           </Typography>
         )}
       </Box>

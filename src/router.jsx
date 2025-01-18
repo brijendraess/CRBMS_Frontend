@@ -34,6 +34,7 @@ import NotFound from "./pages/NotFoundPage/NotFound";
 import UserTypeSettings from "./pages/UserType/UserTypeSettings";
 import ServicesPage from "./pages/Services/ServicesPage";
 import StockPage from "./pages/StockPage/StockPage";
+import DashboardPage from "./pages/Dashboard/DashboardPage";
 
 const AppRouter = () => {
   return (
@@ -88,13 +89,13 @@ const AppRouter = () => {
         }
       >
         {/* To-Do Admin Condition */}
-        <Route path="/" element={<CalenderPage />} />
-        <Route path="/home" element={<CalenderPage />} />
+        <Route path="/" element={<DashboardPage />} />
+        <Route path="/home" element={<DashboardPage />} />
         <Route path="/rooms" element={<RoomsPage />} />
         <Route path="/reports" element={<ReportPage />} />
         <Route path="/members" element={<MembersPage />} />
         <Route path="/meetings" element={<MainMeetingPage />} />
-        <Route path="/meeting-calendar" element={<CalenderPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/my-committee" element={<MyCommitteePage />} />
         <Route path="/add-amenity" element={<AmenitiesAdd />} />
         <Route path="/amenities" element={<AmenitiesList />} />

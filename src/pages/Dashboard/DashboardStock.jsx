@@ -12,7 +12,6 @@ import { makeStyles } from "@mui/styles";
 import axios from "axios";
 import CustomButton from "../../components/Common/CustomButton/CustomButton";
 import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
-import AddStock from "./AddStock";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import toast from "react-hot-toast";
 
@@ -23,7 +22,7 @@ const useStyles = makeStyles({
   },
 });
 
-const StockPage = () => {
+const DashboardStock = () => {
   const classes = useStyles();
 
   // State for rows
@@ -71,7 +70,7 @@ const StockPage = () => {
 
         if (response.data && response.data.data?.result) {
           // Map the API data into the desired format
-          const stockData = response.data.data.result.map((type, index) => ({
+          const stockData = response.data.data.result.filter((item)=>item.stock<5).map((type, index) => ({
             id: index + 1,
             uid: type.id,
             serialNo: index + 1,
@@ -95,14 +94,6 @@ const StockPage = () => {
 
   // Column Definitions
   const amenitiesColumn = [
-    {
-      field: "serialNo",
-      headerName: "#",
-      disableColumnMenu: true,
-      hideSortIcons: true,
-      flex: 0.5,
-      headerClassName: "super-app-theme--header",
-    },
     {
       field: "name",
       headerName: "Amenity",
@@ -163,41 +154,7 @@ const StockPage = () => {
 
   return (
     <PaperWrapper>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          marginBottom: "10px",
-        }}
-      >
-        <Typography
-          variant="h1"
-          component="h1"
-          sx={{
-            marginRight: "20px",
-            fontSize: {
-              xs: "16px",
-              sm: "18px",
-              md: "22px",
-            },
-            fontWeight: 500,
-            lineHeight: 1.5,
-            color: "#2E2E2E",
-          }}
-        >
-          Inventory
-        </Typography>
-
-        <CustomButton
-          onClick={() => setIsAddOpen(true)}
-          title={"Add New Stock"}
-          placement={"left"}
-          Icon={AddOutlinedIcon}
-          fontSize={"medium"}
-          background={"rgba(3, 176, 48, 0.68)"}
-        />
-      </Box>
+   
       <Grid
         container
         spacing={3}
@@ -230,19 +187,9 @@ const StockPage = () => {
           showColumnVerticalBorder
         />
       </Grid>
-      <PopupModals
-        isOpen={isAddOpen}
-        setIsOpen={setIsAddOpen}
-        title={"Add Stock"}
-        modalBody={
-          <AddStock
-            setRefreshPage={setRefreshPage}
-            setIsAddOpen={setIsAddOpen}
-          />
-        }
-      />
+      
     </PaperWrapper>
   );
 };
 
-export default StockPage;
+export default DashboardStock;

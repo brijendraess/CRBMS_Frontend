@@ -26,14 +26,10 @@ const AddRoomFoodBeverage = ({
   const formik = useFormik({
     initialValues: {
       foodBeverageId: "",
-      quantity: "",
     },
     validationSchema: Yup.object({
       foodBeverageId: Yup.string().required("Please select a food or beverage"),
-      quantity: Yup.number()
-        .required("Quantity is required")
-        .min(1, "Quantity must be at least 1")
-        .typeError("Quantity must be a number"),
+     
     }),
     onSubmit: async (values, { resetForm }) => {
       try {
@@ -105,7 +101,7 @@ const AddRoomFoodBeverage = ({
           </InputLabel>
           <Select
             labelId="food-beverage-select-label"
-            id="foodBeverageId"
+            id="foodBeverage"
             name="foodBeverageId"
             value={formik.values.foodBeverageId}
             onChange={formik.handleChange}
