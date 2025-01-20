@@ -162,6 +162,7 @@ const MeetingFormEdit = ({ updatedBookingId, room, setRefreshPage }) => {
                 size="small"
               />
             )}
+            disabled
           />
         </LocalizationProvider>
         {/* Start Time & End Time */}
@@ -182,6 +183,7 @@ const MeetingFormEdit = ({ updatedBookingId, room, setRefreshPage }) => {
                 helperText={formik.touched.startTime && formik.errors.startTime}
               />
             )}
+            disabled
           />
 
           <TimePicker
@@ -198,6 +200,7 @@ const MeetingFormEdit = ({ updatedBookingId, room, setRefreshPage }) => {
                 helperText={formik.touched.endTime && formik.errors.endTime}
               />
             )}
+            disabled
           />
         </Box>
         <Box
