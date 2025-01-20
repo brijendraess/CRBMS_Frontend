@@ -42,17 +42,17 @@ setInitialValueState({
   
   roomId: room?.meetingsOnly?room?.meetingsOnly[0]?.Room?.id:null,
   organizerId: user.id,
-  subject: room?.meetingsOnly?room?.meetingsOnly[0]?.subject: "",
-  agenda: room?.meetingsOnly?room?.meetingsOnly[0]?.agenda: "",
+  // subject: room?.meetingsOnly?room?.meetingsOnly[0]?.subject: "",
+  // agenda: room?.meetingsOnly?room?.meetingsOnly[0]?.agenda: "",
   guestUser:room?.meetingsOnly?room?.meetingsOnly[0]?.guestUser: "",
   startTime: room?.meetingsOnly?dayjs(room?.meetingsOnly[0]?.startTime, "HH:mm:ss"): null,
   endTime: room?.meetingsOnly?dayjs(room?.meetingsOnly[0]?.endTime, "HH:mm:ss"): null,
   date: room?.meetingsOnly?dayjs(room?.meetingsOnly[0]?.meetingDate): null,
   attendees: room?.meetingUser?room?.meetingUser?.map((data)=>({id:data.id,name:data.fullname})):[],
   committees:room?.meetingsOnly?room?.meetingsOnly[0]?.Committees:[],
-  notes: room?.meetingsOnly?room?.meetingsOnly[0]?.notes:"",
-  additionalEquipment: room?.meetingsOnly?room?.meetingsOnly[0]?.additionalEquipment:"",
-  isPrivate: room?.meetingsOnly?room?.meetingsOnly[0]?.isPrivate:false,
+  // notes: room?.meetingsOnly?room?.meetingsOnly[0]?.notes:"",
+  // additionalEquipment: room?.meetingsOnly?room?.meetingsOnly[0]?.additionalEquipment:"",
+  // isPrivate: room?.meetingsOnly?room?.meetingsOnly[0]?.isPrivate:false,
 })
     }
   }, 500);
@@ -62,8 +62,8 @@ setInitialValueState({
     initialValues: initialValueState,
     enableReinitialize: true,
     validationSchema: Yup.object({
-      subject: Yup.string().required("Meeting Title is required"),
-      agenda: Yup.string().required("Agenda is required"),
+      // subject: Yup.string().required("Meeting Title is required"),
+      // agenda: Yup.string().required("Agenda is required"),
       startTime: Yup.date().required("Start Time is required"),
       endTime: Yup.date()
         .required("End Time is required")
@@ -71,9 +71,9 @@ setInitialValueState({
       date: Yup.date().required("Meeting Date is required"),
       attendees: Yup.array().optional(),
       committees: Yup.array().min(1, "At least one committee must be selected"),
-      notes: Yup.string(),
+      // notes: Yup.string(),
       guestUser: Yup.string(),
-      additionalEquipment: Yup.string(),
+      // additionalEquipment: Yup.string(),
     }),
     onSubmit: async (values, { resetForm }) => {
       //console.log("Form Submitted:", values);
@@ -84,7 +84,7 @@ setInitialValueState({
           attendees: values.attendees.map((attendee) => attendee.id),
           committees: values.committees.map((committee) => committee.id),
         };
-        //console.log("payload", payload);
+        console.log("payload", payload);
         const response = await axios.put(
           `/api/v1/meeting/postpone-meeting/${updatedBookingId}`,
           payload,
@@ -129,25 +129,24 @@ if(formik.values.startTime&&formik.values.endTime)
   }, [formik]);
   return (
     <Box component="form" onSubmit={formik.handleSubmit}>
-      {/* Date */}
       <Box display="flex" justifyContent="space-between" gap={1}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePicker
-          label="Date"
-          value={formik.values.date}
-          onChange={(value) => formik.setFieldValue("date", value)}
-          shouldDisableDate={disablePastDates}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              margin="normal"
-              fullWidth
-              error={formik.touched.date && Boolean(formik.errors.date)}
-              helperText={formik.touched.date && formik.errors.date}
-              size="small"
-            />
-          )}
-        />
+          <DatePicker
+            label="Date"
+            value={formik.values.date}
+            onChange={(value) => formik.setFieldValue("date", value)}
+            shouldDisableDate={disablePastDates}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                margin="normal"
+                fullWidth
+                error={formik.touched.date && Boolean(formik.errors.date)}
+                helperText={formik.touched.date && formik.errors.date}
+                size="small"
+              />
+            )}
+          />
         </LocalizationProvider>
 
         {/* Start Time & End Time */}
@@ -204,14 +203,13 @@ if(formik.values.startTime&&formik.values.endTime)
           </Typography>
         </Box>
       </Box>
-      <Box display="flex" justifyContent="space-between">
-        {/* Meeting Title */}
+      {/* <Box display="flex" justifyContent="space-between">
         <TextField
           label="Subject"
           name="subject"
           margin="normal"
           fullWidth
-          value={formik.values.subject||""}
+          value={formik.values.subject || ""}
           onChange={formik.handleChange}
           error={formik.touched.subject && Boolean(formik.errors.subject)}
           helperText={formik.touched.subject && formik.errors.subject}
@@ -219,31 +217,30 @@ if(formik.values.startTime&&formik.values.endTime)
           required
           style={{ marginRight: 8 }}
         />
-        {/* Agenda */}
         <TextField
           label="Agenda"
           name="agenda"
           margin="normal"
           fullWidth
-          value={formik.values.agenda||""}
+          value={formik.values.agenda || ""}
           onChange={formik.handleChange}
           error={formik.touched.agenda && Boolean(formik.errors.agenda)}
           helperText={formik.touched.agenda && formik.errors.agenda}
           required
           size="small"
         />
-      </Box>
-      <Box display="flex" gap={1} justifyContent="space-between">
+      </Box> */}
+      {/* <Box display="flex" gap={1} justifyContent="space-between">
         <Autocomplete
           multiple
           id="attendees"
           name="attendees"
           size="small"
           sx={{
-            width: "100%", 
+            width: "100%",
           }}
           options={emailsList}
-          value={formik.values.attendees||[]}
+          value={formik.values.attendees || []}
           onChange={(_, newValue) =>
             formik.setFieldValue("attendees", newValue)
           }
@@ -260,11 +257,9 @@ if(formik.values.startTime&&formik.values.endTime)
               }}
             >
               <div>
-                {/* Render the attendee's name */}
                 <span>{option.name}</span>
               </div>
               <div sx={{ width: "100%", float: "right" }}>
-                {/* Render a hardcoded Chip for availability */}
                 <Chip
                   label={
                     option.id === "15b8126b-8ce7-443c-a231-007179da901a"
@@ -303,7 +298,7 @@ if(formik.values.startTime&&formik.values.endTime)
             width: "100%", // Adjust the width as needed
           }}
           options={committeeList}
-          value={formik.values.committees||[]}
+          value={formik.values.committees || []}
           onChange={(_, newValue) =>
             formik.setFieldValue("committees", newValue)
           }
@@ -320,11 +315,9 @@ if(formik.values.startTime&&formik.values.endTime)
               }}
             >
               <div>
-                {/* Render the attendee's name */}
                 <span>{option.name}</span>
               </div>
               <div sx={{ width: "100%", float: "right" }}>
-                {/* Render a hardcoded Chip for availability */}
                 <Chip
                   label={
                     option.id === "15b8126b-8ce7-443c-a231-007179da901a"
@@ -354,9 +347,8 @@ if(formik.values.startTime&&formik.values.endTime)
           disableCloseOnSelect
           isOptionEqualToValue={(option, value) => option.id === value.id}
         />
-      </Box>
-      <Box display="flex" gap={1} justifyContent="space-between">
-        {/* Description */}
+      </Box> */}
+      {/* <Box display="flex" gap={1} justifyContent="space-between">
         <TextField
           label="Notes"
           name="notes"
@@ -364,14 +356,13 @@ if(formik.values.startTime&&formik.values.endTime)
           fullWidth
           multiline
           rows={3}
-          value={formik.values.notes||""}
+          value={formik.values.notes || ""}
           onChange={formik.handleChange}
           error={formik.touched.notes && Boolean(formik.errors.notes)}
           helperText={formik.touched.notes && formik.errors.notes}
           size="small"
         />
 
-        {/* Description */}
         <TextField
           label="Additional Equipment Needed"
           name="additionalEquipment"
@@ -379,7 +370,7 @@ if(formik.values.startTime&&formik.values.endTime)
           fullWidth
           multiline
           rows={3}
-          value={formik.values.additionalEquipment||""}
+          value={formik.values.additionalEquipment || ""}
           onChange={formik.handleChange}
           error={
             formik.touched.additionalEquipment &&
@@ -391,44 +382,43 @@ if(formik.values.startTime&&formik.values.endTime)
           }
           size="small"
         />
-      </Box>
-      {/* Private Meeting */}
-      <Box display="flex" gap={1} justifyContent="space-between">
-<Box component="p">
-<Typography variant="subtitle1" component="p" sx={{ mt: 2 }}>
-        Is this a private meeting?
-      </Typography>
-      <RadioGroup
-        name="isPrivate"
-        value={formik.values.isPrivate||false}
-        onChange={(e) =>
-          formik.setFieldValue("isPrivate", e.target.value === "true")
-        }
-        row
-      >
-        <FormControlLabel value={true} control={<Radio />} label="Yes" />
-        <FormControlLabel value={false} control={<Radio />} label="No" />
-      </RadioGroup>
-</Box>
-<Box component="p">
-<Typography variant="subtitle1" component="p" sx={{ mt: 2 }}>
-        Guest user(Comma separate email Id)
-      </Typography>
-      <TextField
-          label="guestUser"
-          name="guestUser"
-          margin="normal"
-          fullWidth
-          sx={{width:"100%"}}
-          value={formik.values.guestUser||""}
-          onChange={formik.handleChange}
-          error={formik.touched.guestUser && Boolean(formik.errors.guestUser)}
-          helperText={formik.touched.guestUser && formik.errors.guestUser}
-          size="small"
-        />
-</Box>
-      </Box>
-      
+      </Box> */}
+      {/* <Box display="flex" gap={1} justifyContent="space-between">
+        <Box component="p">
+          <Typography variant="subtitle1" component="p" sx={{ mt: 2 }}>
+            Is this a private meeting?
+          </Typography>
+          <RadioGroup
+            name="isPrivate"
+            value={formik.values.isPrivate||false}
+            onChange={(e) =>
+              formik.setFieldValue("isPrivate", e.target.value === "true")
+            }
+            row
+          >
+            <FormControlLabel value={true} control={<Radio />} label="Yes" />
+            <FormControlLabel value={false} control={<Radio />} label="No" />
+          </RadioGroup>
+        </Box>
+        <Box component="p">
+          <Typography variant="subtitle1" component="p" sx={{ mt: 2 }}>
+            Guest user(Comma separate email Id)
+          </Typography>
+            <TextField
+              label="guestUser"
+              name="guestUser"
+              margin="normal"
+              fullWidth
+              sx={{width:"100%"}}
+              value={formik.values.guestUser||""}
+              onChange={formik.handleChange}
+              error={formik.touched.guestUser && Boolean(formik.errors.guestUser)}
+              helperText={formik.touched.guestUser && formik.errors.guestUser}
+              size="small"
+            />
+        </Box>
+      </Box> */}
+
 
       {/* Submit Button */}
       <Box mt={2} display="flex" justifyContent="flex-end">
