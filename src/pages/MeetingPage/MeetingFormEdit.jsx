@@ -99,6 +99,7 @@ const MeetingFormEdit = ({ updatedBookingId, room, setRefreshPage }) => {
           ...values,
           attendees: values.attendees.map((attendee) => attendee.id),
           committees: values.committees.map((committee) => committee.id),
+          guestUser: values.guestUser
         };
         const response = await axios.put(
           `/api/v1/meeting/update-meeting/${updatedBookingId}`,
