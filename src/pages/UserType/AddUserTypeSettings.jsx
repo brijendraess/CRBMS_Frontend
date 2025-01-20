@@ -20,6 +20,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  notificationStringManipulation,
   userRoleStringManipulation,
   userRoleStringMeetingManipulation,
   userRoleStringRoomManipulation,
@@ -50,6 +51,15 @@ const AddUserTypeSettings = () => {
       committeeDelete: "",
       committeeView: "",
       committeeChangeStatus: "",
+
+      notificationRead:"",
+      notificationDelete:"",
+      notificationView:"",
+
+      inventoryAdd:"",
+      inventoryIncrease:"",
+      inventoryDecrease:"",
+      inventoryView:"",
 
       committeeMemberDelete: "",
       committeeMemberView: "",
@@ -117,6 +127,16 @@ const AddUserTypeSettings = () => {
       committeeDelete: Yup.boolean().optional(),
       committeeView: Yup.boolean().optional(),
       committeeChangeStatus: Yup.boolean().optional(),
+
+      notificationRead: Yup.boolean().optional(),
+      notificationDelete: Yup.boolean().optional(),
+      notificationView: Yup.boolean().optional(),
+
+      inventoryAdd: Yup.boolean().optional(),
+      inventoryIncrease: Yup.boolean().optional(),
+      inventoryDecrease: Yup.boolean().optional(),
+      inventoryView: Yup.boolean().optional(),
+
       committeeMemberDelete: Yup.boolean().optional(),
       committeeMemberView: Yup.boolean().optional(),
       // Amenities
@@ -192,7 +212,23 @@ const AddUserTypeSettings = () => {
             values.committeeView,
             values.committeeChangeStatus
           ),
-          committeeMemberModule: userRoleStringManipulation(
+          notificationModule: notificationStringManipulation(
+            false,
+            values.notificationRead,
+            values.notificationDelete,
+            values.notificationView,
+            false,
+            false
+          ),
+          inventoryModule: notificationStringManipulation(
+            values.inventoryAdd,
+            false,
+            false,
+            values.inventoryView,
+            values.inventoryIncrease,
+            values.inventoryDecrease,
+          ),
+          committeeMemberModule: notificationStringManipulation(
             false,
             false,
             values.committeeMemberDelete,
@@ -331,6 +367,15 @@ const AddUserTypeSettings = () => {
                   formik.setFieldValue("committeeView", true);
                   formik.setFieldValue("committeeChangeStatus", true);
 
+                  formik.setFieldValue("notificationRead", true);
+                  formik.setFieldValue("notificationDelete", true);
+                  formik.setFieldValue("notificationView", true);
+
+                  formik.setFieldValue("inventoryAdd", true);
+                  formik.setFieldValue("inventoryView", true);
+                  formik.setFieldValue("inventoryIncrease", true);
+                  formik.setFieldValue("inventoryDecrease", true);
+
                   formik.setFieldValue("committeeMemberDelete", "");
                   formik.setFieldValue("committeeMemberView", true);
 
@@ -384,6 +429,15 @@ const AddUserTypeSettings = () => {
                   formik.setFieldValue("committeeDelete", true);
                   formik.setFieldValue("committeeView", true);
                   formik.setFieldValue("committeeChangeStatus", true);
+
+                  formik.setFieldValue("notificationRead", true);
+                  formik.setFieldValue("notificationDelete", true);
+                  formik.setFieldValue("notificationView", true);
+
+                  formik.setFieldValue("inventoryAdd", true);
+                  formik.setFieldValue("inventoryView", true);
+                  formik.setFieldValue("inventoryIncrease", true);
+                  formik.setFieldValue("inventoryDecrease", true);
 
                   formik.setFieldValue("committeeMemberDelete", true);
                   formik.setFieldValue("committeeMemberView", true);
@@ -451,6 +505,15 @@ const AddUserTypeSettings = () => {
                   formik.setFieldValue("committeeView", true);
                   formik.setFieldValue("committeeChangeStatus", true);
 
+                  formik.setFieldValue("notificationRead", true);
+                  formik.setFieldValue("notificationDelete", true);
+                  formik.setFieldValue("notificationView", true);
+
+                  formik.setFieldValue("inventoryAdd", true);
+                  formik.setFieldValue("inventoryView", true);
+                  formik.setFieldValue("inventoryIncrease", true);
+                  formik.setFieldValue("inventoryDecrease", true);
+
                   formik.setFieldValue("committeeMemberDelete", "");
                   formik.setFieldValue("committeeMemberView", true);
 
@@ -505,6 +568,15 @@ const AddUserTypeSettings = () => {
                   formik.setFieldValue("committeeView", "");
                   formik.setFieldValue("committeeChangeStatus", "");
 
+                  formik.setFieldValue("notificationRead", true);
+                  formik.setFieldValue("notificationDelete", true);
+                  formik.setFieldValue("notificationView", true);
+
+                  formik.setFieldValue("inventoryAdd", true);
+                  formik.setFieldValue("inventoryView", true);
+                  formik.setFieldValue("inventoryIncrease", true);
+                  formik.setFieldValue("inventoryDecrease", true);
+
                   formik.setFieldValue("committeeMemberDelete", "");
                   formik.setFieldValue("committeeMemberView", "");
 
@@ -553,7 +625,7 @@ const AddUserTypeSettings = () => {
               margin="normal"
               size="small"
               required
-            >
+            > 
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
@@ -600,6 +672,23 @@ const AddUserTypeSettings = () => {
               { name: "committeeAdd", label: "Add" },
               { name: "committeeEdit", label: "Edit" },
               { name: "committeeChangeStatus", label: "Status" },
+            ],
+          }, 
+          {
+            title: "Meeting Notification",
+            permissions: [
+              { name: "notificationRead", label: "read" },
+              { name: "committeeDelete", label: "Delete" },
+              { name: "notificationView", label: "view" },
+            ],
+          },
+          {
+            title: "Inventory",
+            permissions: [
+              { name: "inventoryAdd", label: "add" },
+              { name: "inventoryIncrease", label: "increase" },
+              { name: "inventoryDecrease", label: "decrease" },
+              { name: "notificationView", label: "view" },
             ],
           },
           {

@@ -16,6 +16,7 @@ import {
 const getSideBarMenuContent = async (user) => {
   let sideBarData = [];
   try {
+    
     if (
       user.UserType.calendarModule &&
       user.UserType.calendarModule.split(",").includes("view")
@@ -167,7 +168,10 @@ const getSideBarMenuContent = async (user) => {
         path: "/services",
       });
     }
-    {
+    if (
+      user.UserType.inventoryModule &&
+      user.UserType.inventoryModule.split(",").includes("view")
+    ) {
       sideBarData.push({
         id: 13,
         name: "Inventory",
