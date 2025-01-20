@@ -21,6 +21,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  notificationStringManipulation,
   userRoleStringManipulation,
   userRoleStringMeetingManipulation,
   userRoleStringRoomManipulation,
@@ -57,6 +58,25 @@ const EditUserTypeSettings = () => {
       committeeChangeStatus: userRole?.committeeModule
         ?.split(",")
         .includes("changeStatus"),
+
+      notificationRead: userRole?.notificationModule
+        ?.split(",")
+        .includes("read"),
+      notificationDelete: userRole?.notificationModule
+        ?.split(",")
+        .includes("delete"),
+      notificationView: userRole?.notificationModule
+        ?.split(",")
+        .includes("view"),
+
+      inventoryAdd: userRole?.inventoryModule?.split(",").includes("add"),
+      inventoryIncrease: userRole?.inventoryModule
+        ?.split(",")
+        .includes("increase"),
+      inventoryDecrease: userRole?.inventoryModule
+        ?.split(",")
+        .includes("decrease"),
+      inventoryView: userRole?.inventoryModule?.split(",").includes("view"),
 
       committeeMemberDelete: userRole?.committeeMemberModule
         ?.split(",")
@@ -147,6 +167,15 @@ const EditUserTypeSettings = () => {
       committeeView: Yup.boolean().optional(),
       committeeChangeStatus: Yup.boolean().optional(),
 
+      notificationRead: Yup.boolean().optional(),
+      notificationDelete: Yup.boolean().optional(),
+      notificationView: Yup.boolean().optional(),
+
+      inventoryAdd: Yup.boolean().optional(),
+      inventoryIncrease: Yup.boolean().optional(),
+      inventoryDecrease: Yup.boolean().optional(),
+      inventoryView: Yup.boolean().optional(),
+
       committeeMemberDelete: Yup.boolean().optional(),
       committeeMemberView: Yup.boolean().optional(),
 
@@ -217,6 +246,22 @@ const EditUserTypeSettings = () => {
             values.committeeView,
             values.committeeChangeStatus
           ),
+          notificationModule: notificationStringManipulation(
+            false,
+            values.notificationRead,
+            values.notificationDelete,
+            values.notificationView,
+            false,
+            false
+          ),
+          inventoryModule: notificationStringManipulation(
+            values.inventoryAdd,
+            false,
+            false,
+            values.inventoryView,
+            values.inventoryIncrease,
+            values.inventoryDecrease
+          ),
           committeeMemberModule: userRoleStringManipulation(
             false,
             false,
@@ -281,7 +326,7 @@ const EditUserTypeSettings = () => {
           createdBy: values.createdBy,
           isAdmin: values.isAdmin,
         };
-        console.log("Submitted values:", submittedData);
+        //console.log("Submitted values:", submittedData);
         showLoading();
         await axios.put(`api/v1/user-type/edit/${userRole.uid}`, submittedData);
         toast.success("User role update Successfully");
@@ -295,7 +340,6 @@ const EditUserTypeSettings = () => {
       }
     },
   });
-
   return (
     <PaperWrapper>
       <Typography variant="h6" component="h6">
@@ -359,6 +403,15 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("committeeView", true);
                   formik.setFieldValue("committeeChangeStatus", true);
 
+                  formik.setFieldValue("notificationRead", true);
+                  formik.setFieldValue("notificationDelete", true);
+                  formik.setFieldValue("notificationView", true);
+
+                  formik.setFieldValue("inventoryAdd", true);
+                  formik.setFieldValue("inventoryView", true);
+                  formik.setFieldValue("inventoryIncrease", true);
+                  formik.setFieldValue("inventoryDecrease", true);
+
                   formik.setFieldValue("committeeMemberDelete", "");
                   formik.setFieldValue("committeeMemberView", true);
 
@@ -412,6 +465,15 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("committeeDelete", true);
                   formik.setFieldValue("committeeView", true);
                   formik.setFieldValue("committeeChangeStatus", true);
+
+                  formik.setFieldValue("notificationRead", true);
+                  formik.setFieldValue("notificationDelete", true);
+                  formik.setFieldValue("notificationView", true);
+
+                  formik.setFieldValue("inventoryAdd", true);
+                  formik.setFieldValue("inventoryView", true);
+                  formik.setFieldValue("inventoryIncrease", true);
+                  formik.setFieldValue("inventoryDecrease", true);
 
                   formik.setFieldValue("committeeMemberDelete", true);
                   formik.setFieldValue("committeeMemberView", true);
@@ -470,6 +532,15 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("committeeView", true);
                   formik.setFieldValue("committeeChangeStatus", true);
 
+                  formik.setFieldValue("notificationRead", true);
+                  formik.setFieldValue("notificationDelete", true);
+                  formik.setFieldValue("notificationView", true);
+
+                  formik.setFieldValue("inventoryAdd", true);
+                  formik.setFieldValue("inventoryView", true);
+                  formik.setFieldValue("inventoryIncrease", true);
+                  formik.setFieldValue("inventoryDecrease", true);
+
                   formik.setFieldValue("committeeMemberDelete", "");
                   formik.setFieldValue("committeeMemberView", true);
 
@@ -523,6 +594,15 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("committeeDelete", "");
                   formik.setFieldValue("committeeView", "");
                   formik.setFieldValue("committeeChangeStatus", "");
+
+                  formik.setFieldValue("notificationRead", true);
+                  formik.setFieldValue("notificationDelete", true);
+                  formik.setFieldValue("notificationView", true);
+
+                  formik.setFieldValue("inventoryAdd", true);
+                  formik.setFieldValue("inventoryView", true);
+                  formik.setFieldValue("inventoryIncrease", true);
+                  formik.setFieldValue("inventoryDecrease", true);
 
                   formik.setFieldValue("committeeMemberDelete", "");
                   formik.setFieldValue("committeeMemberView", "");
@@ -620,6 +700,23 @@ const EditUserTypeSettings = () => {
               { name: "committeeAdd", label: "Add" },
               { name: "committeeEdit", label: "Edit" },
               { name: "committeeChangeStatus", label: "Status" },
+            ],
+          },
+          {
+            title: "Meeting Notification",
+            permissions: [
+              { name: "notificationRead", label: "Read" },
+              { name: "notificationDelete", label: "Delete" },
+              { name: "notificationView", label: "View" },
+            ],
+          },
+          {
+            title: "Inventory",
+            permissions: [
+              { name: "inventoryAdd", label: "Add" },
+              { name: "inventoryIncrease", label: "Increase" },
+              { name: "inventoryDecrease", label: "Decrease" },
+              { name: "inventoryView", label: "View" },
             ],
           },
           {

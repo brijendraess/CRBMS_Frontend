@@ -238,12 +238,50 @@ const userRoleStringRoomManipulation = (
   }
 };
 
+const notificationStringManipulation = (
+  addData = false,
+  readData = false,
+  deleteData = false,
+  viewData = false,
+  increaseData = false,
+  decreaseData = false
+) => {
+  let arrData = [];
+  if (addData) {
+    arrData.push("add");
+  }
+  if (readData) {
+    arrData.push("read");
+  }
+  if (deleteData) {
+    arrData.push("delete");
+  }
+  if (viewData) {
+    arrData.push("view");
+  }
+  if (increaseData) {
+    arrData.push("increase");
+  }
+  if (decreaseData) {
+    arrData.push("decrease");
+  }
+  if (arrData.length > 0) {
+    return arrData.join(",");
+  } else {
+    return "";
+  }
+};
+
 const replaceAndUppercase = (str) => {
+  if(str){
   return str
     .replace(/,/g, "|")
     .split("|")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" || ");
+  }else{
+    return "";
+  }
 };
 
 const disablePastDates = (date) => {
@@ -268,4 +306,5 @@ export {
   replaceAndUppercase,
   dateStringFormatting,
   disablePastDates,
+  notificationStringManipulation,
 };

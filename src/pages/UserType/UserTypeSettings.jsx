@@ -31,6 +31,7 @@ const UserTypeSettings = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   // const [isAddOpen, setIsAddOpen] = useState(false);
   const [userRole, setUserRole] = useState([]);
+  const [userRoleDB, setUserRoleDB] = useState([]);
   const [updatedId, setUpdatedId] = useState(null);
   const [open, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
@@ -43,7 +44,8 @@ const UserTypeSettings = () => {
     const fetchUserType = async () => {
       try {
         const response = await axios.get(`/api/v1/user-type/all`);
-        const userType = response.data.data.result.map((type, index) => ({
+        console.log(response.data.data.result)
+        const userType = response?.data?.data?.result?.map((type, index) => ({
           id: index + 1,
           serialNo: index + 1,
           uid: type.id,
@@ -51,6 +53,8 @@ const UserTypeSettings = () => {
           calendarModule: replaceAndUppercase(type.calendarModule),
           userModule: replaceAndUppercase(type.userModule),
           committeeModule: replaceAndUppercase(type.committeeModule),
+          notificationModule: replaceAndUppercase(type.notificationModule),
+          inventoryModule: replaceAndUppercase(type.inventoryModule),
           committeeMemberModule: replaceAndUppercase(
             type.committeeMemberModule
           ),
@@ -64,6 +68,28 @@ const UserTypeSettings = () => {
           isAdmin: type.isAdmin,
           status: type.status,
         }));
+        const userTypeDB = response.data.data.result.map((type, index) => ({
+          id: index + 1,
+          serialNo: index + 1,
+          uid: type.id,
+          userTypeName: type.userTypeName,
+          calendarModule: type.calendarModule,
+          userModule: type.userModule,
+          committeeModule: type.committeeModule,
+          notificationModule: type.notificationModule,
+          inventoryModule: type.inventoryModule,
+          committeeMemberModule: type.committeeMemberModule,
+          meetingLogsModule: type.meetingLogsModule,
+          amenitiesModule: type.amenitiesModule,
+          roomModule: type.roomModule,
+          locationModule: type.locationModule,
+          foodBeverageModule: type.foodBeverageModule,
+          reportModule: type.reportModule,
+          userRoleModule: type.userRoleModule,
+          isAdmin: type.isAdmin,
+          status: type.status,
+        }));
+        setUserRoleDB(userTypeDB);
         setUserRole(userType);
       } catch (error) {
         toast.success("Something Went Wrong");
@@ -79,7 +105,7 @@ const UserTypeSettings = () => {
   };
 
   const handleEdit = (id) => {
-    const selectedRole = userRole.find((role) => role.uid === id);
+    const selectedRole = userRoleDB.find((role) => role.uid === id);
     console.log("Selected Role:", selectedRole);
 
     if (selectedRole) {
@@ -267,7 +293,7 @@ const UserTypeSettings = () => {
       headerClassName: "super-app-theme--header",
     },
   ];
-
+console.log(userRole)
   return (
     <PaperWrapper>
       <Box
