@@ -96,7 +96,7 @@ const MeetingForm = ({ room }) => {
 
   const calculateDifference = () => {
     // Parse times into Date objects (using today's date)
-    const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD
+    const today = new Date()?.toISOString()?.split("T")[0]; // Get today's date in YYYY-MM-DD
     const start = new Date(`${today}T${startTime}`);
     const end = new Date(`${today}T${endTime}`);
 
@@ -113,9 +113,9 @@ const MeetingForm = ({ room }) => {
 
   useEffect(() => {
     setStartTime(
-      new Date(formik.values.startTime).toTimeString().split(" ")[0]
+      new Date(formik.values.startTime)?.toTimeString()?.split(" ")[0]
     );
-    setEndTime(new Date(formik.values.endTime).toTimeString().split(" ")[0]);
+    setEndTime(new Date(formik.values.endTime)?.toTimeString()?.split(" ")[0]);
     calculateDifference();
   }, [formik]);
 
