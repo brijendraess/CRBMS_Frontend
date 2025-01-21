@@ -40,6 +40,7 @@ import {
 import RoomFoodBeverages from "./RoomFoodBeverages";
 import BarCode from "../../pages/BarCodePage/BarCode";
 import StatusSymbol from "../Common/CustomButton/StatusSymbol";
+import DeleteNotAllowModel from "../Common/Modals/Delete/DeleteNotAllowModel";
 
 const RoomsCard = ({
   room,
@@ -47,6 +48,7 @@ const RoomsCard = ({
   setRefreshPage,
   meetingCurrentData,
 }) => {
+  console.log(room)
   const navigate = useNavigate();
   const [hover, setHover] = useState(false);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
@@ -55,6 +57,7 @@ const RoomsCard = ({
   const [isFoodBeverageOpen, setIsFoodBeverageOpen] = useState(false);
   const [isBarCodeOpen, setIsBarCodeOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isNotDeleteOpen, setIsNotDeleteOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [sanitationStatus, setSanitationStatus] = useState(
     room.sanitationStatus
@@ -89,9 +92,17 @@ const RoomsCard = ({
     setIsDeleteOpen(false);
   };
 
+  const handleNotDeleteClose = () => {
+    setIsNotDeleteOpen(false);
+  };
+
   const handleDeleteClick = (id) => {
+    if(room?.Meetings?.length>0){
+      setIsNotDeleteOpen(true);
+    }else{
     setIsDeleteOpen(true);
     setDeleteId(id);
+    }
   };
 
   const handleSanitationStatusChange = async (event, roomId) => {
@@ -566,6 +577,11 @@ const RoomsCard = ({
         onDeleteConfirm={handleDeleteRoom}
         button={"Delete"}
         title="room"
+      />
+      <DeleteNotAllowModel
+        open={isNotDeleteOpen}
+        onClose={handleNotDeleteClose}
+        title="Room deletion confirmation"
       />
     </>
   );
