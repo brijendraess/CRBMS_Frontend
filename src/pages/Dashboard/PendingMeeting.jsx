@@ -17,7 +17,7 @@ import MeetingFormEdit from "../MeetingPage/MeetingFormEdit";
 import MeetingFormPostPone from "../MeetingPage/MeetingFormPostPone";
 import CancelMeetingModal from "../../components/Common/Modals/Delete/CancelMeetingModal";
 import MeetingApproval from "../MeetingPage/MeetingApproval";
-import { formatTimeShort } from "../../utils/utils";
+import { dateStringFormatting, formatTimeShort } from "../../utils/utils";
 
 const PendingMeeting = () => {
   const { user } = useSelector((state) => state.user);
@@ -220,7 +220,7 @@ const PendingMeeting = () => {
             roomId: meeting?.Room.id,
             startTime: formatTimeShort(meeting?.startTime),
             endTime: formatTimeShort(meeting?.endTime),
-            meetingDate: meeting?.meetingDate,
+            meetingDate: dateStringFormatting(meeting?.meetingDate),
             status: meeting?.status || "N/A",
           }));
 

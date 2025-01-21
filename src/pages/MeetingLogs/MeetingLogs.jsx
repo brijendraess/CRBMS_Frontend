@@ -19,6 +19,7 @@ import MeetingFormEdit from "../MeetingPage/MeetingFormEdit";
 import MeetingFormPostPone from "../MeetingPage/MeetingFormPostPone";
 import CancelMeetingModal from "../../components/Common/Modals/Delete/CancelMeetingModal";
 import MeetingApproval from "../MeetingPage/MeetingApproval";
+import { dateStringFormatting, formatTimeShort } from "../../utils/utils";
 
 const MeetingLogs = () => {
   const { user } = useSelector((state) => state.user);
@@ -108,6 +109,7 @@ const MeetingLogs = () => {
       flex: 1,
       headerClassName: "super-app-theme--header",
     },
+
     {
       field: "startTime",
       headerName: "Start Time",
@@ -264,9 +266,9 @@ const MeetingLogs = () => {
           roomId: meeting?.Room.id,
           agenda: meeting?.agenda,
           notes: meeting?.notes || "",
-          startTime: meeting?.startTime,
-          endTime: meeting?.endTime,
-          meetingDate: meeting?.meetingDate,
+          startTime: formatTimeShort(meeting?.startTime),
+          endTime: formatTimeShort(meeting?.endTime),
+          meetingDate: dateStringFormatting(meeting?.meetingDate),
           roomLocation: meeting?.Room?.Location?.locationName || "N/A",
           roomName: meeting?.Room?.name || "N/A",
           organizerName: meeting?.User?.fullname || "N/A",

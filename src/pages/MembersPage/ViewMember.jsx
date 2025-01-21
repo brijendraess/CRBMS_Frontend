@@ -24,6 +24,7 @@ const ViewMember = ({ id }) => {
         dispatch(showLoading());
         const response = await axios.get(`/api/v1/user/${id}`);
         const result = response.data.data;
+        console.log(result)
         // Format data (directly mapping committees since it's already an array)
         const formattedData = {
           id: result.id,

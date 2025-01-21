@@ -123,7 +123,8 @@ const StockPage = () => {
             justifyContent: "space-evenly",
           }}
         >
-          <IconButton
+          {user.UserType.inventoryModule &&
+      user.UserType.inventoryModule.split(",").includes("decrement")&&<IconButton
             onClick={() =>
               handleQuantityChange(
                 params.row.amenityId,
@@ -141,9 +142,10 @@ const StockPage = () => {
             }}
           >
             <RemoveIcon fontSize="small" />
-          </IconButton>
+          </IconButton>}
           <Typography>{params.row.quantity}</Typography>
-          <IconButton
+          {user.UserType.inventoryModule &&
+      user.UserType.inventoryModule.split(",").includes("decrement")&&<IconButton
             onClick={() =>
               handleQuantityChange(
                 params.row.amenityId,
@@ -162,7 +164,7 @@ const StockPage = () => {
             }}
           >
             <AddIcon fontSize="small" />
-          </IconButton>
+          </IconButton>}
         </Box>
       ),
     },
@@ -200,14 +202,17 @@ const StockPage = () => {
           Inventory
         </Typography>
 
-        <CustomButton
+        {
+      user.UserType.inventoryModule &&
+      user.UserType.inventoryModule.split(",").includes("add")&&
+    <CustomButton
           onClick={() => setIsAddOpen(true)}
           title={"Add New Stock"}
           placement={"left"}
           Icon={AddOutlinedIcon}
           fontSize={"medium"}
           background={"rgba(3, 176, 48, 0.68)"}
-        />
+        />}
       </Box>
       <Box
         style={{

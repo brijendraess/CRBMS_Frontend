@@ -42,6 +42,12 @@ const getUserByName = async (id) => {
   }
 };
 
+// Date string formatting
+const dateStringFormatting=(dateString)=>{
+  const [year, month, day] = dateString.split('-');
+return `${day}/${month}/${year}`;
+}
+
 const fetchUsers = async (toast, setEmailsList) => {
   try {
     const response = await axios.get("/api/v1/user/users");
@@ -232,12 +238,56 @@ const userRoleStringRoomManipulation = (
   }
 };
 
+const notificationStringManipulation = (
+  addData = false,
+  readData = false,
+  deleteData = false,
+  viewData = false,
+  increaseData = false,
+  decreaseData = false
+) => {
+  let arrData = [];
+  if (addData) {
+    arrData.push("add");
+  }
+  if (readData) {
+    arrData.push("read");
+  }
+  if (deleteData) {
+    arrData.push("delete");
+  }
+  if (viewData) {
+    arrData.push("view");
+  }
+  if (increaseData) {
+    arrData.push("increase");
+  }
+  if (decreaseData) {
+    arrData.push("decrease");
+  }
+  if (arrData.length > 0) {
+    return arrData.join(",");
+  } else {
+    return "";
+  }
+};
+
 const replaceAndUppercase = (str) => {
+  if(str){
   return str
     .replace(/,/g, "|")
     .split("|")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" || ");
+  }else{
+    return "";
+  }
+};
+
+const disablePastDates = (date) => {
+  const today = new Date(); // Current date
+  today.setHours(0, 0, 0, 0); // Remove time for accurate comparison
+  return date.toDate() < today;
 };
 
 export {
@@ -254,4 +304,7 @@ export {
   formatTimeShort,
   getUserByName,
   replaceAndUppercase,
+  dateStringFormatting,
+  disablePastDates,
+  notificationStringManipulation,
 };

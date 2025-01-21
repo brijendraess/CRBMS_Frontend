@@ -115,19 +115,22 @@ const Notification = () => {
       headerClassName: "super-app-theme--header",
       renderCell: (params) => (
         <Box display="flex" alignItems="center" gap={1}>
-          <Tooltip title="Delete">
+          {user.UserType.notificationModule &&
+      user.UserType.notificationModule.split(",").includes("delete")&&<Tooltip title="Delete">
             <DeleteIcon
               color="error"
               style={{ cursor: "pointer" }}
               onClick={() => handleOpen(params.row.id)}
             />
-          </Tooltip>
-          <Tooltip title="Change the read Status">
+          </Tooltip>}
+          {user.UserType.notificationModule &&
+      user.UserType.notificationModule.split(",").includes("read")&&
+      <Tooltip title="Change the read Status">
             <Switch
               checked={params.row.isRead}
               onChange={() => handleStatusChange(params.row.id)}
             />
-          </Tooltip>
+          </Tooltip>}
         </Box>
       ),
     },

@@ -254,7 +254,8 @@ const Header = () => {
                 </Tooltip>
               </Button>
             )}
-            <Button
+            {user.UserType.notificationModule &&
+      user.UserType.notificationModule.split(",").includes("view")&&<Button
               id="notification-icon"
               className="rounded-circle"
               onClick={handleMenuToggle(setNotificationsAnchor)}
@@ -264,7 +265,7 @@ const Header = () => {
                   <NotificationsOutlinedIcon />
                 </Badge>
               </Tooltip>
-            </Button>
+            </Button>}
             <Button
               id="fullscreen-icon"
               className="rounded-circle"
