@@ -33,12 +33,12 @@ const DashboardStock = () => {
   const { user } = useSelector((state) => state.user);
 
   // Handle quantity change
-  const handleQuantityChange = async (amenityId,uid,id, delta, setData) => {
+  const handleQuantityChange = async (amenityId, uid, id, delta, setData) => {
     try {
       dispatch(showLoading());
       const formData = {
         stock: delta,
-        id:uid,
+        id: uid,
         amenityId,
         createdBy: user.id,
       };
@@ -70,14 +70,16 @@ const DashboardStock = () => {
 
         if (response.data && response.data.data?.result) {
           // Map the API data into the desired format
-          const stockData = response.data.data.result.filter((item)=>item.stock<5).map((type, index) => ({
-            id: index + 1,
-            uid: type.id,
-            serialNo: index + 1,
-            name: type?.RoomAmenity?.name,
-            amenityId: type?.RoomAmenity?.id,
-            quantity: type.stock,
-          }));
+          const stockData = response.data.data.result
+            .filter((item) => item.stock < 5)
+            .map((type, index) => ({
+              id: index + 1,
+              uid: type.id,
+              serialNo: index + 1,
+              name: type?.RoomAmenity?.name,
+              amenityId: type?.RoomAmenity?.id,
+              quantity: type.stock,
+            }));
 
           // Update state
           setAmenitiesData(stockData);
@@ -117,7 +119,13 @@ const DashboardStock = () => {
         >
           <IconButton
             onClick={() =>
-              handleQuantityChange(params.row.amenityId,params.row.uid,params.row.id, -1, setAmenitiesData)
+              handleQuantityChange(
+                params.row.amenityId,
+                params.row.uid,
+                params.row.id,
+                -1,
+                setAmenitiesData
+              )
             }
             sx={{
               width: "35px",
@@ -131,7 +139,13 @@ const DashboardStock = () => {
           <Typography>{params.row.quantity}</Typography>
           <IconButton
             onClick={() =>
-              handleQuantityChange(params.row.amenityId,params.row.uid,params.row.id, 1, setAmenitiesData)
+              handleQuantityChange(
+                params.row.amenityId,
+                params.row.uid,
+                params.row.id,
+                1,
+                setAmenitiesData
+              )
             }
             sx={{
               width: "35px",
@@ -153,42 +167,31 @@ const DashboardStock = () => {
     params.row.quantity < 5 ? classes.lowQuantity : "";
 
   return (
-    <PaperWrapper>
-   
-      <Grid
-        container
-        spacing={3}
-        display={"flex"}
+    <Box sx={{ width: "100%", height: "75vh" }}>
+      <DataGrid
+        rows={amenitiesData}
+        columns={amenitiesColumn}
+        pageSize={5}
+        rowHeight={40}
+        rowsPerPageOptions={[7]}
+        disableSelectionOnClick
+        getRowClassName={getRowClassName}
         sx={{
-          borderRadius: "20px",
-          alignItems: "center",
+          "& .MuiDataGrid-cell:focus": {
+            outline: "none",
+          },
+          "& .super-app-theme--header": {
+            backgroundColor: `var(--linear-gradient-main)`,
+            color: "#fff",
+            fontWeight: "600",
+            fontSize: "16px",
+          },
+          background: `linear-gradient(45deg, var(--body-color), var(--body-color-2))`,
         }}
-      >
-        <DataGrid
-          rows={amenitiesData}
-          columns={amenitiesColumn}
-          pageSize={5}
-          rowHeight={40}
-          rowsPerPageOptions={[7]}
-          disableSelectionOnClick
-          getRowClassName={getRowClassName}
-          sx={{
-            "& .MuiDataGrid-cell:focus": {
-              outline: "none",
-            },
-            "& .super-app-theme--header": {
-              backgroundColor: "#006400",
-              color: "#fff",
-              fontWeight: "600",
-              fontSize: "16px",
-            },
-          }}
-          showCellVerticalBorder
-          showColumnVerticalBorder
-        />
-      </Grid>
-      
-    </PaperWrapper>
+        showCellVerticalBorder
+        showColumnVerticalBorder
+      />
+    </Box>
   );
 };
 

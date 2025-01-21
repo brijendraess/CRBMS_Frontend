@@ -103,11 +103,16 @@ const MyComitteeCard = ({ committee, onDelete, setRefreshPage, heading }) => {
               <Chip
                 label={`${committee.memberCount || 0}`}
                 size="large"
-                color="success"
                 variant="outlined"
                 icon={<PeopleIcon />}
                 onClick={handleView}
-                sx={{ cursor: "pointer", padding: "5px" }}
+                color="var(--linear-gradient-main)"
+                sx={{
+                  cursor: "pointer",
+                  padding: "5px",
+                  color: `var(--linear-gradient-main)`,
+                  borderColor: `var(--linear-gradient-main)`,
+                }}
               />
             </Tooltip>
           </Box>

@@ -321,7 +321,7 @@ const UserTypeSettings = () => {
           rowHeight={40}
           sx={{
             "& .super-app-theme--header": {
-              backgroundColor: "#006400",
+              backgroundColor: `var(--linear-gradient-main)`,
               color: "#fff",
               fontWeight: "600",
               fontSize: "16px",

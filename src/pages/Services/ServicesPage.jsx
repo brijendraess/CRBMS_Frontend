@@ -18,7 +18,7 @@ import CustomButton from "../../components/Common/CustomButton/CustomButton";
 import DeleteModal from "../../components/Common/Modals/Delete/DeleteModal";
 import ServicesCard from "../../components/Responsive/Services/ServicesCard";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   AddOutlinedIcon,
   EditOutlinedIcon,
@@ -40,9 +40,7 @@ const ServicesPage = () => {
     const fetchServices = async () => {
       try {
         showLoading();
-        const response = await axios.get(
-          "/api/v1/services/all"
-        );
+        const response = await axios.get("/api/v1/services/all");
         const servicesWithSerial = response.data.data.result.map(
           (services, index) => ({
             ...services,
@@ -74,9 +72,7 @@ const ServicesPage = () => {
   const handleDelete = async () => {
     try {
       showLoading();
-      await axios.delete(
-        `/api/v1/services/delete/${deleteId}`
-      );
+      await axios.delete(`/api/v1/services/delete/${deleteId}`);
 
       handleClose(false);
       setRefreshPage(Math.random());
@@ -91,9 +87,7 @@ const ServicesPage = () => {
 
   const handleUpdateSuccess = (updatedServices) => {
     setServices((prev) =>
-      prev.map((loc) =>
-        loc.id === updatedServices.id ? updatedServices : loc
-      )
+      prev.map((loc) => (loc.id === updatedServices.id ? updatedServices : loc))
     );
     setIsEditOpen(false);
   };
@@ -106,9 +100,7 @@ const ServicesPage = () => {
   const handleStatusChange = async (id) => {
     try {
       showLoading();
-      const response = await axios.patch(
-        `/api/v1/services/changeStatus/${id}`
-      );
+      const response = await axios.patch(`/api/v1/services/changeStatus/${id}`);
       const updatedServices = response.data.data.result;
 
       setServices((prev) =>
@@ -118,7 +110,9 @@ const ServicesPage = () => {
       );
 
       toast.success(
-        `Services status changed to ${updatedServices.status ? "Active" : "Inactive"}`
+        `Services status changed to ${
+          updatedServices.status ? "Active" : "Inactive"
+        }`
       );
       hideLoading();
     } catch (error) {
@@ -152,26 +146,37 @@ const ServicesPage = () => {
 
       renderCell: (params) => (
         <Box display="flex" alignItems="center" gap={1}>
-          {user.UserType.servicesModule&&user.UserType.servicesModule.split(",").includes("edit")&&<Tooltip title="Edit">
-            <EditOutlinedIcon
-              color="success"
-              onClick={() => handleEdit(params.row.id)}
-              style={{ cursor: "pointer" }}
-            />
-          </Tooltip>}
-          {user.UserType.servicesModule&&user.UserType.servicesModule.split(",").includes("delete")&&<Tooltip title="Delete">
-            <DeleteOutlineOutlinedIcon
-              color="error"
-              style={{ cursor: "pointer" }}
-              onClick={() => handleOpen(params.row.id)}
-            />
-          </Tooltip>}
-          {user.UserType.servicesModule&&user.UserType.servicesModule.split(",").includes("changeStatus")&&<Tooltip title="Change Status">
-            <Switch
-              checked={params.row.status}
-              onChange={() => handleStatusChange(params.row.id)}
-            />
-          </Tooltip>}
+          {user.UserType.servicesModule &&
+            user.UserType.servicesModule.split(",").includes("edit") && (
+              <Tooltip title="Edit">
+                <EditOutlinedIcon
+                  color="success"
+                  onClick={() => handleEdit(params.row.id)}
+                  style={{ cursor: "pointer" }}
+                />
+              </Tooltip>
+            )}
+          {user.UserType.servicesModule &&
+            user.UserType.servicesModule.split(",").includes("delete") && (
+              <Tooltip title="Delete">
+                <DeleteOutlineOutlinedIcon
+                  color="error"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handleOpen(params.row.id)}
+                />
+              </Tooltip>
+            )}
+          {user.UserType.servicesModule &&
+            user.UserType.servicesModule
+              .split(",")
+              .includes("changeStatus") && (
+              <Tooltip title="Change Status">
+                <Switch
+                  checked={params.row.status}
+                  onChange={() => handleStatusChange(params.row.id)}
+                />
+              </Tooltip>
+            )}
         </Box>
       ),
       headerClassName: "super-app-theme--header",
@@ -205,16 +210,21 @@ const ServicesPage = () => {
         >
           Services
         </Typography>
-        {user.UserType.servicesModule&&user.UserType.servicesModule.split(",").includes("add")&&
-        <CustomButton
-          onClick={() => setIsAddOpen(true)}
-          title={"Add Service"}
-          placement={"left"}
-          Icon={AddOutlinedIcon}
-          fontSize={"medium"}
-          background={"rgba(3, 176, 48, 0.68)"}
-          statusIcon={user.UserType.servicesModule&&user.UserType.servicesModule.split(",").includes("add")}
-        />}
+        {user.UserType.servicesModule &&
+          user.UserType.servicesModule.split(",").includes("add") && (
+            <CustomButton
+              onClick={() => setIsAddOpen(true)}
+              title={"Add Service"}
+              placement={"left"}
+              Icon={AddOutlinedIcon}
+              fontSize={"medium"}
+              background={"rgba(3, 176, 48, 0.68)"}
+              statusIcon={
+                user.UserType.servicesModule &&
+                user.UserType.servicesModule.split(",").includes("add")
+              }
+            />
+          )}
       </Box>
       {isSmallScreen && (
         <Grid2
@@ -240,7 +250,9 @@ const ServicesPage = () => {
         </Grid2>
       )}
       {!isSmallScreen && (
-        <div style={{ display: "flex", flexDirection: "column" }}>
+        <div
+          style={{ display: "flex", flexDirection: "column", height: "75vh" }}
+        >
           <DataGrid
             rows={services}
             columns={columns}
@@ -250,8 +262,7 @@ const ServicesPage = () => {
             rowHeight={40}
             sx={{
               "& .super-app-theme--header": {
-                backgroundColor: "#006400",
-                // backgroundColor: "rgba(255, 223, 0, 1)",
+                backgroundColor: `var(--linear-gradient-main)`,
                 color: "#fff",
                 fontWeight: "600",
                 fontSize: "16px",
@@ -281,8 +292,7 @@ const ServicesPage = () => {
             setRefreshPage={setRefreshPage}
             setIsEditOpen={setIsEditOpen}
             servicesName={
-              services.find((loc) => loc.id === updatedId)
-                ?.servicesName || ""
+              services.find((loc) => loc.id === updatedId)?.servicesName || ""
             }
             onSuccess={handleUpdateSuccess}
           />

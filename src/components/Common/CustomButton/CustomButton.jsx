@@ -28,7 +28,7 @@ const CustomButton = ({
       size={buttonSize}
       className={nameOfTheClass}
     >
-      {Icon && <Icon fontSize={fontSize} sx={{ color: "black" }} />}
+      {Icon && <Icon fontSize={fontSize} sx={{ color: "white" }} />}
     </IconButton>
   );
 };

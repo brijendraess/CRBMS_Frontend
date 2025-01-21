@@ -200,11 +200,15 @@ const CommitteeManagementMUI = () => {
             <Chip
               label={`${params.row.CommitteeMembers?.length || 0}`}
               size="large"
-              color="success"
               variant="outlined"
-              icon={<PeopleIcon />}
+              icon={<PeopleIcon color="var(--linear-gradient-main)" />}
               onClick={() => handleNavigateToMemberList(params.row.id)}
-              sx={{ cursor: "pointer", padding: "5px" }}
+              sx={{
+                cursor: "pointer",
+                padding: "5px",
+                borderColor: `var(--linear-gradient-main)`,
+                color: `var(--linear-gradient-main)`,
+              }}
               className="committee-view"
             />
           </Tooltip>
@@ -275,7 +279,7 @@ const CommitteeManagementMUI = () => {
             ))}
           </Grid2>
         ) : (
-          <Box sx={{ width: "100%", height: "70vh" }}>
+          <Box sx={{ width: "100%", height: "75vh" }}>
             <DataGrid
               autoPageSize
               showCellVerticalBorder
@@ -291,8 +295,7 @@ const CommitteeManagementMUI = () => {
               }}
               sx={{
                 "& .super-app-theme--header": {
-                  backgroundColor: "#006400",
-                  // backgroundColor: "rgba(255, 223, 0, 1)",
+                  backgroundColor: `var(--linear-gradient-main)`,
                   color: "#fff",
                   fontWeight: "600",
                   fontSize: "16px",

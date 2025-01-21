@@ -14,7 +14,11 @@ import { DataGrid } from "@mui/x-data-grid";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
 import Carousel from "../../components/Carousel/Carousel";
-import { DesignServicesOutlinedIcon, GroupsIcon, LocationOnOutlinedIcon } from "../../components/Common/CustomButton/CustomIcon";
+import {
+  DesignServicesOutlinedIcon,
+  GroupsIcon,
+  LocationOnOutlinedIcon,
+} from "../../components/Common/CustomButton/CustomIcon";
 import { getMeetingTimePercentage, timeDifference } from "../../utils/utils";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import Loader from "../../components/Common/Loader/Loader";
@@ -243,7 +247,7 @@ const DetailRoomPage = () => {
   const handleBookNowClick = () => {
     setIsBookNowOpen(true);
   };
-console.log(room)
+  console.log(room);
   return (
     <PaperWrapper sx={{ display: "flex", gap: "5px", flexDirection: "column" }}>
       <Typography
@@ -401,11 +405,15 @@ console.log(room)
                 >
                   Description:
                 </Typography>
-                <Typography fontSize={"14px"}>{room.description}</Typography>
+                <Box
+                  sx={{ overflow: "scroll", width: "100%", height: "150px" }}
+                >
+                  <Typography fontSize={"14px"}>{room.description}</Typography>
+                </Box>
               </Wrapper>
             </Box>
           </BoxWrapper>
-          {!user?.UserType?.isAdmin==='admin' && (
+          {!user?.UserType?.isAdmin === "admin" && (
             <Box>
               <Button onClick={handleBookNowClick} variant="contained">
                 Book Now
@@ -438,7 +446,7 @@ console.log(room)
                 },
                 // Header styles
                 "& .super-app-theme--header": {
-                  backgroundColor: "#0043ff75",
+                  backgroundColor: `var(--linear-gradient-main)`,
                   color: "#fff",
                   fontWeight: "bold",
                 },

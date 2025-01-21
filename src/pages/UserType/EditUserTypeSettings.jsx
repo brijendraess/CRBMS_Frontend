@@ -35,7 +35,7 @@ const EditUserTypeSettings = () => {
   const { userRole } = location.state || {};
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  console.log("Location State", userRole);
   const goBack = () => {
     navigate(-1);
   };

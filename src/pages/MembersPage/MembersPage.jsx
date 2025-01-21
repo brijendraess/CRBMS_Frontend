@@ -16,7 +16,6 @@ import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import AddMemberForm from "./AddMemberForm";
 import UpdateMemberForm from "./UpdateMemberForm";
 import ViewMember from "./ViewMember";
-import CustomButton from "../../components/Common/CustomButton/CustomButton";
 import { PaperWrapper } from "../../Style";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import UserCard from "../../components/Cards/UserCard";
@@ -28,8 +27,6 @@ import {
   DeleteOutlineOutlinedIcon,
   EditOutlinedIcon,
   PersonAddAlt1Rounded,
-  VisibilityIcon,
-  VisibilityOffIcon,
   VisibilityOutlinedIcon,
 } from "../../components/Common/CustomButton/CustomIcon";
 
@@ -240,7 +237,7 @@ const MembersPage = () => {
           {user.UserType.userModule &&
             user.UserType.userModule.split(",").includes("changeStatus") && (
               <div className="delete">
-                <Tooltip title="Change Status">
+                <Tooltip title="Block/Unblock">
                   <Switch
                     className="tour-block"
                     checked={params.row.isBlocked}
@@ -271,19 +268,7 @@ const MembersPage = () => {
             user.UserType.userModule &&
             user.UserType.userModule.split(",").includes("add")
           }
-        >
-          {/* {user.UserType.userModule&&user.UserType.userModule.split(",").includes("changeStatus")&& <CustomButton
-            onClick={() => setShowDeleted(!showDeleted)}
-            title={
-              showDeleted ? "Hide All Deleted Users" : "Show All Deleted Users"
-            }
-            Icon={showDeleted ? VisibilityIcon : VisibilityOffIcon}
-            fontSize={isSmallScreen ? "small" : "medium"}
-            background={"#1976d291"}
-            nameOfTheClass="deleted-user"
-            placement={"left"}
-          />} */}
-        </PageHeader>
+        />
 
         {isSmallScreen ? (
           <Grid2
@@ -344,7 +329,7 @@ const MembersPage = () => {
                 },
                 // Customize header styles
                 "& .super-app-theme--header": {
-                  backgroundColor: "#006400",
+                  backgroundColor: `var(--linear-gradient-main)`,
                   color: "#fff",
                   fontWeight: "600",
                   fontSize: "16px",

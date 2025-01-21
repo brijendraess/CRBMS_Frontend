@@ -8,7 +8,6 @@ import VerifyEmail from "./pages/Login/VerifyEmail";
 import PublicRoutes from "./components/Routes/PublicRoutes";
 import ProtectedRoutes from "./components/Routes/ProtectedRoutes";
 import MainMeetingPage from "./pages/MeetingPage/MainMeetingPage";
-import CalenderPage from "./pages/CalenderPage/CalenderPage";
 import AmenitiesAdd from "./pages/AmenitiesPage/AmenitiesAdd";
 import AmenitiesList from "./pages/AmenitiesPage/AmenitiesList";
 import ForgotPassword from "./pages/Login/ForgotPassword";

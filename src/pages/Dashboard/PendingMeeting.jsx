@@ -142,7 +142,7 @@ const PendingMeeting = () => {
                 />
               </Tooltip>
             )}
-      
+
           {user.UserType.meetingLogsModule &&
             user.UserType.meetingLogsModule.split(",").includes("cancel") && (
               <Tooltip title="Cancel meeting">
@@ -250,8 +250,8 @@ const PendingMeeting = () => {
   const classes = useStyles();
 
   return (
-    <PaperWrapper>
-      <div style={{ display: "flex", flexDirection: "column" }}>
+    <>
+      <Box sx={{ width: "100%", height: "75vh" }}>
         <DataGrid
           rows={events}
           columns={columns}
@@ -264,16 +264,16 @@ const PendingMeeting = () => {
               : classes.rowActive
           }
           sx={{
+            background: `linear-gradient(45deg, var(--body-color), var(--body-color-2))`,
             "& .super-app-theme--header": {
-              backgroundColor: "#006400",
-              // backgroundColor: "rgba(255, 223, 0, 1)",
+              backgroundColor: `var(--linear-gradient-main)`,
               color: "#fff",
               fontWeight: "600",
               fontSize: "16px",
             },
           }}
         />
-      </div>
+      </Box>
 
       <PopupModals
         isOpen={isEditBookingOpen}
@@ -319,7 +319,7 @@ const PendingMeeting = () => {
         button={"Cancel meeting"}
         title="meeting"
       />
-    </PaperWrapper>
+    </>
   );
 };
 
