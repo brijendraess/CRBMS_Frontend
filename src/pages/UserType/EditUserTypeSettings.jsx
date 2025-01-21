@@ -407,11 +407,6 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("notificationDelete", true);
                   formik.setFieldValue("notificationView", true);
 
-                  formik.setFieldValue("inventoryAdd", true);
-                  formik.setFieldValue("inventoryView", true);
-                  formik.setFieldValue("inventoryIncrease", true);
-                  formik.setFieldValue("inventoryDecrease", true);
-
                   formik.setFieldValue("committeeMemberDelete", "");
                   formik.setFieldValue("committeeMemberView", true);
 
@@ -535,11 +530,6 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("notificationRead", true);
                   formik.setFieldValue("notificationDelete", true);
                   formik.setFieldValue("notificationView", true);
-
-                  formik.setFieldValue("inventoryAdd", true);
-                  formik.setFieldValue("inventoryView", true);
-                  formik.setFieldValue("inventoryIncrease", true);
-                  formik.setFieldValue("inventoryDecrease", true);
 
                   formik.setFieldValue("committeeMemberDelete", "");
                   formik.setFieldValue("committeeMemberView", true);

@@ -187,7 +187,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
             multiple
             id="services"
             size="small"
-            style={{ marginRight: 8, flex: 1 }}
+            style={{  flex: 1 }}
             options={services.map((service)=>{return {name:service.servicesName,id:service.id}})}
             value={services.filter((service) =>
               formik.values.services?.includes(service.id)

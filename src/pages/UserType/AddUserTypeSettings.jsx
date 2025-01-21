@@ -371,10 +371,6 @@ const AddUserTypeSettings = () => {
                   formik.setFieldValue("notificationDelete", true);
                   formik.setFieldValue("notificationView", true);
 
-                  formik.setFieldValue("inventoryAdd", true);
-                  formik.setFieldValue("inventoryView", true);
-                  formik.setFieldValue("inventoryIncrease", true);
-                  formik.setFieldValue("inventoryDecrease", true);
 
                   formik.setFieldValue("committeeMemberDelete", "");
                   formik.setFieldValue("committeeMemberView", true);
@@ -508,11 +504,6 @@ const AddUserTypeSettings = () => {
                   formik.setFieldValue("notificationRead", true);
                   formik.setFieldValue("notificationDelete", true);
                   formik.setFieldValue("notificationView", true);
-
-                  formik.setFieldValue("inventoryAdd", true);
-                  formik.setFieldValue("inventoryView", true);
-                  formik.setFieldValue("inventoryIncrease", true);
-                  formik.setFieldValue("inventoryDecrease", true);
 
                   formik.setFieldValue("committeeMemberDelete", "");
                   formik.setFieldValue("committeeMemberView", true);
@@ -688,7 +679,7 @@ const AddUserTypeSettings = () => {
               { name: "inventoryAdd", label: "add" },
               { name: "inventoryIncrease", label: "increase" },
               { name: "inventoryDecrease", label: "decrease" },
-              { name: "notificationView", label: "view" },
+              { name: "inventoryView", label: "view" },
             ],
           },
           {

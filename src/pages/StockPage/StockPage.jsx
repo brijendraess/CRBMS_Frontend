@@ -33,12 +33,12 @@ const StockPage = () => {
   const { user } = useSelector((state) => state.user);
 
   // Handle quantity change
-  const handleQuantityChange = async (amenityId,uid,id, delta, setData) => {
+  const handleQuantityChange = async (amenityId, uid, id, delta, setData) => {
     try {
       dispatch(showLoading());
       const formData = {
         stock: delta,
-        id:uid,
+        id: uid,
         amenityId,
         createdBy: user.id,
       };
@@ -124,35 +124,51 @@ const StockPage = () => {
           }}
         >
           {user.UserType.inventoryModule &&
-      user.UserType.inventoryModule.split(",").includes("decrement")&&<IconButton
-            onClick={() =>
-              handleQuantityChange(params.row.amenityId,params.row.uid,params.row.id, -1, setAmenitiesData)
-            }
-            sx={{
-              width: "35px",
-              height: "35px",
-              backgroundColor: "#ff0000c4",
-              color: "#000",
-            }}
-          >
-            <RemoveIcon fontSize="small" />
-          </IconButton>}
+            user.UserType.inventoryModule.split(",").includes("decrease") && (
+              <IconButton
+                onClick={() =>
+                  handleQuantityChange(
+                    params.row.amenityId,
+                    params.row.uid,
+                    params.row.id,
+                    -1,
+                    setAmenitiesData
+                  )
+                }
+                sx={{
+                  width: "35px",
+                  height: "35px",
+                  backgroundColor: "#ff0000c4",
+                  color: "#000",
+                }}
+              >
+                <RemoveIcon fontSize="small" />
+              </IconButton>
+            )}
           <Typography>{params.row.quantity}</Typography>
           {user.UserType.inventoryModule &&
-      user.UserType.inventoryModule.split(",").includes("decrement")&&<IconButton
-            onClick={() =>
-              handleQuantityChange(params.row.amenityId,params.row.uid,params.row.id, 1, setAmenitiesData)
-            }
-            sx={{
-              width: "35px",
-              height: "35px",
-              backgroundColor: "#06642abf",
-              color: "#000",
-              borderRadius: "50%",
-            }}
-          >
-            <AddIcon fontSize="small" />
-          </IconButton>}
+            user.UserType.inventoryModule.split(",").includes("increase") && (
+              <IconButton
+                onClick={() =>
+                  handleQuantityChange(
+                    params.row.amenityId,
+                    params.row.uid,
+                    params.row.id,
+                    1,
+                    setAmenitiesData
+                  )
+                }
+                sx={{
+                  width: "35px",
+                  height: "35px",
+                  backgroundColor: "#06642abf",
+                  color: "#000",
+                  borderRadius: "50%",
+                }}
+              >
+                <AddIcon fontSize="small" />
+              </IconButton>
+            )}
         </Box>
       ),
     },
@@ -190,17 +206,17 @@ const StockPage = () => {
           Inventory
         </Typography>
 
-        {
-      user.UserType.inventoryModule &&
-      user.UserType.inventoryModule.split(",").includes("add")&&
-    <CustomButton
-          onClick={() => setIsAddOpen(true)}
-          title={"Add New Stock"}
-          placement={"left"}
-          Icon={AddOutlinedIcon}
-          fontSize={"medium"}
-          background={"rgba(3, 176, 48, 0.68)"}
-        />}
+        {user.UserType.inventoryModule &&
+          user.UserType.inventoryModule.split(",").includes("add") && (
+            <CustomButton
+              onClick={() => setIsAddOpen(true)}
+              title={"Add New Stock"}
+              placement={"left"}
+              Icon={AddOutlinedIcon}
+              fontSize={"medium"}
+              background={"rgba(3, 176, 48, 0.68)"}
+            />
+          )}
       </Box>
       <Grid
         container
@@ -230,7 +246,6 @@ const StockPage = () => {
               fontSize: "16px",
             },
           }}
-         
         />
       </Grid>
       <PopupModals

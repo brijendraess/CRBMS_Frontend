@@ -44,30 +44,62 @@ const UserTypeSettings = () => {
     const fetchUserType = async () => {
       try {
         const response = await axios.get(`/api/v1/user-type/all`);
-        console.log(response.data.data.result)
-        const userType = response?.data?.data?.result?.map((type, index) => ({
-          id: index + 1,
-          serialNo: index + 1,
-          uid: type.id,
-          userTypeName: type.userTypeName,
-          calendarModule: replaceAndUppercase(type.calendarModule),
-          userModule: replaceAndUppercase(type.userModule),
-          committeeModule: replaceAndUppercase(type.committeeModule),
-          notificationModule: replaceAndUppercase(type.notificationModule),
-          inventoryModule: replaceAndUppercase(type.inventoryModule),
-          committeeMemberModule: replaceAndUppercase(
-            type.committeeMemberModule
-          ),
-          meetingLogsModule: replaceAndUppercase(type.meetingLogsModule),
-          amenitiesModule: replaceAndUppercase(type.amenitiesModule),
-          roomModule: replaceAndUppercase(type.roomModule),
-          locationModule: replaceAndUppercase(type.locationModule),
-          foodBeverageModule: replaceAndUppercase(type.foodBeverageModule),
-          reportModule: replaceAndUppercase(type.reportModule),
-          userRoleModule: replaceAndUppercase(type.userRoleModule),
-          isAdmin: type.isAdmin,
-          status: type.status,
-        }));
+        console.log(response.data.data.result);
+        const userType = response?.data?.data?.result?.map((type, index) => {
+        const permissionArray = [];
+
+          type.calendarModule &&
+            permissionArray.push({name:`<b>Calendar:</b> ${replaceAndUppercase(type.calendarModule)}`,
+            });
+          type.userModule &&
+          permissionArray.push({name:`<b>User:</b> ${replaceAndUppercase(type.userModule)}`,
+            });
+          type.committeeModule &&
+          permissionArray.push({name:`<b>Committee:</b> ${replaceAndUppercase(type.committeeModule)}`,
+            });
+          type.notificationModule &&
+          permissionArray.push({name:`<b>Notification:</b> ${replaceAndUppercase(type.notificationModule)}`,
+            });
+
+          type.inventoryModule &&
+          permissionArray.push({name:`<b>Inventory:</b> ${replaceAndUppercase(type.inventoryModule)}`,
+            });
+          type.committeeMemberModule &&
+          permissionArray.push({name:`<b>Committee Member:</b> ${replaceAndUppercase(type.committeeMemberModule)}`,
+            });
+          type.meetingLogsModule &&
+          permissionArray.push({name:`<b>Meeting Logs:</b> ${replaceAndUppercase(type.meetingLogsModule)}`,
+            });
+          type.amenitiesModule &&
+          permissionArray.push({name:`<b>Amenities:</b> ${replaceAndUppercase(type.amenitiesModule)}`,
+            });
+
+          type.roomModule &&
+          permissionArray.push({name:`<b>Room:</b> ${replaceAndUppercase(type.roomModule)}`,
+            });
+          type.locationModule &&
+          permissionArray.push({name:`<b>Location:</b> ${replaceAndUppercase(type.locationModule)}`,
+            });
+          type.foodBeverageModule &&
+          permissionArray.push({name:`<b>Food and Beverage:</b> ${replaceAndUppercase(type.foodBeverageModule)}`,
+            });
+          type.reportModule &&
+          permissionArray.push({name:`<b>Report:</b> ${replaceAndUppercase(type.reportModule)}`,
+            });
+          type.userRoleModule &&
+          permissionArray.push({name:`<b>User Role:</b> ${replaceAndUppercase(type.userRoleModule)}`,
+            });
+
+            return {
+              id: index + 1,
+              serialNo: index + 1,
+              uid: type.id,
+              userTypeName: type.userTypeName,
+              permission: permissionArray.map((item) => item.name).join("<br />"), // String with newlines
+              isAdmin: type.isAdmin,
+              status: type.status,
+            };
+        });
         const userTypeDB = response.data.data.result.map((type, index) => ({
           id: index + 1,
           serialNo: index + 1,
@@ -195,58 +227,16 @@ const UserTypeSettings = () => {
       headerClassName: "super-app-theme--header",
     },
     {
-      field: "calendarModule",
-      headerName: "Calendar",
-      width: 100,
+      field: "permission",
+      headerName: "Permission",
+      flex: 1,
       headerClassName: "super-app-theme--header",
-    },
-    {
-      field: "userModule",
-      headerName: "User",
-      width: 300,
-      headerClassName: "super-app-theme--header",
-    },
-    {
-      field: "committeeModule",
-      headerName: "Committee",
-      width: 300,
-      headerClassName: "super-app-theme--header",
-    },
-    {
-      field: "amenitiesModule",
-      headerName: "Amenities",
-      width: 300,
-      headerClassName: "super-app-theme--header",
-    },
-    {
-      field: "roomModule",
-      headerName: "Room",
-      width: 600,
-      headerClassName: "super-app-theme--header",
-    },
-    {
-      field: "locationModule",
-      headerName: "Location",
-      width: 300,
-      headerClassName: "super-app-theme--header",
-    },
-    {
-      field: "foodBeverageModule",
-      headerName: "foodBeverage",
-      width: 300,
-      headerClassName: "super-app-theme--header",
-    },
-    {
-      field: "reportModule",
-      headerName: "report",
-      width: 100,
-      headerClassName: "super-app-theme--header",
-    },
-    {
-      field: "userRoleModule",
-      headerName: "userRole",
-      width: 300,
-      headerClassName: "super-app-theme--header",
+      renderCell: (params) => (
+        <div
+          dangerouslySetInnerHTML={{ __html: params.value }}
+          style={{ whiteSpace: "pre-line", wordBreak: "break-word" }}
+        />
+      ),
     },
     {
       field: "action",
@@ -293,7 +283,7 @@ const UserTypeSettings = () => {
       headerClassName: "super-app-theme--header",
     },
   ];
-console.log(userRole)
+
   return (
     <PaperWrapper>
       <Box
@@ -342,9 +332,9 @@ console.log(userRole)
           rows={userRole}
           columns={columns}
           pageSize={5}
+          getRowHeight={() => "auto"} // Automatically adjusts the row height
           rowsPerPageOptions={[5]}
           disableSelectionOnClick
-          rowHeight={40}
           sx={{
             "& .super-app-theme--header": {
               backgroundColor: "#006400",
