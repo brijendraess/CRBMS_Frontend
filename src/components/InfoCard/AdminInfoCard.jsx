@@ -13,13 +13,7 @@ const Item = styled(Paper)(({ theme }) => ({
   padding: "15px",
 }));
 
-
-const AdminInfoCard = ({
-  color,
-  tittle,
-  Component,
-  Icons,
-}) => {
+const AdminInfoCard = ({ color, tittle, Component, Icons }) => {
   const [elevation, setElevation] = useState(2);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -30,25 +24,22 @@ const AdminInfoCard = ({
       onMouseEnter={() => setElevation(24)}
       onMouseLeave={() => setElevation(6)}
       style={{
-        backgroundImage: `linear-gradient(to right, ${color[0]}, ${color[1]})`,
+        // backgroundImage: `linear-gradient(to right, ${color[0]}, ${color[1]})`,
+        // background: "rgb(136, 125, 125)",
+        color: "black",
       }}
     >
       <Box display="flex" width="100%">
         <Box className="col1">
-          <h4 className="text-white">
-            {tittle}
-          </h4>
+          <h4 className="text-black">{tittle}</h4>
         </Box>
         <Box className="ms-auto">
-          <span className="iconContainer" >
-            {Icons &&<Icons  />}
-          </span>
+          <span className="iconContainer">{Icons && <Icons />}</span>
         </Box>
-        
       </Box>
       <Box className="scrollingBar">
-        {Component && <Component />}
-        </Box>
+        {Component && <Component height="75vh" />}
+      </Box>
     </Item>
   );
 };

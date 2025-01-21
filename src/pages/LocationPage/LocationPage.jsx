@@ -11,7 +11,7 @@ import DeleteModal from "../../components/Common/Modals/Delete/DeleteModal";
 import LocationCard from "./LocationCard";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CheckAndShowImage from "../../components/Common/CustomImage/showImage";
 import {
   AddOutlinedIcon,
@@ -105,7 +105,9 @@ const LocationPage = () => {
       );
 
       toast.success(
-        `Location status changed to ${updatedLocation.status ? "Active" : "Inactive"}`
+        `Location status changed to ${
+          updatedLocation.status ? "Active" : "Inactive"
+        }`
       );
       dispatch(hideLoading());
     } catch (error) {
@@ -152,29 +154,40 @@ const LocationPage = () => {
 
       renderCell: (params) => (
         <Box display="flex" alignItems="center" gap={1}>
-          {user.UserType.locationModule&&user.UserType.locationModule.split(",").includes("edit")&&<Tooltip title="Edit">
-            <EditOutlinedIcon
-              className="location-edit"
-              color="success"
-              onClick={() => handleEdit(params.row.id)}
-              style={{ cursor: "pointer" }}
-            />
-          </Tooltip>}
-          {user.UserType.locationModule&&user.UserType.locationModule.split(",").includes("delete")&&<Tooltip title="Delete">
-            <DeleteOutlineOutlinedIcon
-              className="location-delete"
-              color="error"
-              style={{ cursor: "pointer" }}
-              onClick={() => handleOpen(params.row.id)}
-            />
-          </Tooltip>}
-          {user.UserType.locationModule&&user.UserType.locationModule.split(",").includes("changeStatus")&&<Tooltip title="Change Status">
-            <Switch
-              className="location-switch"
-              checked={params.row.status}
-              onChange={() => handleStatusChange(params.row.id)}
-            />
-          </Tooltip>}
+          {user.UserType.locationModule &&
+            user.UserType.locationModule.split(",").includes("edit") && (
+              <Tooltip title="Edit">
+                <EditOutlinedIcon
+                  className="location-edit"
+                  color="success"
+                  onClick={() => handleEdit(params.row.id)}
+                  style={{ cursor: "pointer" }}
+                />
+              </Tooltip>
+            )}
+          {user.UserType.locationModule &&
+            user.UserType.locationModule.split(",").includes("delete") && (
+              <Tooltip title="Delete">
+                <DeleteOutlineOutlinedIcon
+                  className="location-delete"
+                  color="error"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handleOpen(params.row.id)}
+                />
+              </Tooltip>
+            )}
+          {user.UserType.locationModule &&
+            user.UserType.locationModule
+              .split(",")
+              .includes("changeStatus") && (
+              <Tooltip title="Change Status">
+                <Switch
+                  className="location-switch"
+                  checked={params.row.status}
+                  onChange={() => handleStatusChange(params.row.id)}
+                />
+              </Tooltip>
+            )}
         </Box>
       ),
       headerClassName: "super-app-theme--header",
@@ -189,7 +202,10 @@ const LocationPage = () => {
         title={"Add"}
         func={setIsAddOpen}
         nameOfTheClass="add-location"
-        statusIcon={user.UserType.locationModule&&user.UserType.locationModule.split(",").includes("add")}
+        statusIcon={
+          user.UserType.locationModule &&
+          user.UserType.locationModule.split(",").includes("add")
+        }
       />
       {isSmallScreen ? (
         <Grid2
@@ -214,7 +230,9 @@ const LocationPage = () => {
           ))}
         </Grid2>
       ) : (
-        <div style={{ display: "flex", flexDirection: "column" }}>
+        <div
+          style={{ display: "flex", flexDirection: "column", height: "75vh" }}
+        >
           <DataGrid
             rows={location}
             columns={columns}
@@ -224,8 +242,7 @@ const LocationPage = () => {
             rowHeight={40}
             sx={{
               "& .super-app-theme--header": {
-                backgroundColor: "#006400",
-                // backgroundColor: "rgba(255, 223, 0, 1)",
+                backgroundColor: `var(--linear-gradient-main)`,
                 color: "#fff",
                 fontWeight: "600",
                 fontSize: "16px",

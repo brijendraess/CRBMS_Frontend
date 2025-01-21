@@ -303,7 +303,7 @@ const MeetingLogs = () => {
   return (
     <PaperWrapper>
       <PageHeader heading={"Meeting Logs"} />
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <div style={{ display: "flex", flexDirection: "column", height: "75vh" }}>
         <DataGrid
           rows={events}
           columns={columns}
@@ -317,8 +317,7 @@ const MeetingLogs = () => {
           }
           sx={{
             "& .super-app-theme--header": {
-              backgroundColor: "#006400",
-              // backgroundColor: "rgba(255, 223, 0, 1)",
+              backgroundColor: `var(--linear-gradient-main)`,
               color: "#fff",
               fontWeight: "600",
               fontSize: "16px",

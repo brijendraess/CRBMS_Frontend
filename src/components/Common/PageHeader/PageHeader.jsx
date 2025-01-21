@@ -10,7 +10,7 @@ const PageHeader = ({
   children,
   title,
   nameOfTheClass,
-  statusIcon
+  statusIcon,
 }) => {
   const { user } = useSelector((state) => state.user);
 
@@ -21,6 +21,7 @@ const PageHeader = ({
         alignItems: "center",
         justifyContent: "space-between",
         height: "50px",
+        marginBottom: "10px",
       }}
       className="page-header"
     >
@@ -43,20 +44,20 @@ const PageHeader = ({
       >
         {heading || "Page Header"}
       </Typography>
-        <Box display="flex" alignItems="center" justifyContent="center" gap={2}>
-          {children}
-          {func && statusIcon && (
-            <CustomButton
-              nameOfTheClass={nameOfTheClass}
-              onClick={() => func(true)}
-              title={title || "Add"}
-              placement={"left"}
-              Icon={icon}
-              fontSize={"medium"}
-              background={"rgba(3, 176, 48, 0.68)"}
-            />
-          )}
-        </Box>
+      <Box display="flex" alignItems="center" justifyContent="center" gap={2}>
+        {children}
+        {func && statusIcon && (
+          <CustomButton
+            nameOfTheClass={nameOfTheClass}
+            onClick={() => func(true)}
+            title={title || "Add"}
+            placement={"left"}
+            Icon={icon}
+            fontSize={"medium"}
+            background={"var(--linear-gradient-main)"}
+          />
+        )}
+      </Box>
       {/* )} */}
     </Box>
   );

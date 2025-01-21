@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { PaperWrapper } from "../../Style";
 import { DataGrid } from "@mui/x-data-grid";
-import { Grid2 as Grid } from "@mui/material";
+import { Box, Grid2 as Grid } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@mui/styles";
 import axios from "axios";
@@ -71,64 +71,50 @@ const InventoryHistory = () => {
       headerName: "Stock (In/Out)",
       headerClassName: "super-app-theme--header",
       flex: 1,
-    
     },
-     {
+    {
       field: "actionType",
       headerName: "Action",
       headerClassName: "super-app-theme--header",
       flex: 1,
-    
     },
     {
-        field: "adminName",
-        headerName: "Admin By",
-        headerClassName: "super-app-theme--header",
-        flex: 1,
-      
-      },
+      field: "adminName",
+      headerName: "Admin By",
+      headerClassName: "super-app-theme--header",
+      flex: 1,
+    },
   ];
 
   // Conditional Row Styling
   const getRowClassName = (params) => "";
 
   return (
-    <PaperWrapper>
-   
-      <Grid
-        container
-        spacing={3}
-        display={"flex"}
+    <Box sx={{ width: "100%", height: "75vh" }}>
+      <DataGrid
+        rows={amenitiesData}
+        columns={amenitiesColumn}
+        pageSize={5}
+        rowHeight={40}
+        rowsPerPageOptions={[7]}
+        disableSelectionOnClick
+        getRowClassName={getRowClassName}
         sx={{
-          borderRadius: "20px",
-          alignItems: "center",
+          background: `linear-gradient(45deg, var(--body-color), var(--body-color-2))`,
+          "& .MuiDataGrid-cell:focus": {
+            outline: "none",
+          },
+          "& .super-app-theme--header": {
+            backgroundColor: `var(--linear-gradient-main)`,
+            color: "#fff",
+            fontWeight: "600",
+            fontSize: "16px",
+          },
         }}
-      >
-        <DataGrid
-          rows={amenitiesData}
-          columns={amenitiesColumn}
-          pageSize={5}
-          rowHeight={40}
-          rowsPerPageOptions={[7]}
-          disableSelectionOnClick
-          getRowClassName={getRowClassName}
-          sx={{
-            "& .MuiDataGrid-cell:focus": {
-              outline: "none",
-            },
-            "& .super-app-theme--header": {
-              backgroundColor: "#006400",
-              color: "#fff",
-              fontWeight: "600",
-              fontSize: "16px",
-            },
-          }}
-          showCellVerticalBorder
-          showColumnVerticalBorder
-        />
-      </Grid>
-      
-    </PaperWrapper>
+        showCellVerticalBorder
+        showColumnVerticalBorder
+      />
+    </Box>
   );
 };
 
