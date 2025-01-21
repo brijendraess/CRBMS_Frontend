@@ -204,17 +204,17 @@ const MembersPage = () => {
         >
           {user.UserType.userModule &&
             user.UserType.userModule.split(",").includes("edit") && (
-              <Tooltip title="Update">
+              <Tooltip title="Update" sx={{cursor: "pointer"}}>
                 <EditOutlinedIcon
                   className="tour-edit"
-                  color="success"
+                  color="success" 
                   onClick={() => handleEdit(params.id)}
                 />
               </Tooltip>
             )}
           {user.UserType.userModule &&
             user.UserType.userModule.split(",").includes("view") && (
-              <Tooltip title="View">
+              <Tooltip title="View" sx={{cursor: "pointer"}}>
                 <VisibilityOutlinedIcon
                   color="secondary"
                   className="tour-view"
@@ -225,7 +225,7 @@ const MembersPage = () => {
           {user.UserType.userModule &&
             user.UserType.userModule.split(",").includes("delete") && (
               <div className="delete">
-                <Tooltip title="Delete">
+                <Tooltip title="Delete" sx={{cursor: "pointer"}}>
                   <DeleteOutlineOutlinedIcon
                     className="tour-delete"
                     color="error"
