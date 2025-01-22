@@ -5,8 +5,10 @@ import toast from "react-hot-toast";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useDispatch } from "react-redux";
 
 const FoodBeverageAdd = ({ setRefreshPage, setIsAddOpen }) => {
+  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
       name: "", // Initial value for the field
@@ -19,15 +21,15 @@ const FoodBeverageAdd = ({ setRefreshPage, setIsAddOpen }) => {
     }),
     onSubmit: async (values, { resetForm }) => {
       try {
-        showLoading();
+        dispatch(showLoading());
         await axios.post("api/v1/food-beverages/food-beverage", values);
         toast.success("Food beverage added Successfully");
         resetForm(); // Reset form after successful submission
         setRefreshPage(Math.random());
         setIsAddOpen(false);
-        hideLoading();
+        dispatch(hideLoading());
       } catch (err) {
-        hideLoading();
+        dispatch(hideLoading());
         toast.error(err.response?.data?.message || "An error occurred");
         console.error("Error adding foodBeverage:", err);
       }

@@ -8,7 +8,12 @@ header {
     #ff0000,
     rgb(208, 133, 133)
   ); */
-  background: #fff;
+  /* background: #fff; */
+  background-image: linear-gradient(
+    to left,
+    var(--linear-gradient-main),
+    var(--linear-gradient-main-2)
+  );
   position: fixed;
   top: 0;
   left: 0;
@@ -51,7 +56,7 @@ header {
     width: 100% !important;
     justify-content: center;
     align-items: center;
-    color: rgba(25, 24, 24, 0.823);
+    color: rgb(255, 255, 255);
     font-weight: 600 !important;
     font-size: 20px !important;
   }
@@ -65,13 +70,13 @@ header {
 }
 
 .logo span {
-  color: #292929;
+  color: #ffffff;
   font-weight: bolder;
   font-size: 18px;
 }
 
 .logo span {
-  color: #292929;
+  color: #ffffff;
   font-weight: bolder;
   font-size: 18px;
 }
@@ -81,7 +86,7 @@ header {
   width: 40px !important;
   height: 40px !important;
   background: #f0f5ff !important;
-  color: #292929;
+  color: #dbdbdb85;
 }
 
 .rounded-circle svg {
@@ -147,4 +152,8 @@ header {
 .myAccWrapper {
   text-align: left;
   color: rgba(0, 0, 0, 0.897) !important;
+}
+
+.MuiList-root {
+  padding: 10px !important;
 }

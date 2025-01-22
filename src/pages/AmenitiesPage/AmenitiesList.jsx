@@ -102,7 +102,9 @@ const AmenitiesList = () => {
       );
       dispatch(hideLoading());
       toast.success(
-        `Amenity status changed to ${updatedRoomAmenity.status ? "Active" : "Inactive"}`
+        `Amenity status changed to ${
+          updatedRoomAmenity.status ? "Active" : "Inactive"
+        }`
       );
     } catch (error) {
       console.error("Error changing status:", error);
@@ -124,6 +126,7 @@ const AmenitiesList = () => {
       field: "name",
       headerName: "Amenity Name",
       width: 200,
+      flex: 1,
       headerClassName: "super-app-theme--header",
     },
     {
@@ -220,7 +223,7 @@ const AmenitiesList = () => {
         </Grid2>
       )}
 
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <div style={{ display: "flex", flexDirection: "column", height: "75vh" }}>
         {!isSmallScreen && (
           <DataGrid
             rows={amenities}
@@ -234,8 +237,7 @@ const AmenitiesList = () => {
                 outline: "none",
               },
               "& .super-app-theme--header": {
-                backgroundColor: "#006400",
-                // backgroundColor: "rgba(255, 223, 0, 1)",
+                backgroundColor: `var(--linear-gradient-main)`,
                 color: "#fff",
                 fontWeight: "600",
                 fontSize: "16px",

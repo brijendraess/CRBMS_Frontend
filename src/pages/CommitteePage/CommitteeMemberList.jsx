@@ -125,7 +125,9 @@ const CommitteeMemberList = () => {
       hideSortIcons: true,
       width: 200,
       renderCell: (params) =>
-        user.UserType.committeeMemberModule&&user.UserType.committeeMemberModule.split(",").includes("delete") && user?.UserType?.isAdmin==='admin' ? (
+        user.UserType.committeeMemberModule &&
+        user.UserType.committeeMemberModule.split(",").includes("delete") &&
+        user?.UserType?.isAdmin === "admin" ? (
           <Tooltip title="Remove User">
             <DeleteOutlineIcon
               color="error"
@@ -147,10 +149,13 @@ const CommitteeMemberList = () => {
         icon={PersonAddOutlinedIcon}
         func={setIsAddMemberOpen}
         title={"Add User to Committee"}
-        statusIcon={user.UserType.committeeMemberModule&&user.UserType.committeeMemberModule.split(",").includes("add")}
+        statusIcon={
+          user.UserType.committeeMemberModule &&
+          user.UserType.committeeMemberModule.split(",").includes("add")
+        }
       />
       {isSmallScreen ? (
-        <Grid2 
+        <Grid2
           container
           spacing={2}
           sx={{
@@ -185,8 +190,7 @@ const CommitteeMemberList = () => {
             getRowId={(row) => row.id}
             sx={{
               "& .super-app-theme--header": {
-                backgroundColor: "#006400",
-                // backgroundColor: "rgba(255, 223, 0, 1)",
+                backgroundColor: `var(--linear-gradient-main)`,
                 color: "#fff",
                 fontWeight: "600",
                 fontSize: "16px",

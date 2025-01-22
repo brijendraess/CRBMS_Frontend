@@ -14,9 +14,10 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
+import CheckIcon from "@mui/icons-material/Check";
 
 // Context and State Management
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import axios from "axios";
 import dayjs from "dayjs";
@@ -46,10 +47,14 @@ import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import guideSteps from "../Driver/guideSteps";
 import "../Driver/DriverTour.css";
+import { defaultTheme, ThemeContext } from "../../Theme/Themeprovider";
+import { Palette } from "@mui/icons-material";
+import { themeColors } from "../../Theme/ColorFile";
 
 const Header = () => {
   const context = useContext(MyContext);
   const { user } = useSelector((state) => state.user);
+  console.log(user);
   const [menuAnchor, setMenuAnchor] = useState(null);
   const [notificationsAnchor, setNotificationsAnchor] = useState(null);
   const [isFullScreen, setIsFullScreen] = useState(false);
@@ -61,6 +66,20 @@ const Header = () => {
   const [isHelpPopupOpen, setIsHelpPopupOpen] = useState(false);
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
   const location = useLocation();
+  const { changeTheme } = useContext(ThemeContext);
+  const [themeMenuAnchor, setThemeMenuAnchor] = useState(null);
+  const [selectedThemeIndex, setSelectedThemeIndex] = useState(0);
+  const dispatch = useDispatch();
+
+  const handleThemeMenuToggle = (event) => {
+    setThemeMenuAnchor(themeMenuAnchor ? null : event.currentTarget);
+  };
+
+  const handleThemeChange = (index) => {
+    setSelectedThemeIndex(index);
+    changeTheme(index);
+    setThemeMenuAnchor(null);
+  };
 
   const handleStartGuide = () => {
     const driverObj = driver({
@@ -68,8 +87,6 @@ const Header = () => {
       overlayOpacity: "0.8",
       prevBtnText: "← Go Back",
       popoverClass: "driverjs-theme",
-      // showProgress: true,
-      // showLoading: true,
       steps: guideSteps[location.pathname]?.(isSmallScreen),
       animate: true,
     });
@@ -127,7 +144,9 @@ const Header = () => {
             const timeDifference = dayjs().diff(dayjs(data?.createdAt), "hour");
 
             return {
-              avatar: `${import.meta.env.VITE_API_URL}/${data?.User?.avatarPath}`,
+              avatar: `${import.meta.env.VITE_API_URL}/${
+                data?.User?.avatarPath
+              }`,
               name: data?.User?.fullname,
               action: data?.type,
               item: data?.message,
@@ -147,7 +166,7 @@ const Header = () => {
   // Logout Handler
   const handleLogout = async () => {
     try {
-      showLoading();
+      dispatch(showLoading());
       const response = await axios.post(
         `/api/v1/user/logout`,
         {},
@@ -159,11 +178,11 @@ const Header = () => {
       } else {
         toast.error("Logout Failed");
       }
-      hideLoading();
+      dispatch(hideLoading());
     } catch (error) {
       toast.error(error.response?.data?.message || "An error occurred");
       console.error(error);
-      hideLoading();
+      dispatch(hideLoading());
     }
   };
 
@@ -223,18 +242,34 @@ const Header = () => {
                 </Tooltip>
               </Button>
             )}
+            {!isSmallScreen && (
+              <Button
+                className="rounded-circle"
+                onClick={handleMenuToggle(setThemeMenuAnchor)}
+                style={{
+                  color: "white",
+                  backgroundColor: "#0462ffd1",
+                }}
+              >
+                <Tooltip title="Change Theme">
+                  <Palette />
+                </Tooltip>
+              </Button>
+            )}
             {user.UserType.notificationModule &&
-      user.UserType.notificationModule.split(",").includes("view")&&<Button
-              id="notification-icon"
-              className="rounded-circle"
-              onClick={handleMenuToggle(setNotificationsAnchor)}
-            >
-              <Tooltip title="Notification">
-                <Badge badgeContent={unReadCount} color="error">
-                  <NotificationsOutlinedIcon />
-                </Badge>
-              </Tooltip>
-            </Button>}
+              user.UserType.notificationModule.split(",").includes("view") && (
+                <Button
+                  id="notification-icon"
+                  className="rounded-circle"
+                  onClick={handleMenuToggle(setNotificationsAnchor)}
+                >
+                  <Tooltip title="Notification">
+                    <Badge badgeContent={unReadCount} color="error">
+                      <NotificationsOutlinedIcon />
+                    </Badge>
+                  </Tooltip>
+                </Button>
+              )}
             <Button
               id="fullscreen-icon"
               className="rounded-circle"
@@ -257,7 +292,9 @@ const Header = () => {
                 <div className="profileImage">
                   <span className="profilePhoto">
                     <CheckAndShowImage
-                      imageUrl={`${import.meta.env.VITE_API_URL}/${user?.avatarPath}`}
+                      imageUrl={`${import.meta.env.VITE_API_URL}/${
+                        user?.avatarPath
+                      }`}
                     />
                   </span>
                 </div>
@@ -284,21 +321,19 @@ const Header = () => {
           component="li"
           sx={{ marginTop: "15px", marginBottom: "15px" }}
         />
-        {isSmallScreen ? (
+        {isSmallScreen && (
           <MenuItem
             onClick={() => {
-              handleStartGuide();
+              setThemeMenuAnchor(menuAnchor);
               setMenuAnchor(null);
             }}
             sx={{ color: "black" }}
           >
             <ListItemIcon>
-              <InfoOutlinedIcon fontSize="small" sx={{ color: "black" }} />
+              <Palette fontSize="small" sx={{ color: "black" }} />
             </ListItemIcon>
-            Help
+            Change Theme
           </MenuItem>
-        ) : (
-          ""
         )}
         <MenuItem
           onClick={() => {
@@ -339,6 +374,45 @@ const Header = () => {
           </ListItemIcon>
           Logout
         </MenuItem>
+      </Menu>
+
+      {/* Theme Menu */}
+      <Menu
+        anchorEl={themeMenuAnchor}
+        open={Boolean(themeMenuAnchor)}
+        onClose={() => setThemeMenuAnchor(null)}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        sx={{ padding: "10px !important" }}
+      >
+        {themeColors.map((theme, index) => (
+          <MenuItem
+            key={index}
+            onClick={() => handleThemeChange(index)}
+            style={{
+              backgroundColor: `#${theme.linearGradientColorMain}`,
+              color: theme.textColor,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            Theme {index + 1}
+            <span
+              style={{
+                display: "inline-block",
+                width: "20px",
+                height: "20px",
+                background: `linear-gradient(90deg, #${theme.linearGradientColorMain}, #${theme.linearGradientColorMain2})`,
+                borderRadius: "50%",
+                marginLeft: "10px",
+              }}
+            ></span>
+            {selectedThemeIndex === index && (
+              <CheckIcon style={{ marginLeft: "auto" }} />
+            )}
+          </MenuItem>
+        ))}
       </Menu>
 
       {/* Notifications Menu */}

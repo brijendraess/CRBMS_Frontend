@@ -119,7 +119,9 @@ const FoodBeveragePage = () => {
       );
 
       toast.success(
-        `Food beverage status changed to ${updatedFoodBeverage.status ? "Active" : "Inactive"}`
+        `Food beverage status changed to ${
+          updatedFoodBeverage.status ? "Active" : "Inactive"
+        }`
       );
       hideLoading();
     } catch (error) {
@@ -229,7 +231,9 @@ const FoodBeveragePage = () => {
         </Grid2>
       )}
       {!isSmallScreen && (
-        <div style={{ display: "flex", flexDirection: "column" }}>
+        <div
+          style={{ display: "flex", flexDirection: "column", height: "75vh" }}
+        >
           <DataGrid
             rows={foodBeverage}
             columns={columns}
@@ -239,8 +243,7 @@ const FoodBeveragePage = () => {
             rowHeight={40}
             sx={{
               "& .super-app-theme--header": {
-                backgroundColor: "#006400",
-                // backgroundColor: "rgba(255, 223, 0, 1)",
+                backgroundColor: `var(--linear-gradient-main)`,
                 color: "#fff",
                 fontWeight: "600",
                 fontSize: "16px",

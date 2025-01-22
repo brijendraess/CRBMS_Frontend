@@ -67,7 +67,7 @@ import SettingsApplicationsOutlinedIcon from "@mui/icons-material/SettingsApplic
 import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
-import HourglassBottomOutlinedIcon from '@mui/icons-material/HourglassBottomOutlined';
+import HourglassTopOutlinedIcon from '@mui/icons-material/HourglassTopOutlined';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 export {
@@ -143,6 +143,6 @@ export {
   CloseIcon,
   LiveHelpOutlinedIcon,
   AirlineSeatLegroomExtraOutlinedIcon,
-  HourglassBottomOutlinedIcon,
+  HourglassTopOutlinedIcon,
   ErrorOutlineIcon
 };

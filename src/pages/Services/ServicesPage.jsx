@@ -18,12 +18,13 @@ import CustomButton from "../../components/Common/CustomButton/CustomButton";
 import DeleteModal from "../../components/Common/Modals/Delete/DeleteModal";
 import ServicesCard from "../../components/Responsive/Services/ServicesCard";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   AddOutlinedIcon,
   EditOutlinedIcon,
   DeleteOutlineOutlinedIcon,
 } from "../../components/Common/CustomButton/CustomIcon";
+import PageHeader from "../../components/Common/PageHeader/PageHeader";
 
 const ServicesPage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -35,14 +36,13 @@ const ServicesPage = () => {
   const [refreshPage, setRefreshPage] = useState(0);
   const { user } = useSelector((state) => state.user);
   const isSmallScreen = useMediaQuery("(max-width:768px)");
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        showLoading();
-        const response = await axios.get(
-          "/api/v1/services/all"
-        );
+        dispatch(showLoading());
+        const response = await axios.get("/api/v1/services/all");
         const servicesWithSerial = response.data.data.result.map(
           (services, index) => ({
             ...services,
@@ -50,9 +50,9 @@ const ServicesPage = () => {
           })
         );
         setServices(servicesWithSerial);
-        hideLoading();
+        dispatch(hideLoading());
       } catch (error) {
-        hideLoading();
+        dispatch(hideLoading());
         toast.error("Something Went Wrong");
         console.error("Error fetching services:", error);
       }
@@ -73,17 +73,15 @@ const ServicesPage = () => {
 
   const handleDelete = async () => {
     try {
-      showLoading();
-      await axios.delete(
-        `/api/v1/services/delete/${deleteId}`
-      );
+      dispatch(showLoading());
+      await axios.delete(`/api/v1/services/delete/${deleteId}`);
 
       handleClose(false);
       setRefreshPage(Math.random());
       toast.success("Services deleted successfully!");
-      hideLoading();
+      dispatch(hideLoading());
     } catch (error) {
-      hideLoading();
+      dispatch(hideLoading());
       toast.error("Failed to delete services!");
       console.error("Error deleting services:", error);
     }
@@ -91,9 +89,7 @@ const ServicesPage = () => {
 
   const handleUpdateSuccess = (updatedServices) => {
     setServices((prev) =>
-      prev.map((loc) =>
-        loc.id === updatedServices.id ? updatedServices : loc
-      )
+      prev.map((loc) => (loc.id === updatedServices.id ? updatedServices : loc))
     );
     setIsEditOpen(false);
   };
@@ -105,10 +101,8 @@ const ServicesPage = () => {
 
   const handleStatusChange = async (id) => {
     try {
-      showLoading();
-      const response = await axios.patch(
-        `/api/v1/services/changeStatus/${id}`
-      );
+      dispatch(showLoading());
+      const response = await axios.patch(`/api/v1/services/changeStatus/${id}`);
       const updatedServices = response.data.data.result;
 
       setServices((prev) =>
@@ -118,11 +112,13 @@ const ServicesPage = () => {
       );
 
       toast.success(
-        `Services status changed to ${updatedServices.status ? "Active" : "Inactive"}`
+        `Services status changed to ${
+          updatedServices.status ? "Active" : "Inactive"
+        }`
       );
-      hideLoading();
+      dispatch(hideLoading());
     } catch (error) {
-      hideLoading();
+      dispatch(hideLoading());
       console.error("Error changing status:", error);
       toast.error("Failed to change services status!");
     }
@@ -152,26 +148,37 @@ const ServicesPage = () => {
 
       renderCell: (params) => (
         <Box display="flex" alignItems="center" gap={1}>
-          {user.UserType.servicesModule&&user.UserType.servicesModule.split(",").includes("edit")&&<Tooltip title="Edit">
-            <EditOutlinedIcon
-              color="success"
-              onClick={() => handleEdit(params.row.id)}
-              style={{ cursor: "pointer" }}
-            />
-          </Tooltip>}
-          {user.UserType.servicesModule&&user.UserType.servicesModule.split(",").includes("delete")&&<Tooltip title="Delete">
-            <DeleteOutlineOutlinedIcon
-              color="error"
-              style={{ cursor: "pointer" }}
-              onClick={() => handleOpen(params.row.id)}
-            />
-          </Tooltip>}
-          {user.UserType.servicesModule&&user.UserType.servicesModule.split(",").includes("changeStatus")&&<Tooltip title="Change Status">
-            <Switch
-              checked={params.row.status}
-              onChange={() => handleStatusChange(params.row.id)}
-            />
-          </Tooltip>}
+          {user.UserType.servicesModule &&
+            user.UserType.servicesModule.split(",").includes("edit") && (
+              <Tooltip title="Edit">
+                <EditOutlinedIcon
+                  color="success"
+                  onClick={() => handleEdit(params.row.id)}
+                  style={{ cursor: "pointer" }}
+                />
+              </Tooltip>
+            )}
+          {user.UserType.servicesModule &&
+            user.UserType.servicesModule.split(",").includes("delete") && (
+              <Tooltip title="Delete">
+                <DeleteOutlineOutlinedIcon
+                  color="error"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handleOpen(params.row.id)}
+                />
+              </Tooltip>
+            )}
+          {user.UserType.servicesModule &&
+            user.UserType.servicesModule
+              .split(",")
+              .includes("changeStatus") && (
+              <Tooltip title="Change Status">
+                <Switch
+                  checked={params.row.status}
+                  onChange={() => handleStatusChange(params.row.id)}
+                />
+              </Tooltip>
+            )}
         </Box>
       ),
       headerClassName: "super-app-theme--header",
@@ -180,42 +187,16 @@ const ServicesPage = () => {
 
   return (
     <PaperWrapper>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          marginBottom: "10px",
-        }}
-      >
-        <Typography
-          variant="h1"
-          component="h1"
-          sx={{
-            marginRight: "20px",
-            fontSize: {
-              xs: "16px",
-              sm: "18px",
-              md: "22px",
-            },
-            fontWeight: 500,
-            lineHeight: 1.5,
-            color: "#2E2E2E",
-          }}
-        >
-          Services
-        </Typography>
-        {user.UserType.servicesModule&&user.UserType.servicesModule.split(",").includes("add")&&
-        <CustomButton
-          onClick={() => setIsAddOpen(true)}
-          title={"Add Service"}
-          placement={"left"}
-          Icon={AddOutlinedIcon}
-          fontSize={"medium"}
-          background={"rgba(3, 176, 48, 0.68)"}
-          statusIcon={user.UserType.servicesModule&&user.UserType.servicesModule.split(",").includes("add")}
-        />}
-      </Box>
+      <PageHeader
+        heading="Services"
+        icon={AddOutlinedIcon}
+        func={setIsAddOpen}
+        nameOfTheClass="add-new-service"
+        statusIcon={
+          user.UserType.servicesModule &&
+          user.UserType.servicesModule.split(",").includes("add")
+        }
+      />
       {isSmallScreen && (
         <Grid2
           container
@@ -240,7 +221,9 @@ const ServicesPage = () => {
         </Grid2>
       )}
       {!isSmallScreen && (
-        <div style={{ display: "flex", flexDirection: "column" }}>
+        <div
+          style={{ display: "flex", flexDirection: "column", height: "75vh" }}
+        >
           <DataGrid
             rows={services}
             columns={columns}
@@ -250,8 +233,7 @@ const ServicesPage = () => {
             rowHeight={40}
             sx={{
               "& .super-app-theme--header": {
-                backgroundColor: "#006400",
-                // backgroundColor: "rgba(255, 223, 0, 1)",
+                backgroundColor: `var(--linear-gradient-main)`,
                 color: "#fff",
                 fontWeight: "600",
                 fontSize: "16px",
@@ -281,8 +263,7 @@ const ServicesPage = () => {
             setRefreshPage={setRefreshPage}
             setIsEditOpen={setIsEditOpen}
             servicesName={
-              services.find((loc) => loc.id === updatedId)
-                ?.servicesName || ""
+              services.find((loc) => loc.id === updatedId)?.servicesName || ""
             }
             onSuccess={handleUpdateSuccess}
           />

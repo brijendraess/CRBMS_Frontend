@@ -218,13 +218,12 @@ const StockPage = () => {
             />
           )}
       </Box>
-      <Grid
-        container
-        spacing={3}
-        display={"flex"}
-        sx={{
-          borderRadius: "20px",
-          alignItems: "center",
+      <Box
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          height: "75vh",
         }}
       >
         <DataGrid
@@ -240,14 +239,14 @@ const StockPage = () => {
               outline: "none",
             },
             "& .super-app-theme--header": {
-              backgroundColor: "#006400",
+              backgroundColor: `var(--linear-gradient-main)`,
               color: "#fff",
               fontWeight: "600",
               fontSize: "16px",
             },
           }}
         />
-      </Grid>
+      </Box>
       <PopupModals
         isOpen={isAddOpen}
         setIsOpen={setIsAddOpen}

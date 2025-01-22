@@ -39,7 +39,12 @@ const RoomFilter = ({
 }) => {
   return (
     <ContentHeader
-      sx={{ position: "sticky", marginBottom: "20px" }}
+      sx={{
+        position: "sticky",
+        marginBottom: "20px",
+        backgroundColor: "transparent",
+        color: "#fff",
+      }}
       elevation={8}
       className={nameOfTheFilterClass}
     >
@@ -51,7 +56,7 @@ const RoomFilter = ({
         sx={{
           "& .MuiInputBase-root": {
             fontSize: "16px", // Adjust font size
-            height: "40px", // Adjust input height
+            height: "40px",
           },
         }}
       />

@@ -52,14 +52,14 @@ const AddUserTypeSettings = () => {
       committeeView: "",
       committeeChangeStatus: "",
 
-      notificationRead:"",
-      notificationDelete:"",
-      notificationView:"",
+      notificationRead: "",
+      notificationDelete: "",
+      notificationView: "",
 
-      inventoryAdd:"",
-      inventoryIncrease:"",
-      inventoryDecrease:"",
-      inventoryView:"",
+      inventoryAdd: "",
+      inventoryIncrease: "",
+      inventoryDecrease: "",
+      inventoryView: "",
 
       committeeMemberDelete: "",
       committeeMemberView: "",
@@ -69,6 +69,13 @@ const AddUserTypeSettings = () => {
       amenitiesDelete: "",
       amenitiesView: "",
       amenitiesChangeStatus: "",
+
+      servicesAdd: "",
+      servicesEdit: "",
+      servicesDelete: "",
+      servicesView: "",
+      servicesChangeStatus: "",
+
       roomAdd: "",
       roomEdit: "",
       roomDelete: "",
@@ -145,6 +152,12 @@ const AddUserTypeSettings = () => {
       amenitiesDelete: Yup.boolean().optional(),
       amenitiesView: Yup.boolean().optional(),
       amenitiesChangeStatus: Yup.boolean().optional(),
+      // serivces
+      servicesAdd: Yup.boolean().optional(),
+      servicesEdit: Yup.boolean().optional(),
+      servicesDelete: Yup.boolean().optional(),
+      servicesView: Yup.boolean().optional(),
+      servicesChangeStatus: Yup.boolean().optional(),
       // Room
       roomAdd: Yup.boolean().optional(),
       roomEdit: Yup.boolean().optional(),
@@ -226,7 +239,7 @@ const AddUserTypeSettings = () => {
             false,
             values.inventoryView,
             values.inventoryIncrease,
-            values.inventoryDecrease,
+            values.inventoryDecrease
           ),
           committeeMemberModule: notificationStringManipulation(
             false,
@@ -241,6 +254,13 @@ const AddUserTypeSettings = () => {
             values.amenitiesDelete,
             values.amenitiesView,
             values.amenitiesChangeStatus
+          ),
+          servicesModule: userRoleStringManipulation(
+            values.servicesAdd,
+            values.servicesEdit,
+            values.servicesDelete,
+            values.servicesView,
+            values.servicesChangeStatus
           ),
           roomModule: userRoleStringRoomManipulation(
             values.roomAdd,
@@ -371,7 +391,6 @@ const AddUserTypeSettings = () => {
                   formik.setFieldValue("notificationDelete", true);
                   formik.setFieldValue("notificationView", true);
 
-
                   formik.setFieldValue("committeeMemberDelete", "");
                   formik.setFieldValue("committeeMemberView", true);
 
@@ -380,6 +399,13 @@ const AddUserTypeSettings = () => {
                   formik.setFieldValue("amenitiesDelete", "");
                   formik.setFieldValue("amenitiesView", "");
                   formik.setFieldValue("amenitiesChangeStatus", "");
+
+                  formik.setFieldValue("servicesAdd", "");
+                  formik.setFieldValue("servicesEdit", "");
+                  formik.setFieldValue("servicesDelete", "");
+                  formik.setFieldValue("servicesView", "");
+                  formik.setFieldValue("servicesChangeStatus", "");
+
                   formik.setFieldValue("roomAdd", "");
                   formik.setFieldValue("roomEdit", "");
                   formik.setFieldValue("roomDelete", "");
@@ -442,6 +468,12 @@ const AddUserTypeSettings = () => {
                   formik.setFieldValue("amenitiesEdit", true);
                   formik.setFieldValue("amenitiesDelete", true);
                   formik.setFieldValue("amenitiesView", true);
+
+                  formik.setFieldValue("servicesAdd", true);
+                  formik.setFieldValue("servicesEdit", true);
+                  formik.setFieldValue("servicesDelete", true);
+                  formik.setFieldValue("servicesView", true);
+
                   formik.setFieldValue("amenitiesChangeStatus", true);
                   formik.setFieldValue("roomAdd", true);
                   formik.setFieldValue("roomEdit", true);
@@ -513,6 +545,13 @@ const AddUserTypeSettings = () => {
                   formik.setFieldValue("amenitiesDelete", "");
                   formik.setFieldValue("amenitiesView", "");
                   formik.setFieldValue("amenitiesChangeStatus", "");
+
+                  formik.setFieldValue("servicesAdd", "");
+                  formik.setFieldValue("servicesEdit", "");
+                  formik.setFieldValue("servicesDelete", "");
+                  formik.setFieldValue("servicesView", "");
+                  formik.setFieldValue("servicesChangeStatus", "");
+
                   formik.setFieldValue("roomAdd", "");
                   formik.setFieldValue("roomEdit", "");
                   formik.setFieldValue("roomDelete", "");
@@ -576,6 +615,13 @@ const AddUserTypeSettings = () => {
                   formik.setFieldValue("amenitiesDelete", "");
                   formik.setFieldValue("amenitiesView", "");
                   formik.setFieldValue("amenitiesChangeStatus", "");
+
+                  formik.setFieldValue("servicesAdd", "");
+                  formik.setFieldValue("servicesEdit", "");
+                  formik.setFieldValue("servicesDelete", "");
+                  formik.setFieldValue("servicesView", "");
+                  formik.setFieldValue("servicesChangeStatus", "");
+
                   formik.setFieldValue("roomAdd", "");
                   formik.setFieldValue("roomEdit", "");
                   formik.setFieldValue("roomDelete", "");
@@ -616,7 +662,7 @@ const AddUserTypeSettings = () => {
               margin="normal"
               size="small"
               required
-            > 
+            >
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
@@ -646,6 +692,14 @@ const AddUserTypeSettings = () => {
             ],
           },
           {
+            title: "Meeting Notification",
+            permissions: [
+              { name: "notificationView", label: "View" },
+              { name: "committeeDelete", label: "Delete" },
+              { name: "notificationRead", label: "Read" },
+            ],
+          },
+          {
             title: "User",
             permissions: [
               { name: "userView", label: "View" },
@@ -664,24 +718,8 @@ const AddUserTypeSettings = () => {
               { name: "committeeEdit", label: "Edit" },
               { name: "committeeChangeStatus", label: "Status" },
             ],
-          }, 
-          {
-            title: "Meeting Notification",
-            permissions: [
-              { name: "notificationRead", label: "read" },
-              { name: "committeeDelete", label: "Delete" },
-              { name: "notificationView", label: "view" },
-            ],
           },
-          {
-            title: "Inventory",
-            permissions: [
-              { name: "inventoryAdd", label: "add" },
-              { name: "inventoryIncrease", label: "increase" },
-              { name: "inventoryDecrease", label: "decrease" },
-              { name: "inventoryView", label: "view" },
-            ],
-          },
+
           {
             title: "Amenities",
             permissions: [
@@ -690,6 +728,16 @@ const AddUserTypeSettings = () => {
               { name: "amenitiesAdd", label: "Add" },
               { name: "amenitiesEdit", label: "Edit" },
               { name: "amenitiesChangeStatus", label: "Status" },
+            ],
+          },
+          {
+            title: "Services",
+            permissions: [
+              { name: "servicesView", label: "View" },
+              { name: "servicesDelete", label: "Delete" },
+              { name: "servicesAdd", label: "Add" },
+              { name: "servicesEdit", label: "Edit" },
+              { name: "servicesChangeStatus", label: "Status" },
             ],
           },
           {
@@ -723,6 +771,25 @@ const AddUserTypeSettings = () => {
             ],
           },
           {
+            title: "Inventory",
+            permissions: [
+              { name: "inventoryView", label: "View" },
+              {
+                name: "inventoryAdd",
+                label: <span>Add&nbsp;&nbsp;&nbsp;&nbsp;</span>,
+              },
+              {
+                name: "inventoryIncrease",
+                label: (
+                  <span>
+                    Increase&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  </span>
+                ),
+              },
+              { name: "inventoryDecrease", label: "Decrease" },
+            ],
+          },
+          {
             title: "Meeting Logs",
             permissions: [
               { name: "meetingLogsView", label: "View" },
@@ -735,10 +802,10 @@ const AddUserTypeSettings = () => {
           {
             title: "Room",
             permissions: [
+              { name: "roomView", label: "View" },
+              { name: "roomDelete", label: "Delete" },
               { name: "roomAdd", label: "Add" },
               { name: "roomEdit", label: "Edit" },
-              { name: "roomDelete", label: "Delete" },
-              { name: "roomView", label: "View" },
               { name: "roomGallery", label: "Gallery" },
               { name: "roomAmenities", label: "Amenities" },
               { name: "roomBarcode", label: "BarCode" },

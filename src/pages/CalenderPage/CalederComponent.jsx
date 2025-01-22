@@ -21,21 +21,22 @@ import MeetingFormPostPone from "../MeetingPage/MeetingFormPostPone";
 import CancelMeetingModal from "../../components/Common/Modals/Delete/CancelMeetingModal";
 import MeetingFormEdit from "../MeetingPage/MeetingFormEdit";
 
-const CalenderWrapper = styled(Paper)(({ theme }) => ({
-  color: theme.palette.text.secondary,
-  borderRadius: "10px",
-  padding: "10px",
-  marginTop: "10px",
-  width: "100%",
-  height: `calc(100vh - 75px)`,
-  overflow: "scroll",
-  [theme.breakpoints.down("md")]: {
-    height: "100vh",
-    marginTop: "0px",
-  },
-}));
+const CalederComponent = ({ height }) => {
+  const CalenderWrapper = styled(Paper)(({ theme }) => ({
+    color: theme.palette.text.secondary,
+    borderRadius: "10px",
+    padding: "10px",
+    marginTop: "10px",
+    width: "100%",
+    overflow: "scroll",
+    height: height,
+    backgroundImage: `linear-gradient(45deg, var(--body-color), var(--body-color-2))`,
+    [theme.breakpoints.down("md")]: {
+      height: "100vh",
+      marginTop: "0px",
+    },
+  }));
 
-const CalenderPage = () => {
   const localizer = dayjsLocalizer(dayjs);
 
   const { user } = useSelector((state) => state.user);
@@ -77,9 +78,10 @@ const CalenderPage = () => {
     const fetchMeetings = async () => {
       try {
         showLoading();
-        const endpoint = user?.UserType?.isAdmin==='admin'
-          ? "/api/v1/meeting/get-all-admin-meeting"
-          : "/api/v1/meeting/get-all-my-meeting";
+        const endpoint =
+          user?.UserType?.isAdmin === "admin"
+            ? "/api/v1/meeting/get-all-admin-meeting"
+            : "/api/v1/meeting/get-all-my-meeting";
 
         const response = await axios.get(endpoint, {
           withCredentials: true,
@@ -145,7 +147,7 @@ const CalenderPage = () => {
     if (event.isCanceled === "pending") {
       return {
         style: {
-          backgroundColor: "yellow",
+          backgroundColor: "#ff9600",
           textDecoration: "none",
           color: "white",
         },
@@ -201,9 +203,6 @@ const CalenderPage = () => {
         startAccessor="start"
         endAccessor="end"
         style={{
-          height: "100%",
-          background: "#fff",
-          // padding: "5px",
           borderRadius: "10px",
         }}
         view={lastView}
@@ -254,7 +253,7 @@ const CalenderPage = () => {
             {selectedEvent.isCanceled === "pending" && (
               <Typography>
                 <strong>Status:</strong>{" "}
-                <Typography sx={{ color: "yellow", fontWeight: "bold" }}>
+                <Typography sx={{ color: "#ff9600", fontWeight: "bold" }}>
                   Meeting is pending now, Please asked admin to approve it.
                 </Typography>
               </Typography>
@@ -294,18 +293,21 @@ const CalenderPage = () => {
                   >
                     Postpone
                   </Button>
-                  {user?.UserType?.isAdmin==='admin' && (
-                  <Button
-                    onClick={() =>
-                      handleEdit(selectedEvent.roomId, selectedEvent.bookingId)
-                    }
-                    variant="contained"
-                    color="primary"
-                    sx={{ mt: 2 }}
-                  >
-                    Edit
-                  </Button>
-                   )} 
+                  {user?.UserType?.isAdmin === "admin" && (
+                    <Button
+                      onClick={() =>
+                        handleEdit(
+                          selectedEvent.roomId,
+                          selectedEvent.bookingId
+                        )
+                      }
+                      variant="contained"
+                      color="primary"
+                      sx={{ mt: 2 }}
+                    >
+                      Edit
+                    </Button>
+                  )}
                 </Box>
               ))}
           </DialogContent>
@@ -341,4 +343,4 @@ const CalenderPage = () => {
   );
 };
 
-export default CalenderPage;
+export default CalederComponent;

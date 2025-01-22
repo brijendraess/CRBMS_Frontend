@@ -26,6 +26,7 @@ import AddUserTypeSettings from "./AddUserTypeSettings";
 import UserTypeCard from "../../components/Responsive/UserType/UserTypeCard";
 import { useNavigate } from "react-router-dom";
 import { replaceAndUppercase } from "../../utils/utils";
+import PageHeader from "../../components/Common/PageHeader/PageHeader";
 
 const UserTypeSettings = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -44,62 +45,96 @@ const UserTypeSettings = () => {
     const fetchUserType = async () => {
       try {
         const response = await axios.get(`/api/v1/user-type/all`);
-        console.log(response.data.data.result);
+        // console.log(response.data.data.result);
         const userType = response?.data?.data?.result?.map((type, index) => {
-        const permissionArray = [];
+          const permissionArray = [];
 
           type.calendarModule &&
-            permissionArray.push({name:`<b>Calendar:</b> ${replaceAndUppercase(type.calendarModule)}`,
+            permissionArray.push({
+              name: `<b>Calendar:</b> ${replaceAndUppercase(
+                type.calendarModule
+              )}`,
             });
           type.userModule &&
-          permissionArray.push({name:`<b>User:</b> ${replaceAndUppercase(type.userModule)}`,
+            permissionArray.push({
+              name: `<b>User:</b> ${replaceAndUppercase(type.userModule)}`,
             });
           type.committeeModule &&
-          permissionArray.push({name:`<b>Committee:</b> ${replaceAndUppercase(type.committeeModule)}`,
+            permissionArray.push({
+              name: `<b>Committee:</b> ${replaceAndUppercase(
+                type.committeeModule
+              )}`,
             });
           type.notificationModule &&
-          permissionArray.push({name:`<b>Notification:</b> ${replaceAndUppercase(type.notificationModule)}`,
+            permissionArray.push({
+              name: `<b>Notification:</b> ${replaceAndUppercase(
+                type.notificationModule
+              )}`,
             });
 
           type.inventoryModule &&
-          permissionArray.push({name:`<b>Inventory:</b> ${replaceAndUppercase(type.inventoryModule)}`,
+            permissionArray.push({
+              name: `<b>Inventory:</b> ${replaceAndUppercase(
+                type.inventoryModule
+              )}`,
             });
           type.committeeMemberModule &&
-          permissionArray.push({name:`<b>Committee Member:</b> ${replaceAndUppercase(type.committeeMemberModule)}`,
+            permissionArray.push({
+              name: `<b>Committee Member:</b> ${replaceAndUppercase(
+                type.committeeMemberModule
+              )}`,
             });
           type.meetingLogsModule &&
-          permissionArray.push({name:`<b>Meeting Logs:</b> ${replaceAndUppercase(type.meetingLogsModule)}`,
+            permissionArray.push({
+              name: `<b>Meeting Logs:</b> ${replaceAndUppercase(
+                type.meetingLogsModule
+              )}`,
             });
           type.amenitiesModule &&
-          permissionArray.push({name:`<b>Amenities:</b> ${replaceAndUppercase(type.amenitiesModule)}`,
+            permissionArray.push({
+              name: `<b>Amenities:</b> ${replaceAndUppercase(
+                type.amenitiesModule
+              )}`,
             });
 
           type.roomModule &&
-          permissionArray.push({name:`<b>Room:</b> ${replaceAndUppercase(type.roomModule)}`,
+            permissionArray.push({
+              name: `<b>Room:</b> ${replaceAndUppercase(type.roomModule)}`,
             });
           type.locationModule &&
-          permissionArray.push({name:`<b>Location:</b> ${replaceAndUppercase(type.locationModule)}`,
+            permissionArray.push({
+              name: `<b>Location:</b> ${replaceAndUppercase(
+                type.locationModule
+              )}`,
             });
           type.foodBeverageModule &&
-          permissionArray.push({name:`<b>Food and Beverage:</b> ${replaceAndUppercase(type.foodBeverageModule)}`,
+            permissionArray.push({
+              name: `<b>Food and Beverage:</b> ${replaceAndUppercase(
+                type.foodBeverageModule
+              )}`,
             });
           type.reportModule &&
-          permissionArray.push({name:`<b>Report:</b> ${replaceAndUppercase(type.reportModule)}`,
+            permissionArray.push({
+              name: `<b>Report:</b> ${replaceAndUppercase(type.reportModule)}`,
             });
           type.userRoleModule &&
-          permissionArray.push({name:`<b>User Role:</b> ${replaceAndUppercase(type.userRoleModule)}`,
+            permissionArray.push({
+              name: `<b>User Role:</b> ${replaceAndUppercase(
+                type.userRoleModule
+              )}`,
             });
 
-            return {
-              id: index + 1,
-              serialNo: index + 1,
-              uid: type.id,
-              userTypeName: type.userTypeName,
-              permission: permissionArray.map((item) => item.name).join("<br />"), // String with newlines
-              isAdmin: type.isAdmin,
-              status: type.status,
-            };
+          return {
+            id: index + 1,
+            serialNo: index + 1,
+            uid: type.id,
+            userTypeName: type.userTypeName,
+            permission: permissionArray.map((item) => item.name).join("<br />"), // String with newlines
+            isAdmin: type.isAdmin,
+            status: type.status,
+          };
         });
+        // console.log("SDASDA",response.data.data.result)
         const userTypeDB = response.data.data.result.map((type, index) => ({
           id: index + 1,
           serialNo: index + 1,
@@ -113,6 +148,7 @@ const UserTypeSettings = () => {
           committeeMemberModule: type.committeeMemberModule,
           meetingLogsModule: type.meetingLogsModule,
           amenitiesModule: type.amenitiesModule,
+          servicesModule: type.servicesModule,
           roomModule: type.roomModule,
           locationModule: type.locationModule,
           foodBeverageModule: type.foodBeverageModule,
@@ -286,40 +322,16 @@ const UserTypeSettings = () => {
 
   return (
     <PaperWrapper>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          marginBottom: "10px",
-        }}
-      >
-        <Typography
-          variant="h1"
-          component="h1"
-          sx={{
-            marginRight: "20px",
-            fontSize: {
-              xs: "16px",
-              sm: "18px",
-              md: "22px",
-            },
-            fontWeight: 500,
-            lineHeight: 1.5,
-            color: "#2E2E2E",
-          }}
-        >
-          User Role
-        </Typography>
-        <CustomButton
-          onClick={handleAdd}
-          title={"Add New Room"}
-          placement={"left"}
-          Icon={AddOutlinedIcon}
-          fontSize={"medium"}
-          background={"rgba(3, 176, 48, 0.68)"}
-        />
-      </Box>
+      <PageHeader
+        heading="User Role"
+        icon={AddOutlinedIcon}
+        func={handleAdd}
+        nameOfTheClass="add-user-role"
+        statusIcon={
+          user.UserType.userRoleModule &&
+          user.UserType.userRoleModule.split(",").includes("add")
+        }
+      />
       <Box
         style={{
           display: "flex",
@@ -337,7 +349,7 @@ const UserTypeSettings = () => {
           disableSelectionOnClick
           sx={{
             "& .super-app-theme--header": {
-              backgroundColor: "#006400",
+              backgroundColor: `var(--linear-gradient-main)`,
               color: "#fff",
               fontWeight: "600",
               fontSize: "16px",
