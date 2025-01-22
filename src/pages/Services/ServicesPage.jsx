@@ -24,6 +24,7 @@ import {
   EditOutlinedIcon,
   DeleteOutlineOutlinedIcon,
 } from "../../components/Common/CustomButton/CustomIcon";
+import PageHeader from "../../components/Common/PageHeader/PageHeader";
 
 const ServicesPage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -35,11 +36,12 @@ const ServicesPage = () => {
   const [refreshPage, setRefreshPage] = useState(0);
   const { user } = useSelector((state) => state.user);
   const isSmallScreen = useMediaQuery("(max-width:768px)");
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        showLoading();
+        dispatch(showLoading());
         const response = await axios.get("/api/v1/services/all");
         const servicesWithSerial = response.data.data.result.map(
           (services, index) => ({
@@ -48,9 +50,9 @@ const ServicesPage = () => {
           })
         );
         setServices(servicesWithSerial);
-        hideLoading();
+        dispatch(hideLoading());
       } catch (error) {
-        hideLoading();
+        dispatch(hideLoading());
         toast.error("Something Went Wrong");
         console.error("Error fetching services:", error);
       }
@@ -71,15 +73,15 @@ const ServicesPage = () => {
 
   const handleDelete = async () => {
     try {
-      showLoading();
+      dispatch(showLoading());
       await axios.delete(`/api/v1/services/delete/${deleteId}`);
 
       handleClose(false);
       setRefreshPage(Math.random());
       toast.success("Services deleted successfully!");
-      hideLoading();
+      dispatch(hideLoading());
     } catch (error) {
-      hideLoading();
+      dispatch(hideLoading());
       toast.error("Failed to delete services!");
       console.error("Error deleting services:", error);
     }
@@ -99,7 +101,7 @@ const ServicesPage = () => {
 
   const handleStatusChange = async (id) => {
     try {
-      showLoading();
+      dispatch(showLoading());
       const response = await axios.patch(`/api/v1/services/changeStatus/${id}`);
       const updatedServices = response.data.data.result;
 
@@ -114,9 +116,9 @@ const ServicesPage = () => {
           updatedServices.status ? "Active" : "Inactive"
         }`
       );
-      hideLoading();
+      dispatch(hideLoading());
     } catch (error) {
-      hideLoading();
+      dispatch(hideLoading());
       console.error("Error changing status:", error);
       toast.error("Failed to change services status!");
     }
@@ -185,47 +187,16 @@ const ServicesPage = () => {
 
   return (
     <PaperWrapper>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          marginBottom: "10px",
-        }}
-      >
-        <Typography
-          variant="h1"
-          component="h1"
-          sx={{
-            marginRight: "20px",
-            fontSize: {
-              xs: "16px",
-              sm: "18px",
-              md: "22px",
-            },
-            fontWeight: 500,
-            lineHeight: 1.5,
-            color: "#2E2E2E",
-          }}
-        >
-          Services
-        </Typography>
-        {user.UserType.servicesModule &&
-          user.UserType.servicesModule.split(",").includes("add") && (
-            <CustomButton
-              onClick={() => setIsAddOpen(true)}
-              title={"Add Service"}
-              placement={"left"}
-              Icon={AddOutlinedIcon}
-              fontSize={"medium"}
-              background={"rgba(3, 176, 48, 0.68)"}
-              statusIcon={
-                user.UserType.servicesModule &&
-                user.UserType.servicesModule.split(",").includes("add")
-              }
-            />
-          )}
-      </Box>
+      <PageHeader
+        heading="Services"
+        icon={AddOutlinedIcon}
+        func={setIsAddOpen}
+        nameOfTheClass="add-new-service"
+        statusIcon={
+          user.UserType.servicesModule &&
+          user.UserType.servicesModule.split(",").includes("add")
+        }
+      />
       {isSmallScreen && (
         <Grid2
           container

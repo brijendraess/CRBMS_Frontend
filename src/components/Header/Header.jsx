@@ -17,7 +17,7 @@ import {
 import CheckIcon from "@mui/icons-material/Check";
 
 // Context and State Management
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import axios from "axios";
 import dayjs from "dayjs";
@@ -54,6 +54,7 @@ import { themeColors } from "../../Theme/ColorFile";
 const Header = () => {
   const context = useContext(MyContext);
   const { user } = useSelector((state) => state.user);
+  console.log(user);
   const [menuAnchor, setMenuAnchor] = useState(null);
   const [notificationsAnchor, setNotificationsAnchor] = useState(null);
   const [isFullScreen, setIsFullScreen] = useState(false);
@@ -68,6 +69,7 @@ const Header = () => {
   const { changeTheme } = useContext(ThemeContext);
   const [themeMenuAnchor, setThemeMenuAnchor] = useState(null);
   const [selectedThemeIndex, setSelectedThemeIndex] = useState(0);
+  const dispatch = useDispatch();
 
   const handleThemeMenuToggle = (event) => {
     setThemeMenuAnchor(themeMenuAnchor ? null : event.currentTarget);
@@ -164,7 +166,7 @@ const Header = () => {
   // Logout Handler
   const handleLogout = async () => {
     try {
-      showLoading();
+      dispatch(showLoading());
       const response = await axios.post(
         `/api/v1/user/logout`,
         {},
@@ -176,11 +178,11 @@ const Header = () => {
       } else {
         toast.error("Logout Failed");
       }
-      hideLoading();
+      dispatch(hideLoading());
     } catch (error) {
       toast.error(error.response?.data?.message || "An error occurred");
       console.error(error);
-      hideLoading();
+      dispatch(hideLoading());
     }
   };
 
@@ -255,17 +257,19 @@ const Header = () => {
               </Button>
             )}
             {user.UserType.notificationModule &&
-      user.UserType.notificationModule.split(",").includes("view")&&<Button
-              id="notification-icon"
-              className="rounded-circle"
-              onClick={handleMenuToggle(setNotificationsAnchor)}
-            >
-              <Tooltip title="Notification">
-                <Badge badgeContent={unReadCount} color="error">
-                  <NotificationsOutlinedIcon />
-                </Badge>
-              </Tooltip>
-            </Button>}
+              user.UserType.notificationModule.split(",").includes("view") && (
+                <Button
+                  id="notification-icon"
+                  className="rounded-circle"
+                  onClick={handleMenuToggle(setNotificationsAnchor)}
+                >
+                  <Tooltip title="Notification">
+                    <Badge badgeContent={unReadCount} color="error">
+                      <NotificationsOutlinedIcon />
+                    </Badge>
+                  </Tooltip>
+                </Button>
+              )}
             <Button
               id="fullscreen-icon"
               className="rounded-circle"
@@ -333,7 +337,7 @@ const Header = () => {
         )}
         <MenuItem
           onClick={() => {
-            context.handleEdit();
+            handleEdit();
             setMenuAnchor(null);
           }}
           sx={{ color: "black" }}
@@ -348,7 +352,7 @@ const Header = () => {
         </MenuItem>
         <MenuItem
           onClick={() => {
-            context.handleResetPassword();
+            handleResetPassword();
             setMenuAnchor(null);
           }}
           sx={{ color: "black" }}
@@ -360,7 +364,7 @@ const Header = () => {
         </MenuItem>
         <MenuItem
           onClick={() => {
-            context.handleLogout();
+            handleLogout();
             setMenuAnchor(null);
           }}
           sx={{ color: "red" }}
@@ -389,8 +393,8 @@ const Header = () => {
               backgroundColor: `#${theme.linearGradientColorMain}`,
               color: theme.textColor,
               display: "flex",
-              // alignItems: "center",
-              // justifyContent: "space-between",
+              alignItems: "center",
+              justifyContent: "space-between",
             }}
           >
             Theme {index + 1}

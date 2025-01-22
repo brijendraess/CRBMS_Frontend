@@ -67,7 +67,7 @@ const BottomNavBar = () => {
               minWidth: "50px",
             },
             "& .MuiTabs-flexContainer": {
-              justifyContent: "center",
+              justifyContent: "space-evenly",
             },
             "& .MuiTabs-indicator": {
               backgroundColor: "#000",
