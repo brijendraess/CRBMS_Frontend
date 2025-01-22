@@ -36,7 +36,7 @@ const EditUserTypeSettings = () => {
   const { userRole } = location.state || {};
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  console.log("Location State", userRole);
+  // console.log("Location State", userRole);
   const goBack = () => {
     navigate(-1);
   };
@@ -92,6 +92,15 @@ const EditUserTypeSettings = () => {
       amenitiesChangeStatus: userRole?.amenitiesModule
         ?.split(",")
         .includes("changeStatus"),
+
+      servicesAdd: userRole?.servicesModule?.split(",").includes("add"),
+      servicesEdit: userRole?.servicesModule?.split(",").includes("edit"),
+      servicesDelete: userRole?.servicesModule?.split(",").includes("delete"),
+      servicesView: userRole?.servicesModule?.split(",").includes("view"),
+      servicesChangeStatus: userRole?.servicesModule
+        ?.split(",")
+        .includes("changeStatus"),
+
       roomAdd: userRole?.roomModule?.split(",").includes("add"),
       roomEdit: userRole?.roomModule?.split(",").includes("edit"),
       roomDelete: userRole?.roomModule?.split(",").includes("delete"),
@@ -184,6 +193,13 @@ const EditUserTypeSettings = () => {
       amenitiesDelete: Yup.boolean().optional(),
       amenitiesView: Yup.boolean().optional(),
       amenitiesChangeStatus: Yup.boolean().optional(),
+
+      servicesAdd: Yup.boolean().optional(),
+      servicesEdit: Yup.boolean().optional(),
+      servicesDelete: Yup.boolean().optional(),
+      servicesView: Yup.boolean().optional(),
+      servicesChangeStatus: Yup.boolean().optional(),
+
       roomAdd: Yup.boolean().optional(),
       roomEdit: Yup.boolean().optional(),
       roomDelete: Yup.boolean().optional(),
@@ -193,6 +209,7 @@ const EditUserTypeSettings = () => {
       roomFoodBeverage: Yup.boolean().optional(),
       roomBarcode: Yup.boolean().optional(),
       roomSanitization: Yup.boolean().optional(),
+
       locationAdd: Yup.boolean().optional(),
       locationEdit: Yup.boolean().optional(),
       locationDelete: Yup.boolean().optional(),
@@ -220,7 +237,7 @@ const EditUserTypeSettings = () => {
       isAdmin: Yup.string().optional(),
     }),
     onSubmit: async (values, { resetForm }) => {
-      //console.log("Submitted values:", values);
+      console.log("Submitted values:", values);
       dispatch(showLoading());
       try {
         const submittedData = {
@@ -276,6 +293,13 @@ const EditUserTypeSettings = () => {
             values.amenitiesView,
             values.amenitiesChangeStatus
           ),
+          servicesModule: userRoleStringManipulation(
+            values.servicesAdd,
+            values.servicesEdit,
+            values.servicesDelete,
+            values.servicesView,
+            values.servicesChangeStatus
+          ),
           roomModule: userRoleStringRoomManipulation(
             values.roomAdd,
             values.roomEdit,
@@ -326,9 +350,10 @@ const EditUserTypeSettings = () => {
           createdBy: values.createdBy,
           isAdmin: values.isAdmin,
         };
-        //console.log("Submitted values:", submittedData);
-        showLoading();
+        // console.log("Submitted values:", submittedData);
+        dispatch(showLoading());
         await axios.put(`api/v1/user-type/edit/${userRole.uid}`, submittedData);
+
         toast.success("User role update Successfully");
         resetForm(); // Reset form after successful submission
         goBack();
@@ -415,6 +440,13 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("amenitiesDelete", "");
                   formik.setFieldValue("amenitiesView", "");
                   formik.setFieldValue("amenitiesChangeStatus", "");
+
+                  formik.setFieldValue("servicesAdd", "");
+                  formik.setFieldValue("servicesEdit", "");
+                  formik.setFieldValue("servicesDelete", "");
+                  formik.setFieldValue("servicesView", "");
+                  formik.setFieldValue("servicesChangeStatus", "");
+
                   formik.setFieldValue("roomAdd", "");
                   formik.setFieldValue("roomEdit", "");
                   formik.setFieldValue("roomDelete", "");
@@ -478,6 +510,13 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("amenitiesDelete", true);
                   formik.setFieldValue("amenitiesView", true);
                   formik.setFieldValue("amenitiesChangeStatus", true);
+
+                  formik.setFieldValue("servicesAdd", true);
+                  formik.setFieldValue("servicesEdit", true);
+                  formik.setFieldValue("servicesDelete", true);
+                  formik.setFieldValue("servicesView", true);
+                  formik.setFieldValue("servicesChangeStatus", true);
+
                   formik.setFieldValue("roomAdd", true);
                   formik.setFieldValue("roomEdit", true);
                   formik.setFieldValue("roomDelete", true);
@@ -539,6 +578,13 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("amenitiesDelete", "");
                   formik.setFieldValue("amenitiesView", "");
                   formik.setFieldValue("amenitiesChangeStatus", "");
+
+                  formik.setFieldValue("servicesAdd", "");
+                  formik.setFieldValue("servicesEdit", "");
+                  formik.setFieldValue("servicesDelete", "");
+                  formik.setFieldValue("servicesView", "");
+                  formik.setFieldValue("servicesChangeStatus", "");
+
                   formik.setFieldValue("roomAdd", "");
                   formik.setFieldValue("roomEdit", "");
                   formik.setFieldValue("roomDelete", "");
@@ -602,6 +648,13 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("amenitiesDelete", "");
                   formik.setFieldValue("amenitiesView", "");
                   formik.setFieldValue("amenitiesChangeStatus", "");
+
+                  formik.setFieldValue("servicesAdd", "");
+                  formik.setFieldValue("servicesEdit", "");
+                  formik.setFieldValue("servicesDelete", "");
+                  formik.setFieldValue("servicesView", "");
+                  formik.setFieldValue("servicesChangeStatus", "");
+
                   formik.setFieldValue("roomAdd", "");
                   formik.setFieldValue("roomEdit", "");
                   formik.setFieldValue("roomDelete", "");
@@ -717,6 +770,16 @@ const EditUserTypeSettings = () => {
               { name: "amenitiesAdd", label: "Add" },
               { name: "amenitiesEdit", label: "Edit" },
               { name: "amenitiesChangeStatus", label: "Status" },
+            ],
+          },
+          {
+            title: "Services",
+            permissions: [
+              { name: "servicesView", label: "View" },
+              { name: "servicesDelete", label: "Delete" },
+              { name: "servicesAdd", label: "Add" },
+              { name: "servicesEdit", label: "Edit" },
+              { name: "servicesChangeStatus", label: "Status" },
             ],
           },
           {

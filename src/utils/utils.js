@@ -43,10 +43,10 @@ const getUserByName = async (id) => {
 };
 
 // Date string formatting
-const dateStringFormatting=(dateString)=>{
-  const [year, month, day] = dateString.split('-');
-return `${day}/${month}/${year}`;
-}
+const dateStringFormatting = (dateString) => {
+  const [year, month, day] = dateString.split("-");
+  return `${day}/${month}/${year}`;
+};
 
 const fetchUsers = async (toast, setEmailsList) => {
   try {
@@ -232,6 +232,8 @@ const userRoleStringRoomManipulation = (
     arrData.push("sanitization");
   }
   if (arrData.length > 0) {
+    console.log("ARRAY", addData);
+    console.log("sanitizationData", sanitizationData);
     return arrData.join(",");
   } else {
     return "";
@@ -273,13 +275,13 @@ const notificationStringManipulation = (
 };
 
 const replaceAndUppercase = (str) => {
-  if(str){
-  return str
-    .replace(/,/g, "|")
-    .split("|")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" || ");
-  }else{
+  if (str) {
+    return str
+      .replace(/,/g, "|")
+      .split("|")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" || ");
+  } else {
     return "";
   }
 };

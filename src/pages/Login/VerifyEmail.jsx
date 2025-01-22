@@ -107,6 +107,8 @@ const VerifyEmail = () => {
       dispatch(hideLoading());
     } catch (error) {
       dispatch(hideLoading());
+      console.log(error);
+
       toast.error(error.response?.data?.message || "Wrong OTP");
     }
   };
