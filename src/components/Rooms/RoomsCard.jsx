@@ -48,7 +48,6 @@ const RoomsCard = ({
   setRefreshPage,
   meetingCurrentData,
 }) => {
-  console.log(room)
   const navigate = useNavigate();
   const [hover, setHover] = useState(false);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
@@ -194,9 +193,11 @@ const RoomsCard = ({
             component="img"
             src={`${import.meta.env.VITE_API_URL}/${room.roomImagePath}`}
             alt={room.roomImagePath}
+            onClick={handleCardClick}
             sx={{
               width: "100%",
               height: "100%",
+              cursor:"pointer",
               transformOrigin: "center",
               transform: "scale(1.001)",
               transition: "transform 0.4s ease-in-out",
@@ -219,10 +220,12 @@ const RoomsCard = ({
             variant="h6"
             component="h2"
             className="title"
+            onClick={handleCardClick}
             sx={{
               fontFamily: "'Bebas Neue', cursive",
               fontSize: "1.2rem",
               color: "black",
+              cursor:"pointer",
               transition: "color 0.3s ease-out",
             }}
           >

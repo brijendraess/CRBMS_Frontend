@@ -21,8 +21,14 @@ const RoomsPage = () => {
   const [capacity, setCapacity] = useState("");
   const [isAvailable, setIsAvailable] = useState("all"); // Default to 'all'
   const [selectedAmenities, setSelectedAmenities] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState([]);
+  const [selectedServices, setSelectedServices] = useState([]);
+  const [selectedFoodBeverage, setSelectedFoodBeverage] = useState([]);
   const [selectedDate, setSelectedDate] = useState(); // For date filter
   const [amenitiesList, setAmenitiesList] = useState([]);
+  const [locationList, setLocationList] = useState([]);
+  const [servicesList, setServicesList] = useState([]);
+  const [foodBeverageList, setFoodBeverageList] = useState([]);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [deleteUpdateStatus, setDeleteUpdateStatus] = useState("");
   const [meetingStartTime, setMeetingStartTime] = useState(null); // For start time filter
@@ -39,6 +45,9 @@ const RoomsPage = () => {
           filterStartTime: meetingStartTime,
           filterEndingTime: meetingEndingTime,
           filterAmenities: selectedAmenities,
+          filterLocation: selectedLocation,
+          filterServices: selectedServices,
+          filterFoodBeverage: selectedFoodBeverage,
           filterCapacity: capacity,
         },
       });
@@ -69,18 +78,60 @@ const RoomsPage = () => {
   const fetchAmenitiesData = async () => {
     try {
       dispatch(showLoading());
-      const response = await axios.get("/api/v1/amenity/get-all-amenities");
-      const names = response.data.data.roomAmenities.map((item) => item.name);
+      const response = await axios.get("/api/v1/amenity/get-all-active-amenities");
+      const names = response.data.data.result.map((item) => item.name);
       setAmenitiesList(names);
-      dispatch(hideLoading());
+      dispatch(hideLoading()); 
     } catch (error) {
       dispatch(hideLoading());
       console.error("Error fetching amenities data:", error);
     }
   };
 
+  const fetchLocationData = async () => {
+    try {
+      dispatch(showLoading());
+      const response = await axios.get("/api/v1/location/activeLocations");
+      const names = response.data.data.result.map((item) => item.locationName);
+      setLocationList(names);
+      dispatch(hideLoading()); 
+    } catch (error) {
+      dispatch(hideLoading());
+      console.error("Error fetching location data:", error);
+    }
+  };
+
+  const fetchServicesData = async () => {
+    try {
+      dispatch(showLoading());
+      const response = await axios.get("/api/v1/services/active");      
+      const names = response.data.data.result.map((item) => item.servicesName);
+      setServicesList(names);
+      dispatch(hideLoading()); 
+    } catch (error) {
+      dispatch(hideLoading());
+      console.error("Error fetching services data:", error);
+    }
+  };
+
+  const fetchFoodBeverageData = async () => {
+    try {
+      dispatch(showLoading());
+      const response = await axios.get("/api/v1/food-beverages/active-food-beverage");
+      const names = response.data.data.result.map((item) => item.foodBeverageName);
+      setFoodBeverageList(names);
+      dispatch(hideLoading()); 
+    } catch (error) {
+      dispatch(hideLoading());
+      console.error("Error fetching food and beverage data:", error);
+    }
+  };
+
   useEffect(() => {
     fetchAmenitiesData();
+    fetchServicesData();
+    fetchFoodBeverageData();
+    fetchLocationData();
   }, []);
 
   useEffect(() => {
@@ -97,6 +148,9 @@ const RoomsPage = () => {
     selectedDate,
     meetingStartTime,
     selectedAmenities,
+    selectedLocation,
+    selectedServices,
+    selectedFoodBeverage,
     capacity,
   ]);
 
@@ -113,13 +167,36 @@ const RoomsPage = () => {
     setSelectedAmenities(typeof value === "string" ? value.split(",") : value);
   };
 
+  // Handle Location change
+  const handleChangeLocation = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setSelectedLocation(typeof value === "string" ? value.split(",") : value);
+  };
+
+    // Handle Location change
+    const handleChangeServices = (event) => {
+      const {
+        target: { value },
+      } = event;
+      setSelectedServices(typeof value === "string" ? value.split(",") : value);
+    };
+
+      // Handle Location change
+  const handleChangeFoodBeverage = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setSelectedFoodBeverage(typeof value === "string" ? value.split(",") : value);
+  };
+
   // Handle availability change
   const handleAvailabilityChange = (event) => {
     setIsAvailable(event.target.value);
   };
 
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
-
   return (
     <>
       <PaperWrapper>
@@ -134,8 +211,17 @@ const RoomsPage = () => {
           {isSmallScreen ? (
             <ResponsiveFilter
               handleChangeAmenities={handleChangeAmenities}
+              handleChangeLocation={handleChangeLocation}
+              handleChangeServices={handleChangeServices}
+              handleChangeFoodBeverage={handleChangeFoodBeverage}
               selectedAmenities={selectedAmenities}
+              selectedLocation={selectedLocation}
+              selectedServices={selectedServices}
+              selectedFoodBeverage={selectedFoodBeverage}
               amenitiesList={amenitiesList}
+              locationList={locationList}
+              servicesList={servicesList}
+              foodBeverageList={foodBeverageList}
               handleStartTimeChange={handleStartTimeChange}
               meetingStartTime={meetingStartTime}
               setMeetingEndingTime={setMeetingEndingTime}
@@ -156,8 +242,17 @@ const RoomsPage = () => {
           ) : (
             <RoomFilter
               handleChangeAmenities={handleChangeAmenities}
+              handleChangeLocation={handleChangeLocation}
+              handleChangeServices={handleChangeServices}
+              handleChangeFoodBeverage={handleChangeFoodBeverage}
               selectedAmenities={selectedAmenities}
+              selectedLocation={selectedLocation}
+              selectedServices={selectedServices}
+              selectedFoodBeverage={selectedFoodBeverage}
               amenitiesList={amenitiesList}
+              locationList={locationList}
+              servicesList={servicesList}
+              foodBeverageList={foodBeverageList}
               handleStartTimeChange={handleStartTimeChange}
               meetingStartTime={meetingStartTime}
               setMeetingEndingTime={setMeetingEndingTime}
