@@ -291,6 +291,55 @@ const disablePastDates = (date) => {
   today.setHours(0, 0, 0, 0); // Remove time for accurate comparison
   return date.toDate() < today;
 };
+const generateRandomPassword = () => {
+  const upperCaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const lowerCaseChars = "abcdefghijklmnopqrstuvwxyz";
+  const numbers = "0123456789";
+  const specialChars = "!@#$%^&*()_+[]{}|;:,.<>?";
+  const allChars = upperCaseChars + lowerCaseChars + numbers + specialChars;
+
+  // Ensure at least one character from each required group
+  const getRandomChar = (chars) => chars[Math.floor(Math.random() * chars.length)];
+  const randomUpperCase = getRandomChar(upperCaseChars);
+  const randomNumber = getRandomChar(numbers);
+  const randomSpecialChar = getRandomChar(specialChars);
+
+  // Fill the remaining characters randomly
+  const remainingChars = Array.from({ length: 7 }, () =>
+    getRandomChar(allChars)
+  ).join("");
+
+  // Combine all characters and shuffle them
+  const passwordArray = (
+    randomUpperCase + randomNumber + randomSpecialChar + remainingChars
+  ).split("");
+
+  // Shuffle the password to avoid predictable patterns
+  for (let i = passwordArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [passwordArray[i], passwordArray[j]] = [passwordArray[j], passwordArray[i]];
+  }
+
+  return passwordArray.join("");
+}
+
+const isPasswordValid = (password) => {
+  // Define regex patterns for validation
+  const hasUpperCase = /[A-Z]/; // At least one uppercase letter
+  const hasNumber = /[0-9]/;    // At least one digit
+  const hasSpecialChar = /[!@#$%^&*()_+\[\]{}|;:,.<>?]/; // At least one special character
+  const isCorrectLength = password.length === 10; // Exactly 10 characters long
+
+  // Check each condition
+  const validUpperCase = hasUpperCase.test(password);
+  const validNumber = hasNumber.test(password);
+  const validSpecialChar = hasSpecialChar.test(password);
+  const validLength = isCorrectLength;
+
+  // Return true if all conditions are met, otherwise false
+  return validUpperCase && validNumber && validSpecialChar && validLength;
+}
+
 
 export {
   checkFileExists,
@@ -309,4 +358,6 @@ export {
   dateStringFormatting,
   disablePastDates,
   notificationStringManipulation,
+  generateRandomPassword,
+  isPasswordValid
 };

@@ -27,7 +27,7 @@ const ResetPasswordFromProfile = () => {
   // Function to check password strength
   const calculateStrength = (password) => {
     let score = 0;
-    if (password.length >= 8) score++;
+    if (password.length >= 10) score++;
     if (/[A-Z]/.test(password)) score++;
     if (/[a-z]/.test(password)) score++;
     if (/[0-9]/.test(password)) score++;
@@ -44,7 +44,7 @@ const ResetPasswordFromProfile = () => {
     validationSchema: Yup.object({
       oldPassword: Yup.string().required("Old password is required"),
       password: Yup.string()
-        .min(8, "Password should be at least 8 characters")
+        .min(10, "Password should be at least 10 characters")
         .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
         .matches(/[a-z]/, "Password must contain at least one lowercase letter")
         .matches(/[0-9]/, "Password must contain at least one number")
@@ -213,7 +213,7 @@ const ResetPasswordFromProfile = () => {
         sx={{ marginTop: "13px" }}
       >
         <ul>
-          <li>Password should be at least 8 characters</li>
+          <li>Password should be at least 10 characters</li>
           <li>It must contain at least one uppercase letter</li>
           <li>It must contain at least one lowercase letter</li>
           <li>It must contain at least one number</li>
