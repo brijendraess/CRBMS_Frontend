@@ -77,10 +77,12 @@ const CommitteeManagementMUI = () => {
         withCredentials: true,
       });
       toast.success("Committee deleted successfully!");
+      setDeleteModalOpen(false);
       setRefreshPage((prev) => prev + 1);
       dispatch(hideLoading());
     } catch (error) {
       dispatch(hideLoading());
+      setDeleteModalOpen(false);
       console.error("Error deleting committee:", error);
       toast.error("Failed to delete committee. Please try again.");
     } finally {
