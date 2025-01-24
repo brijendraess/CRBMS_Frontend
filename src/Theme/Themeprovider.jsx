@@ -49,39 +49,39 @@ const themeColors = [
     textColor: "white",
     button: "#0462ffd1",
   },
-  {
-    linearGradientColorMain: "#577BC1",
-    linearGradientColorMain2: "#FFEB00",
-    menuLink: "#000", // Soft mint green for balance
-    bodyColor: "#3E7B27",
-    bodyColor2: "#344CB7",
-    textColor: "white",
-    button: "#000957",
-  },
-  {
-    linearGradientColorMain: "#F93827",
-    linearGradientColorMain2: "#FF9D23",
-    bodyColor: "#FFD65A",
-    bodyColor2: "#16C47F",
-    textColor: "white",
-    button: "#000957",
-  },
-  {
-    linearGradientColorMain: "#F14A00",
-    linearGradientColorMain2: "#C62300",
-    bodyColor: "#500073",
-    bodyColor2: "#2A004E",
-    textColor: "white",
-    button: "#000957",
-  },
-  {
-    linearGradientColorMain: "#E8E7AB",
-    linearGradientColorMain2: "#F2AE66",
-    bodyColor: "#E82561",
-    bodyColor2: "#C30E59",
-    textColor: "white",
-    button: "#000957",
-  },
+  // {
+  //   linearGradientColorMain: "#577BC1",
+  //   linearGradientColorMain2: "#FFEB00",
+  //   menuLink: "#000", // Soft mint green for balance
+  //   bodyColor: "#3E7B27",
+  //   bodyColor2: "#344CB7",
+  //   textColor: "white",
+  //   button: "#000957",
+  // },
+  // {
+  //   linearGradientColorMain: "#F93827",
+  //   linearGradientColorMain2: "#FF9D23",
+  //   bodyColor: "#FFD65A",
+  //   bodyColor2: "#16C47F",
+  //   textColor: "white",
+  //   button: "#000957",
+  // },
+  // {
+  //   linearGradientColorMain: "#F14A00",
+  //   linearGradientColorMain2: "#C62300",
+  //   bodyColor: "#500073",
+  //   bodyColor2: "#2A004E",
+  //   textColor: "white",
+  //   button: "#000957",
+  // },
+  // {
+  //   linearGradientColorMain: "#E8E7AB",
+  //   linearGradientColorMain2: "#F2AE66",
+  //   bodyColor: "#E82561",
+  //   bodyColor2: "#C30E59",
+  //   textColor: "white",
+  //   button: "#000957",
+  // },
 ];
 
 export const ThemeProvider = ({ children }) => {
