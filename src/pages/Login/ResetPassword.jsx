@@ -7,8 +7,9 @@ import axios from "axios";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useDispatch } from "react-redux";
 import "./Login.css";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { Lock } from "../../components/Common/CustomButton/CustomIcon";
+import { isPasswordValid } from "../../utils/utils";
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
@@ -21,7 +22,14 @@ const ResetPassword = () => {
     e.preventDefault();
     dispatch(showLoading());
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      toast.error("Passwords do not match");
+      dispatch(hideLoading());
+      return;
+    }
+
+    if(!isPasswordValid(password)){
+      toast.error("Passwords does not match the requirements.");
+      dispatch(hideLoading());
       return;
     }
     try {
@@ -90,6 +98,19 @@ const ResetPassword = () => {
               </Button>
             </div>
           </form>
+          <Typography
+        variant="body2"
+        color="textSecondary"
+        sx={{ marginTop: "13px" }}
+      >
+        <ul>
+          <li>Password should be at least 10 characters</li>
+          <li>It must contain at least one uppercase letter</li>
+          <li>It must contain at least one lowercase letter</li>
+          <li>It must contain at least one number</li>
+          <li>It must contain at least one special character</li>
+        </ul>
+      </Typography>
         </div>
       </motion.div>
     </div>

@@ -22,14 +22,17 @@ import {
   VisibilityOff,
   Visibility,
 } from "../../components/Common/CustomButton/CustomIcon";
+import { generateRandomPassword, isPasswordValid } from "../../utils/utils";
 
 const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
   const [avatarPreview, setAvatarPreview] = useState(null); // Avatar preview
   const [committees, setCommittees] = useState([]); // List of available active committees
+  const [strongPassword, setStrongPassword] = useState("");
   const [services, setServices] = useState([]); // List of available active services
-  const [showPassword, setShowPassword] = useState(false); // Password visibility toggle
+  const [showPassword, setShowPassword] = useState(true); // Password visibility toggle
   const [activeRole, setActiveRole] = useState([]); // List of available active role
 
+  const [firstTimeStrongPassword, setFirstTimeStrongPassword] = useState(generateRandomPassword()); // List of available active role
   // Toggle password visibility
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => event.preventDefault();
@@ -86,6 +89,12 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
     }
   };
 
+  const handleStrongPassword = () => {
+    const strongRandomPassword = generateRandomPassword();
+    setFirstTimeStrongPassword("")
+    setStrongPassword(strongRandomPassword);
+  };
+
   const formik = useFormik({
     initialValues: {
       fullname: "",
@@ -126,13 +135,17 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
         formData.append("email", values.email);
         formData.append("user_type", values.user_type);
         formData.append("phoneNumber", values.phoneNumber);
-        formData.append("password", values.password);
+        formData.append("password", strongPassword ? strongPassword : values.password);
         formData.append("userName", values.userName);
         formData.append("committee", JSON.stringify(values.committee));
          formData.append("services", JSON.stringify(values.services));
         // console.log(formData);
         if (values.avatar) {
           formData.append("avatar", values.avatar);
+        }
+
+        if(!isPasswordValid(formData.get("password"))){
+          toast.error("Please enter strong password.");
         }
         await axios
           .post("/api/v1/user/register", formData, {
@@ -241,37 +254,56 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
             style={{ marginRight: 8, flex: 1 }}
             size="small"
           />
-          <TextField
-            className="custom-password-field"
-            label="Password"
-            name="password"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            error={formik.touched.password && Boolean(formik.errors.password)}
-            helperText={formik.touched.password && formik.errors.password}
-            type={showPassword ? "text" : "password"}
-            size="small"
-            style={{
-              flex: 1,
-              "& .MuiOutlinedInputRoot": {
-                paddingRight: "0",
-              },
-            }}
-            slotProps={{
-              input: {
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              },
-            }}
-          />
+          <Box display="flex" justifyContent="space-between" mb={2}>
+            <TextField
+              className="custom-password-field"
+              label="Password"
+              name="password"
+              value={ firstTimeStrongPassword
+                ? formik.values.password || firstTimeStrongPassword 
+                : strongPassword
+                ? strongPassword
+                : formik.values.password}
+              onChange={formik.handleChange}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
+              type={showPassword ? "text" : "password"}
+              size="small"
+              style={{
+                flex: 1,
+                "& .MuiOutlinedInputRoot": {
+                  paddingRight: "0",
+                },
+                marginRight: 8
+              }}
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                },
+              }}
+              disabled={strongPassword ? true : false}
+            />
+            <Button variant="contained" color="warning" size="small" sx={{
+                fontSize: "10px", // Reduce font size
+                padding: "4px 8px", // Reduce padding
+                minWidth: "auto", // Allow for smaller width
+                lineHeight: 1, // Adjust line height
+              }}
+              onClick={handleStrongPassword}
+            >
+              Strong
+            </Button>
+
+          </Box>
         </Box>
 
         {/* Role and Phone Number */}
