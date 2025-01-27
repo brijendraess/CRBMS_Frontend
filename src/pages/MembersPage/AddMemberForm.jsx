@@ -91,8 +91,9 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
 
   const handleStrongPassword = () => {
     const strongRandomPassword = generateRandomPassword();
-    setFirstTimeStrongPassword("")
+    // setFirstTimeStrongPassword("")
     setStrongPassword(strongRandomPassword);
+    formik.setFieldValue("password", strongRandomPassword);
   };
 
   const formik = useFormik({
@@ -104,7 +105,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
       committee: [],
       setServices: [],
       avatar: "",
-      password: "",
+      password: strongPassword || firstTimeStrongPassword,
       userName: "",
     },
     validationSchema: Yup.object({
@@ -259,11 +260,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
               className="custom-password-field"
               label="Password"
               name="password"
-              value={ firstTimeStrongPassword
-                ? formik.values.password || firstTimeStrongPassword 
-                : strongPassword
-                ? strongPassword
-                : formik.values.password}
+              value={formik.values.password}
               onChange={formik.handleChange}
               error={formik.touched.password && Boolean(formik.errors.password)}
               helperText={formik.touched.password && formik.errors.password}
@@ -290,7 +287,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
                   ),
                 },
               }}
-              disabled={strongPassword ? true : false}
+              disabled={firstTimeStrongPassword || strongPassword ? true : false}
             />
             <Button variant="contained" color="warning" size="small" sx={{
                 fontSize: "10px", // Reduce font size
