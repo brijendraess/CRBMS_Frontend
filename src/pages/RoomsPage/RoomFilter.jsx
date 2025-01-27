@@ -46,7 +46,7 @@ const RoomFilter = ({
         disablePast
         sx={{
           "& .MuiInputBase-root": {
-            fontSize: "16px", // Adjust font size
+            fontSize: "16px",
             height: "40px",
           },
         }}

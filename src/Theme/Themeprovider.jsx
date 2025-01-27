@@ -50,11 +50,11 @@ const themeColors = [
     button: "#0462ffd1",
   },
   {
-    linearGradientColorMain: "#577BC1",
-    linearGradientColorMain2: "#FFEB00",
+    linearGradientColorMain: "#71C9CE",
+    linearGradientColorMain2: "#71C9CE",
     menuLink: "#000", // Soft mint green for balance
-    bodyColor: "#3E7B27",
-    bodyColor2: "#344CB7",
+    bodyColor: "#CBF1F5",
+    bodyColor2: "#E3FDFD",
     textColor: "white",
     button: "#000957",
   },

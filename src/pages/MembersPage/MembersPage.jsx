@@ -29,6 +29,7 @@ import {
   PersonAddAlt1Rounded,
   VisibilityOutlinedIcon,
 } from "../../components/Common/CustomButton/CustomIcon";
+import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
 
 const MembersPage = () => {
   const [users, setUsers] = useState([]);
@@ -148,7 +149,7 @@ const MembersPage = () => {
       headerName: "Avatar",
       disableColumnMenu: true,
       hideSortIcons: true,
-      flex: 0.25,
+      flex: 0.5,
       headerClassName: "super-app-theme--header",
       renderCell: (params) => (
         <CheckAndShowImage
@@ -183,7 +184,7 @@ const MembersPage = () => {
     {
       field: "userType",
       headerName: "Role",
-      flex: 0.5,
+      flex: 0.75,
       headerClassName: "super-app-theme--header",
     },
     {
@@ -204,17 +205,17 @@ const MembersPage = () => {
         >
           {user.UserType.userModule &&
             user.UserType.userModule.split(",").includes("edit") && (
-              <Tooltip title="Update" sx={{cursor: "pointer"}}>
+              <Tooltip title="Update" sx={{ cursor: "pointer" }}>
                 <EditOutlinedIcon
                   className="tour-edit"
-                  color="success" 
+                  color="success"
                   onClick={() => handleEdit(params.id)}
                 />
               </Tooltip>
             )}
           {user.UserType.userModule &&
             user.UserType.userModule.split(",").includes("view") && (
-              <Tooltip title="View" sx={{cursor: "pointer"}}>
+              <Tooltip title="View" sx={{ cursor: "pointer" }}>
                 <VisibilityOutlinedIcon
                   color="secondary"
                   className="tour-view"
@@ -225,7 +226,7 @@ const MembersPage = () => {
           {user.UserType.userModule &&
             user.UserType.userModule.split(",").includes("delete") && (
               <div className="delete">
-                <Tooltip title="Delete" sx={{cursor: "pointer"}}>
+                <Tooltip title="Delete" sx={{ cursor: "pointer" }}>
                   <DeleteOutlineOutlinedIcon
                     className="tour-delete"
                     color="error"
@@ -360,7 +361,18 @@ const MembersPage = () => {
         title="user"
         button="Delete"
       />
-      <PopupModals
+      {/* <PopupModals
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        title={"Add New Member"}
+        modalBody={
+          <AddMemberForm
+            setRefreshPage={setRefreshPage}
+            setIsOpen={setIsOpen}
+          />
+        }
+      /> */}
+      <NewPopUpModal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         title={"Add New Member"}
@@ -371,6 +383,7 @@ const MembersPage = () => {
           />
         }
       />
+
       <PopupModals
         isOpen={isEditOpen}
         setIsOpen={setIsEditOpen}

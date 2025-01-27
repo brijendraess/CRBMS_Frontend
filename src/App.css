@@ -10,9 +10,8 @@ body {
   /* background-image: linear-gradient(45deg, #85FFBD 0%, #FFFB7D 100%), */
 }
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 8px;
-  border-radius: 10px;
+  width: 6px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-thumb {

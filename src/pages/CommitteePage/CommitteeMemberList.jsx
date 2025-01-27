@@ -22,10 +22,10 @@ const CommitteeMemberList = () => {
   const [data, setData] = useState([]);
   const { committeeId } = useParams();
   const location = useLocation();
-  const { committee, heading } = location.state || {};
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const [heading, setHeading] = useState();
 
   useEffect(() => {
     const fetchMembers = async () => {
@@ -45,6 +45,7 @@ const CommitteeMemberList = () => {
           committeeName: member.Committee?.name,
         }));
 
+        setHeading(response.data?.data?.members[0]?.Committee?.name);
         setData(formattedData);
         dispatch(hideLoading());
       } catch (error) {

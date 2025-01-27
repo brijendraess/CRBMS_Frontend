@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { AccountCircleRoundedIcon } from "../CustomButton/CustomIcon";
-
-
+import { Tooltip } from "@mui/material";
 
 const CheckAndShowImage = ({ imageUrl }) => {
   const [imageExists, setImageExists] = useState(null); // null: not checked, true: exists, false: doesn't exist
@@ -22,15 +21,44 @@ const CheckAndShowImage = ({ imageUrl }) => {
 
   return (
     <>
-      {imageExists === null && <p>Checking image...</p>}
-      {imageExists && <img
-              src={imageUrl}
-              alt="avatar"
-              style={{ width: "35px", height: "35px", borderRadius: "50%" }}
-            />}
-      {imageExists === false && <AccountCircleRoundedIcon
+      <Tooltip
+        placement="right"
+        title={
+          <img
+            src={imageUrl}
+            alt="Large preview"
+            style={{
+              maxWidth: "200px",
+              maxHeight: "200px",
+              objectFit: "contain",
+              borderRadius: "8px",
+            }}
+          />
+        }
+        arrow
+        componentsProps={{
+          tooltip: {
+            sx: {
+              padding: 0,
+              borderRadius: "8px",
+            },
+          },
+        }}
+      >
+        {imageExists === null && <p>Checking image...</p>}
+        {imageExists && (
+          <img
+            src={imageUrl}
+            alt="avatar"
             style={{ width: "35px", height: "35px", borderRadius: "50%" }}
-          />}
+          />
+        )}
+        {imageExists === false && (
+          <AccountCircleRoundedIcon
+            style={{ width: "35px", height: "35px", borderRadius: "50%" }}
+          />
+        )}
+      </Tooltip>
     </>
   );
 };

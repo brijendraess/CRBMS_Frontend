@@ -181,7 +181,7 @@ const RoomsPage = () => {
               justifyContent: {
                 xs: "center",
                 sm: "center",
-                md: "start",
+                md: "center",
               },
             }}
           >

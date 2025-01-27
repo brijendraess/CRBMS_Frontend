@@ -32,9 +32,9 @@ export const themeColors = [
     button: "#0462ffd1",
   },
   {
-    linearGradientColorMain: "FFEB00",
-    linearGradientColorMain2: "577BC1",
-    bodyColor: "3E7B27",
+    linearGradientColorMain: "71C9CE",
+    linearGradientColorMain2: "A6E3E9",
+    bodyColor: "CBF1F5",
     bodyColor2: "344CB7",
     textColor: "white",
     button: "#000957",
