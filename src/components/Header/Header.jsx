@@ -54,7 +54,7 @@ import { themeColors } from "../../Theme/ColorFile";
 const Header = () => {
   const context = useContext(MyContext);
   const { user } = useSelector((state) => state.user);
-  console.log(user);
+  // console.log(user);
   const [menuAnchor, setMenuAnchor] = useState(null);
   const [notificationsAnchor, setNotificationsAnchor] = useState(null);
   const [isFullScreen, setIsFullScreen] = useState(false);

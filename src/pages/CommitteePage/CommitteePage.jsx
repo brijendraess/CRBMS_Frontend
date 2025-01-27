@@ -43,7 +43,6 @@ const CommitteeManagementMUI = () => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const { user } = useSelector((state) => state.user);
-
   const dispatch = useDispatch();
 
   const fetchCommittee = async () => {
@@ -143,7 +142,7 @@ const CommitteeManagementMUI = () => {
     {
       field: "action",
       headerName: "Action",
-      flex: 1,
+      flex: 0.5,
       headerClassName: "super-app-theme--header",
       renderCell: (params) => (
         <div

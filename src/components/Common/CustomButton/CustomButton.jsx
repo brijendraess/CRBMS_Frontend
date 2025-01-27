@@ -1,4 +1,4 @@
-import { IconButton, useMediaQuery } from "@mui/material";
+import { IconButton, Paper, useMediaQuery } from "@mui/material";
 
 const CustomButton = ({
   onClick,
@@ -16,20 +16,28 @@ const CustomButton = ({
   const buttonSize = isXs ? "small" : isSm ? "medium" : "large";
 
   return (
-    <IconButton
-      onClick={onClick}
-      disabled={disabled}
-      style={{
-        ...iconStyles,
-        cursor: disabled ? "not-allowed" : "pointer",
+    <Paper
+      elevation={24}
+      sx={{
+        background: "none",
         borderRadius: "50%",
-        background: background,
       }}
-      size={buttonSize}
-      className={nameOfTheClass}
     >
-      {Icon && <Icon fontSize={fontSize} sx={{ color: "white" }} />}
-    </IconButton>
+      <IconButton
+        onClick={onClick}
+        disabled={disabled}
+        style={{
+          ...iconStyles,
+          cursor: disabled ? "not-allowed" : "pointer",
+          borderRadius: "50%",
+          background: background,
+        }}
+        size={buttonSize}
+        className={nameOfTheClass}
+      >
+        {Icon && <Icon fontSize={fontSize} sx={{ color: "white" }} />}
+      </IconButton>
+    </Paper>
   );
 };
 

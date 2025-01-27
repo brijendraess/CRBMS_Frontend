@@ -151,7 +151,6 @@ const LocationPage = () => {
       disableColumnMenu: true,
       hideSortIcons: true,
       flex: 1,
-
       renderCell: (params) => (
         <Box display="flex" alignItems="center" gap={1}>
           {user.UserType.locationModule &&

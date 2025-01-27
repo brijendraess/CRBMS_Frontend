@@ -33,15 +33,7 @@ const guideSteps = {
       popover: {
         title: "Add a New User",
         description: "Click this button to add a new user to the system.",
-        position: "bottom",
-      },
-    },
-    {
-      element: ".page-header .deleted-user",
-      popover: {
-        title: "View Deleted Users",
-        description: "Click this button to see the list of deleted users.",
-        position: "bottom",
+        position: "center",
       },
     },
     ...(isSmallScreen
@@ -128,6 +120,14 @@ const guideSteps = {
             popover: {
               title: "Block/Unblock User",
               description: "Click to block or unblock the user.",
+              position: "left",
+            },
+          },
+          {
+            element: ".MuiTablePagination-actions",
+            popover: {
+              title: "Pagination",
+              description: "Click These buttons to move through pages",
               position: "left",
             },
           },

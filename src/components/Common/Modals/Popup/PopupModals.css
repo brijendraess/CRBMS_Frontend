@@ -1,6 +1,7 @@
 .dialogWrapper {
   position: relative;
-  z-index: 50;
+  z-index: 1000;
+  width: 100%;
 }
 
 .dialogOverlay {
@@ -40,7 +41,8 @@
   align-items: center;
   padding: 1rem;
   text-align: center;
-  overflow: auto;
+  overflow-y: scroll;
+  width: 90%;
 }
 
 .dialogPanel {
