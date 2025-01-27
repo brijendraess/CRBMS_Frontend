@@ -79,29 +79,29 @@ const ReportPage = () => {
       let queryParam = "";
       switch (option) {
         case "Today":
-          queryParam = "?filter=today";
+          queryParam = "?filter=Today";
           break;
         case "This Week":
-          queryParam = "?filter=this_week";
+          queryParam = "?filter=This Week";
           break;
         case "This Month":
-          queryParam = "?filter=this_month";
+          queryParam = "?filter=This Month";
           break;
         default:
-          queryParam = "?filter=today";
+          queryParam = "?filter=Today";
       }
 
       const response = await axios.get(
         `/api/v1/report/meeting-count${queryParam}`
       );
-      setMeetingCount(response.data.data.count || 0);
-      console.log(response.data.data);
+      setMeetingCount(response?.data?.data?.meetingCount || 0);
     } catch (error) {
       console.error("Error fetching meeting count:", error);
     }
   };
   useEffect(() => {
     fetchCounts();
+    handleOptionSelect(selectedOption);
   }, []);
 
   return (

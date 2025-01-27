@@ -157,7 +157,7 @@ const MeetingLogs = () => {
         <Box
           alignItems="center"
           sx={{
-            display: params.row.status !== "cancelled" ? "flex" : "none",
+            display: params.row.status !== "cancelled" && params.row.status !== "completed" ? "flex" : "none",
             justifyContent: "center",
             alignItems: "center",
             height: "100%",
@@ -296,6 +296,10 @@ const MeetingLogs = () => {
       // backgroundColor: "#dfd",
       // color: "#090",
     },
+    rowConfirmed: {
+      backgroundColor: "#dfd", // Light green for confirmed meetings
+      color: "#090", // Dark green text
+    },
   });
 
   const classes = useStyles();
@@ -312,8 +316,10 @@ const MeetingLogs = () => {
           rowHeight={50}
           getRowClassName={(params) =>
             params.row.status === "cancelled"
-              ? classes.rowCancelled
-              : classes.rowActive
+            ? classes.rowCancelled
+            : params.row.status === "completed"
+            ? classes.rowConfirmed
+            : classes.rowActive
           }
           sx={{
             "& .super-app-theme--header": {
