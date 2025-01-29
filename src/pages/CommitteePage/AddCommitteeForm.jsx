@@ -27,7 +27,7 @@ const AddCommitteeForm = ({
       name: Yup.string()
         .required("Committee name is required")
         .min(3, "Name must be at least 3 characters")
-        .max(50, "Name must be at most 50 characters"),
+        .max(75, "Name must be at most 75 characters"),
       description: Yup.string()
         .required("Description is required")
         .min(10, "Description must be at least 10 characters")
