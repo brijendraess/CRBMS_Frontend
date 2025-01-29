@@ -94,9 +94,9 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
 
   const handleStrongPassword = () => {
     const strongRandomPassword = generateRandomPassword();
-    // setFirstTimeStrongPassword("")
+    // setFirstTimeStrongPassword("");
     setStrongPassword(strongRandomPassword);
-    formik.setFieldValue("password", strongRandomPassword);
+    formik.setFieldValue("password", strongRandomPassword)
   };
 
   const formik = useFormik({
@@ -220,74 +220,6 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
             style={{ flex: 1 }}
             size="small"
           />
-          <Box display="flex" justifyContent="space-between" mb={2}>
-            <TextField
-              className="custom-password-field"
-              label="Password"
-              name="password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
-              type={showPassword ? "text" : "password"}
-              size="small"
-              style={{
-                flex: 1,
-                "& .MuiOutlinedInputRoot": {
-                  paddingRight: "0",
-                },
-                marginRight: 8
-              }}
-              slotProps={{
-                input: {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                },
-              }}
-              disabled={firstTimeStrongPassword || strongPassword ? true : false}
-            />
-            <Button variant="contained" color="warning" size="small" sx={{
-                fontSize: "10px", // Reduce font size
-                padding: "4px 8px", // Reduce padding
-                minWidth: "auto", // Allow for smaller width
-                lineHeight: 1, // Adjust line height
-              }}
-              onClick={handleStrongPassword}
-            >
-              Strong
-            </Button>
-
-          </Box>
-        </Box>
-
-        {/* Role and Phone Number */}
-        <Box display="flex" justifyContent="space-between" mb={2}>
-          <TextField
-            label="Role"
-            name="user_type"
-            select
-            value={formik.values.user_type}
-            onChange={(event) => {
-              formik.setFieldValue("user_type", event.target.value);
-            }}
-            error={formik.touched.user_type && Boolean(formik.errors.user_type)}
-            helperText={formik.touched.user_type && formik.errors.user_type}
-            style={{ marginRight: 8, flex: 1 }}
-            size="small"
-          >
-            {activeRole?.map((user_type) => (
-              <MenuItem value={user_type.id}>{user_type.userTypeName}</MenuItem>
-            ))}
-          </TextField>
-
           <TextField
             label="Phone Number"
             name="phoneNumber"
@@ -315,11 +247,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
             label="Password"
             name="password"
             value={
-              firstTimeStrongPassword
-                ? formik.values.password || firstTimeStrongPassword
-                : strongPassword
-                  ? strongPassword
-                  : formik.values.password
+              formik.values.password
             }
             onChange={formik.handleChange}
             error={formik.touched.password && Boolean(formik.errors.password)}
@@ -354,7 +282,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
                 ),
               },
             }}
-            disabled={strongPassword ? true : false}
+            disabled={firstTimeStrongPassword || strongPassword ? true : false}
           />
         </Box>
 
