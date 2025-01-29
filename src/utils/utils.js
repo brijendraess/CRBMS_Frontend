@@ -328,13 +328,16 @@ const isPasswordValid = (password) => {
   const hasUpperCase = /[A-Z]/; // At least one uppercase letter
   const hasNumber = /[0-9]/;    // At least one digit
   const hasSpecialChar = /[!@#$%^&*()_+\[\]{}|;:,.<>?]/; // At least one special character
-  const isCorrectLength = password.length === 10; // Exactly 10 characters long
+  // const isCorrectLength = password.length === 10; // Exactly 10 characters long
 
   // Check each condition
   const validUpperCase = hasUpperCase.test(password);
   const validNumber = hasNumber.test(password);
   const validSpecialChar = hasSpecialChar.test(password);
-  const validLength = isCorrectLength;
+  let validLength = false;
+  if(password.length >= 10){
+    validLength = true
+  }
 
   // Return true if all conditions are met, otherwise false
   return validUpperCase && validNumber && validSpecialChar && validLength;
