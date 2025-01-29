@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
-import CustomButton from "../CustomButton/CustomButton";
+import CustomButton from "../Buttons/CustomButton";
 import { useSelector } from "react-redux";
 
 const PageHeader = ({

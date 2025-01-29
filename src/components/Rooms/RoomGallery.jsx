@@ -12,7 +12,9 @@ import { useEffect } from "react";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import DeleteModal from "../Common/Modals/Delete/DeleteModal";
 import { useDropzone } from "react-dropzone";
-import { DeleteOutlineOutlinedIcon } from "../Common/CustomButton/CustomIcon";
+import { DeleteOutlineOutlinedIcon } from "../Common/Buttons/CustomIcon";
+import { PopContent } from "../../Style";
+import FormButton from "../Common/Buttons/FormButton/FormButton";
 
 export default function RoomGallery({ room }) {
   const [files, setFiles] = useState([]);
@@ -117,7 +119,7 @@ export default function RoomGallery({ room }) {
   });
 
   return (
-    <>
+    <PopContent>
       <Box sx={{ padding: 2 }}>
         <Paper
           {...getRootProps()}
@@ -155,17 +157,13 @@ export default function RoomGallery({ room }) {
           ))}
         </Grid2>
 
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleUpload}
-          sx={{ marginTop: 2 }}
-          disabled={images.length === 0}
-        >
-          Upload Images
-        </Button>
-      </Box>
+        <FormButton
+          func={handleUpload}
+          disabledCondition={images.length === 0}
+          btnName={"Upload Images"}
+        />
 
+      </Box>
       <ImageList
         sx={{
           // width: {
@@ -214,6 +212,6 @@ export default function RoomGallery({ room }) {
         button={"Delete"}
         title="Gallery Image"
       />
-    </>
+    </PopContent>
   );
 }

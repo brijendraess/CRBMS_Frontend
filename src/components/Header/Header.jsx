@@ -40,7 +40,7 @@ import {
   Logout,
   KeyOutlinedIcon,
   InfoOutlinedIcon,
-} from "../Common/CustomButton/CustomIcon";
+} from "../Common/Buttons/CustomIcon";
 
 // Driver.js
 import { driver } from "driver.js";

@@ -17,9 +17,11 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { PhotoCameraIcon } from "../../components/Common/CustomButton/CustomIcon";
+import { PhotoCameraIcon } from "../../components/Common/Buttons/CustomIcon";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import FormButton from "../../components/Common/Buttons/FormButton/FormButton";
+import { PopContent } from "../../Style";
 
 const AddRoomForm = ({ setDeleteUpdateStatus, setIsAddOpen }) => {
   const [roomImagePreview, setRoomImagePreview] = useState(null);
@@ -77,7 +79,7 @@ const AddRoomForm = ({ setDeleteUpdateStatus, setIsAddOpen }) => {
     initialValues: {
       name: "",
       location: null,
-      services:null,
+      services: null,
       capacity: "",
       tolerancePeriod: "",
       sanitationPeriod: "",
@@ -177,184 +179,204 @@ const AddRoomForm = ({ setDeleteUpdateStatus, setIsAddOpen }) => {
   };
 
   return (
-    <Box component="form" onSubmit={formik.handleSubmit}>
-      <Box display="flex" justifyContent="space-between">
-        <TextField
-          label="Room Name"
-          name="name"
-          margin="normal"
-          value={formik.values.name}
-          onChange={formik.handleChange}
-          error={formik.touched.name && Boolean(formik.errors.name)}
-          helperText={formik.touched.name && formik.errors.name}
-          style={{ marginRight: 8, flex: 1 }}
-          size="small"
-        />
+    <PopContent>
+      <Box component="form" onSubmit={formik.handleSubmit}>
+        <Box display="flex" justifyContent="space-between" mb={2}>
+          <TextField
+            label="Room Name"
+            name="name"
+
+            value={formik.values.name}
+            onChange={formik.handleChange}
+            error={formik.touched.name && Boolean(formik.errors.name)}
+            helperText={formik.touched.name && formik.errors.name}
+            size="small"
+            fullWidth
+          />
+        </Box>
+        <Box display="flex" justifyContent="space-between" mb={2}>
           <Autocomplete
-          id="services"
-          name="services"
-          style={{ marginTop: 15, flex: 1 }}
-          size="small"
-          margin="normal"
-          options={servicesList}
-          getOptionLabel={(servicesList) => servicesList.services}
-          value={formik.values.services}
-          onChange={(_, newValue) => formik.setFieldValue("services", newValue)}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Select Services"
-              error={formik.touched.services && Boolean(formik.errors.services)}
-              helperText={formik.touched.services && formik.errors.services}
-            />
-          )}
-        />
-      </Box>
-      <Box display="flex" justifyContent="space-between">
-        <TextField
-          label="Sanitation Period (in min.)"
-          name="sanitationPeriod"
-          margin="normal"
-          type="number"
-          slotProps={{
-            inputProps: { min: 15},
-          }}
-          // value={formik.values.Sanitation Time}
-          onChange={formik.handleChange}
-          // error={formik.touched.Sanitation Time && Boolean(formik.errors.Sanitation Time)}
-          // helperText={formik.touched.Sanitation Time && formik.errors.Sanitation Time}
-          size="small"
-          style={{ marginRight: 8, flex: 1 }}
-        />
-        <Autocomplete
-          id="location"
-          name="location"
-          style={{ marginTop: 15, flex: 1 }}
-          size="small"
-          margin="normal"
-          options={locationList}
-          getOptionLabel={(locationList) => locationList.location}
-          value={formik.values.location}
-          onChange={(_, newValue) => formik.setFieldValue("location", newValue)}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Select Location"
-              error={formik.touched.location && Boolean(formik.errors.location)}
-              helperText={formik.touched.location && formik.errors.location}
-            />
-          )}
-        />
-      </Box>
-      <Box display="flex" justifyContent="space-between">
-        <TextField
-          label="Capacity"
-          name="capacity"
-          margin="normal"
-          type="number"
-          value={formik.values.capacity}
-          onChange={formik.handleChange}
-          error={formik.touched.capacity && Boolean(formik.errors.capacity)}
-          helperText={formik.touched.capacity && formik.errors.capacity}
-          size="small"
-          style={{ marginRight: 8, flex: 1 }}
-        />
-        <TextField
-          label="Tolerance Period  (in min.)"
-          name="tolerancePeriod"
-          margin="normal"
-          type="number"
-          // value={formik.values.Sanitation Time}
-          onChange={formik.handleChange}
-          // error={formik.touched.Sanitation Time && Boolean(formik.errors.Sanitation Time)}
-          // helperText={formik.touched.Sanitation Time && formik.errors.Sanitation Time}
-          size="small"
-          style={{ marginRight: 8, flex: 1 }}
-        />
-      </Box>
-      <Box display="flex" justifyContent="space-between">
-        <FormControlLabel
-          control={
-            <Switch
-              checked={formState.sanitationStatus}
-              name="sanitationStatus"
-              size="small"
-              onChange={handleSanitationStatusChange}
-            />
-          }
-          label="Sanitation status"
-        />
+            id="services"
+            name="services"
+            fullWidth
+            size="small"
 
-        <FormControlLabel
-          control={
-            <Switch
-              checked={formState.isAvailable}
-              name="isAvailable"
-              onChange={(event) => handleIsAvailableChange(event)}
-            />
-          }
-          label="Is Available"
-        />
-      </Box>
-      <TextField
-        label="Description"
-        name="description"
-        margin="normal"
-        value={formik.values.description}
-        onChange={formik.handleChange}
-        error={formik.touched.description && Boolean(formik.errors.description)}
-        helperText={formik.touched.description && formik.errors.description}
-        size="small"
-        // style={{ flex: 1 }}
-        multiline
-        rows={3}
-        fullWidth
-        style={{ marginBottom: 16 }}
-      />
+            options={servicesList}
+            getOptionLabel={(servicesList) => servicesList.services}
+            value={formik.values.services}
+            onChange={(_, newValue) => formik.setFieldValue("services", newValue)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Select Services"
+                error={formik.touched.services && Boolean(formik.errors.services)}
+                helperText={formik.touched.services && formik.errors.services}
+              />
+            )}
+          />
+        </Box>
 
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        mt={2}
-        mb={2}
-      >
-        <input
-          accept="image/*"
-          style={{ display: "none" }}
-          id="room-image-upload"
-          type="file"
-          onChange={handleRoomImageChange}
-        />
-        <label htmlFor="room-image-upload">
-          <IconButton component="span">
-            <Avatar
-              sx={{ width: 50, height: 50 }}
-              src={roomImagePreview}
-              alt="Room Image Preview"
-            >
-              <PhotoCameraIcon fontSize="medium" />
-            </Avatar>
-          </IconButton>
-        </label>
-      </Box>
-
-      {roomImageError && (
-        <Typography
-          color="error"
-          variant="body2"
-          align="center"
-          style={{ marginBottom: 16 }}
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          flexDirection={{ xs: "column", sm: "row" }}
+          gap={2}
+          mb={2}
+          alignItems={'center'}
         >
-          {roomImageError}
-        </Typography>
-      )}
-      <Box mt={2} display="flex" justifyContent="flex-end">
+          <Box width={{ xs: "100%", sm: "50%" }}>
+            <TextField
+              label="Sanitation Period (in min.)"
+              name="sanitationPeriod"
+              type="number"
+              slotProps={{
+                inputProps: { min: 15 },
+              }}
+              // value={formik.values.Sanitation Time}
+              onChange={formik.handleChange}
+              // error={formik.touched.Sanitation Time && Boolean(formik.errors.Sanitation Time)}
+              // helperText={formik.touched.Sanitation Time && formik.errors.Sanitation Time}
+              size="small"
+              fullWidth
+            />
+          </Box>
+          <Box width={{ xs: "100%", sm: "50%" }}>
+            <Autocomplete
+              id="location"
+              name="location"
+              size="small"
+              fullWidth
+              options={locationList}
+              getOptionLabel={(locationList) => locationList.location}
+              value={formik.values.location}
+              onChange={(_, newValue) => formik.setFieldValue("location", newValue)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Select Location"
+                  error={formik.touched.location && Boolean(formik.errors.location)}
+                  helperText={formik.touched.location && formik.errors.location}
+                />
+              )}
+            />
+          </Box>
+        </Box>
+
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          flexDirection={{ xs: "column", sm: "row" }}
+          gap={2}
+          alignItems={'center'}
+        >
+          <TextField
+            label="Capacity"
+            name="capacity"
+
+            type="number"
+            value={formik.values.capacity}
+            onChange={formik.handleChange}
+            error={formik.touched.capacity && Boolean(formik.errors.capacity)}
+            helperText={formik.touched.capacity && formik.errors.capacity}
+            size="small"
+          />
+          <TextField
+            label="Tolerance Period  (in min.)"
+            name="tolerancePeriod"
+
+            type="number"
+            // value={formik.values.Sanitation Time}
+            onChange={formik.handleChange}
+            // error={formik.touched.Sanitation Time && Boolean(formik.errors.Sanitation Time)}
+            // helperText={formik.touched.Sanitation Time && formik.errors.Sanitation Time}
+            size="small"
+          />
+        </Box>
+        <Box display="flex" justifyContent="space-between">
+          <FormControlLabel
+            control={
+              <Switch
+                checked={formState.sanitationStatus}
+                name="sanitationStatus"
+                size="small"
+                onChange={handleSanitationStatusChange}
+              />
+            }
+            label="Sanitation status"
+          />
+
+          <FormControlLabel
+            control={
+              <Switch
+                checked={formState.isAvailable}
+                name="isAvailable"
+                onChange={(event) => handleIsAvailableChange(event)}
+              />
+            }
+            label="Is Available"
+          />
+        </Box>
+        <TextField
+          label="Description"
+          name="description"
+
+          value={formik.values.description}
+          onChange={formik.handleChange}
+          error={formik.touched.description && Boolean(formik.errors.description)}
+          helperText={formik.touched.description && formik.errors.description}
+          size="small"
+          // style={{ flex: 1 }}
+          multiline
+          rows={3}
+          fullWidth
+          style={{ marginBottom: 16 }}
+        />
+
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          mt={2}
+          mb={2}
+        >
+          <input
+            accept="image/*"
+            style={{ display: "none" }}
+            id="room-image-upload"
+            type="file"
+            onChange={handleRoomImageChange}
+          />
+          <label htmlFor="room-image-upload">
+            <IconButton component="span">
+              <Avatar
+                sx={{ width: 50, height: 50 }}
+                src={roomImagePreview}
+                alt="Room Image Preview"
+              >
+                <PhotoCameraIcon fontSize="medium" />
+              </Avatar>
+            </IconButton>
+          </label>
+        </Box>
+
+        {roomImageError && (
+          <Typography
+            color="error"
+            variant="body2"
+            align="center"
+            style={{ marginBottom: 16 }}
+          >
+            {roomImageError}
+          </Typography>
+        )}
+        <FormButton type="submit" btnName="Add Room" />
+        {/* <Box mt={2} display="flex" justifyContent="flex-end">
         <Button type="submit" variant="contained" color="primary">
           Add Room
         </Button>
+      </Box> */}
       </Box>
-    </Box>
+    </PopContent>
   );
 };
 

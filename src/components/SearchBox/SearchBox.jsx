@@ -1,6 +1,6 @@
 import React from "react";
 import "./SearchBox.css";
-import { SearchIcon } from "../Common/CustomButton/CustomIcon";
+import { SearchIcon } from "../Common/Buttons/CustomIcon";
 
 
 

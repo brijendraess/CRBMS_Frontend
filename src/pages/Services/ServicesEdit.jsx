@@ -5,6 +5,8 @@ import toast from "react-hot-toast";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { PopContent } from "../../Style";
+import FormButton from "../../components/Common/Buttons/FormButton/FormButton";
 
 const ServicesEdit = ({
   id,
@@ -28,7 +30,7 @@ const ServicesEdit = ({
       try {
         showLoading();
         const response = await axios.put(
-          `/api/v1/services/edit/${id}`,values);
+          `/api/v1/services/edit/${id}`, values);
         toast.success("Services Updated Successfully");
         setRefreshPage(Math.random());
         setIsEditOpen(false);
@@ -47,38 +49,32 @@ const ServicesEdit = ({
   });
 
   return (
-    <Box
-      component="form"
-      onSubmit={formik.handleSubmit}
-      sx={{
-        maxWidth: 500,
-        margin: "auto",
-        borderRadius: 3,
-      }}
-    >
-      <TextField
-        label="Services Name"
-        name="servicesName"
-        value={formik.values.servicesName}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.servicesName && Boolean(formik.errors.servicesName)}
-        helperText={formik.touched.servicesName && formik.errors.servicesName}
-        fullWidth
-        required
-        margin="normal"
-        size="small"
-      />
-      <Button
-        type="submit"
-        variant="contained"
-        color="primary"
-        fullWidth
-        sx={{ mt: 2 }}
+    <PopContent>
+      <Box
+        component="form"
+        onSubmit={formik.handleSubmit}
+        sx={{
+          maxWidth: 500,
+          margin: "auto",
+          borderRadius: 3,
+        }}
       >
-        Update
-      </Button>
-    </Box>
+        <TextField
+          label="Services Name"
+          name="servicesName"
+          value={formik.values.servicesName}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.servicesName && Boolean(formik.errors.servicesName)}
+          helperText={formik.touched.servicesName && formik.errors.servicesName}
+          fullWidth
+          required
+          margin="normal"
+          size="small"
+        />
+        <FormButton type='submit' btnName='Update Services' />
+      </Box>
+    </PopContent>
   );
 };
 

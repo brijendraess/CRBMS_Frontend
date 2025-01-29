@@ -21,7 +21,7 @@ import {
   FullscreenExitOutlinedIcon,
   FullscreenOutlined,
   DesignServicesOutlinedIcon,
-} from "../../components/Common/CustomButton/CustomIcon";
+} from "../../components/Common/Buttons/CustomIcon";
 import { getMeetingTimePercentage, timeDifference } from "../../utils/utils";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";

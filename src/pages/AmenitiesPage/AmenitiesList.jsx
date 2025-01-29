@@ -17,7 +17,8 @@ import {
   AddOutlinedIcon,
   EditOutlinedIcon,
   DeleteOutlineOutlinedIcon,
-} from "../../components/Common/CustomButton/CustomIcon";
+} from "../../components/Common/Buttons/CustomIcon";
+import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
 
 const AmenitiesList = () => {
   const [amenities, setAmenities] = useState([]);
@@ -102,8 +103,7 @@ const AmenitiesList = () => {
       );
       dispatch(hideLoading());
       toast.success(
-        `Amenity status changed to ${
-          updatedRoomAmenity.status ? "Active" : "Inactive"
+        `Amenity status changed to ${updatedRoomAmenity.status ? "Active" : "Inactive"
         }`
       );
     } catch (error) {
@@ -250,7 +250,7 @@ const AmenitiesList = () => {
       </div>
 
       {/* Modals for Add, Edit, Delete */}
-      <PopupModals
+      <NewPopUpModal
         isOpen={isAddOpen}
         setIsOpen={setIsAddOpen}
         title={"Add Amenity"}
@@ -263,7 +263,7 @@ const AmenitiesList = () => {
         }
       />
 
-      <PopupModals
+      <NewPopUpModal
         isOpen={isEditOpen}
         setIsOpen={setIsEditOpen}
         title={"Edit Amenities"}

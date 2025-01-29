@@ -5,7 +5,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { showLoading, hideLoading } from "../../Redux/alertSlicer";
-import { PhotoCameraOutlinedIcon } from "../../components/Common/CustomButton/CustomIcon";
+import { PhotoCameraOutlinedIcon } from "../../components/Common/Buttons/CustomIcon";
 import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import EditProfile from "./EditProfile";
 

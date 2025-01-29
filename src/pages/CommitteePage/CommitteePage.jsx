@@ -29,7 +29,8 @@ import {
   EditOutlinedIcon,
   DeleteOutlineOutlinedIcon,
   PeopleIcon,
-} from "../../components/Common/CustomButton/CustomIcon";
+} from "../../components/Common/Buttons/CustomIcon";
+import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
 
 const CommitteeManagementMUI = () => {
   const [committeeData, setCommitteeData] = useState([]);
@@ -118,7 +119,10 @@ const CommitteeManagementMUI = () => {
   };
 
   const handleNavigateToMemberList = (id) => {
-    navigate(`/view-committee/${id}`);
+    const committeeId = id
+    navigate(`/view-committee/${committeeId}`, {
+      state: { committeeData },
+    });
   };
 
   const handleAddCommittee = (newCommittee) => {
@@ -199,7 +203,7 @@ const CommitteeManagementMUI = () => {
             )}
           <Tooltip title="View all members">
             <Chip
-              label={`${params.row.CommitteeMembers?.length || 0}`}
+              label={`${params.row.CommitteeMembers?.length}`}
               size="large"
               variant="outlined"
               icon={<PeopleIcon color="var(--linear-gradient-main)" />}
@@ -211,6 +215,8 @@ const CommitteeManagementMUI = () => {
                 color: `var(--linear-gradient-main)`,
               }}
               className="committee-view"
+              disabled={params.row.CommitteeMembers?.length === 0}
+
             />
           </Tooltip>
         </div>
@@ -306,7 +312,7 @@ const CommitteeManagementMUI = () => {
           </Box>
         )}
 
-        <PopupModals
+        <NewPopUpModal
           modalBody={
             <AddCommitteeForm
               onAddCommittee={handleAddCommittee}
@@ -316,10 +322,10 @@ const CommitteeManagementMUI = () => {
           isOpen={isAddCommittee}
           title={"Add Committee"}
           setIsOpen={setIsAddCommittee}
-          width={500}
+        // width={600}
         />
 
-        <PopupModals
+        <NewPopUpModal
           isOpen={isEditOpen}
           setIsOpen={setIsEditOpen}
           title={"Edit Committee"}
@@ -330,7 +336,7 @@ const CommitteeManagementMUI = () => {
               setIsEditOpen={setIsEditOpen}
             />
           }
-          width={500}
+        // width={500}
         />
 
         <DeleteModal

@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
-import { ArrowLeft, Mail} from "../../components/Common/CustomButton/CustomIcon";
+import { ArrowLeft, Mail} from "../../components/Common/Buttons/CustomIcon";
 import {
   Button,
 } from "@mui/material";

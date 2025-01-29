@@ -7,6 +7,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { PopContent } from "../../Style";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import FormButton from "../../components/Common/Buttons/FormButton/FormButton";
 
 const AddCommitteeForm = ({
   onAddCommittee,
@@ -118,22 +119,14 @@ const AddCommitteeForm = ({
           required
           margin="normal"
           multiline
-          rows={4}
+          rows={5}
           error={
             formik.touched.description && Boolean(formik.errors.description)
           }
           helperText={formik.touched.description && formik.errors.description}
         />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          fullWidth
-          sx={{ mt: 2 }}
-          disabled={!formik.isValid}
-        >
-          {committeeId ? "Update Committee" : "Add Committee"}
-        </Button>
+        <FormButton type="submit" btnName={committeeId ? "Update Committee" : "Add Committee"} />
+
       </form>
     </PopContent>
   );

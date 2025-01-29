@@ -3,7 +3,7 @@ import "./Login.css";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import Input from "../../components/Common/Input/Input";
-import { Mail, Lock } from "../../components/Common/CustomButton/CustomIcon";
+import { Mail, Lock } from "../../components/Common/Buttons/CustomIcon";
 
 const RoomLogin = () => {
   const [room, setRoom] = useState("");

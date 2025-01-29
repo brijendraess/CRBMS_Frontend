@@ -14,7 +14,7 @@ import {
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { PeopleIcon } from "../Common/CustomButton/CustomIcon";
+import { PeopleIcon } from "../Common/Buttons/CustomIcon";
 
 const MyComitteeCard = ({ committee, onDelete, setRefreshPage, heading }) => {
   const [hover, setHover] = useState(false);

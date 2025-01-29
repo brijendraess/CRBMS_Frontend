@@ -14,6 +14,8 @@ import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
+import { PopContent } from "../../Style";
+import FormButton from "../Common/Buttons/FormButton/FormButton";
 
 const EditRoomAmenities = ({
   room,
@@ -25,7 +27,7 @@ const EditRoomAmenities = ({
   const { user } = useSelector((state) => state.user);
   const [amenitiesStockCount, setAmenitiesStockCount] = useState(0);
   const [amenitiesList, setAmenitiesList] = useState([]);
-   const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   // Formik initialization
   const formik = useFormik({
@@ -56,12 +58,12 @@ const EditRoomAmenities = ({
         await axios.put(
           `api/v1/rooms/edit-amenity-quantity/${editId}`,
           formData
-        ).then(async()=>{
+        ).then(async () => {
           await axios.post("api/v1/stock/increment", {
-            stock: Number(editInfo.quantity)-Number(values.quantity),
-            id:"",
-            amenityId:values.amenityId,
-            roomId:room.id,
+            stock: Number(editInfo.quantity) - Number(values.quantity),
+            id: "",
+            amenityId: values.amenityId,
+            roomId: room.id,
             createdBy: user.id,
           })
         })
@@ -119,63 +121,61 @@ const EditRoomAmenities = ({
   }, [formik.values.amenityId, formik.values.quantity]);
 
   return (
-    <Box
-      component="form"
-      onSubmit={formik.handleSubmit}
-      sx={{
-        maxWidth: 500,
-        margin: "auto",
-        borderRadius: 3,
-      }}
-    >
-      <FormControl sx={{ m: 1, width: "100%" }}>
-        <InputLabel id="demo-multiple-name-label">Amenity Name</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="amenityId"
-          name="amenityId"
-          value={formik.values.amenityId}
-          label="Amenity Name"
-          required
-          size="small"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        >
-          {amenitiesList.map((amenity) => (
-            <MenuItem value={amenity.id}>{amenity.label}</MenuItem>
-          ))}
-        </Select>
-        {formik.touched.amenityId && formik.errors.amenityId && (
+    <PopContent>
+      <Box
+        component="form"
+        onSubmit={formik.handleSubmit}
+      >
+        <FormControl size="small" fullWidth>
+          <InputLabel id="demo-multiple-name-label">Amenity Name</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="amenityId"
+            name="amenityId"
+            value={formik.values.amenityId}
+            label="Amenity Name"
+            required
+            size="small"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          >
+            {amenitiesList.map((amenity) => (
+              <MenuItem value={amenity.id}>{amenity.label}</MenuItem>
+            ))}
+          </Select>
+          {formik.touched.amenityId && formik.errors.amenityId && (
             <p style={{ color: "red", fontSize: "0.875rem" }}>
               {formik.errors.amenityId}
             </p>
           )}
-        <TextField
-          label="Quantity"
-          type="number"
-          name="quantity" // Match the key in formData
-          value={formik.values.quantity}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          fullWidth
-          required
-          margin="normal"
-          size="small"
-          error={!!formik.errors.quantity && formik.touched.quantity}
-          helperText={formik.touched.quantity && formik.errors.quantity}
-        />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          onClick={() => handleSubmit()}
-          fullWidth
-          sx={{ mt: 2 }}
-        >
-          Save
-        </Button>
-      </FormControl>
-    </Box>
+          <TextField
+            label="Quantity"
+            type="number"
+            name="quantity" // Match the key in formData
+            value={formik.values.quantity}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            fullWidth
+            required
+            margin="normal"
+            size="small"
+            error={!!formik.errors.quantity && formik.touched.quantity}
+            helperText={formik.touched.quantity && formik.errors.quantity}
+          />
+          <FormButton type="submit" func={() => handleSubmit()} btnName={'Save'} />
+          {/* <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            onClick={() => handleSubmit()}
+            fullWidth
+            sx={{ mt: 2 }}
+          >
+            Save
+          </Button> */}
+        </FormControl>
+      </Box>
+    </PopContent>
   );
 };
 

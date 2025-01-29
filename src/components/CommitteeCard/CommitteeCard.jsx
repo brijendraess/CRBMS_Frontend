@@ -18,7 +18,7 @@ import {
   DeleteOutlineIcon,
   EditOutlinedIcon,
   PeopleIcon,
-} from "../Common/CustomButton/CustomIcon";
+} from "../Common/Buttons/CustomIcon";
 
 const CommitteeCard = ({ committee, setRefreshPage }) => {
   const [hover, setHover] = useState(false);

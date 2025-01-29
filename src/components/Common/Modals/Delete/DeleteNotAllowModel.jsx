@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Button, Divider, Modal, Typography } from "@mui/material";
-import { ErrorOutlineIcon } from "../../CustomButton/CustomIcon";
+import { ErrorOutlineIcon } from "../../Buttons/CustomIcon";
 
 const style = {
   position: "absolute",

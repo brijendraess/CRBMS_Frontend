@@ -38,12 +38,10 @@ export const PaperWrapper = styled(Paper)(({ theme }) => ({
   backgroundImage: `linear-gradient(45deg, var(--body-color), var(--body-color-2))`,
 }));
 
-export const PopContent = styled(Paper)(({ theme }) => ({
+export const PopContent = styled("div")(({ theme }) => ({
   padding: "15px",
-  background: `var(--body-color)`,
-  borderRadius: "8px",
   [theme.breakpoints.down("sm")]: {
-    padding: "5px",
+    padding: "10px",
   },
 }));
 
