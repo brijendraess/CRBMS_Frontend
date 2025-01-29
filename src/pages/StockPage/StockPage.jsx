@@ -6,15 +6,17 @@ import {
   AddIcon,
   AddOutlinedIcon,
   RemoveIcon,
-} from "../../components/Common/CustomButton/CustomIcon";
+} from "../../components/Common/Buttons/CustomIcon";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@mui/styles";
 import axios from "axios";
-import CustomButton from "../../components/Common/CustomButton/CustomButton";
+import CustomButton from "../../components/Common/Buttons/CustomButton";
 import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import AddStock from "./AddStock";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import toast from "react-hot-toast";
+import PageHeader from "../../components/Common/PageHeader/PageHeader";
+import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
 
 const useStyles = makeStyles({
   lowQuantity: {
@@ -180,44 +182,15 @@ const StockPage = () => {
 
   return (
     <PaperWrapper>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          marginBottom: "10px",
-        }}
-      >
-        <Typography
-          variant="h1"
-          component="h1"
-          sx={{
-            marginRight: "20px",
-            fontSize: {
-              xs: "16px",
-              sm: "18px",
-              md: "22px",
-            },
-            fontWeight: 500,
-            lineHeight: 1.5,
-            color: "#2E2E2E",
-          }}
-        >
-          Inventory
-        </Typography>
-
-        {user.UserType.inventoryModule &&
-          user.UserType.inventoryModule.split(",").includes("add") && (
-            <CustomButton
-              onClick={() => setIsAddOpen(true)}
-              title={"Add New Stock"}
-              placement={"left"}
-              Icon={AddOutlinedIcon}
-              fontSize={"medium"}
-              background={"rgba(3, 176, 48, 0.68)"}
-            />
-          )}
-      </Box>
+      <PageHeader
+        heading="Inventory"
+        icon={AddOutlinedIcon}
+        func={setIsAddOpen}
+        nameOfTheClass="add-new-service"
+        statusIcon={
+          user.UserType.inventoryModule &&
+          user.UserType.inventoryModule.split(",").includes("add")
+        } />
       <Box
         style={{
           display: "flex",
@@ -247,7 +220,7 @@ const StockPage = () => {
           }}
         />
       </Box>
-      <PopupModals
+      <NewPopUpModal
         isOpen={isAddOpen}
         setIsOpen={setIsAddOpen}
         title={"Add Stock"}

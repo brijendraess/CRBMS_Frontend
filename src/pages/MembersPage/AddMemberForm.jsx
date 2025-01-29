@@ -21,8 +21,9 @@ import {
   PhotoCameraIcon,
   VisibilityOff,
   Visibility,
-} from "../../components/Common/CustomButton/CustomIcon";
+} from "../../components/Common/Buttons/CustomIcon";
 import { generateRandomPassword, isPasswordValid } from "../../utils/utils";
+import FormButton from "../../components/Common/Buttons/FormButton/FormButton";
 
 const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
   const [avatarPreview, setAvatarPreview] = useState(null); // Avatar preview
@@ -32,7 +33,9 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
   const [showPassword, setShowPassword] = useState(true); // Password visibility toggle
   const [activeRole, setActiveRole] = useState([]); // List of available active role
 
-  const [firstTimeStrongPassword, setFirstTimeStrongPassword] = useState(generateRandomPassword()); // List of available active role
+  const [firstTimeStrongPassword, setFirstTimeStrongPassword] = useState(
+    generateRandomPassword()
+  ); // List of available active role
   // Toggle password visibility
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => event.preventDefault();
@@ -91,7 +94,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
 
   const handleStrongPassword = () => {
     const strongRandomPassword = generateRandomPassword();
-    setFirstTimeStrongPassword("")
+    setFirstTimeStrongPassword("");
     setStrongPassword(strongRandomPassword);
   };
 
@@ -135,16 +138,19 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
         formData.append("email", values.email);
         formData.append("user_type", values.user_type);
         formData.append("phoneNumber", values.phoneNumber);
-        formData.append("password", strongPassword ? strongPassword : values.password);
+        formData.append(
+          "password",
+          strongPassword ? strongPassword : values.password
+        );
         formData.append("userName", values.userName);
         formData.append("committee", JSON.stringify(values.committee));
-         formData.append("services", JSON.stringify(values.services));
+        formData.append("services", JSON.stringify(values.services));
         // console.log(formData);
         if (values.avatar) {
           formData.append("avatar", values.avatar);
         }
 
-        if(!isPasswordValid(formData.get("password"))){
+        if (!isPasswordValid(formData.get("password"))) {
           toast.error("Please enter strong password.");
         }
         await axios
@@ -152,9 +158,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
             withCredentials: true,
           })
           .then(() => {
-            toast.success(
-              "User registered successfully"
-            );
+            toast.success("User registered successfully");
             setRefreshPage(Math.random());
             setIsOpen(false);
             resetForm();
@@ -171,7 +175,20 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
   return (
     <PopContent>
       <Box component="form" onSubmit={formik.handleSubmit}>
-        {/*Full Name */}
+        {/* EMAIL */}
+        <Box display="flex" justifyContent="space-between" mb={2}>
+          <TextField
+            fullWidth
+            label="Email"
+            name="email"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
+            size="small"
+          />
+        </Box>
+        {/* FullName */}
         <Box display="flex" justifyContent="space-between" mb={2}>
           <TextField
             label="Full Name"
@@ -180,70 +197,18 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
             onChange={formik.handleChange}
             error={formik.touched.fullname && Boolean(formik.errors.fullname)}
             helperText={formik.touched.fullname && formik.errors.fullname}
-            style={{ flex: 1 }}
             size="small"
+            fullWidth
           />
         </Box>
-        <Box display="flex" justifyContent="space-between" mb={2}>
-          <TextField
-            label="Email"
-            name="email"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
-            style={{ marginRight: 8, flex: 1 }}
-            size="small"
-          />
-          <Autocomplete
-            disableCloseOnSelect
-            multiple
-            id="services"
-            size="small"
-            style={{  flex: 1 }}
-            options={services.map((service)=>{return {name:service.servicesName,id:service.id}})}
-            value={services.filter((service) =>
-              formik.values.services?.includes(service.id)
-            )}
-            getOptionLabel={(option) => option.name || option.id}
-            onChange={(_, selectedOptions) => {
-              formik.setFieldValue(
-                "services",
-                selectedOptions.map((option) => option.id)
-              );
-            }}
-            isOptionEqualToValue={(option, value) => option.id === value.id}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Select Services"
-                error={
-                  formik.touched.services && Boolean(formik.errors.services)
-                }
-                helperText={formik.touched.services && formik.errors.services}
-              />
-            )}
-            renderTags={(tagValue, getTagProps) => {
-              if (tagValue.length === 0) {
-                return null;
-              }
-              return <span>{tagValue.length} selected</span>;
-            }}
-            renderOption={(props, option, { selected }) => (
-              <li
-                {...props}
-                style={{
-                  backgroundColor: selected ? "#e0f7fa" : "inherit", // Change the color when selected
-                  fontWeight: selected ? "bold" : "normal", // Optional: Make text bold when selected
-                }}
-              >
-                {option.name}
-              </li>
-            )}
-          />
-        </Box>
-        {/* Email and Password */}
-        <Box display="flex" justifyContent="space-between" mb={2}>
+        {/* UserName and Phone No. */}
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          flexDirection={{ xs: "column", sm: "row" }}
+          mb={2}
+          gap={2}
+        >
           <TextField
             label="User name"
             name="userName"
@@ -251,81 +216,9 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
             onChange={formik.handleChange}
             error={formik.touched.userName && Boolean(formik.errors.userName)}
             helperText={formik.touched.userName && formik.errors.userName}
-            style={{ marginRight: 8, flex: 1 }}
+            style={{ flex: 1 }}
             size="small"
           />
-          <Box display="flex" justifyContent="space-between" mb={2}>
-            <TextField
-              className="custom-password-field"
-              label="Password"
-              name="password"
-              value={ firstTimeStrongPassword
-                ? formik.values.password || firstTimeStrongPassword 
-                : strongPassword
-                ? strongPassword
-                : formik.values.password}
-              onChange={formik.handleChange}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
-              type={showPassword ? "text" : "password"}
-              size="small"
-              style={{
-                flex: 1,
-                "& .MuiOutlinedInputRoot": {
-                  paddingRight: "0",
-                },
-                marginRight: 8
-              }}
-              slotProps={{
-                input: {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                },
-              }}
-              disabled={strongPassword ? true : false}
-            />
-            <Button variant="contained" color="warning" size="small" sx={{
-                fontSize: "10px", // Reduce font size
-                padding: "4px 8px", // Reduce padding
-                minWidth: "auto", // Allow for smaller width
-                lineHeight: 1, // Adjust line height
-              }}
-              onClick={handleStrongPassword}
-            >
-              Strong
-            </Button>
-
-          </Box>
-        </Box>
-
-        {/* Role and Phone Number */}
-        <Box display="flex" justifyContent="space-between" mb={2}>
-          <TextField
-            label="Role"
-            name="user_type"
-            select
-            value={formik.values.user_type}
-            onChange={(event) => {
-              formik.setFieldValue("user_type", event.target.value);
-            }}
-            error={formik.touched.user_type && Boolean(formik.errors.user_type)}
-            helperText={formik.touched.user_type && formik.errors.user_type}
-            style={{ marginRight: 8, flex: 1 }}
-            size="small"
-          >
-            {activeRole?.map((user_type) => (
-              <MenuItem value={user_type.id}>{user_type.userTypeName}</MenuItem>
-            ))}
-          </TextField>
-
           <TextField
             label="Phone Number"
             name="phoneNumber"
@@ -339,54 +232,190 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
             style={{ flex: 1 }}
           />
         </Box>
-
-        {/* Committee Selection */}
-        <Autocomplete
-          disableCloseOnSelect
-          multiple
-          id="committee"
-          options={committees}
-          value={committees.filter((committee) =>
-            formik.values.committee.includes(committee.id)
-          )}
-          getOptionLabel={(option) => option.name || option.id}
-          onChange={(_, selectedOptions) => {
-            formik.setFieldValue(
-              "committee",
-              selectedOptions.map((option) => option.id)
-            );
-          }}
-          isOptionEqualToValue={(option, value) => option.id === value.id}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Select Committee"
-              error={
-                formik.touched.committee && Boolean(formik.errors.committee)
-              }
-              helperText={formik.touched.committee && formik.errors.committee}
-              sx={{ maxHeight: "50px" }}
-            />
-          )}
-          renderTags={(tagValue, getTagProps) => {
-            if (tagValue.length === 0) {
-              return null;
+        {/* Password */}
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          flexDirection={{ xs: "column", sm: "row" }}
+          mb={2}
+          gap={2}
+        >
+          <TextField
+            fullWidth
+            className="custom-password-field"
+            label="Password"
+            name="password"
+            value={
+              firstTimeStrongPassword
+                ? formik.values.password || firstTimeStrongPassword
+                : strongPassword
+                  ? strongPassword
+                  : formik.values.password
             }
-            return <span>{tagValue.length} selected</span>;
-          }}
-          renderOption={(props, option, { selected }) => (
-            <li
-              {...props}
-              style={{
-                backgroundColor: selected ? "#e0f7fa" : "inherit", // Change the color when selected
-                fontWeight: selected ? "bold" : "normal", // Optional: Make text bold when selected
+            onChange={formik.handleChange}
+            error={formik.touched.password && Boolean(formik.errors.password)}
+            helperText={formik.touched.password && formik.errors.password}
+            type={showPassword ? "text" : "password"}
+            size="small"
+            slotProps={{
+              input: {
+                endAdornment: (
+                  <>
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                    <InputAdornment position="start">
+                      <Button
+                        variant="contained"
+                        size="small"
+                        onClick={handleStrongPassword}
+                        sx={{
+                          background: `var(--linear-gradient-main)`,
+                        }}
+                      >
+                        Generate
+                      </Button>
+                    </InputAdornment>
+                  </>
+                ),
+              },
+            }}
+            disabled={strongPassword ? true : false}
+          />
+        </Box>
+
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          flexDirection={{ xs: "column", sm: "row" }}
+          mb={2}
+          gap={{ xs: 2, sm: 2 }}
+        >
+          <Box width={{ xs: "100%", sm: "50%" }}>
+            <Autocomplete
+              disableCloseOnSelect
+              multiple
+              id="services"
+              size="small"
+              fullWidth
+              options={services.map((service) => {
+                return { name: service.servicesName, id: service.id };
+              })}
+              value={services.filter((service) =>
+                formik.values.services?.includes(service.id)
+              )}
+              getOptionLabel={(option) => option.name || option.id}
+              onChange={(_, selectedOptions) => {
+                formik.setFieldValue(
+                  "services",
+                  selectedOptions.map((option) => option.id)
+                );
               }}
-            >
-              {option.name}
-            </li>
-          )}
-          style={{ marginBottom: 16 }}
-        />
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Select Services"
+                  error={
+                    formik.touched.services && Boolean(formik.errors.services)
+                  }
+                  helperText={formik.touched.services && formik.errors.services}
+                />
+              )}
+              renderTags={(tagValue, getTagProps) => {
+                if (tagValue.length === 0) {
+                  return null;
+                }
+                return <span>{tagValue.length} selected</span>;
+              }}
+              renderOption={(props, option, { selected }) => (
+                <li
+                  {...props}
+                  style={{
+                    backgroundColor: selected ? "#e0f7fa" : "inherit",
+                    fontWeight: selected ? "bold" : "normal",
+                  }}
+                >
+                  {option.name}
+                </li>
+              )}
+            />
+          </Box>
+          <Box width={{ xs: "100%", sm: "50%" }}>
+            <Autocomplete
+              disableCloseOnSelect
+              multiple
+              size="small"
+              id="committee"
+              options={committees}
+              value={committees.filter((committee) =>
+                formik.values.committee.includes(committee.id)
+              )}
+              getOptionLabel={(option) => option.name || option.id}
+              onChange={(_, selectedOptions) => {
+                formik.setFieldValue(
+                  "committee",
+                  selectedOptions.map((option) => option.id)
+                );
+              }}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Select Committee"
+                  error={
+                    formik.touched.committee && Boolean(formik.errors.committee)
+                  }
+                  helperText={
+                    formik.touched.committee && formik.errors.committee
+                  }
+                />
+              )}
+              renderTags={(tagValue, getTagProps) => {
+                if (tagValue.length === 0) {
+                  return null;
+                }
+                return <span>{tagValue.length} selected</span>;
+              }}
+              renderOption={(props, option, { selected }) => (
+                <li
+                  {...props}
+                  style={{
+                    backgroundColor: selected ? "#e0f7fa" : "inherit",
+                    fontWeight: selected ? "bold" : "normal",
+                  }}
+                >
+                  {option.name}
+                </li>
+              )}
+            />
+          </Box>
+        </Box>
+        {/* Role*/}
+        <Box display="flex" justifyContent="space-between" mb={2}>
+          <TextField
+            fullWidth
+            label="Role"
+            name="user_type"
+            select
+            value={formik.values.user_type}
+            onChange={(event) => {
+              formik.setFieldValue("user_type", event.target.value);
+            }}
+            error={formik.touched.user_type && Boolean(formik.errors.user_type)}
+            helperText={formik.touched.user_type && formik.errors.user_type}
+            size="small"
+          >
+            {activeRole?.map((user_type) => (
+              <MenuItem value={user_type.id}>{user_type.userTypeName}</MenuItem>
+            ))}
+          </TextField>
+        </Box>
 
         {/* Avatar */}
         <Box display="flex" justifyContent="center" mb={3}>
@@ -411,13 +440,9 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
         </Box>
 
         {/* Submit Button */}
-        <Box display="flex" justifyContent="flex-end">
-          <Button type="submit" variant="contained" color="primary">
-            Add Member
-          </Button>
-        </Box>
+        <FormButton type="submit" btnName="Add Member" />
       </Box>
-    </PopContent>
+    </PopContent >
   );
 };
 

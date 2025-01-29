@@ -6,6 +6,8 @@ import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
+import { PopContent } from "../../Style";
+import FormButton from "../../components/Common/Buttons/FormButton/FormButton";
 
 const FoodBeverageAdd = ({ setRefreshPage, setIsAddOpen }) => {
   const dispatch = useDispatch();
@@ -37,7 +39,7 @@ const FoodBeverageAdd = ({ setRefreshPage, setIsAddOpen }) => {
   });
 
   return (
-    <div className="pop-content w-100">
+    <PopContent>
       <Box
         component="form"
         onSubmit={formik.handleSubmit}
@@ -60,17 +62,10 @@ const FoodBeverageAdd = ({ setRefreshPage, setIsAddOpen }) => {
           margin="normal"
           size="small"
         />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          fullWidth
-          sx={{ mt: 2 }}
-        >
-          Add Food beverage
-        </Button>
+
+        <FormButton type='submit' btnName='Add Food & beverage' />
       </Box>
-    </div>
+    </PopContent>
   );
 };
 

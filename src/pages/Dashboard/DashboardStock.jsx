@@ -6,11 +6,11 @@ import {
   AddIcon,
   AddOutlinedIcon,
   RemoveIcon,
-} from "../../components/Common/CustomButton/CustomIcon";
+} from "../../components/Common/Buttons/CustomIcon";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@mui/styles";
 import axios from "axios";
-import CustomButton from "../../components/Common/CustomButton/CustomButton";
+import CustomButton from "../../components/Common/Buttons/CustomButton";
 import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import toast from "react-hot-toast";

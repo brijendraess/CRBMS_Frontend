@@ -8,7 +8,7 @@ import {
   RadarChart,
   ResponsiveContainer,
 } from "recharts";
-import { Radar } from "../Common/CustomButton/CustomIcon";
+import { Radar } from "../Common/Buttons/CustomIcon";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,

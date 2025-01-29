@@ -25,7 +25,7 @@ import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import {
   FullscreenExitIcon,
   FullscreenIcon,
-} from "../../components/Common/CustomButton/CustomIcon";
+} from "../../components/Common/Buttons/CustomIcon";
 dayjs.extend(durationPlugin);
 
 const Item = styled(Paper)(({ theme }) => ({

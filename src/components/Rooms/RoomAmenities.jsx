@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { IconButton, Box } from "@mui/material";
-import CustomButton from "../Common/CustomButton/CustomButton";
+import CustomButton from "../Common/Buttons/CustomButton";
 import PopupModals from "../Common/Modals/Popup/PopupModals";
 import AddRoomAmenities from "./AddRoomAmenities";
 import toast from "react-hot-toast";
@@ -14,7 +14,9 @@ import {
   DeleteOutlineOutlinedIcon,
   EditOutlinedIcon,
   AddOutlinedIcon,
-} from "../Common/CustomButton/CustomIcon";
+} from "../Common/Buttons/CustomIcon";
+import { PopContent } from "../../Style";
+import NewPopUpModal from "../Common/Modals/Popup/NewPopUpModal";
 
 const RoomAmenities = ({ room }) => {
   const [rows, setRows] = useState([]);
@@ -125,7 +127,7 @@ const RoomAmenities = ({ room }) => {
   ];
 
   return (
-    <>
+    <PopContent>
       <Box
         sx={{
           width: "100%",
@@ -140,13 +142,13 @@ const RoomAmenities = ({ room }) => {
           onClick={handleRoomAmenities}
           Icon={AddOutlinedIcon}
           fontSize={"medium"}
-          background={"rgba(3, 176, 48, 0.68)"}
+          background={'var(--linear-gradient-main)'}
         />
       </Box>
-      <Box sx={{ minHeight: 400, width: "100%" }}>
+      <Box sx={{ minHeight: 400, width: "100%", height: '75vh', }}>
         <DataGrid rows={rows} columns={columns} pageSize={20} />
       </Box>
-      <PopupModals
+      <NewPopUpModal
         isOpen={isAmenityQuantityOpen}
         setIsOpen={setIsAmenityQuantityOpen}
         title={"Add New Room Amenity"}
@@ -158,7 +160,7 @@ const RoomAmenities = ({ room }) => {
           />
         }
       />
-      <PopupModals
+      <NewPopUpModal
         isOpen={openEdit}
         setIsOpen={setOpenEdit}
         title={"Edit Room Amenity"}
@@ -178,7 +180,7 @@ const RoomAmenities = ({ room }) => {
         onDeleteConfirm={handleDelete}
         button={"Delete"}
       />
-    </>
+    </PopContent>
   );
 };
 

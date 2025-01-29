@@ -33,7 +33,7 @@ const MyCommitteePage = () => {
         dispatch(hideLoading());
       } catch (err) {
         dispatch(hideLoading());
-        toast.error(err.response?.data?.message || "Failed to fetch data");
+        console.error(err.response?.data?.message || "Failed to fetch data");
       }
     };
 

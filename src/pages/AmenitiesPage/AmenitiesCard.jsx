@@ -8,11 +8,11 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import CustomButton from "../../components/Common/CustomButton/CustomButton";
+import CustomButton from "../../components/Common/Buttons/CustomButton";
 import {
   DeleteOutlineOutlinedIcon,
   EditOutlinedIcon,
-} from "../../components/Common/CustomButton/CustomIcon";
+} from "../../components/Common/Buttons/CustomIcon";
 
 const AmenitiesCard = ({
   amenity,

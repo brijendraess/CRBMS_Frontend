@@ -14,6 +14,8 @@ import toast from "react-hot-toast";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import { PopContent } from "../../Style";
+import FormButton from "../Common/Buttons/FormButton/FormButton";
 
 const AddRoomAmenities = ({
   room,
@@ -36,7 +38,7 @@ const AddRoomAmenities = ({
       quantity: Yup.number()
         .required("Quantity is required")
         .min(1, "Quantity must be at least 1")
-        .max(amenitiesStockCount,`Quantity must be below from stock(${amenitiesStockCount})`)
+        .max(amenitiesStockCount, `Quantity must be below from stock(${amenitiesStockCount})`)
         .typeError("Quantity must be a number"),
     }),
     onSubmit: async (values, { resetForm }) => {
@@ -48,12 +50,12 @@ const AddRoomAmenities = ({
           status: true,
           createdBy: user.id,
         };
-        await axios.post("api/v1/rooms/add-amenity-quantity", formData).then(async()=>{
+        await axios.post("api/v1/rooms/add-amenity-quantity", formData).then(async () => {
           await axios.post("api/v1/stock/increment", {
             stock: -Number(values.quantity),
-            id:"",
-            amenityId:values.amenityId,
-            roomId:room.id,
+            id: "",
+            amenityId: values.amenityId,
+            roomId: room.id,
             createdBy: user.id,
           })
         })
@@ -94,13 +96,13 @@ const AddRoomAmenities = ({
     const fetchStockAmenities = async () => {
       try {
         showLoading();
-        if(formik.values.amenityId){
-        const response = await axios.get(
-          `api/v1/stock/checkStock/${formik.values.amenityId}`
-        );
-        const amenities = response?.data?.data?.result[0]?.stock
-        setAmenitiesStockCount(amenities?amenities:0);
-      }
+        if (formik.values.amenityId) {
+          const response = await axios.get(
+            `api/v1/stock/checkStock/${formik.values.amenityId}`
+          );
+          const amenities = response?.data?.data?.result[0]?.stock
+          setAmenitiesStockCount(amenities ? amenities : 0);
+        }
       } catch (error) {
         console.error("Error fetching amenities:", error);
       } finally {
@@ -110,22 +112,18 @@ const AddRoomAmenities = ({
 
     fetchAmenities();
     fetchStockAmenities()
-  }, [formik.values.amenityId,formik.values.quantity]);
+  }, [formik.values.amenityId, formik.values.quantity]);
 
   return (
-    <div className="pop-content w-100">
+    <PopContent>
       <Box
         component="form"
         onSubmit={formik.handleSubmit}
-        sx={{
-          maxWidth: 500,
-          margin: "auto",
-          borderRadius: 3,
-        }}
       >
         <FormControl
-          sx={{ m: 1, width: "100%" }}
           error={!!formik.errors.amenityId && formik.touched.amenityId}
+          fullWidth
+          size="small"
         >
           <InputLabel id="amenity-select-label">Amenity Name</InputLabel>
           <Select
@@ -164,17 +162,10 @@ const AddRoomAmenities = ({
           error={!!formik.errors.quantity && formik.touched.quantity}
           helperText={formik.touched.quantity && formik.errors.quantity}
         />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          fullWidth
-          sx={{ mt: 2 }}
-        >
-          Add Quantity
-        </Button>
+        <FormButton type='submit' btnName={"Add Quantity"} />
+
       </Box>
-    </div>
+    </PopContent>
   );
 };
 

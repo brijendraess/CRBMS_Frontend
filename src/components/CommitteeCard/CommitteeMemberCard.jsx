@@ -8,7 +8,7 @@ import {
   Switch,
   Typography,
 } from "@mui/material";
-import CustomButton from "../Common/CustomButton/CustomButton";
+import CustomButton from "../Common/Buttons/CustomButton";
 import { useSelector } from "react-redux";
 import {
   RemoveRedEyeIcon,
@@ -17,7 +17,7 @@ import {
   BadgeOutlinedIcon,
   MailOutlinedIcon,
   LocalPhoneOutlinedIcon,
-} from "../Common/CustomButton/CustomIcon";
+} from "../Common/Buttons/CustomIcon";
 
 const CommitteeMemberCard = ({
   member,

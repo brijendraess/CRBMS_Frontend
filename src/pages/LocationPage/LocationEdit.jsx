@@ -2,10 +2,11 @@ import { Avatar, Box, Button, IconButton, TextField } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { PhotoCameraIcon } from "../../components/Common/CustomButton/CustomIcon";
+import { PhotoCameraIcon } from "../../components/Common/Buttons/CustomIcon";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { PopContent } from "../../Style";
 
 const LocationEdit = ({
   id,
@@ -15,7 +16,7 @@ const LocationEdit = ({
   setRefreshPage,
   setIsEditOpen,
 }) => {
-  console.log(locationImagePath)
+
   const [locationImagePreview, setLocationImagePreview] = useState(
     locationImagePath || null
   );
@@ -79,15 +80,10 @@ const LocationEdit = ({
   };
 
   return (
-    <div className="pop-content w-100">
+    <PopContent>
       <Box
         component="form"
         onSubmit={formik.handleSubmit}
-        sx={{
-          maxWidth: 500,
-          margin: "auto",
-          borderRadius: 3,
-        }}
       >
         <TextField
           label="Location Name"
@@ -119,7 +115,7 @@ const LocationEdit = ({
           <label htmlFor="room-image-upload">
             <IconButton component="span">
               <Avatar
-                sx={{ width: 50, height: 50 }}
+                sx={{ width: 75, height: 75 }}
                 src={
                   `${import.meta.env.VITE_API_URL}/${locationImagePath}` ||
                   undefined
@@ -142,7 +138,7 @@ const LocationEdit = ({
           Update Location
         </Button>
       </Box>
-    </div>
+    </PopContent>
   );
 };
 

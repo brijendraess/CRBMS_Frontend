@@ -5,12 +5,14 @@ import toast from "react-hot-toast";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { PopContent } from "../../Style";
+import FormButton from "../../components/Common/Buttons/FormButton/FormButton";
 
 const ServicesAdd = ({ setRefreshPage, setIsAddOpen }) => {
   const formik = useFormik({
     initialValues: {
       servicesName: "", // Initial value for the field
-      status:true
+      status: true
     },
     validationSchema: Yup.object({
       servicesName: Yup.string()
@@ -18,7 +20,7 @@ const ServicesAdd = ({ setRefreshPage, setIsAddOpen }) => {
         .min(3, "Name must be at least 3 characters")
         .max(50, "Name must be at most 50 characters"),
     }),
-    status:Yup.boolean().optional(),
+    status: Yup.boolean().optional(),
     onSubmit: async (values, { resetForm }) => {
       try {
         showLoading();
@@ -37,7 +39,7 @@ const ServicesAdd = ({ setRefreshPage, setIsAddOpen }) => {
   });
 
   return (
-    <div className="pop-content w-100">
+    <PopContent>
       <Box
         component="form"
         onSubmit={formik.handleSubmit}
@@ -60,17 +62,9 @@ const ServicesAdd = ({ setRefreshPage, setIsAddOpen }) => {
           margin="normal"
           size="small"
         />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          fullWidth
-          sx={{ mt: 2 }}
-        >
-          Add Services
-        </Button>
+        <FormButton type='submit' btnName='Add Services' />
       </Box>
-    </div>
+    </PopContent>
   );
 };
 

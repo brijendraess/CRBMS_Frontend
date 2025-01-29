@@ -7,7 +7,7 @@ import {
   CalendarMonthOutlinedIcon,
   HourglassTopOutlinedIcon,
   Inventory2OutlinedIcon,
-} from "../../components/Common/CustomButton/CustomIcon";
+} from "../../components/Common/Buttons/CustomIcon";
 import PendingMeeting from "./PendingMeeting";
 import DashboardStock from "./DashboardStock";
 import InventoryHistory from "./InventoryHistory";

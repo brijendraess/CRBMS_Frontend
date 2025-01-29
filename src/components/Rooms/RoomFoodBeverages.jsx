@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { IconButton, Box } from "@mui/material";
-import CustomButton from "../Common/CustomButton/CustomButton";
+import CustomButton from "../Common/Buttons/CustomButton";
 import PopupModals from "../Common/Modals/Popup/PopupModals";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
@@ -14,7 +14,9 @@ import {
   DeleteOutlineOutlinedIcon,
   EditOutlinedIcon,
   AddOutlinedIcon,
-} from "../Common/CustomButton/CustomIcon";
+} from "../Common/Buttons/CustomIcon";
+import { PopContent } from "../../Style";
+import NewPopUpModal from "../Common/Modals/Popup/NewPopUpModal";
 
 const RoomFoodBeverages = ({ room }) => {
   const [rows, setRows] = useState([]);
@@ -124,7 +126,7 @@ const RoomFoodBeverages = ({ room }) => {
   ];
 
   return (
-    <>
+    <PopContent>
       <Box
         sx={{
           width: "100%",
@@ -139,13 +141,13 @@ const RoomFoodBeverages = ({ room }) => {
           onClick={handleRoomFoodBeverage}
           Icon={AddOutlinedIcon}
           fontSize={"medium"}
-          background={"rgba(3, 176, 48, 0.68)"}
+          background={'var(--linear-gradient-main)'}
         />
       </Box>
-      <Box sx={{ minHeight: 400, width: "100%" }}>
+      <Box sx={{ minHeight: 400, width: "100%", height: '75vh' }}>
         <DataGrid rows={rows} columns={columns} pageSize={20} />
       </Box>
-      <PopupModals
+      <NewPopUpModal
         isOpen={isFoodBeverageOpen}
         setIsOpen={setIsFoodBeverageOpen}
         title={"Add New Food & Beverage"}
@@ -157,7 +159,7 @@ const RoomFoodBeverages = ({ room }) => {
           />
         }
       />
-      <PopupModals
+      <NewPopUpModal
         isOpen={openEdit}
         setIsOpen={setOpenEdit}
         title={"Edit Food & Beverage"}
@@ -177,7 +179,7 @@ const RoomFoodBeverages = ({ room }) => {
         onDeleteConfirm={handleDelete}
         button={"Delete"}
       />
-    </>
+    </PopContent >
   );
 };
 

@@ -11,12 +11,11 @@ import {
   SettingsApplicationsOutlinedIcon,
   DesignServicesOutlinedIcon,
   Inventory2OutlinedIcon,
-} from "./components/Common/CustomButton/CustomIcon";
+} from "./components/Common/Buttons/CustomIcon";
 
 const getSideBarMenuContent = async (user) => {
   let sideBarData = [];
   try {
-    
     if (
       user.UserType.calendarModule &&
       user.UserType.calendarModule.split(",").includes("view")

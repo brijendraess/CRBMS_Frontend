@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { AccountCircleRoundedIcon } from "../CustomButton/CustomIcon";
+import { AccountCircleRoundedIcon } from "../Buttons/CustomIcon";
 import { Tooltip } from "@mui/material";
 
 const CheckAndShowImage = ({ imageUrl }) => {

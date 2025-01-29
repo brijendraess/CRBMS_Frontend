@@ -13,7 +13,7 @@ import {
 import { DataGrid } from "@mui/x-data-grid";
 import { useDispatch, useSelector } from "react-redux";
 import Carousel from "../../components/Carousel/Carousel";
-import { GroupsIcon, LocationOnOutlinedIcon } from "../../components/Common/CustomButton/CustomIcon";
+import { GroupsIcon, LocationOnOutlinedIcon } from "../../components/Common/Buttons/CustomIcon";
 import { timeDifference } from "../../utils/utils";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import Loader from "../../components/Common/Loader/Loader";

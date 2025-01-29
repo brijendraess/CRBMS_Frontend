@@ -3,20 +3,20 @@ import axios from "axios";
 import { DataGrid } from "@mui/x-data-grid";
 import { toast } from "react-hot-toast";
 import { useLocation, useParams } from "react-router-dom";
-import { Grid2, Tooltip, useMediaQuery } from "@mui/material";
+import { Box, Grid2, Tooltip, useMediaQuery } from "@mui/material";
 import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import AddMembersToCommittee from "./AddMembersToCommittee";
 import unknownUser from "../../assets/Images/unknownUser.png";
 import { PaperWrapper } from "../../Style";
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
-import CustomButton from "../../components/Common/CustomButton/CustomButton";
+import CustomButton from "../../components/Common/Buttons/CustomButton";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useDispatch, useSelector } from "react-redux";
 import CommitteeMemberCard from "../../components/CommitteeCard/CommitteeMemberCard";
 import {
   DeleteOutlineIcon,
   PersonAddOutlinedIcon,
-} from "../../components/Common/CustomButton/CustomIcon";
+} from "../../components/Common/Buttons/CustomIcon";
 
 const CommitteeMemberList = () => {
   const [data, setData] = useState([]);
@@ -28,6 +28,7 @@ const CommitteeMemberList = () => {
   const [heading, setHeading] = useState();
 
   useEffect(() => {
+
     const fetchMembers = async () => {
       try {
         dispatch(showLoading());
@@ -45,7 +46,9 @@ const CommitteeMemberList = () => {
           committeeName: member.Committee?.name,
         }));
 
+        console.log(members)
         setHeading(response.data?.data?.members[0]?.Committee?.name);
+        // console.log(response.data?.data?.members[0]?.Committee?.name);
         setData(formattedData);
         dispatch(hideLoading());
       } catch (error) {
@@ -56,6 +59,7 @@ const CommitteeMemberList = () => {
     };
 
     fetchMembers();
+
   }, [committeeId]);
 
   const removeUserFromCommittee = async (userId) => {
@@ -127,8 +131,8 @@ const CommitteeMemberList = () => {
       width: 200,
       renderCell: (params) =>
         user.UserType.committeeMemberModule &&
-        user.UserType.committeeMemberModule.split(",").includes("delete") &&
-        user?.UserType?.isAdmin === "admin" ? (
+          user.UserType.committeeMemberModule.split(",").includes("delete") &&
+          user?.UserType?.isAdmin === "admin" ? (
           <Tooltip title="Remove User">
             <DeleteOutlineIcon
               color="error"
@@ -180,7 +184,7 @@ const CommitteeMemberList = () => {
           ))}
         </Grid2>
       ) : (
-        <div style={{ display: "flex", flexDirection: "column" }}>
+        <Box sx={{ width: "100%", height: "75vh" }}>
           <DataGrid
             rows={data}
             columns={columns}
@@ -198,7 +202,7 @@ const CommitteeMemberList = () => {
               },
             }}
           />
-        </div>
+        </Box>
       )}
       <PopupModals
         modalBody={<AddMembersToCommittee members={data} id={committeeId} />}

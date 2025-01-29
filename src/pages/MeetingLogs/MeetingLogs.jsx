@@ -13,7 +13,7 @@ import {
   EditOutlinedIcon,
   EventBusyOutlinedIcon,
   HistoryOutlinedIcon,
-} from "../../components/Common/CustomButton/CustomIcon";
+} from "../../components/Common/Buttons/CustomIcon";
 import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import MeetingFormEdit from "../MeetingPage/MeetingFormEdit";
 import MeetingFormPostPone from "../MeetingPage/MeetingFormPostPone";

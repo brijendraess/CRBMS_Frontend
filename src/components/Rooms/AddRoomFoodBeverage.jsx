@@ -13,6 +13,8 @@ import toast from "react-hot-toast";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import { PopContent } from "../../Style";
+import FormButton from "../Common/Buttons/FormButton/FormButton";
 
 const AddRoomFoodBeverage = ({
   room,
@@ -29,7 +31,7 @@ const AddRoomFoodBeverage = ({
     },
     validationSchema: Yup.object({
       foodBeverageId: Yup.string().required("Please select a food or beverage"),
-     
+
     }),
     onSubmit: async (values, { resetForm }) => {
       try {
@@ -80,21 +82,21 @@ const AddRoomFoodBeverage = ({
   }, []);
 
   return (
-    <div className="pop-content w-100">
+    <PopContent>
       <Box
         component="form"
         onSubmit={formik.handleSubmit}
-        sx={{
-          maxWidth: 500,
-          margin: "auto",
-          borderRadius: 3,
-        }}
+
       >
         <FormControl
-          sx={{ m: 1, width: "100%" }}
           error={
             !!formik.errors.foodBeverageId && formik.touched.foodBeverageId
           }
+          size="small"
+          fullWidth
+          sx={{
+            marginBottom: '8px'
+          }}
         >
           <InputLabel id="food-beverage-select-label">
             Food & Beverage Name
@@ -121,18 +123,9 @@ const AddRoomFoodBeverage = ({
             </p>
           )}
         </FormControl>
-
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          fullWidth
-          sx={{ mt: 2 }}
-        >
-          Add
-        </Button>
+        <FormButton type="submit" btnName="Add" />
       </Box>
-    </div>
+    </PopContent>
   );
 };
 

@@ -18,8 +18,8 @@ import {
   MailOutlinedIcon,
   Person3OutlinedIcon,
   RemoveRedEyeIcon,
-} from "../Common/CustomButton/CustomIcon";
-import CustomButton from "../Common/CustomButton/CustomButton";
+} from "../Common/Buttons/CustomIcon";
+import CustomButton from "../Common/Buttons/CustomButton";
 
 const UserCard = ({
   user,
