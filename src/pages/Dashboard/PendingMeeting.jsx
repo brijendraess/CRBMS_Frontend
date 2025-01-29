@@ -83,7 +83,7 @@ const PendingMeeting = () => {
       const response = await axios.get(`api/v1/rooms/${updatedRoomId}`);
       setRoomsData(response.data.data.room[0]);
     } catch (error) {
-      toast.error("Something Went Wrong");
+      // toast.error("Something Went Wrong");
       console.error("Error fetching room data:", error);
     }
   };

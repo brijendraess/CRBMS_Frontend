@@ -54,7 +54,7 @@ const RoomsPage = () => {
       setRoomsData(response.data.data.rooms);
       dispatch(hideLoading());
     } catch (error) {
-      toast.error("Something Went Wrong");
+      // toast.error("Something Went Wrong");
       console.error("Error fetching room data:", error);
     }
   };
@@ -64,7 +64,7 @@ const RoomsPage = () => {
       const response = await axios.get(`api/v1/rooms/all-current-meeting`);
       setMeetingCurrentData(response.data.data.result);
     } catch (error) {
-      toast.error("Something Went Wrong");
+      // toast.error("Something Went Wrong");
       console.error("Error fetching current meeting data:", error);
     }
   };

@@ -160,7 +160,7 @@ const UserTypeSettings = () => {
         setUserRoleDB(userTypeDB);
         setUserRole(userType);
       } catch (error) {
-        toast.success("Something Went Wrong");
+        // toast.success("Something Went Wrong");
         console.error("Error fetching user type:", error);
       }
     };

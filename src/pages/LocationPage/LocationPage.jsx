@@ -45,7 +45,7 @@ const LocationPage = () => {
         dispatch(hideLoading());
       } catch (error) {
         dispatch(hideLoading());
-        toast.error("Something Went Wrong");
+        // toast.error("Something Went Wrong");
         console.error("Error fetching locations:", error);
       }
     };

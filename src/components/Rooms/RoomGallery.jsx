@@ -34,7 +34,7 @@ export default function RoomGallery({ room }) {
       setRoomGallery(response.data.data?.roomGallery);
       dispatch(hideLoading());
     } catch (error) {
-      toast.error("Something Went Wrong");
+      // toast.error("Something Went Wrong");
       console.error("Error fetching room data:", error);
       dispatch(hideLoading());
     }

@@ -54,7 +54,7 @@ const FoodBeveragePage = () => {
         hideLoading();
       } catch (error) {
         hideLoading();
-        toast.error("Something Went Wrong");
+        // toast.error("Something Went Wrong");
         console.error("Error fetching foodBeverages:", error);
       }
     };
