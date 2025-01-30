@@ -28,7 +28,7 @@ import {
   EditOutlinedIcon,
   PersonAddAlt1Rounded,
   VisibilityOutlinedIcon,
-} from "../../components/Common/CustomButton/CustomIcon";
+} from "../../components/Common/Buttons/CustomIcon";
 import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
 
 const MembersPage = () => {

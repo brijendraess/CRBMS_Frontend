@@ -22,7 +22,7 @@ import {
   KeyboardArrowUpIcon,
   FilterAltOffOutlinedIcon,
   FilterAltOutlinedIcon,
-} from "../../Common/CustomButton/CustomIcon";
+} from "../../Common/Buttons/CustomIcon";
 
 const StyledMenu = styled((props) => (
   <Menu

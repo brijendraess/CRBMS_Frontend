@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import "./PopupModals.css";
 import { Typography } from "@mui/material";
-import { CloseIcon } from "../../CustomButton/CustomIcon";
+import { CloseIcon } from "../../Buttons/CustomIcon";
 
 const PopupModals = ({
   modalBody,

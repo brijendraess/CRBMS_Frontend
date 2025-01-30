@@ -10,10 +10,11 @@ import AddRoomForm from "./AddRoomForm";
 import RoomFilter from "./RoomFilter";
 
 import { useDispatch, useSelector } from "react-redux";
-import { AddOutlinedIcon } from "../../components/Common/CustomButton/CustomIcon";
+import { AddOutlinedIcon } from "../../components/Common/Buttons/CustomIcon";
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import ResponsiveFilter from "../../components/Responsive/Filter/ResponsiveFilter";
+import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
 
 const RoomsPage = () => {
   const [roomsData, setRoomsData] = useState([]); // State for rooms data
@@ -54,7 +55,7 @@ const RoomsPage = () => {
       setRoomsData(response.data.data.rooms);
       dispatch(hideLoading());
     } catch (error) {
-      toast.error("Something Went Wrong");
+      // toast.error("Something Went Wrong");
       console.error("Error fetching room data:", error);
     }
   };
@@ -64,7 +65,7 @@ const RoomsPage = () => {
       const response = await axios.get(`api/v1/rooms/all-current-meeting`);
       setMeetingCurrentData(response.data.data.result);
     } catch (error) {
-      toast.error("Something Went Wrong");
+      // toast.error("Something Went Wrong");
       console.error("Error fetching current meeting data:", error);
     }
   };
@@ -81,7 +82,7 @@ const RoomsPage = () => {
       const response = await axios.get("/api/v1/amenity/get-all-active-amenities");
       const names = response.data.data.result.map((item) => item.name);
       setAmenitiesList(names);
-      dispatch(hideLoading()); 
+      dispatch(hideLoading());
     } catch (error) {
       dispatch(hideLoading());
       console.error("Error fetching amenities data:", error);
@@ -94,7 +95,7 @@ const RoomsPage = () => {
       const response = await axios.get("/api/v1/location/activeLocations");
       const names = response.data.data.result.map((item) => item.locationName);
       setLocationList(names);
-      dispatch(hideLoading()); 
+      dispatch(hideLoading());
     } catch (error) {
       dispatch(hideLoading());
       console.error("Error fetching location data:", error);
@@ -104,10 +105,10 @@ const RoomsPage = () => {
   const fetchServicesData = async () => {
     try {
       dispatch(showLoading());
-      const response = await axios.get("/api/v1/services/active");      
+      const response = await axios.get("/api/v1/services/active");
       const names = response.data.data.result.map((item) => item.servicesName);
       setServicesList(names);
-      dispatch(hideLoading()); 
+      dispatch(hideLoading());
     } catch (error) {
       dispatch(hideLoading());
       console.error("Error fetching services data:", error);
@@ -120,7 +121,7 @@ const RoomsPage = () => {
       const response = await axios.get("/api/v1/food-beverages/active-food-beverage");
       const names = response.data.data.result.map((item) => item.foodBeverageName);
       setFoodBeverageList(names);
-      dispatch(hideLoading()); 
+      dispatch(hideLoading());
     } catch (error) {
       dispatch(hideLoading());
       console.error("Error fetching food and beverage data:", error);
@@ -175,15 +176,15 @@ const RoomsPage = () => {
     setSelectedLocation(typeof value === "string" ? value.split(",") : value);
   };
 
-    // Handle Location change
-    const handleChangeServices = (event) => {
-      const {
-        target: { value },
-      } = event;
-      setSelectedServices(typeof value === "string" ? value.split(",") : value);
-    };
+  // Handle Location change
+  const handleChangeServices = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setSelectedServices(typeof value === "string" ? value.split(",") : value);
+  };
 
-      // Handle Location change
+  // Handle Location change
   const handleChangeFoodBeverage = (event) => {
     const {
       target: { value },
@@ -206,7 +207,7 @@ const RoomsPage = () => {
           func={setIsAddOpen}
           title={"Add New Room"}
           nameOfTheClass="add-room"
-          statusIcon={user.UserType.roomModule&&user.UserType.roomModule.split(",").includes("add")}
+          statusIcon={user.UserType.roomModule && user.UserType.roomModule.split(",").includes("add")}
         >
           {isSmallScreen ? (
             <ResponsiveFilter
@@ -289,8 +290,8 @@ const RoomsPage = () => {
                     meetingCurrentData={
                       meetingCurrentData
                         ? meetingCurrentData.filter(
-                            (data) => data?.roomId === room?.id
-                          )
+                          (data) => data?.roomId === room?.id
+                        )
                         : []
                     }
                     setDeleteUpdateStatus={setDeleteUpdateStatus}
@@ -306,7 +307,7 @@ const RoomsPage = () => {
           )}
         </MainContainer>
       </PaperWrapper>
-      <PopupModals
+      <NewPopUpModal
         isOpen={isAddOpen}
         setIsOpen={setIsAddOpen}
         title={"Add Room"}

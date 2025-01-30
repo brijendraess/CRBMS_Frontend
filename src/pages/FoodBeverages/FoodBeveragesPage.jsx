@@ -14,7 +14,7 @@ import FoodBeverageAdd from "./FoodBeveragesAdd";
 import axios from "axios";
 import toast from "react-hot-toast";
 import FoodBeverageEdit from "./FoodBeveragesEdit";
-import CustomButton from "../../components/Common/CustomButton/CustomButton";
+import CustomButton from "../../components/Common/Buttons/CustomButton";
 import DeleteModal from "../../components/Common/Modals/Delete/DeleteModal";
 import FoodBeverageCard from "../../components/Responsive/FoodBeverageCard/FoodBeverageCard";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
@@ -23,8 +23,9 @@ import {
   AddOutlinedIcon,
   EditOutlinedIcon,
   DeleteOutlineOutlinedIcon,
-} from "../../components/Common/CustomButton/CustomIcon";
+} from "../../components/Common/Buttons/CustomIcon";
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
+import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
 
 const FoodBeveragePage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -54,7 +55,7 @@ const FoodBeveragePage = () => {
         hideLoading();
       } catch (error) {
         hideLoading();
-        toast.error("Something Went Wrong");
+        // toast.error("Something Went Wrong");
         console.error("Error fetching foodBeverages:", error);
       }
     };
@@ -252,7 +253,7 @@ const FoodBeveragePage = () => {
           />
         </div>
       )}
-      <PopupModals
+      <NewPopUpModal
         isOpen={isAddOpen}
         setIsOpen={setIsAddOpen}
         title={"Add Food beverage"}
@@ -263,7 +264,7 @@ const FoodBeveragePage = () => {
           />
         }
       />
-      <PopupModals
+      <NewPopUpModal
         isOpen={isEditOpen}
         setIsOpen={setIsEditOpen}
         title={"Edit Food beverage"}

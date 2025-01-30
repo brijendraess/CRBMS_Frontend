@@ -13,14 +13,14 @@ import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import CustomButton from "../../components/Common/CustomButton/CustomButton";
+import CustomButton from "../../components/Common/Buttons/CustomButton";
 import DeleteModal from "../../components/Common/Modals/Delete/DeleteModal";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import {
   AddOutlinedIcon,
   EditOutlinedIcon,
   DeleteOutlineOutlinedIcon,
-} from "../../components/Common/CustomButton/CustomIcon";
+} from "../../components/Common/Buttons/CustomIcon";
 import EditUserTypeSettings from "./EditUserTypeSettings";
 import AddUserTypeSettings from "./AddUserTypeSettings";
 import UserTypeCard from "../../components/Responsive/UserType/UserTypeCard";
@@ -160,7 +160,7 @@ const UserTypeSettings = () => {
         setUserRoleDB(userTypeDB);
         setUserRole(userType);
       } catch (error) {
-        toast.success("Something Went Wrong");
+        // toast.success("Something Went Wrong");
         console.error("Error fetching user type:", error);
       }
     };
@@ -235,8 +235,7 @@ const UserTypeSettings = () => {
       );
 
       toast.success(
-        `User role status changed to ${
-          updatedUserRole.status ? "Active" : "Inactive"
+        `User role status changed to ${updatedUserRole.status ? "Active" : "Inactive"
         }`
       );
       hideLoading();

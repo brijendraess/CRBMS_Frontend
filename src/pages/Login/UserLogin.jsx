@@ -13,7 +13,7 @@ import { setLoginEmail } from "../../Redux/verifyEmailSlicer";
 import Input from "../../components/Common/Input/Input";
 // Assets Import
 import ebizLogo from "../../assets/Images/ebizlogo.png";
-import { Mail,Lock } from "../../components/Common/CustomButton/CustomIcon";
+import { Mail,Lock } from "../../components/Common/Buttons/CustomIcon";
 
 const UserLogin = () => {
   const [userName, setUserName] = useState("");

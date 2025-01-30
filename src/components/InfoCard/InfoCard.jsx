@@ -4,7 +4,7 @@ import "./InfoCard.css";
 import {
   AccountCircleIcon,
   MoreVertIcon,
-} from "../Common/CustomButton/CustomIcon";
+} from "../Common/Buttons/CustomIcon";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,

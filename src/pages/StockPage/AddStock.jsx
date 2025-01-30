@@ -14,6 +14,8 @@ import toast from "react-hot-toast";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import { PopContent } from "../../Style";
+import FormButton from "../../components/Common/Buttons/FormButton/FormButton";
 
 const AddStock = ({ setRefreshPage, setIsAddOpen }) => {
   const { user } = useSelector((state) => state.user);
@@ -80,22 +82,19 @@ const AddStock = ({ setRefreshPage, setIsAddOpen }) => {
   }, []);
 
   return (
-    <div className="pop-content w-100">
+    <PopContent>
       <Box
         component="form"
         onSubmit={formik.handleSubmit}
-        sx={{
-          maxWidth: 500,
-          margin: "auto",
-          borderRadius: 3,
-        }}
       >
         <FormControl
-          sx={{ m: 1, width: "100%" }}
           error={!!formik.errors.itemId && formik.touched.itemId}
+          fullWidth
+          size="small"
         >
           <InputLabel id="amenity-select-label">Amenity Name</InputLabel>
           <Select
+            label="Amenity Name"
             labelId="amenity-select-label"
             id="itemId"
             name="itemId"
@@ -131,17 +130,9 @@ const AddStock = ({ setRefreshPage, setIsAddOpen }) => {
           error={!!formik.errors.stock && formik.touched.stock}
           helperText={formik.touched.stock && formik.errors.stock}
         />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          fullWidth
-          sx={{ mt: 2 }}
-        >
-          Add Stock
-        </Button>
+        <FormButton type='submit' btnName='Add Stock' />
       </Box>
-    </div>
+    </PopContent>
   );
 };
 

@@ -18,7 +18,7 @@ import {
   DesignServicesOutlinedIcon,
   GroupsIcon,
   LocationOnOutlinedIcon,
-} from "../../components/Common/CustomButton/CustomIcon";
+} from "../../components/Common/Buttons/CustomIcon";
 import { getMeetingTimePercentage, timeDifference } from "../../utils/utils";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import Loader from "../../components/Common/Loader/Loader";

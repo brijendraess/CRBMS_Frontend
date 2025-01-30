@@ -17,8 +17,10 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useDispatch } from "react-redux";
-import { PhotoCameraIcon } from "../Common/CustomButton/CustomIcon";
+import { PhotoCameraIcon } from "../Common/Buttons/CustomIcon";
 import { validateImage } from "../../utils/utils";
+import { PopContent } from "../../Style";
+import FormButton from "../Common/Buttons/FormButton/FormButton";
 
 const EditRoomForm = ({ room, setRefreshPage, setIsEditOpen }) => {
   const [roomImagePreview, setRoomImagePreview] = useState(null);
@@ -174,184 +176,182 @@ const EditRoomForm = ({ room, setRefreshPage, setIsEditOpen }) => {
   };
 
   return (
-    <Box component="form" onSubmit={formik.handleSubmit}>
-      <Box display="flex" justifyContent="space-between">
+    <PopContent>
+      <Box component="form" onSubmit={formik.handleSubmit}>
+        <Box display="flex" justifyContent="space-between">
+          <TextField
+            label="Room Name"
+            name="name"
+            margin="normal"
+            value={formik.values.name}
+            onChange={formik.handleChange}
+            error={formik.touched.name && Boolean(formik.errors.name)}
+            helperText={formik.touched.name && formik.errors.name}
+            style={{ marginRight: 8, flex: 1 }}
+            size="small"
+          />
+          <Autocomplete
+            id="services"
+            name="services"
+            style={{ marginTop: 15, flex: 1 }}
+            size="small"
+            margin="normal"
+            options={servicesList}
+            getOptionLabel={(servicesList) => servicesList.label}
+            value={formik.values.services}
+            onChange={(_, newValue) => formik.setFieldValue("services", newValue)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Select Services"
+                error={formik.touched.services && Boolean(formik.errors.services)}
+                helperText={formik.touched.services && formik.errors.services}
+              />
+            )}
+          />
+        </Box>
+        <Box display="flex" justifyContent="space-between">
+          <TextField
+            label="Sanitation Period"
+            name="sanitationPeriod"
+            margin="normal"
+            type="number"
+            value={formik.values.sanitationPeriod}
+            onChange={formik.handleChange}
+            error={
+              formik.touched.sanitationPeriod &&
+              Boolean(formik.errors.sanitationPeriod)
+            }
+            helperText={
+              formik.touched.sanitationPeriod && formik.errors.sanitationPeriod
+            }
+            size="small"
+            style={{ marginRight: 8, flex: 1 }}
+          />
+          <Autocomplete
+            id="location"
+            name="location"
+            style={{ marginTop: 15, flex: 1 }}
+            size="small"
+            margin="normal"
+            options={locationList}
+            getOptionLabel={(locationList) => locationList.label}
+            value={formik.values.location}
+            onChange={(_, newValue) => formik.setFieldValue("location", newValue)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Select Location"
+                error={
+                  formik.touched.location?.id && Boolean(formik.errors.location)
+                }
+                helperText={formik.touched.location?.id && formik.errors.location}
+              />
+            )}
+            disableCloseOnSelect
+          />
+        </Box>
+        <Box display="flex" justifyContent="space-between">
+          <TextField
+            label="Capacity"
+            name="capacity"
+            margin="normal"
+            type="number"
+            value={formik.values.capacity}
+            onChange={formik.handleChange}
+            error={formik.touched.capacity && Boolean(formik.errors.capacity)}
+            helperText={formik.touched.capacity && formik.errors.capacity}
+            size="small"
+            style={{ marginRight: 8, flex: 1 }}
+          />
+          <TextField
+            label="Tolerance Period"
+            name="tolerancePeriod"
+            margin="normal"
+            type="number"
+            value={formik.values.tolerancePeriod}
+            onChange={formik.handleChange}
+            size="small"
+            style={{ marginRight: 8, flex: 1 }}
+          />
+        </Box>
+        <Box display="flex" justifyContent="space-between">
+          <FormControlLabel
+            control={
+              <Switch
+                checked={sanitationStatus}
+                name="sanitationStatus"
+                onChange={(event) => handleSanitationStatusChange(event)}
+              />
+            }
+            label="Sanitation status"
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={isAvailable}
+                name="isAvailable"
+                onChange={(event) => handleIsAvailableChange(event)}
+              />
+            }
+            label="Is Available"
+          />
+        </Box>
         <TextField
-          label="Room Name"
-          name="name"
+          label="Description"
+          name="description"
           margin="normal"
-          value={formik.values.name}
+          value={formik.values.description}
           onChange={formik.handleChange}
-          error={formik.touched.name && Boolean(formik.errors.name)}
-          helperText={formik.touched.name && formik.errors.name}
-          style={{ marginRight: 8, flex: 1 }}
+          error={formik.touched.description && Boolean(formik.errors.description)}
+          helperText={formik.touched.description && formik.errors.description}
           size="small"
-        />
-        <Autocomplete
-          id="services"
-          name="services"
-          style={{ marginTop: 15, flex: 1 }}
-          size="small"
-          margin="normal"
-          options={servicesList}
-          getOptionLabel={(servicesList) => servicesList.label}
-          value={formik.values.services}
-          onChange={(_, newValue) => formik.setFieldValue("services", newValue)}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Select Services"
-              error={formik.touched.services && Boolean(formik.errors.services)}
-              helperText={formik.touched.services && formik.errors.services}
-            />
-          )}
-        />
-      </Box>
-      <Box display="flex" justifyContent="space-between">
-        <TextField
-          label="Sanitation Period"
-          name="sanitationPeriod"
-          margin="normal"
-          type="number"
-          value={formik.values.sanitationPeriod}
-          onChange={formik.handleChange}
-          error={
-            formik.touched.sanitationPeriod &&
-            Boolean(formik.errors.sanitationPeriod)
-          }
-          helperText={
-            formik.touched.sanitationPeriod && formik.errors.sanitationPeriod
-          }
-          size="small"
-          style={{ marginRight: 8, flex: 1 }}
-        />
-        <Autocomplete
-          id="location"
-          name="location"
-          style={{ marginTop: 15, flex: 1 }}
-          size="small"
-          margin="normal"
-          options={locationList}
-          getOptionLabel={(locationList) => locationList.label}
-          value={formik.values.location}
-          onChange={(_, newValue) => formik.setFieldValue("location", newValue)}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Select Location"
-              error={
-                formik.touched.location?.id && Boolean(formik.errors.location)
-              }
-              helperText={formik.touched.location?.id && formik.errors.location}
-            />
-          )}
-          disableCloseOnSelect
-        />
-      </Box>
-      <Box display="flex" justifyContent="space-between">
-        <TextField
-          label="Capacity"
-          name="capacity"
-          margin="normal"
-          type="number"
-          value={formik.values.capacity}
-          onChange={formik.handleChange}
-          error={formik.touched.capacity && Boolean(formik.errors.capacity)}
-          helperText={formik.touched.capacity && formik.errors.capacity}
-          size="small"
-          style={{ marginRight: 8, flex: 1 }}
-        />
-        <TextField
-          label="Tolerance Period"
-          name="tolerancePeriod"
-          margin="normal"
-          type="number"
-          value={formik.values.tolerancePeriod}
-          onChange={formik.handleChange}
-          size="small"
-          style={{ marginRight: 8, flex: 1 }}
-        />
-      </Box>
-      <Box display="flex" justifyContent="space-between">
-        <FormControlLabel
-          control={
-            <Switch
-              checked={sanitationStatus}
-              name="sanitationStatus"
-              onChange={(event) => handleSanitationStatusChange(event)}
-            />
-          }
-          label="Sanitation status"
-        />
-        <FormControlLabel
-          control={
-            <Switch
-              checked={isAvailable}
-              name="isAvailable"
-              onChange={(event) => handleIsAvailableChange(event)}
-            />
-          }
-          label="Is Available"
-        />
-      </Box>
-      <TextField
-        label="Description"
-        name="description"
-        margin="normal"
-        value={formik.values.description}
-        onChange={formik.handleChange}
-        error={formik.touched.description && Boolean(formik.errors.description)}
-        helperText={formik.touched.description && formik.errors.description}
-        size="small"
-        multiline
-        rows={3}
-        fullWidth
-        style={{ marginBottom: 16 }}
-      />
-
-      {/* AVatar */}
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-around"
-        mt={2}
-        mb={2}
-      >
-        <Avatar
-          sx={{ width: 75, height: 75 }}
-          src={roomImagePreview}
-          alt="Room Image Preview"
-        />
-        <input
-          accept="image/*"
-          style={{ display: "none" }}
-          id="room-image-upload"
-          type="file"
-          onChange={handleRoomImageChange}
-        />
-        <label htmlFor="room-image-upload">
-          <IconButton component="span" color="primary">
-            <PhotoCameraIcon fontSize="medium" />
-          </IconButton>
-        </label>
-      </Box>
-
-      {roomImageError && (
-        <Typography
-          color="error"
-          variant="body2"
-          align="center"
+          multiline
+          rows={3}
+          fullWidth
           style={{ marginBottom: 16 }}
+        />
+
+        {/* AVatar */}
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-around"
+          mt={2}
+          mb={2}
         >
-          {roomImageError}
-        </Typography>
-      )}
-      <Box mt={2} display="flex" justifyContent="flex-end">
-        <Button type="submit" variant="contained" color="primary">
-          Save
-        </Button>
+          <Avatar
+            sx={{ width: 75, height: 75 }}
+            src={roomImagePreview}
+            alt="Room Image Preview"
+          />
+          <input
+            accept="image/*"
+            style={{ display: "none" }}
+            id="room-image-upload"
+            type="file"
+            onChange={handleRoomImageChange}
+          />
+          <label htmlFor="room-image-upload">
+            <IconButton component="span" color="primary">
+              <PhotoCameraIcon fontSize="medium" />
+            </IconButton>
+          </label>
+        </Box>
+
+        {roomImageError && (
+          <Typography
+            color="error"
+            variant="body2"
+            align="center"
+            style={{ marginBottom: 16 }}
+          >
+            {roomImageError}
+          </Typography>
+        )}
+        <FormButton type="submit" btnName={'Save'} />
       </Box>
-    </Box>
+    </PopContent>
   );
 };
 

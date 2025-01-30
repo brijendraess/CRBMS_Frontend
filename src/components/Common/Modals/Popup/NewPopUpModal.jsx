@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import { Box } from "@mui/material";
-import CustomButton from "../../CustomButton/CustomButton";
+import CustomButton from "../../Buttons/CustomButton";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -17,7 +17,7 @@ const NewPopUpModal = ({
   modalBody,
   isOpen,
   setIsOpen,
-  width = "600px",
+  width = "600px" || width,
   height = "auto",
   title = "",
 }) => {
@@ -42,7 +42,7 @@ const NewPopUpModal = ({
         sx={{
           position: "relative",
           background: `var(--linear-gradient-main)`,
-          //   background: `transparent`,
+          // background: `transparent`,
         }}
       >
         <Toolbar
@@ -59,14 +59,6 @@ const NewPopUpModal = ({
           >
             {title}
           </Typography>
-          {/* <CustomButton
-            onClick={handleClose}
-            title={title || "Add"}
-            placement={"left"}
-            Icon={CloseIcon}
-            fontSize={"medium"}
-            background={"#000"}
-          /> */}
           <CloseIcon onClick={handleClose} sx={{ cursor: "pointer" }} />
         </Toolbar>
       </AppBar>
@@ -77,8 +69,12 @@ const NewPopUpModal = ({
             xs: "300px",
             sm: `${width}`,
           },
-          height: {
+          maxHeight: {
             xs: "480px",
+            md: "auto",
+          },
+          height: {
+            xs: "auto",
             md: "auto",
           },
           top: "55%",
@@ -89,6 +85,7 @@ const NewPopUpModal = ({
           zIndex: "10000",
           minWidth: "300px",
           overflowY: "scroll",
+          // background: `var(--body-color)`,
         }}
       >
         {modalBody}

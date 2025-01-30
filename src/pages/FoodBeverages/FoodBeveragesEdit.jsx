@@ -5,6 +5,8 @@ import toast from "react-hot-toast";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { PopContent } from "../../Style";
+import FormButton from "../../components/Common/Buttons/FormButton/FormButton";
 
 const FoodBeverageEdit = ({
   id,
@@ -49,38 +51,32 @@ const FoodBeverageEdit = ({
   });
 
   return (
-    <Box
-      component="form"
-      onSubmit={formik.handleSubmit}
-      sx={{
-        maxWidth: 500,
-        margin: "auto",
-        borderRadius: 3,
-      }}
-    >
-      <TextField
-        label="Food beverage Name"
-        name="name"
-        value={formik.values.name}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.name && Boolean(formik.errors.name)}
-        helperText={formik.touched.name && formik.errors.name}
-        fullWidth
-        required
-        margin="normal"
-        size="small"
-      />
-      <Button
-        type="submit"
-        variant="contained"
-        color="primary"
-        fullWidth
-        sx={{ mt: 2 }}
+    <PopContent>
+      <Box
+        component="form"
+        onSubmit={formik.handleSubmit}
+        sx={{
+          maxWidth: 500,
+          margin: "auto",
+          borderRadius: 3,
+        }}
       >
-        Update
-      </Button>
-    </Box>
+        <TextField
+          label="Food beverage Name"
+          name="name"
+          value={formik.values.name}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.name && Boolean(formik.errors.name)}
+          helperText={formik.touched.name && formik.errors.name}
+          fullWidth
+          required
+          margin="normal"
+          size="small"
+        />
+        <FormButton type='submit' btnName='Update' />
+      </Box>
+    </PopContent>
   );
 };
 

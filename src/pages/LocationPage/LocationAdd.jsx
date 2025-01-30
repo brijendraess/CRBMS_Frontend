@@ -2,10 +2,12 @@ import { Avatar, Box, Button, IconButton, TextField } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { PhotoCameraIcon } from "../../components/Common/CustomButton/CustomIcon";
+import { PhotoCameraIcon } from "../../components/Common/Buttons/CustomIcon";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { PopContent } from "../../Style";
+import FormButton from "../../components/Common/Buttons/FormButton/FormButton";
 
 const LocationAdd = ({ setRefreshPage, setIsAddOpen }) => {
   const [locationImagePreview, setLocationImagePreview] = useState(null);
@@ -85,7 +87,7 @@ const LocationAdd = ({ setRefreshPage, setIsAddOpen }) => {
   };
 
   return (
-    <div className="pop-content w-100">
+    <PopContent>
       <Box
         component="form"
         onSubmit={formik.handleSubmit}
@@ -138,17 +140,10 @@ const LocationAdd = ({ setRefreshPage, setIsAddOpen }) => {
             {formik.errors.locationImage}
           </Box>
         )}
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          fullWidth
-          sx={{ mt: 2 }}
-        >
-          Add Location
-        </Button>
+
+        <FormButton type='submit' btnName='Add Location' />
       </Box>
-    </div>
+    </PopContent>
   );
 };
 

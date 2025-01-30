@@ -17,7 +17,8 @@ import {
   AddOutlinedIcon,
   DeleteOutlineOutlinedIcon,
   EditOutlinedIcon,
-} from "../../components/Common/CustomButton/CustomIcon";
+} from "../../components/Common/Buttons/CustomIcon";
+import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
 
 const LocationPage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -45,7 +46,7 @@ const LocationPage = () => {
         dispatch(hideLoading());
       } catch (error) {
         dispatch(hideLoading());
-        toast.error("Something Went Wrong");
+        // toast.error("Something Went Wrong");
         console.error("Error fetching locations:", error);
       }
     };
@@ -105,8 +106,7 @@ const LocationPage = () => {
       );
 
       toast.success(
-        `Location status changed to ${
-          updatedLocation.status ? "Active" : "Inactive"
+        `Location status changed to ${updatedLocation.status ? "Active" : "Inactive"
         }`
       );
       dispatch(hideLoading());
@@ -251,7 +251,7 @@ const LocationPage = () => {
         </div>
       )}
 
-      <PopupModals
+      <NewPopUpModal
         isOpen={isAddOpen}
         setIsOpen={setIsAddOpen}
         title={"Add Location"}
@@ -262,7 +262,7 @@ const LocationPage = () => {
           />
         }
       />
-      <PopupModals
+      <NewPopUpModal
         isOpen={isEditOpen}
         setIsOpen={setIsEditOpen}
         title={"Edit Location"}

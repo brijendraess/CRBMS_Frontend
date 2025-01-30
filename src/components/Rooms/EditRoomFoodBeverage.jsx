@@ -12,6 +12,8 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import { PopContent } from "../../Style";
+import FormButton from "../Common/Buttons/FormButton/FormButton";
 
 const EditRoomFoodBeverage = ({
   room,
@@ -81,17 +83,15 @@ const EditRoomFoodBeverage = ({
   }, []);
 
   return (
-    <div className="pop-content w-100">
+    <PopContent>
       <Box
         component="form"
         onSubmit={handleSubmit}
-        sx={{
-          maxWidth: 500,
-          margin: "auto",
-          borderRadius: 3,
-        }}
       >
-        <FormControl sx={{ m: 1, width: "100%" }}>
+        <FormControl
+          size="small"
+          fullWidth
+        >
           <InputLabel id="demo-multiple-name-label">Amenity Name</InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -102,24 +102,18 @@ const EditRoomFoodBeverage = ({
             required
             size="small"
             onChange={handleChange}
+            sx={{
+              marginBottom: '8px'
+            }}
           >
             {amenitiesList.map((foodBeverage) => (
               <MenuItem value={foodBeverage.id}>{foodBeverage.label}</MenuItem>
             ))}
           </Select>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            onClick={() => handleSubmit()}
-            fullWidth
-            sx={{ mt: 2 }}
-          >
-            Save
-          </Button>
+          <FormButton type="submit" func={() => handleSubmit()} btnName={'Save'} />
         </FormControl>
       </Box>
-    </div>
+    </PopContent>
   );
 };
 

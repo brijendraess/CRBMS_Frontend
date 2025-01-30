@@ -8,7 +8,7 @@ import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useDispatch } from "react-redux";
 import "./Login.css";
 import { Button, Typography } from "@mui/material";
-import { Lock } from "../../components/Common/CustomButton/CustomIcon";
+import { Lock } from "../../components/Common/Buttons/CustomIcon";
 import { isPasswordValid } from "../../utils/utils";
 
 const ResetPassword = () => {

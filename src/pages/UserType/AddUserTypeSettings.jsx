@@ -28,6 +28,7 @@ import {
 import { Grid2 } from "@mui/material";
 import { PaperWrapper } from "../../Style";
 import { useNavigate } from "react-router-dom";
+import FormButton from "../../components/Common/Buttons/FormButton/FormButton";
 
 const AddUserTypeSettings = () => {
   const { user } = useSelector((state) => state.user);
@@ -852,25 +853,8 @@ const AddUserTypeSettings = () => {
             <Divider sx={{ opacity: 1, color: "#000" }} />
           </>
         ))}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            mt: 5,
-          }}
-        >
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
-            sx={{
-              width: "200px",
-            }}
-          >
-            Add User Role
-          </Button>
-        </Box>
+        <br />
+        <FormButton type='submit' btnName='Add User Role' />
       </Box>
     </PaperWrapper>
   );

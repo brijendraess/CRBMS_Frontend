@@ -36,11 +36,12 @@ import {
   VisibilityOutlinedIcon,
   AirlineSeatLegroomExtraOutlinedIcon,
   DesignServicesOutlinedIcon,
-} from "../Common/CustomButton/CustomIcon";
+} from "../Common/Buttons/CustomIcon";
 import RoomFoodBeverages from "./RoomFoodBeverages";
 import BarCode from "../../pages/BarCodePage/BarCode";
-import StatusSymbol from "../Common/CustomButton/StatusSymbol";
+import StatusSymbol from "../Common/Buttons/StatusSymbol";
 import DeleteNotAllowModel from "../Common/Modals/Delete/DeleteNotAllowModel";
+import NewPopUpModal from "../Common/Modals/Popup/NewPopUpModal";
 
 const RoomsCard = ({
   room,
@@ -96,11 +97,11 @@ const RoomsCard = ({
   };
 
   const handleDeleteClick = (id) => {
-    if(room?.Meetings?.length>0){
+    if (room?.Meetings?.length > 0) {
       setIsNotDeleteOpen(true);
-    }else{
-    setIsDeleteOpen(true);
-    setDeleteId(id);
+    } else {
+      setIsDeleteOpen(true);
+      setDeleteId(id);
     }
   };
 
@@ -197,7 +198,7 @@ const RoomsCard = ({
             sx={{
               width: "100%",
               height: "100%",
-              cursor:"pointer",
+              cursor: "pointer",
               transformOrigin: "center",
               transform: "scale(1.001)",
               transition: "transform 0.4s ease-in-out",
@@ -225,7 +226,7 @@ const RoomsCard = ({
               fontFamily: "'Bebas Neue', cursive",
               fontSize: "1.2rem",
               color: "black",
-              cursor:"pointer",
+              cursor: "pointer",
               transition: "color 0.3s ease-out",
             }}
           >
@@ -269,7 +270,7 @@ const RoomsCard = ({
                 <CleaningServicesIcon />
               </Tooltip>{" "}
               {user.UserType.roomModule &&
-              user.UserType.roomModule.split(",").includes("sanitization") ? (
+                user.UserType.roomModule.split(",").includes("sanitization") ? (
                 <FormControlLabel
                   className="room-sanitation"
                   control={
@@ -531,32 +532,34 @@ const RoomsCard = ({
           )}
         </CardActions>
       </Paper>
-      <PopupModals
+
+
+      <NewPopUpModal
         isOpen={isGalleryOpen}
         setIsOpen={setIsGalleryOpen}
         title={"Room Gallery"}
         modalBody={<RoomGallery room={room} />}
       />
-      <PopupModals
+      <NewPopUpModal
         isOpen={isAmenitiesOpen}
         setIsOpen={setIsAmenitiesOpen}
         title={"Room Amenities"}
         modalBody={<RoomAmenities room={room} />}
       />
-      <PopupModals
+      <NewPopUpModal
         isOpen={isFoodBeverageOpen}
         setIsOpen={setIsFoodBeverageOpen}
         title={"Room Food & Beverage"}
         modalBody={<RoomFoodBeverages room={room} />}
       />
 
-      <PopupModals
+      <NewPopUpModal
         isOpen={isBarCodeOpen}
         setIsOpen={setIsBarCodeOpen}
         title={"Room Barcode"}
         modalBody={<BarCode urlData={urlData} />}
       />
-      <PopupModals
+      <NewPopUpModal
         isOpen={isEditOpen}
         setIsOpen={setIsEditOpen}
         title={"Room Edit"}
@@ -568,7 +571,7 @@ const RoomsCard = ({
           />
         }
       />
-      <PopupModals
+      <NewPopUpModal
         isOpen={isBookNowOpen}
         setIsOpen={setIsBookNowOpen}
         title={"Add New Meeting"}

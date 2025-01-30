@@ -11,7 +11,7 @@ import {
   ApprovalOutlinedIcon,
   EditOutlinedIcon,
   EventBusyOutlinedIcon,
-} from "../../components/Common/CustomButton/CustomIcon";
+} from "../../components/Common/Buttons/CustomIcon";
 import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import MeetingFormEdit from "../MeetingPage/MeetingFormEdit";
 import MeetingFormPostPone from "../MeetingPage/MeetingFormPostPone";
@@ -83,7 +83,7 @@ const PendingMeeting = () => {
       const response = await axios.get(`api/v1/rooms/${updatedRoomId}`);
       setRoomsData(response.data.data.room[0]);
     } catch (error) {
-      toast.error("Something Went Wrong");
+      // toast.error("Something Went Wrong");
       console.error("Error fetching room data:", error);
     }
   };

@@ -14,7 +14,7 @@ import ServicesAdd from "./ServicesAdd";
 import axios from "axios";
 import toast from "react-hot-toast";
 import ServicesEdit from "./ServicesEdit";
-import CustomButton from "../../components/Common/CustomButton/CustomButton";
+import CustomButton from "../../components/Common/Buttons/CustomButton";
 import DeleteModal from "../../components/Common/Modals/Delete/DeleteModal";
 import ServicesCard from "../../components/Responsive/Services/ServicesCard";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
@@ -23,8 +23,9 @@ import {
   AddOutlinedIcon,
   EditOutlinedIcon,
   DeleteOutlineOutlinedIcon,
-} from "../../components/Common/CustomButton/CustomIcon";
+} from "../../components/Common/Buttons/CustomIcon";
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
+import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
 
 const ServicesPage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -53,7 +54,7 @@ const ServicesPage = () => {
         dispatch(hideLoading());
       } catch (error) {
         dispatch(hideLoading());
-        toast.error("Something Went Wrong");
+        // toast.error("Something Went Wrong");
         console.error("Error fetching services:", error);
       }
     };
@@ -112,8 +113,7 @@ const ServicesPage = () => {
       );
 
       toast.success(
-        `Services status changed to ${
-          updatedServices.status ? "Active" : "Inactive"
+        `Services status changed to ${updatedServices.status ? "Active" : "Inactive"
         }`
       );
       dispatch(hideLoading());
@@ -242,7 +242,7 @@ const ServicesPage = () => {
           />
         </div>
       )}
-      <PopupModals
+      <NewPopUpModal
         isOpen={isAddOpen}
         setIsOpen={setIsAddOpen}
         title={"Add Services"}
@@ -253,7 +253,7 @@ const ServicesPage = () => {
           />
         }
       />
-      <PopupModals
+      <NewPopUpModal
         isOpen={isEditOpen}
         setIsOpen={setIsEditOpen}
         title={"Edit Services"}

@@ -28,6 +28,7 @@ import {
 } from "../../utils/utils";
 import { PaperWrapper } from "../../Style";
 import { useLocation, useNavigate } from "react-router-dom";
+import FormButton from "../../components/Common/Buttons/FormButton/FormButton";
 
 const EditUserTypeSettings = () => {
   const { user } = useSelector((state) => state.user);
@@ -875,25 +876,8 @@ const EditUserTypeSettings = () => {
             <Divider sx={{ opacity: 1, color: "#000" }} />
           </>
         ))}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            mt: 5,
-          }}
-        >
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
-            sx={{
-              width: "200px",
-            }}
-          >
-            Save
-          </Button>
-        </Box>
+        <br />
+        <FormButton type='submit' btnName='Update User Role' />
       </Box>
     </PaperWrapper>
   );
