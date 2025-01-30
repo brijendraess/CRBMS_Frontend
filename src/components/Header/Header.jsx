@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./Header.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import logo from "../../assets/Images/logo.webp";
+import logo from "../../assets/Images/logo.jpg";
 import {
   Badge,
   Button,
