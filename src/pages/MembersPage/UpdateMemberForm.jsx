@@ -80,10 +80,12 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
             services?.find((service) => service.servicesName === servicesName)
           )
           ?.filter(Boolean);
+          console.log(userData)
         // Set initial values with committee objects
         setFormDataList({
           fullname: userData.fullname,
           email: userData.email,
+          userDescription: userData.userDescription,
           phoneNumber: userData.phoneNumber,
           user_type: userData.user_type.id,
           committees: userCommitteeObjects,
@@ -110,6 +112,7 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
     initialValues: {
       fullname: formDataList?.fullname||"",
           email: formDataList?.email||"",
+          userDescription: formDataList?.userDescription||"",
           phoneNumber: formDataList?.phoneNumber||"",
           user_type: formDataList?.user_type||"",
           committees: formDataList?.committees||[],
@@ -118,6 +121,7 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
     enableReinitialize: true,
     validationSchema: Yup.object({
       fullname: Yup.string().required("Name is required"),
+      userDescription: Yup.string().optional(),
       email: Yup.string()
         .email("Invalid email format")
         .required("Email is required"),
@@ -144,6 +148,7 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
         const formData = new FormData();
         formData.append("fullname", values.fullname);
         formData.append("email", values.email);
+        formData.append("userDescription", values.userDescription);
         formData.append("phoneNumber", values.phoneNumber);
         formData.append("user_type", values.user_type);
         formData.append("committees", committeeIds);
@@ -345,6 +350,23 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
             </li>
           )}
         />
+        <Box display="flex" justifyContent="space-between" mb={2}>
+                  <TextField
+                    label="User Description"
+                    name="userDescription"
+                    value={formik.values.userDescription}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    fullWidth
+                    margin="normal"
+                    multiline
+                    rows={5}
+                    error={
+                      formik.touched.userDescription && Boolean(formik.errors.userDescription)
+                    }
+                    helperText={formik.touched.userDescription && formik.errors.userDescription}
+                  />
+                </Box>
         {/* AVatar */}
         <Box
           display="flex"

@@ -36,6 +36,7 @@ import StockPage from "./pages/StockPage/StockPage";
 import DashboardPage from "./pages/Dashboard/DashboardPage";
 import AddUserTypeSettings from "./pages/UserType/AddUserTypeSettings";
 import EditUserTypeSettings from "./pages/UserType/EditUserTypeSettings";
+import CommitteeTypePage from "./pages/CommitteeType/CommitteeTypePage";
 
 const AppRouter = () => {
   return (
@@ -104,6 +105,7 @@ const AppRouter = () => {
         <Route path="/add-room" element={<AddRoomForm />} />
         <Route path="/edit/:id" element={<UpdateMemberForm />} />
         <Route path="/committee" element={<CommitteeManagementMUI />} />
+        <Route path="/committee-type" element={<CommitteeTypePage />} />
         <Route path="/add-committee" element={<AddCommitteeForm />} />
         <Route path="/book-meeting/:id" element={<MeetingForm />} />
         <Route path="/location" element={<LocationPage />} />

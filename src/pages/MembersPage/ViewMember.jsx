@@ -24,17 +24,19 @@ const ViewMember = ({ id }) => {
         dispatch(showLoading());
         const response = await axios.get(`/api/v1/user/${id}`);
         const result = response.data.data;
-        console.log(result)
         // Format data (directly mapping committees since it's already an array)
         const formattedData = {
           id: result.id,
-          fullname: result.fullname,
+          fullname: result?.fullname,
+          userDescription: result.userDescription,
           email: result.email,
           phoneNumber: result.phoneNumber,
           avatarPath: result.avatarPath,
           committees: result.committees,
+          committeeType: result.committeeType,
           services: result.services,
         };
+        console.log(formattedData)
 
         setUserData(formattedData);
         dispatch(hideLoading());
@@ -115,6 +117,25 @@ const ViewMember = ({ id }) => {
         <Typography variant="body1" color="textSecondary">
           Phone: {userData.phoneNumber}
         </Typography>
+        <Typography variant="body1" color="textSecondary">
+          Description: {userData.userDescription}
+        </Typography>
+      </Box>
+      <Box width="100%" maxWidth="800px" mt={4}>
+        <Divider textAlign="left" mt>
+          <Chip label="Committee Type" size="large" />
+        </Divider>
+        {userData.committees&&userData.committees.length > 0 && (
+          <div style={{ maxHeight: "120px", overflow: "scroll" }}>
+            <Grid2 container spacing={2} mt={3}>
+              {userData.committeeType.map((committee, index) => (
+                <Grid2 item xs={12} sm={6} md={4} key={index}>
+                  <Chip label={committee} variant="outlined" />
+                </Grid2>
+              ))}
+            </Grid2>
+          </div>
+        )}
       </Box>
       <Box width="100%" maxWidth="800px" mt={4}>
         <Divider textAlign="left" mt>
