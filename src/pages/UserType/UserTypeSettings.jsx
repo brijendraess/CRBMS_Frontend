@@ -45,7 +45,6 @@ const UserTypeSettings = () => {
     const fetchUserType = async () => {
       try {
         const response = await axios.get(`/api/v1/user-type/all`);
-        // console.log(response.data.data.result);
         const userType = response?.data?.data?.result?.map((type, index) => {
           const permissionArray = [];
 
@@ -63,6 +62,12 @@ const UserTypeSettings = () => {
             permissionArray.push({
               name: `<b>Committee:</b> ${replaceAndUppercase(
                 type.committeeModule
+              )}`,
+            });
+            type.committeeTypeModule &&
+            permissionArray.push({
+              name: `<b>Committee Type:</b> ${replaceAndUppercase(
+                type.committeeTypeModule
               )}`,
             });
           type.notificationModule &&
@@ -134,7 +139,6 @@ const UserTypeSettings = () => {
             status: type.status,
           };
         });
-        // console.log("SDASDA",response.data.data.result)
         const userTypeDB = response.data.data.result.map((type, index) => ({
           id: index + 1,
           serialNo: index + 1,
@@ -143,6 +147,7 @@ const UserTypeSettings = () => {
           calendarModule: type.calendarModule,
           userModule: type.userModule,
           committeeModule: type.committeeModule,
+          committeeTypeModule: type.committeeTypeModule,
           notificationModule: type.notificationModule,
           inventoryModule: type.inventoryModule,
           committeeMemberModule: type.committeeMemberModule,
@@ -174,7 +179,6 @@ const UserTypeSettings = () => {
 
   const handleEdit = (id) => {
     const selectedRole = userRoleDB.find((role) => role.uid === id);
-    console.log("Selected Role:", selectedRole);
 
     if (selectedRole) {
       navigate(`/user-role/edit-role/${id}`, {

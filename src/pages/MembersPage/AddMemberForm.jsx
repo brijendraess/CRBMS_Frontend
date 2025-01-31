@@ -96,7 +96,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
     const strongRandomPassword = generateRandomPassword();
     // setFirstTimeStrongPassword("");
     setStrongPassword(strongRandomPassword);
-    formik.setFieldValue("password", strongRandomPassword)
+    formik.setFieldValue("password", strongRandomPassword);
   };
 
   const formik = useFormik({
@@ -117,6 +117,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
         .email("Invalid email format")
         .required("Email is required"),
       user_type: Yup.string().required("Role is required"),
+      userDescription: Yup.string().optional(),
       phoneNumber: Yup.string()
         .matches(/^\d+$/, "Phone number must contain only digits")
         .required("Phone number is required")
@@ -136,6 +137,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
         console.log("Submitted data : ", values);
         const formData = new FormData();
         formData.append("fullname", values.fullname);
+        formData.append("userDescription", values.userDescription);
         formData.append("email", values.email);
         formData.append("user_type", values.user_type);
         formData.append("phoneNumber", values.phoneNumber);
@@ -246,9 +248,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
             className="custom-password-field"
             label="Password"
             name="password"
-            value={
-              formik.values.password
-            }
+            value={formik.values.password}
             onChange={formik.handleChange}
             error={formik.touched.password && Boolean(formik.errors.password)}
             helperText={formik.touched.password && formik.errors.password}
@@ -413,7 +413,23 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
             ))}
           </TextField>
         </Box>
-
+        <Box display="flex" justifyContent="space-between" mb={2}>
+          <TextField
+            label="User Description"
+            name="userDescription"
+            value={formik.values.userDescription}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            fullWidth
+            margin="normal"
+            multiline
+            rows={5}
+            error={
+              formik.touched.userDescription && Boolean(formik.errors.userDescription)
+            }
+            helperText={formik.touched.userDescription && formik.errors.userDescription}
+          />
+        </Box>
         {/* Avatar */}
         <Box display="flex" justifyContent="center" mb={3}>
           <input
@@ -439,7 +455,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
         {/* Submit Button */}
         <FormButton type="submit" btnName="Add Member" />
       </Box>
-    </PopContent >
+    </PopContent>
   );
 };
 

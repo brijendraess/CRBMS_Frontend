@@ -64,11 +64,12 @@ const CommitteeManagementMUI = () => {
     fetchCommittee();
   }, [refreshPage]);
 
-  const filteredCommittees = committeeData.filter((committee) => {
+  let filteredCommitteesMediate = committeeData.filter((committee) => {
     if (filter === "active") return committee.status === true;
     if (filter === "inactive") return committee.status === false;
     return true;
   });
+  const filteredCommittees= filteredCommitteesMediate.map((data)=>Object.assign({}, data, {"committeeTypeName":data?.CommitteeType?.name}))
 
   const handleDeleteCommittee = async (id) => {
     try {
@@ -119,7 +120,7 @@ const CommitteeManagementMUI = () => {
   };
 
   const handleNavigateToMemberList = (id) => {
-    const committeeId = id
+    const committeeId = id;
     navigate(`/view-committee/${committeeId}`, {
       state: { committeeData },
     });
@@ -130,11 +131,21 @@ const CommitteeManagementMUI = () => {
     setIsAddCommittee(false);
   };
 
+  const handleNavigateToCommitteeTypeList = () => {
+    navigate(`/committee-type`);
+  };
+
   const columns = [
     {
       field: "name",
       headerName: "Committee Name",
       flex: 1,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "committeeTypeName",
+      headerName: "Committee Type",
+      flex: 0.5,
       headerClassName: "super-app-theme--header",
     },
     {
@@ -216,7 +227,6 @@ const CommitteeManagementMUI = () => {
               }}
               className="committee-view"
               disabled={params.row.CommitteeMembers?.length === 0}
-
             />
           </Tooltip>
         </div>
@@ -256,6 +266,27 @@ const CommitteeManagementMUI = () => {
               <MenuItem value="inactive">Inactive</MenuItem>
             </Select>
           </FormControl>
+          {user.UserType.committeeTypeModule &&
+            user.UserType.committeeTypeModule.split(",").includes("view") && <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Tooltip title="Committee Type List">
+              <Chip
+                label="Committee Type"
+                size="large"
+                color="error"
+                variant="outlined"
+                icon=""
+                onClick={handleNavigateToCommitteeTypeList}
+                sx={{ cursor: "pointer", padding: "5px" }}
+                className="committee-view"
+              />
+            </Tooltip>
+          </Box>}
         </PageHeader>
 
         {isSmallScreen ? (
@@ -322,7 +353,7 @@ const CommitteeManagementMUI = () => {
           isOpen={isAddCommittee}
           title={"Add Committee"}
           setIsOpen={setIsAddCommittee}
-        // width={600}
+          // width={600}
         />
 
         <NewPopUpModal
@@ -336,7 +367,7 @@ const CommitteeManagementMUI = () => {
               setIsEditOpen={setIsEditOpen}
             />
           }
-        // width={500}
+          // width={500}
         />
 
         <DeleteModal

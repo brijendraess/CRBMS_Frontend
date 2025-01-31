@@ -37,7 +37,6 @@ const EditUserTypeSettings = () => {
   const { userRole } = location.state || {};
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // console.log("Location State", userRole);
   const goBack = () => {
     navigate(-1);
   };
@@ -57,6 +56,14 @@ const EditUserTypeSettings = () => {
       committeeDelete: userRole?.committeeModule?.split(",").includes("delete"),
       committeeView: userRole?.committeeModule?.split(",").includes("view"),
       committeeChangeStatus: userRole?.committeeModule
+        ?.split(",")
+        .includes("changeStatus"),
+
+        committeeTypeAdd: userRole?.committeeTypeModule?.split(",").includes("add"),
+      committeeTypeEdit: userRole?.committeeTypeModule?.split(",").includes("edit"),
+      committeeTypeDelete: userRole?.committeeTypeModule?.split(",").includes("delete"),
+      committeeTypeView: userRole?.committeeTypeModule?.split(",").includes("view"),
+      committeeTypeChangeStatus: userRole?.committeeTypeModule
         ?.split(",")
         .includes("changeStatus"),
 
@@ -177,6 +184,12 @@ const EditUserTypeSettings = () => {
       committeeView: Yup.boolean().optional(),
       committeeChangeStatus: Yup.boolean().optional(),
 
+      committeeTypeAdd: Yup.boolean().optional(),
+      committeeTypeEdit: Yup.boolean().optional(),
+      committeeTypeDelete: Yup.boolean().optional(),
+      committeeTypeView: Yup.boolean().optional(),
+      committeeTypeChangeStatus: Yup.boolean().optional(),
+
       notificationRead: Yup.boolean().optional(),
       notificationDelete: Yup.boolean().optional(),
       notificationView: Yup.boolean().optional(),
@@ -238,7 +251,6 @@ const EditUserTypeSettings = () => {
       isAdmin: Yup.string().optional(),
     }),
     onSubmit: async (values, { resetForm }) => {
-      console.log("Submitted values:", values);
       dispatch(showLoading());
       try {
         const submittedData = {
@@ -263,6 +275,13 @@ const EditUserTypeSettings = () => {
             values.committeeDelete,
             values.committeeView,
             values.committeeChangeStatus
+          ),
+          committeeTypeModule: userRoleStringManipulation(
+            values.committeeTypeAdd,
+            values.committeeTypeEdit,
+            values.committeeTypeDelete,
+            values.committeeTypeView,
+            values.committeeTypeChangeStatus
           ),
           notificationModule: notificationStringManipulation(
             false,
@@ -351,7 +370,6 @@ const EditUserTypeSettings = () => {
           createdBy: values.createdBy,
           isAdmin: values.isAdmin,
         };
-        // console.log("Submitted values:", submittedData);
         dispatch(showLoading());
         await axios.put(`api/v1/user-type/edit/${userRole.uid}`, submittedData);
 
@@ -429,6 +447,12 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("committeeView", true);
                   formik.setFieldValue("committeeChangeStatus", true);
 
+                  formik.setFieldValue("committeeTypeAdd", "");
+                  formik.setFieldValue("committeeTypeEdit", "");
+                  formik.setFieldValue("committeeTypeDelete", "");
+                  formik.setFieldValue("committeeTypeView", true);
+                  formik.setFieldValue("committeeTypeChangeStatus", true);
+
                   formik.setFieldValue("notificationRead", true);
                   formik.setFieldValue("notificationDelete", true);
                   formik.setFieldValue("notificationView", true);
@@ -493,6 +517,12 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("committeeDelete", true);
                   formik.setFieldValue("committeeView", true);
                   formik.setFieldValue("committeeChangeStatus", true);
+
+                  formik.setFieldValue("committeeTypeAdd", true);
+                  formik.setFieldValue("committeeTypeEdit", true);
+                  formik.setFieldValue("committeeTypeDelete", true);
+                  formik.setFieldValue("committeeTypeView", true);
+                  formik.setFieldValue("committeeTypeChangeStatus", true);
 
                   formik.setFieldValue("notificationRead", true);
                   formik.setFieldValue("notificationDelete", true);
@@ -567,6 +597,12 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("committeeView", true);
                   formik.setFieldValue("committeeChangeStatus", true);
 
+                  formik.setFieldValue("committeeTypeAdd", "");
+                  formik.setFieldValue("committeeTypeEdit", "");
+                  formik.setFieldValue("committeeTypeDelete", "");
+                  formik.setFieldValue("committeeTypeView", true);
+                  formik.setFieldValue("committeeTypeChangeStatus", true);
+
                   formik.setFieldValue("notificationRead", true);
                   formik.setFieldValue("notificationDelete", true);
                   formik.setFieldValue("notificationView", true);
@@ -631,6 +667,12 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("committeeDelete", "");
                   formik.setFieldValue("committeeView", "");
                   formik.setFieldValue("committeeChangeStatus", "");
+
+                  formik.setFieldValue("committeeTypeAdd", "");
+                  formik.setFieldValue("committeeTypeEdit", "");
+                  formik.setFieldValue("committeeTypeDelete", "");
+                  formik.setFieldValue("committeeTypeView", "");
+                  formik.setFieldValue("committeeTypeChangeStatus", "");
 
                   formik.setFieldValue("notificationRead", true);
                   formik.setFieldValue("notificationDelete", true);
@@ -744,6 +786,16 @@ const EditUserTypeSettings = () => {
               { name: "committeeAdd", label: "Add" },
               { name: "committeeEdit", label: "Edit" },
               { name: "committeeChangeStatus", label: "Status" },
+            ],
+          },
+          {
+            title: "CommitteeType",
+            permissions: [
+              { name: "committeeTypeView", label: "View" },
+              { name: "committeeTypeDelete", label: "Delete" },
+              { name: "committeeTypeAdd", label: "Add" },
+              { name: "committeeTypeEdit", label: "Edit" },
+              { name: "committeeTypeChangeStatus", label: "Status" },
             ],
           },
           {
