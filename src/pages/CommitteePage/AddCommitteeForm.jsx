@@ -118,6 +118,8 @@ const AddCommitteeForm = ({
           formik.setValues({
             name: committee.name,
             description: committee.description,
+            committeeType: committee.committeeTypeId,
+            chairperson: committee.chairPersonId,
           });
           dispatch(hideLoading());
         } catch (err) {
