@@ -11,7 +11,9 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Visibility,VisibilityOff } from "../../components/Common/Buttons/CustomIcon";
+import { Visibility, VisibilityOff } from "../../components/Common/Buttons/CustomIcon";
+import { PopContent } from "../../Style";
+import FormButton from "../../components/Common/Buttons/FormButton/FormButton";
 
 const ResetPasswordFromProfile = () => {
   const [showOldPassword, setShowOldPassword] = useState(false);
@@ -94,7 +96,7 @@ const ResetPasswordFromProfile = () => {
   };
 
   return (
-    <>
+    <PopContent>
       <form onSubmit={formik.handleSubmit}>
         {/* Old Password */}
         <TextField
@@ -195,18 +197,11 @@ const ResetPasswordFromProfile = () => {
         </Typography>
 
         {/* Submit Button */}
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          sx={{ marginTop: "10px" }}
-          disabled={formik.isSubmitting}
-        >
-          Submit
-        </Button>
+
+        <FormButton type='submit' btnName='Reset Password' />
+
       </form>
 
-      {/* Password Rules */}
       <Typography
         variant="body2"
         color="textSecondary"
@@ -220,7 +215,7 @@ const ResetPasswordFromProfile = () => {
           <li>It must contain at least one special character</li>
         </ul>
       </Typography>
-    </>
+    </PopContent>
   );
 };
 

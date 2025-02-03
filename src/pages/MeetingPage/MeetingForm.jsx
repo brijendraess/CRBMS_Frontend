@@ -9,6 +9,7 @@ import {
   FormControlLabel,
   Radio,
   Chip,
+  Paper,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
@@ -20,6 +21,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { disablePastDates, fetchActiveCommittee, fetchUsers } from "../../utils/utils";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import { PopContent } from "../../Style";
+import FormButton from "../../components/Common/Buttons/FormButton/FormButton";
 
 const MeetingForm = ({ room }) => {
   const [emailsList, setEmailsList] = useState([]);
@@ -120,314 +123,319 @@ const MeetingForm = ({ room }) => {
   }, [formik]);
 
   return (
-    <Box component="form" onSubmit={formik.handleSubmit}>
-      {/* Date */}
-      <Box display="flex" justifyContent="space-between" gap={1}>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePicker
-          label="Date"
-          value={formik.values.date}
-          onChange={(value) => formik.setFieldValue("date", value)}
-          shouldDisableDate={disablePastDates}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              margin="normal"
-              fullWidth
-              error={formik.touched.date && Boolean(formik.errors.date)}
-              helperText={formik.touched.date && formik.errors.date}
-              size="small"
-            />
-          )}
-        />
-        </LocalizationProvider>
-
-        {/* Start Time & End Time */}
-        <Box display="flex" justifyContent="space-around" gap={1}>
-          <TimePicker
-            label="Start Time"
-            value={formik.values.startTime}
-            onChange={(value) => formik.setFieldValue("startTime", value)}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                margin="normal"
-                size="small"
-                style={{ marginRight: 8, flex: 1 }}
-                error={
-                  formik.touched.startTime && Boolean(formik.errors.startTime)
-                }
-                helperText={formik.touched.startTime && formik.errors.startTime}
-              />
-            )}
-          />
-
-          <TimePicker
-            label="End Time"
-            value={formik.values.endTime}
-            onChange={(value) => formik.setFieldValue("endTime", value)}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                margin="normal"
-                size="small"
-                style={{ flex: 1 }}
-                error={formik.touched.endTime && Boolean(formik.errors.endTime)}
-                helperText={formik.touched.endTime && formik.errors.endTime}
-              />
-            )}
-          />
-        </Box>
-        <Box
-          justifyContent="space-around"
-          gap={1}
-          sx={{
-            background: "#fd7e14",
-            color: "#fff",
-            padding: "5px",
-            borderRadius: 1,
-          }}
-        >
-          <Typography variant="subtitle2" component="p">
-            Duration
-          </Typography>
-          <Typography variant="body2" component="p">
-            {difference}
-          </Typography>
-        </Box>
-      </Box>
-      <Box display="flex" justifyContent="space-between">
-        {/* Meeting Title */}
-        <TextField
-          label="Subject"
-          name="subject"
-          margin="normal"
-          fullWidth
-          value={formik.values.subject}
-          onChange={formik.handleChange}
-          error={formik.touched.subject && Boolean(formik.errors.subject)}
-          helperText={formik.touched.subject && formik.errors.subject}
-          size="small"
-          required
-          style={{ marginRight: 8 }}
-        />
-        {/* Agenda */}
-        <TextField
-          label="Agenda"
-          name="agenda"
-          margin="normal"
-          fullWidth
-          value={formik.values.agenda}
-          onChange={formik.handleChange}
-          error={formik.touched.agenda && Boolean(formik.errors.agenda)}
-          helperText={formik.touched.agenda && formik.errors.agenda}
-          required
-          size="small"
-        />
-      </Box>
-      <Box display="flex" gap={1} justifyContent="space-between">
-        <Autocomplete
-          multiple
-          id="attendees"
-          name="attendees"
-          size="small"
-          sx={{
-            width: "100%",
-          }}
-          options={emailsList}
-          value={formik.values.attendees}
-          onChange={(_, newValue) =>
-            formik.setFieldValue("attendees", newValue)
-          }
-          getOptionLabel={(option) => option.name}
-          renderOption={(props, option) => (
-            <Box
-              component="li"
-              {...props}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                width: "100%",
-              }}
-            >
-              <div>
-                {/* Render the attendee's name */}
-                <span>{option.name}</span>
-              </div>
-              <div sx={{ width: "100%", float: "right" }}>
-                {/* Render a hardcoded Chip for availability */}
-                <Chip
-                  label={
-                    option.id === "15b8126b-8ce7-443c-a231-007179da901a"
-                      ? "Unavailable"
-                      : "Available"
-                  }
-                  color={
-                    option.id === "15b8126b-8ce7-443c-a231-007179da901a"
-                      ? "error"
-                      : "success"
-                  }
+    <PopContent>
+      <Box component="form" onSubmit={formik.handleSubmit}>
+        {/* Date */}
+        <Box display="flex" justifyContent="space-between" flexDirection={{ xs: 'column', sm: 'row' }} gap={1}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              size='small'
+              label="Date"
+              value={formik.values.date}
+              onChange={(value) => formik.setFieldValue("date", value)}
+              shouldDisableDate={disablePastDates}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  margin="normal"
+                  fullWidth
+                  error={formik.touched.date && Boolean(formik.errors.date)}
+                  helperText={formik.touched.date && formik.errors.date}
                   size="small"
                 />
-              </div>
-            </Box>
-          )}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Select Attendees"
-              error={
-                formik.touched.attendees && Boolean(formik.errors.attendees)
-              }
-              helperText={formik.touched.attendees && formik.errors.attendees}
+              )}
             />
-          )}
-          disableCloseOnSelect
-          isOptionEqualToValue={(option, value) => option.id === value.id}
-        />
-        <Autocomplete
-          multiple
-          id="committees"
-          name="committees"
-          size="small"
-          sx={{
-            width: "100%", // Adjust the width as needed
-          }}
-          options={committeeList}
-          value={formik.values.committees}
-          onChange={(_, newValue) =>
-            formik.setFieldValue("committees", newValue)
-          }
-          getOptionLabel={(option) => option.name}
-          renderOption={(props, option) => (
-            <Box
-              component="li"
-              {...props}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                width: "100%",
-              }}
-            >
-              <div>
-                {/* Render the attendee's name */}
-                <span>{option.name}</span>
-              </div>
-              <div sx={{ width: "100%", float: "right" }}>
-                {/* Render a hardcoded Chip for availability */}
-                <Chip
-                  label={
-                    option.id === "15b8126b-8ce7-443c-a231-007179da901a"
-                      ? "Unavailable"
-                      : "Available"
-                  }
-                  color={
-                    option.id === "15b8126b-8ce7-443c-a231-007179da901a"
-                      ? "error"
-                      : "success"
-                  }
-                  size="small"
-                />
-              </div>
-            </Box>
-          )}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Select Committee"
-              error={
-                formik.touched.committees && Boolean(formik.errors.committees)
-              }
-              helperText={formik.touched.committees && formik.errors.committees}
-            />
-          )}
-          disableCloseOnSelect
-          isOptionEqualToValue={(option, value) => option.id === value.id}
-        />
-      </Box>
-      <Box display="flex" gap={1} justifyContent="space-between">
-        {/* Description */}
-        <TextField
-          label="Notes"
-          name="notes"
-          margin="normal"
-          fullWidth
-          multiline
-          rows={3}
-          value={formik.values.notes}
-          onChange={formik.handleChange}
-          error={formik.touched.notes && Boolean(formik.errors.notes)}
-          helperText={formik.touched.notes && formik.errors.notes}
-          size="small"
-        />
+          </LocalizationProvider>
 
-        {/* Description */}
-        <TextField
-          label="Additional Equipment Needed"
-          name="additionalEquipment"
-          margin="normal"
-          fullWidth
-          multiline
-          rows={3}
-          value={formik.values.additionalEquipment}
-          onChange={formik.handleChange}
-          error={
-            formik.touched.additionalEquipment &&
-            Boolean(formik.errors.additionalEquipment)
-          }
-          helperText={
-            formik.touched.additionalEquipment &&
-            formik.errors.additionalEquipment
-          }
-          size="small"
-        />
-      </Box>
-      {/* Private Meeting */}
-      <Box display="flex" gap={1} justifyContent="space-between">
-        <Box component="p">
-          <Typography variant="subtitle1" component="p" sx={{ mt: 2 }}>
-            Is this a private meeting?
-          </Typography>
-          <RadioGroup
-            name="isPrivate"
-            value={formik.values.isPrivate}
-            onChange={(e) =>
-              formik.setFieldValue("isPrivate", e.target.value === "true")
-            }
-            row
+          {/* Start Time & End Time */}
+          <Box display="flex" justifyContent="space-around" gap={1}>
+            <TimePicker
+              label="Start Time"
+              value={formik.values.startTime}
+              onChange={(value) => formik.setFieldValue("startTime", value)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  margin="normal"
+                  size="small"
+                  style={{ marginRight: 8, flex: 1 }}
+                  error={
+                    formik.touched.startTime && Boolean(formik.errors.startTime)
+                  }
+                  helperText={formik.touched.startTime && formik.errors.startTime}
+                />
+              )}
+            />
+
+            <TimePicker
+              label="End Time"
+              value={formik.values.endTime}
+              onChange={(value) => formik.setFieldValue("endTime", value)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  margin="normal"
+                  size="small"
+                  style={{ flex: 1 }}
+                  error={formik.touched.endTime && Boolean(formik.errors.endTime)}
+                  helperText={formik.touched.endTime && formik.errors.endTime}
+                />
+              )}
+            />
+          </Box>
+          <Paper
+            gap={1}
+            sx={{
+              background: "#fd7e14",
+              color: "#fff",
+              display: 'flex',
+              borderRadius: 1,
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              padding: 1,
+              flexDirection: {
+                xs: 'row',
+                sm: 'column'
+              }
+            }}
           >
-            <FormControlLabel value={true} control={<Radio />} label="Yes" />
-            <FormControlLabel value={false} control={<Radio />} label="No" />
-          </RadioGroup>
+            <Typography variant="subtitle2" component="p" textAlign={'center'}>
+              Duration
+            </Typography>
+            <Typography variant="body2" component="p" textAlign={'center'}>
+              {difference}
+            </Typography>
+          </Paper>
         </Box>
-        <Box component="p">
-          <Typography variant="subtitle1" component="p" sx={{ mt: 2 }}>
-            Guest user(Comma separate email Id)
-          </Typography>
+
+        <Box display="flex" justifyContent="space-between" flexDirection={{ xs: 'column', sm: 'column' }} gap={1} mt={1} >
+          {/* Meeting Title */}
           <TextField
-            label="guestUser"
-            name="guestUser"
-            margin="normal"
+            label="Subject"
+            name="subject"
+            // margin="normal"
             fullWidth
-            sx={{ width: "100%" }}
-            value={formik.values.guestUser}
+            value={formik.values.subject}
             onChange={formik.handleChange}
-            error={formik.touched.guestUser && Boolean(formik.errors.guestUser)}
-            helperText={formik.touched.guestUser && formik.errors.guestUser}
+            error={formik.touched.subject && Boolean(formik.errors.subject)}
+            helperText={formik.touched.subject && formik.errors.subject}
+            size="small"
+            required
+          />
+          {/* Agenda */}
+          <TextField
+            label="Agenda"
+            name="agenda"
+            // margin="normal"
+            fullWidth
+            value={formik.values.agenda}
+            onChange={formik.handleChange}
+            error={formik.touched.agenda && Boolean(formik.errors.agenda)}
+            helperText={formik.touched.agenda && formik.errors.agenda}
+            required
             size="small"
           />
         </Box>
-      </Box>
+        <Box display="flex" gap={1} justifyContent="space-between" flexDirection={{ xs: 'column', sm: 'row' }} mt={1}>
+          <Autocomplete
+            multiple
+            id="attendees"
+            name="attendees"
+            size="small"
+            sx={{
+              width: "100%",
+            }}
+            options={emailsList}
+            value={formik.values.attendees}
+            onChange={(_, newValue) =>
+              formik.setFieldValue("attendees", newValue)
+            }
+            getOptionLabel={(option) => option.name}
+            renderOption={(props, option) => (
+              <Box
+                component="li"
+                {...props}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  width: "100%",
+                }}
+              >
+                <div>
+                  {/* Render the attendee's name */}
+                  <span>{option.name}</span>
+                </div>
+                <div sx={{ width: "100%", float: "right" }}>
+                  {/* Render a hardcoded Chip for availability */}
+                  <Chip
+                    label={
+                      option.id === "15b8126b-8ce7-443c-a231-007179da901a"
+                        ? "Unavailable"
+                        : "Available"
+                    }
+                    color={
+                      option.id === "15b8126b-8ce7-443c-a231-007179da901a"
+                        ? "error"
+                        : "success"
+                    }
+                    size="small"
+                  />
+                </div>
+              </Box>
+            )}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Select Attendees"
+                error={
+                  formik.touched.attendees && Boolean(formik.errors.attendees)
+                }
+                helperText={formik.touched.attendees && formik.errors.attendees}
+              />
+            )}
+            disableCloseOnSelect
+            isOptionEqualToValue={(option, value) => option.id === value.id}
+          />
+          <Autocomplete
+            multiple
+            id="committees"
+            name="committees"
+            size="small"
+            sx={{
+              width: "100%", // Adjust the width as needed
+            }}
+            options={committeeList}
+            value={formik.values.committees}
+            onChange={(_, newValue) =>
+              formik.setFieldValue("committees", newValue)
+            }
+            getOptionLabel={(option) => option.name}
+            renderOption={(props, option) => (
+              <Box
+                component="li"
+                {...props}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  width: "100%",
+                }}
+              >
+                <div>
+                  {/* Render the attendee's name */}
+                  <span>{option.name}</span>
+                </div>
+                <div sx={{ width: "100%", float: "right" }}>
+                  {/* Render a hardcoded Chip for availability */}
+                  <Chip
+                    label={
+                      option.id === "15b8126b-8ce7-443c-a231-007179da901a"
+                        ? "Unavailable"
+                        : "Available"
+                    }
+                    color={
+                      option.id === "15b8126b-8ce7-443c-a231-007179da901a"
+                        ? "error"
+                        : "success"
+                    }
+                    size="small"
+                  />
+                </div>
+              </Box>
+            )}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Select Committee"
+                error={
+                  formik.touched.committees && Boolean(formik.errors.committees)
+                }
+                helperText={formik.touched.committees && formik.errors.committees}
+              />
+            )}
+            disableCloseOnSelect
+            isOptionEqualToValue={(option, value) => option.id === value.id}
+          />
+        </Box>
+        <Box display="flex" gap={1} justifyContent="space-between" flexDirection={{ xs: 'column', sm: 'row' }} mt={1}>
+          {/* Description */}
+          <TextField
+            label="Notes"
+            name="notes"
+            // margin="normal"
+            fullWidth
+            multiline
+            rows={3}
+            value={formik.values.notes}
+            onChange={formik.handleChange}
+            error={formik.touched.notes && Boolean(formik.errors.notes)}
+            helperText={formik.touched.notes && formik.errors.notes}
+            size="small"
+          />
 
-      {/* Submit Button */}
-      <Box mt={2} display="flex" justifyContent="flex-end">
-        <Button type="submit" variant="contained" color="primary">
-          Add Meeting
-        </Button>
+          {/* Description */}
+          <TextField
+            label="Additional Equipment Needed"
+            name="additionalEquipment"
+            // margin="normal"
+            fullWidth
+            multiline
+            rows={3}
+            value={formik.values.additionalEquipment}
+            onChange={formik.handleChange}
+            error={
+              formik.touched.additionalEquipment &&
+              Boolean(formik.errors.additionalEquipment)
+            }
+            helperText={
+              formik.touched.additionalEquipment &&
+              formik.errors.additionalEquipment
+            }
+            size="small"
+          />
+        </Box>
+        {/* Private Meeting */}
+        <Box display="flex" gap={1} justifyContent="space-between" flexDirection={{ xs: 'column', sm: 'row' }} mt={1}>
+          <Box component="p">
+            <Typography variant="subtitle1" component="p" mb={0}>
+              Is this a private meeting?
+            </Typography>
+            <RadioGroup
+              name="isPrivate"
+              value={formik.values.isPrivate}
+              onChange={(e) =>
+                formik.setFieldValue("isPrivate", e.target.value === "true")
+              }
+              row
+            >
+              <FormControlLabel value={true} control={<Radio />} label="Yes" />
+              <FormControlLabel value={false} control={<Radio />} label="No" />
+            </RadioGroup>
+          </Box>
+          <Box component="p" mb={2}>
+            <Typography variant="subtitle1" component="p">
+              Guest user(Comma separate email Id)
+            </Typography>
+            <TextField
+              label="guestUser"
+              name="guestUser"
+              // margin="normal"
+              fullWidth
+              sx={{ width: "100%" }}
+              value={formik.values.guestUser}
+              onChange={formik.handleChange}
+              error={formik.touched.guestUser && Boolean(formik.errors.guestUser)}
+              helperText={formik.touched.guestUser && formik.errors.guestUser}
+              size="small"
+            />
+          </Box>
+        </Box>
+
+        {/* Submit Button */}
+        <FormButton type='submit' btnName="Book" />
       </Box>
-    </Box>
+    </PopContent >
   );
 };
 
