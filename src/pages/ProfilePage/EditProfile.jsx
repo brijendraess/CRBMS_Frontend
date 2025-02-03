@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { PhotoCameraIcon } from "../../components/Common/Buttons/CustomIcon";
 import { validateImage } from "../../utils/utils";
+import FormButton from "../../components/Common/Buttons/FormButton/FormButton";
 
 const EditProfile = ({ id, setRefreshPage, setIsEditOpen }) => {
   const [profileImagePreview, setProfileImagePreview] = useState(null);
@@ -202,11 +203,7 @@ const EditProfile = ({ id, setRefreshPage, setIsEditOpen }) => {
             {profileImageError}
           </Typography>
         )}
-        <Box mt={2} display="flex" justifyContent="flex-end">
-          <Button type="submit" variant="contained" color="primary">
-            Update Profile
-          </Button>
-        </Box>
+        <FormButton type="submit" btnName="Save Changes" />
       </Box>
     </PopContent>
   );

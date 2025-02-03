@@ -8,6 +8,9 @@ import { showLoading, hideLoading } from "../../Redux/alertSlicer";
 import { PhotoCameraOutlinedIcon } from "../../components/Common/Buttons/CustomIcon";
 import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import EditProfile from "./EditProfile";
+import { PopContent } from "../../Style";
+import FormButton from "../../components/Common/Buttons/FormButton/FormButton";
+import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
 
 const ProfilePage = ({ user, committees = [] }) => {
   const dispatch = useDispatch();
@@ -59,7 +62,7 @@ const ProfilePage = ({ user, committees = [] }) => {
     if (user?.id) {
       fetchUserData();
     }
-  }, [user?.id, dispatch,refreshPage]);
+  }, [user?.id, dispatch, refreshPage]);
 
   const handleEdit = (id) => {
     setUpdatedId(id);
@@ -67,79 +70,74 @@ const ProfilePage = ({ user, committees = [] }) => {
   };
 
   return (
-    <form style={{ padding: "1rem" }}>
-      <Grid container spacing={2}>
-        <Grid size={12}>
-          <TextField label="Email" value={formData.email} fullWidth disabled />
-        </Grid>
-        <Grid size={6}>
-          <TextField
-            label="Phone Number"
-            value={formData.phoneNumber}
-            fullWidth
-            disabled
-          />
-        </Grid>
-        <Grid size={6}>
-          <TextField
-            label="Full Name"
-            name="fullname"
-            value={formData.fullname}
-            fullWidth
-            disabled
-          />
-        </Grid>
-        <Grid
-          size={12}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <label htmlFor="avatar-upload">
-            <IconButton component="span" color="primary">
-              <Avatar
-                src={imagePreview}
-                alt="Profile Picture"
-                sx={{ width: 100, height: 100 }}
-              >
-                <PhotoCameraOutlinedIcon fontSize="large" />
-              </Avatar>
-            </IconButton>
-          </label>
-        </Grid>
-        <Grid
-          size={12}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Button
-            variant="contained"
-            color="primary"
-            type="button"
-            onClick={() => handleEdit(formData.id)}
+    <PopContent>
+      <form>
+        <Grid container spacing={2}>
+          <Grid size={12}>
+            <TextField label="Email" value={formData.email} fullWidth disabled />
+          </Grid>
+          <Grid size={6}>
+            <TextField
+              label="Phone Number"
+              value={formData.phoneNumber}
+              fullWidth
+              disabled
+            />
+          </Grid>
+          <Grid size={6}>
+            <TextField
+              label="Full Name"
+              name="fullname"
+              value={formData.fullname}
+              fullWidth
+              disabled
+            />
+          </Grid>
+          <Grid
+            size={12}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
           >
-            Update Profile
-          </Button>
+            <label htmlFor="avatar-upload">
+              <IconButton component="span" color="primary">
+                <Avatar
+                  src={imagePreview}
+                  alt="Profile Picture"
+                  sx={{ width: 100, height: 100 }}
+                >
+                  <PhotoCameraOutlinedIcon fontSize="large" />
+                </Avatar>
+              </IconButton>
+            </label>
+          </Grid>
+          <Grid
+            size={12}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <FormButton type='button' btnName='Click To Update Your Profile' func={() => handleEdit(formData.id)} />
+          </Grid>
         </Grid>
-      </Grid>
-      <PopupModals
-        isOpen={isEditOpen}
-        setIsOpen={setIsEditOpen}
-        title={"Update My Profile"}
-        modalBody={
-          <EditProfile
-            id={updatedId}
-            setRefreshPage={setRefreshPage}
-            setIsEditOpen={setIsEditOpen}
-          />
-        }
-      />
-    </form>
+        <NewPopUpModal
+          isOpen={isEditOpen}
+          setIsOpen={setIsEditOpen}
+          title={"Update My Profile"}
+          modalBody={
+            <EditProfile
+              id={updatedId}
+              setRefreshPage={setRefreshPage}
+              setIsEditOpen={setIsEditOpen}
+            />
+          }
+        />
+      </form>
+    </PopContent>
   );
 };
 

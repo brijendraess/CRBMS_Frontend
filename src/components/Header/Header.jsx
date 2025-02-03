@@ -50,6 +50,7 @@ import "../Driver/DriverTour.css";
 import { defaultTheme, ThemeContext } from "../../Theme/Themeprovider";
 import { Palette } from "@mui/icons-material";
 import { themeColors } from "../../Theme/ColorFile";
+import NewPopUpModal from "../Common/Modals/Popup/NewPopUpModal";
 
 const Header = () => {
   const context = useContext(MyContext);
@@ -144,9 +145,8 @@ const Header = () => {
             const timeDifference = dayjs().diff(dayjs(data?.createdAt), "hour");
 
             return {
-              avatar: `${import.meta.env.VITE_API_URL}/${
-                data?.User?.avatarPath
-              }`,
+              avatar: `${import.meta.env.VITE_API_URL}/${data?.User?.avatarPath
+                }`,
               name: data?.User?.fullname,
               action: data?.type,
               item: data?.message,
@@ -292,9 +292,8 @@ const Header = () => {
                 <div className="profileImage">
                   <span className="profilePhoto">
                     <CheckAndShowImage
-                      imageUrl={`${import.meta.env.VITE_API_URL}/${
-                        user?.avatarPath
-                      }`}
+                      imageUrl={`${import.meta.env.VITE_API_URL}/${user?.avatarPath
+                        }`}
                     />
                   </span>
                 </div>
@@ -435,14 +434,14 @@ const Header = () => {
         />
       </Popover>
 
-      <PopupModals
+      <NewPopUpModal
         isOpen={isEditOpen}
         setIsOpen={setIsEditOpen}
         title={"My Profile"}
         modalBody={<ProfilePage user={user} />}
       />
 
-      <PopupModals
+      <NewPopUpModal
         isOpen={isResetPasswordOpen}
         setIsOpen={setIsResetPasswordOpen}
         title={"Reset Password"}
