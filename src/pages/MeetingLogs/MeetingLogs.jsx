@@ -13,6 +13,7 @@ import {
   EditOutlinedIcon,
   EventBusyOutlinedIcon,
   HistoryOutlinedIcon,
+  SwapHorizIcon,
 } from "../../components/Common/Buttons/CustomIcon";
 import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import MeetingFormEdit from "../MeetingPage/MeetingFormEdit";
@@ -20,6 +21,7 @@ import MeetingFormPostPone from "../MeetingPage/MeetingFormPostPone";
 import CancelMeetingModal from "../../components/Common/Modals/Delete/CancelMeetingModal";
 import MeetingApproval from "../MeetingPage/MeetingApproval";
 import { dateStringFormatting, formatTimeShort } from "../../utils/utils";
+import MeetingFormSwap from "../MeetingPage/MeetingSwap";
 
 const MeetingLogs = () => {
   const { user } = useSelector((state) => state.user);
@@ -30,6 +32,7 @@ const MeetingLogs = () => {
   const [isPostponeBookingOpen, setIsPostponeBookingOpen] = useState(false);
   const [isApprovalBookingOpen, setIsApprovalBookingOpen] = useState(false);
   const [isCancelBookingOpen, setIsCancelBookingOpen] = useState(false);
+  const [isSwapMeetingOpen, setIsSwapMeetingOpen] = useState(false);
   const [updatedRoomId, setUpdatedRoomId] = useState("");
   const [room, setRoom] = useState([]);
   const [updatedBookingId, setUpdatedBookingId] = useState("");
@@ -39,6 +42,12 @@ const MeetingLogs = () => {
 
   const handleEdit = (roomId, meetingId) => {
     setIsEditBookingOpen(true);
+    setUpdatedRoomId(roomId);
+    setUpdatedBookingId(meetingId);
+  };
+
+  const handleSwap = (roomId, meetingId) => {
+    setIsSwapMeetingOpen(true);
     setUpdatedRoomId(roomId);
     setUpdatedBookingId(meetingId);
   };
@@ -185,6 +194,17 @@ const MeetingLogs = () => {
                   onClick={() =>
                     handlePostpone(params.row.roomId, params.row.id)
                   }
+                />
+              </Tooltip>
+            )}
+            {user.UserType.meetingLogsModule &&
+            user.UserType.meetingLogsModule.split(",").includes("edit") && (
+              <Tooltip title="Swap meeting">
+                <SwapHorizIcon
+                  className="meeting-logs-edit"
+                  color="success"
+                  onClick={() => handleSwap(params.row.roomId, params.row.id)}
+                  style={{ cursor: "pointer" }}
                 />
               </Tooltip>
             )}
@@ -353,6 +373,20 @@ const MeetingLogs = () => {
             updatedBookingId={updatedBookingId}
             room={room}
             setRefreshPage={setRefreshPage}
+          />
+        }
+      />
+      <PopupModals
+        isOpen={isSwapMeetingOpen}
+        setIsOpen={setIsSwapMeetingOpen}
+        title={"Swap Meeting"}
+        modalBody={
+          <MeetingFormSwap
+            updatedBookingId={updatedBookingId}
+            // meetingUpdatedStatus={meetingUpdatedStatus}
+            room={room}
+            setRefreshPage={setRefreshPage}
+            isOpen={isSwapMeetingOpen}
           />
         }
       />
