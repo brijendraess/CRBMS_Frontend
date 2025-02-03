@@ -69,6 +69,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import HourglassTopOutlinedIcon from '@mui/icons-material/HourglassTopOutlined';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 
 export {
   AddIcon,
@@ -144,5 +145,6 @@ export {
   LiveHelpOutlinedIcon,
   AirlineSeatLegroomExtraOutlinedIcon,
   HourglassTopOutlinedIcon,
-  ErrorOutlineIcon
+  ErrorOutlineIcon,
+  SwapHorizIcon
 };
