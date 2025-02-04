@@ -67,13 +67,13 @@ const MeetingFormSwap = ({ updatedBookingId, room, setRefreshPage, isOpen }) => 
                     agenda: room?.meetingsOnly ? room?.meetingsOnly[0]?.agenda : "",
                     guestUser: room?.meetingsOnly ? room?.meetingsOnly[0]?.guestUser : "",
                     startTime: room?.meetingsOnly
-                        ? dayjs(room?.meetingsOnly[0]?.startTime, "HH:mm:ss")
+                        ? room?.meetingsOnly[0]?.startTime
                         : null,
                     endTime: room?.meetingsOnly
-                        ? dayjs(room?.meetingsOnly[0]?.endTime, "HH:mm:ss")
+                        ? room?.meetingsOnly[0]?.endTime
                         : null,
                     date: room?.meetingsOnly
-                        ? dayjs(room?.meetingsOnly[0]?.meetingDate)
+                        ? room?.meetingsOnly[0]?.meetingDate
                         : null,
                     attendees: room?.meetingUser
                         ? room?.meetingUser?.map((data) => ({
@@ -140,7 +140,7 @@ const MeetingFormSwap = ({ updatedBookingId, room, setRefreshPage, isOpen }) => 
                 <Box>
                     <div>
                         <b>{formik?.values?.subject || ""}
-    {formik?.values?.meetingDate ? `(${formik?.values?.meetingDate})` : ""}{" "}
+    {formik?.values?.date ? ` - ${formik?.values?.date}` : ""}{" "}
     {formik?.values?.startTime && formik?.values?.endTime
       ? `(${formik?.values?.startTime} - ${formik?.values?.endTime})`
       : ""}</b>
