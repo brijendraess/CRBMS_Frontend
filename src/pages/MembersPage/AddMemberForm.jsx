@@ -421,7 +421,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             fullWidth
-            margin="normal"
+            // margin="normal"
             multiline
             rows={5}
             error={

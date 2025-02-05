@@ -131,7 +131,7 @@ const RoomsCard = ({
       dispatch(hideLoading());
     } catch (error) {
       console.error("Error deleting user:", error);
-      toast.error("Failed to delete user");
+      // toast.error("Failed to delete user");
     } finally {
       setDeleteUpdateStatus(Math.random());
       handleDeleteClose();

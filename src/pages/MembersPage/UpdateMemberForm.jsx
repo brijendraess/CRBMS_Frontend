@@ -20,6 +20,7 @@ import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { PhotoCameraIcon } from "../../components/Common/Buttons/CustomIcon";
 import { validateImage } from "../../utils/utils";
+import FormButton from "../../components/Common/Buttons/FormButton/FormButton";
 
 const FormWrapper = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -80,7 +81,7 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
             services?.find((service) => service.servicesName === servicesName)
           )
           ?.filter(Boolean);
-          console.log(userData)
+        console.log(userData)
         // Set initial values with committee objects
         setFormDataList({
           fullname: userData.fullname,
@@ -104,19 +105,19 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
         console.error("Error fetching data:", error);
       }
     };
-    if (id) 
-    fetchUserData();
+    if (id)
+      fetchUserData();
   }, [id]);
 
   const formik = useFormik({
     initialValues: {
-      fullname: formDataList?.fullname||"",
-          email: formDataList?.email||"",
-          userDescription: formDataList?.userDescription||"",
-          phoneNumber: formDataList?.phoneNumber||"",
-          user_type: formDataList?.user_type||"",
-          committees: formDataList?.committees||[],
-          services: formDataList?.services||[],
+      fullname: formDataList?.fullname || "",
+      email: formDataList?.email || "",
+      userDescription: formDataList?.userDescription || "",
+      phoneNumber: formDataList?.phoneNumber || "",
+      user_type: formDataList?.user_type || "",
+      committees: formDataList?.committees || [],
+      services: formDataList?.services || [],
     },
     enableReinitialize: true,
     validationSchema: Yup.object({
@@ -205,13 +206,13 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
         <TextField
           label="Full Name"
           name="fullname"
-          margin="normal"
           value={formik.values.fullname}
           onChange={formik.handleChange}
           error={formik.touched.fullname && Boolean(formik.errors.fullname)}
           helperText={formik.touched.fullname && formik.errors.fullname}
           fullWidth
           size="small"
+          margin="normal"
         />
 
         <TextField
@@ -226,147 +227,168 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
           size="small"
         />
 
-        <TextField
-          label="Phone Number"
-          name="phoneNumber"
-          margin="normal"
-          value={formik.values.phoneNumber}
-          onChange={formik.handleChange}
-          error={
-            formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)
-          }
-          helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
-          fullWidth
-          size="small"
-        />
-
-        <TextField
-          label="Role"
-          name="user_type"
-          fullWidth
-          select
-          value={formik.values?.user_type|| ""}
-          onChange={(event) => {
-            formik.setFieldValue("user_type", event.target.value);
-          }}
-          error={formik.touched.user_type && Boolean(formik.errors.user_type)}
-          helperText={formik.touched.user_type && formik.errors.user_type}
-          style={{ marginRight: 8, flex: 1 }}
-          size="small"
+        <Box display="flex"
+          justifyContent="space-between"
+          flexDirection={{ xs: "column", sm: "row" }}
+          gap={{ xs: 2, sm: 2 }}
         >
-          {activeRole?.map((user_type) => (
-            <MenuItem key={user_type.id} value={user_type.id}>{user_type.userTypeName}</MenuItem>
-          ))}
-        </TextField>
+          <TextField
+            margin="normal"
+            label="Role"
+            fullWidth
+            name="user_type"
+            select
+            value={formik.values?.user_type || ""}
+            onChange={(event) => {
+              formik.setFieldValue("user_type", event.target.value);
+            }}
+            error={formik.touched.user_type && Boolean(formik.errors.user_type)}
+            helperText={formik.touched.user_type && formik.errors.user_type}
+            size="small"
+          >
+            {activeRole?.map((user_type) => (
+              <MenuItem key={user_type.id} value={user_type.id}>{user_type.userTypeName}</MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            label="Phone Number"
+            name="phoneNumber"
+            margin="normal"
+            value={formik.values.phoneNumber}
+            fullWidth
+            onChange={formik.handleChange}
+            error={
+              formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)
+            }
+            helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+            size="small"
+          />
 
-        <Autocomplete
-          disableCloseOnSelect
-          multiple
-          id="services"
-          options={availableServices}
-          value={formik.values.services}
-          getOptionLabel={(option) => option.servicesName || ""}
-          onChange={(_, selectedServices) => {
-            formik.setFieldValue("services", selectedServices);
-          }}
-          isOptionEqualToValue={(option, value) => option.id === value.id}
-          renderInput={(params) => (
-            <TextField
-              marginTop={2}
-              {...params}
-              label="Select Services"
-              error={formik.touched.services && Boolean(formik.errors.services)}
-              helperText={formik.touched.services && formik.errors.services}
-            />
-          )}
-          slotProps={{
-            listbox: {
-              style: { maxHeight: 150, overflowY: "scroll" },
-            },
-          }}
-          style={{ marginTop: "1rem" }}
-          renderTags={(selected) => {
-            return selected.length > 0 ? (
-              <span>{selected.length} selected</span>
-            ) : null;
-          }}
-          renderOption={(props, option, { selected }) => (
-            <li
-              {...props}
-              style={{
-                backgroundColor: selected ? "#e0f7fa" : "inherit",
-                fontWeight: selected ? "bold" : "normal",
-                fontSize: "14px",
-              }}
-            >
-              {option.servicesName}
-            </li>
-          )}
-        />
 
-        <Autocomplete
-          disableCloseOnSelect
-          multiple
-          id="committees"
-          options={availableCommittees}
-          value={formik.values.committees}
-          getOptionLabel={(option) => option.name || ""}
-          onChange={(_, selectedCommittees) => {
-            formik.setFieldValue("committees", selectedCommittees);
-          }}
-          isOptionEqualToValue={(option, value) => option?.id === value?.id}
-          renderInput={(params) => (
-            <TextField
-              marginTop={2}
-              {...params}
-              label="Select Committees"
-              error={
-                formik.touched.committees && Boolean(formik.errors.committees)
-              }
-              helperText={formik.touched.committees && formik.errors.committees}
-            />
-          )}
-          slotProps={{
-            listbox: {
-              style: { maxHeight: 150, overflowY: "scroll" },
-            },
-          }}
-          style={{ marginTop: "1rem" }}
-          renderTags={(selected) => {
-            return selected.length > 0 ? (
-              <span>{selected.length} selected</span>
-            ) : null;
-          }}
-          renderOption={(props, option, { selected }) => (
-            <li
-              {...props}
-              style={{
-                backgroundColor: selected ? "#e0f7fa" : "inherit",
-                fontWeight: selected ? "bold" : "normal",
-                fontSize: "14px",
+        </Box>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          flexDirection={{ xs: "column", sm: "row" }}
+          gap={{ xs: 2, sm: 2 }}
+        >
+          <Box width={{ xs: "100%", sm: "50%" }}>
+            <Autocomplete
+              margin="normal"
+              size="small"
+              disableCloseOnSelect
+              multiple
+              id="services"
+              options={availableServices}
+              value={formik.values.services}
+              getOptionLabel={(option) => option.servicesName || ""}
+              onChange={(_, selectedServices) => {
+                formik.setFieldValue("services", selectedServices);
               }}
-            >
-              {option.name}
-            </li>
-          )}
-        />
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              renderInput={(params) => (
+                <TextField
+                  marginTop={2}
+                  {...params}
+                  label="Select Services"
+                  error={formik.touched.services && Boolean(formik.errors.services)}
+                  helperText={formik.touched.services && formik.errors.services}
+                />
+              )}
+              slotProps={{
+                listbox: {
+                  style: { maxHeight: 150, overflowY: "scroll" },
+                },
+              }}
+              style={{ marginTop: "1rem" }}
+              renderTags={(selected) => {
+                return selected.length > 0 ? (
+                  <span>{selected.length} selected</span>
+                ) : null;
+              }}
+              renderOption={(props, option, { selected }) => (
+                <li
+                  {...props}
+                  style={{
+                    backgroundColor: selected ? "#e0f7fa" : "inherit",
+                    fontWeight: selected ? "bold" : "normal",
+                    fontSize: "14px",
+                  }}
+                >
+                  {option.servicesName}
+                </li>
+              )}
+            />
+          </Box>
+          <Box width={{ xs: "100%", sm: "50%" }}>
+            <Autocomplete
+              size="small"
+              disableCloseOnSelect
+              multiple
+              id="committees"
+              options={availableCommittees}
+              value={formik.values.committees}
+              getOptionLabel={(option) => option.name || ""}
+              onChange={(_, selectedCommittees) => {
+                formik.setFieldValue("committees", selectedCommittees);
+              }}
+              isOptionEqualToValue={(option, value) => option?.id === value?.id}
+              renderInput={(params) => (
+                <TextField
+                  marginTop={2}
+                  {...params}
+                  label="Select Committees"
+                  error={
+                    formik.touched.committees && Boolean(formik.errors.committees)
+                  }
+                  helperText={formik.touched.committees && formik.errors.committees}
+                />
+              )}
+              slotProps={{
+                listbox: {
+                  style: { maxHeight: 150, overflowY: "scroll" },
+                },
+              }}
+              style={{ marginTop: "1rem" }}
+              renderTags={(selected) => {
+                return selected.length > 0 ? (
+                  <span>{selected.length} selected</span>
+                ) : null;
+              }}
+              renderOption={(props, option, { selected }) => (
+                <li
+                  {...props}
+                  style={{
+                    backgroundColor: selected ? "#e0f7fa" : "inherit",
+                    fontWeight: selected ? "bold" : "normal",
+                    fontSize: "14px",
+                  }}
+                >
+                  {option.name}
+                </li>
+              )}
+            />
+          </Box>
+        </Box>
+
+
         <Box display="flex" justifyContent="space-between" mb={2}>
-                  <TextField
-                    label="User Description"
-                    name="userDescription"
-                    value={formik.values.userDescription}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    fullWidth
-                    margin="normal"
-                    multiline
-                    rows={5}
-                    error={
-                      formik.touched.userDescription && Boolean(formik.errors.userDescription)
-                    }
-                    helperText={formik.touched.userDescription && formik.errors.userDescription}
-                  />
-                </Box>
+          <TextField
+            label="User Description"
+            name="userDescription"
+            value={formik.values.userDescription}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            fullWidth
+            margin="normal"
+            multiline
+            rows={5}
+            error={
+              formik.touched.userDescription && Boolean(formik.errors.userDescription)
+            }
+            helperText={formik.touched.userDescription && formik.errors.userDescription}
+          />
+        </Box>
         {/* AVatar */}
         <Box
           display="flex"
@@ -404,11 +426,7 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
             {profileImageError}
           </Typography>
         )}
-        <Box mt={2} display="flex" justifyContent="flex-end">
-          <Button type="submit" variant="contained" color="primary">
-            Update Profile
-          </Button>
-        </Box>
+        <FormButton type="submit" btnName="Update Profile" />
       </Box>
     </PopContent>
   );

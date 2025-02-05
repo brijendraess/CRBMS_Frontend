@@ -384,7 +384,7 @@ const MembersPage = () => {
         }
       />
 
-      <PopupModals
+      <NewPopUpModal
         isOpen={isEditOpen}
         setIsOpen={setIsEditOpen}
         title={"Update Member Profile"}
@@ -397,7 +397,7 @@ const MembersPage = () => {
         }
       />
 
-      <PopupModals
+      <NewPopUpModal
         isOpen={isViewOpen}
         setIsOpen={setIsViewOpen}
         title={"View Member Profile"}

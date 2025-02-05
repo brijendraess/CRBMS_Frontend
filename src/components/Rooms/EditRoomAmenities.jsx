@@ -71,7 +71,7 @@ const EditRoomAmenities = ({
         setRefreshPage(Math.random());
         resetForm();
       } catch (err) {
-        toast.error(err.response?.data?.message || "An error occurred");
+        // toast.error(err.response?.data?.message || "An error occurred");
         console.error("Error editing amenities:", err);
       } finally {
         setOpenEdit(false);
@@ -92,7 +92,7 @@ const EditRoomAmenities = ({
         setAmenitiesList(amenities);
         hideLoading();
       } catch (error) {
-        toast.error("Failed to load amenities");
+        // toast.error("Failed to load amenities");
         console.error("Error fetching amenities:", error);
         hideLoading();
       }

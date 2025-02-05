@@ -8,11 +8,13 @@ import {
   Grid2,
   Chip,
   Divider,
+  Paper,
 } from "@mui/material";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
+import { PopContent } from "../../Style";
 
 const ViewMember = ({ id }) => {
   const [userData, setUserData] = useState(null);
@@ -24,7 +26,6 @@ const ViewMember = ({ id }) => {
         dispatch(showLoading());
         const response = await axios.get(`/api/v1/user/${id}`);
         const result = response.data.data;
-        // Format data (directly mapping committees since it's already an array)
         const formattedData = {
           id: result.id,
           fullname: result?.fullname,
@@ -80,15 +81,19 @@ const ViewMember = ({ id }) => {
       </Box>
     );
   }
-  
+
   return (
-    <>
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        flexDirection="column"
-        width="100%"
+    <PopContent>
+      <Paper
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          width: "500px",
+          padding: '8px'
+        }}
+        elevation={20}
       >
         <Avatar
           src={`${import.meta.env.VITE_API_URL}/${userData.avatarPath}`}
@@ -100,13 +105,14 @@ const ViewMember = ({ id }) => {
             mb: 2,
           }}
         />
+        {/* <Box> */}
         <Typography
           variant="h6"
           component="h6"
           style={{
-            fontSize: "18px",
+            fontSize: "20px",
             fontWeight: 500,
-            lineHeight: 1.4,
+            lineHeight: 1.6,
           }}
         >
           {userData.fullname}
@@ -115,33 +121,41 @@ const ViewMember = ({ id }) => {
           {userData.email}
         </Typography>
         <Typography variant="body1" color="textSecondary">
-          Phone: {userData.phoneNumber}
+          {userData.phoneNumber}
         </Typography>
         <Typography variant="body1" color="textSecondary">
-          Description: {userData.userDescription}
+          {userData.services}
         </Typography>
-      </Box>
-      <Box width="100%" maxWidth="800px" mt={4}>
-        <Divider textAlign="left" mt>
-          <Chip label="Committee Type" size="large" />
-        </Divider>
-        {userData.committees&&userData.committees.length > 0 && (
-          <div style={{ maxHeight: "120px", overflow: "scroll" }}>
-            <Grid2 container spacing={2} mt={3}>
-              {userData.committeeType.map((committee, index) => (
-                <Grid2 item xs={12} sm={6} md={4} key={index}>
-                  <Chip label={committee} variant="outlined" />
-                </Grid2>
-              ))}
-            </Grid2>
-          </div>
-        )}
-      </Box>
-      <Box width="100%" maxWidth="800px" mt={4}>
-        <Divider textAlign="left" mt>
+        {/* </Box> */}
+      </Paper>
+      <Paper sx={{
+        display: "flex",
+        width: "500px",
+        padding: '8px',
+        mt: '10px',
+        height: '150px',
+        overflow: 'scroll'
+      }}
+        elevation={20}>
+        <Typography variant="body1" color="textSecondary" textAlign='left' >
+          <b>Description:</b> {userData.userDescription}
+        </Typography>
+      </Paper>
+
+      <Paper sx={{
+        width: '100%',
+        maxWidth: '800px',
+        marginTop: '10px',
+        padding: '8px',
+        maxHeight: '200px',
+        overflow: 'scroll'
+      }}
+        elevation={20}
+      >
+        <Divider textAlign="center">
           <Chip label="Committee" size="large" />
         </Divider>
-        {userData.committees&&userData.committees.length > 0 ? (
+        {userData.committees && userData.committees.length > 0 ? (
           <div style={{ maxHeight: "120px", overflow: "scroll" }}>
             <Grid2 container spacing={2} mt={3}>
               {userData.committees.map((committee, index) => (
@@ -156,28 +170,8 @@ const ViewMember = ({ id }) => {
             No committees assigned.
           </Typography>
         )}
-      </Box>
-      <Box width="100%" maxWidth="800px" mt={4}>
-        <Divider textAlign="left" mt>
-          <Chip label="Services" size="large" />
-        </Divider>
-        {userData.services&&userData.services.length > 0 ? (
-          <div style={{ maxHeight: "120px", overflow: "scroll" }}>
-            <Grid2 container spacing={2} mt={3}>
-              {userData.services.map((service, index) => (
-                <Grid2 item xs={12} sm={6} md={4} key={index}>
-                  <Chip label={service} variant="outlined" />
-                </Grid2>
-              ))}
-            </Grid2>
-          </div>
-        ) : (
-          <Typography variant="body2" color="textSecondary" mt={3}>
-            No services assigned.
-          </Typography>
-        )}
-      </Box>
-    </>
+      </Paper>
+    </PopContent>
   );
 };
 

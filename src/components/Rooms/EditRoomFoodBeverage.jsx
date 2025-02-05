@@ -51,7 +51,7 @@ const EditRoomFoodBeverage = ({
       setRefreshPage(Math.random());
       hideLoading();
     } catch (err) {
-      toast.error(err.response?.data?.message || "An error occurred");
+      // toast.error(err.response?.data?.message || "An error occurred");
       console.error("Error adding Food beverage:", err);
       hideLoading();
     } finally {
@@ -73,7 +73,7 @@ const EditRoomFoodBeverage = ({
         setAmenitiesList(foodBeverage);
         hideLoading();
       } catch (error) {
-        toast.error("Failed to load food beverage");
+        // toast.error("Failed to load food beverage");
         console.error("Error fetching food beverage:", error);
         hideLoading();
       }

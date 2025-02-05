@@ -7,6 +7,7 @@ import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { PopContent } from "../../Style";
+import FormButton from "../../components/Common/Buttons/FormButton/FormButton";
 
 const LocationEdit = ({
   id,
@@ -64,7 +65,7 @@ const LocationEdit = ({
         hideLoading();
         const errorMessage =
           error.response?.data?.message || "Failed to update location!";
-        toast.error(errorMessage);
+        // toast.error(errorMessage);
         console.error("Error updating location:", error);
       }
     },
@@ -127,16 +128,11 @@ const LocationEdit = ({
             </IconButton>
           </label>
         </Box>
-
-        <Button
+        <FormButton
           type="submit"
-          variant="contained"
-          color="primary"
-          fullWidth
-          sx={{ mt: 2 }}
-        >
-          Update Location
-        </Button>
+          btnName={"Update Location"}
+        />
+
       </Box>
     </PopContent>
   );

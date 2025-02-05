@@ -91,7 +91,7 @@ const MeetingForm = ({ room }) => {
         dispatch(hideLoading());
       } catch (error) {
         dispatch(hideLoading());
-        toast.error(error.response?.data?.message || "An error occurred");
+        // toast.error(error.response?.data?.message || "An error occurred");
         console.error("Error adding meeting:", error);
       }
     },

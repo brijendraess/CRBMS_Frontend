@@ -46,7 +46,7 @@ const CommitteeCard = ({ committee, setRefreshPage }) => {
     } catch (error) {
       dispatch(hideLoading());
       console.error("Error deleting committee:", error);
-      toast.error("Failed to delete committee. Please try again.");
+      // toast.error("Failed to delete committee. Please try again.");
     } finally {
       dispatch(hideLoading());
     }

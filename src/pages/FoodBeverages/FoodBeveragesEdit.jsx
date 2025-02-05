@@ -44,7 +44,7 @@ const FoodBeverageEdit = ({
         hideLoading();
         const errorMessage =
           error.response?.data?.message || "Failed to update foodBeverage!";
-        toast.error(errorMessage);
+        // toast.error(errorMessage);
         console.error("Error updating foodBeverage:", error);
       }
     },

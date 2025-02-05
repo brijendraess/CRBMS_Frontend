@@ -31,7 +31,7 @@ const AddCommitteeForm = ({
         dispatch(hideLoading());
       } catch (error) {
         dispatch(hideLoading());
-        toast.error("Failed to fetch committees");
+        // toast.error("Failed to fetch committees");
         console.error("Error fetching committees:", error);
       }
     };
@@ -45,7 +45,7 @@ const AddCommitteeForm = ({
         dispatch(hideLoading());
       } catch (error) {
         dispatch(hideLoading());
-        toast.error("Failed to fetch committees");
+        // toast.error("Failed to fetch committees");
         console.error("Error fetching committees:", error);
       }
     };
@@ -58,7 +58,7 @@ const AddCommitteeForm = ({
     initialValues: {
       name: "",
       committeeType: "",
-      chairperson:"",
+      chairperson: "",
       description: "",
     },
     validationSchema: Yup.object({
@@ -96,7 +96,7 @@ const AddCommitteeForm = ({
         setRefreshPage(Math.random());
         dispatch(hideLoading());
       } catch (err) {
-        toast.error(err.response?.data?.message || "Failed to save committee.");
+        // toast.error(err.response?.data?.message || "Failed to save committee.");
         dispatch(hideLoading());
         console.error("Error saving committee:", err);
       } finally {
@@ -123,7 +123,7 @@ const AddCommitteeForm = ({
           });
           dispatch(hideLoading());
         } catch (err) {
-          toast.error("Failed to fetch committee details.");
+          // toast.error("Failed to fetch committee details.");
           console.error("Error fetching committee:", err);
           dispatch(hideLoading());
         } finally {
@@ -146,7 +146,7 @@ const AddCommitteeForm = ({
           onBlur={formik.handleBlur}
           fullWidth
           required
-          margin="normal"
+          margin="dense"
           size="small"
           error={formik.touched.name && Boolean(formik.errors.name)}
           helperText={formik.touched.name && formik.errors.name}
@@ -168,6 +168,7 @@ const AddCommitteeForm = ({
             formik.touched.committeeType && formik.errors.committeeType
           }
           size="small"
+          margin="dense"
         >
           {committeeType?.map((committeeType) => (
             <MenuItem value={committeeType.id}>{committeeType.name}</MenuItem>
@@ -177,7 +178,7 @@ const AddCommitteeForm = ({
           fullWidth
           label="Chairperson"
           name="chairperson"
-          sx={{margin:"30px 0"}}
+          margin="dense"
           required
           select
           value={formik.values.chairperson}
@@ -204,7 +205,7 @@ const AddCommitteeForm = ({
           onBlur={formik.handleBlur}
           fullWidth
           required
-          margin="normal"
+          margin="dense"
           multiline
           rows={5}
           error={

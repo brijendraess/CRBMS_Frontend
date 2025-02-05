@@ -53,7 +53,7 @@ const EditRoomForm = ({ room, setRefreshPage, setIsEditOpen }) => {
         setLocationList(locations);
         dispatch(hideLoading());
       } catch (error) {
-        toast.error("Failed to load location");
+        // toast.error("Failed to load location");
         console.error("Error fetching location:", error);
         dispatch(hideLoading());
       }
@@ -135,7 +135,7 @@ const EditRoomForm = ({ room, setRefreshPage, setIsEditOpen }) => {
         dispatch(hideLoading());
       } catch (error) {
         dispatch(hideLoading());
-        toast.error(error.response?.data?.message || "An error occurred");
+        // toast.error(error.response?.data?.message || "An error occurred");
         console.error("Error adding room:", error);
       }
     },

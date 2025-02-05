@@ -17,6 +17,7 @@ import {
   DeleteOutlineIcon,
   PersonAddOutlinedIcon,
 } from "../../components/Common/Buttons/CustomIcon";
+import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
 
 const CommitteeMemberList = () => {
   const [data, setData] = useState([]);
@@ -53,7 +54,7 @@ const CommitteeMemberList = () => {
         dispatch(hideLoading());
       } catch (error) {
         dispatch(hideLoading());
-        toast.error("Failed to fetch members. Please try again.");
+        // toast.error("Failed to fetch members. Please try again.");
         console.error("Error fetching members:", error);
       }
     };
@@ -76,9 +77,9 @@ const CommitteeMemberList = () => {
     } catch (error) {
       dispatch(hideLoading());
       if (error.response?.status === 404) {
-        toast.error("User is not a member of this committee");
+        // toast.error("User is not a member of this committee");
       } else {
-        toast.error("Failed to remove user from committee");
+        // toast.error("Failed to remove user from committee");
       }
       console.error("Error removing user from committee:", error);
     }
@@ -204,10 +205,10 @@ const CommitteeMemberList = () => {
           />
         </Box>
       )}
-      <PopupModals
+      <NewPopUpModal
         modalBody={<AddMembersToCommittee members={data} id={committeeId} />}
         isOpen={isAddMemberOpen}
-        title={`Add New Members`}
+        title={`Add Members To ${heading}`}
         setIsOpen={setIsAddMemberOpen}
         width={500}
       />

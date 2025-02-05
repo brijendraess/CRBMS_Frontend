@@ -7,6 +7,7 @@ import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import FormButton from "../../components/Common/Buttons/FormButton/FormButton";
 
 const AmenitiesEdit = ({
   id,
@@ -42,7 +43,7 @@ const AmenitiesEdit = ({
         dispatch(hideLoading());
       } catch (err) {
         dispatch(hideLoading());
-        toast.error(err.response?.data?.message || "Failed to edit amenity!");
+        // toast.error(err.response?.data?.message || "Failed to edit amenity!");
         console.error("Error editing amenity:", err);
       }
     },
@@ -66,7 +67,7 @@ const AmenitiesEdit = ({
           dispatch(hideLoading());
         } catch (err) {
           dispatch(hideLoading());
-          toast.error("Failed to fetch amenity details.");
+          // toast.error("Failed to fetch amenity details.");
           console.error("Error fetching amenity:", err);
         }
       }
@@ -120,15 +121,10 @@ const AmenitiesEdit = ({
         />
 
         {/* Submit Button */}
-        <Button
+        <FormButton
           type="submit"
-          variant="contained"
-          color="primary"
-          fullWidth
-          sx={{ mt: 2 }}
-        >
-          Update Amenity
-        </Button>
+          btnName={"Update Amenity"}
+        />
       </Box>
     </PopContent>
   );
