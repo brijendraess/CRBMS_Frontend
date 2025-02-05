@@ -63,7 +63,7 @@ export default function RoomGallery({ room }) {
     } catch (error) {
       dispatch(hideLoading());
       console.error("Error deleting user:", error);
-      toast.error("Failed to delete user");
+      // toast.error("Failed to delete user");
     } finally {
       dispatch(hideLoading());
       setRefreshPage(Math.random());

@@ -75,7 +75,7 @@ const CommitteeTypePage = () => {
       dispatch(hideLoading());
     } catch (error) {
       dispatch(hideLoading());
-      toast.error("Failed to delete committeeType!");
+      // toast.error("Failed to delete committeeType!");
       console.error("Error deleting committeeType:", error);
     }
   };
@@ -114,7 +114,7 @@ const CommitteeTypePage = () => {
     } catch (error) {
       dispatch(hideLoading());
       console.error("Error changing status:", error);
-      toast.error("Failed to change committeeType status!");
+      // toast.error("Failed to change committeeType status!");
     }
   };
 

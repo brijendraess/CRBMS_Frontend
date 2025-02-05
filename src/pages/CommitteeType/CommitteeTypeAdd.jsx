@@ -39,7 +39,7 @@ const CommitteeTypeAdd = ({ setRefreshPage, setIsAddOpen }) => {
         hideLoading();
       } catch (err) {
         hideLoading();
-        toast.error(err.response?.data?.message || "An error occurred");
+        // toast.error(err.response?.data?.message || "An error occurred");
         console.error("Error adding Committee Type:", err);
       }
     },

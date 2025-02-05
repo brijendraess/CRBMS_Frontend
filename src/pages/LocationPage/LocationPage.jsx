@@ -74,7 +74,7 @@ const LocationPage = () => {
       dispatch(hideLoading());
     } catch (error) {
       dispatch(hideLoading());
-      toast.error("Failed to delete location!");
+      // toast.error("Failed to delete location!");
       console.error("Error deleting location:", error);
     }
   };
@@ -113,7 +113,7 @@ const LocationPage = () => {
     } catch (error) {
       dispatch(hideLoading());
       console.error("Error changing status:", error);
-      toast.error("Failed to change location status!");
+      // toast.error("Failed to change location status!");
     }
   };
 

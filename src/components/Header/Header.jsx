@@ -155,7 +155,7 @@ const Header = () => {
           })
         );
       } catch (error) {
-        toast.error("Failed to fetch Notification");
+        // toast.error("Failed to fetch Notification");
         console.error("Error fetching Notification:", error);
       }
     };
@@ -176,11 +176,11 @@ const Header = () => {
         toast.success("User Logged Out");
         navigate("/login");
       } else {
-        toast.error("Logout Failed");
+        // toast.error("Logout Failed");
       }
       dispatch(hideLoading());
     } catch (error) {
-      toast.error(error.response?.data?.message || "An error occurred");
+      // toast.error(error.response?.data?.message || "An error occurred");
       console.error(error);
       dispatch(hideLoading());
     }
@@ -292,6 +292,7 @@ const Header = () => {
                 <div className="profileImage">
                   <span className="profilePhoto">
                     <CheckAndShowImage
+                      placement={"left"}
                       imageUrl={`${import.meta.env.VITE_API_URL}/${user?.avatarPath
                         }`}
                     />

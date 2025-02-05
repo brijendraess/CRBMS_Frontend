@@ -738,7 +738,7 @@ const AddUserTypeSettings = () => {
             title: "Meeting Notification",
             permissions: [
               { name: "notificationView", label: "View" },
-              { name: "committeeDelete", label: "Delete" },
+              { name: "notificationDelete", label: "Delete" },
               { name: "notificationRead", label: "Read" },
             ],
           },

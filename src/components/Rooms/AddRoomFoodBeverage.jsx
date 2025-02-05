@@ -71,7 +71,7 @@ const AddRoomFoodBeverage = ({
         );
         setFoodBeverageList(FoodBeverages);
       } catch (error) {
-        toast.error("Failed to load food or beverages");
+        // toast.error("Failed to load food or beverages");
         console.error("Error fetching food beverages:", error);
       } finally {
         hideLoading();

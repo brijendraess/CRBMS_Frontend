@@ -52,7 +52,7 @@ const MeetingApproval = ({ updatedBookingId, meetingUpdatedStatus, setRefreshPag
         toast.success("Meeting status changed successfully");
         resetForm();
       } catch (error) {
-        toast.error(error.response?.data?.message || "An error occurred");
+        // toast.error(error.response?.data?.message || "An error occurred");
         console.error("Error status meeting:", error);
       }
     },

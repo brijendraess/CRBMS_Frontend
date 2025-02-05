@@ -45,7 +45,7 @@ const AmenitiesList = () => {
         setAmenities(amenitiesWithSerial);
         dispatch(hideLoading());
       } catch (error) {
-        toast.error("Something went wrong");
+        // toast.error("Something went wrong");
         console.error("Error fetching amenities:", error);
         dispatch(hideLoading());
       }
@@ -80,7 +80,7 @@ const AmenitiesList = () => {
       toast.success("Amenity deleted successfully!");
       dispatch(hideLoading());
     } catch (error) {
-      toast.error("Failed to delete amenity!");
+      // toast.error("Failed to delete amenity!");
       console.error("Error deleting amenity:", error);
       dispatch(hideLoading());
     }
@@ -109,7 +109,7 @@ const AmenitiesList = () => {
     } catch (error) {
       console.error("Error changing status:", error);
       dispatch(hideLoading());
-      toast.error("Failed to change Amenity status!");
+      // toast.error("Failed to change Amenity status!");
     }
   };
 

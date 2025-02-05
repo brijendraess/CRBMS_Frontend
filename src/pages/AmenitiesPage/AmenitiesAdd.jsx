@@ -6,6 +6,7 @@ import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import FormButton from "../../components/Common/Buttons/FormButton/FormButton";
 
 const AmenitiesAdd = ({ setIsAddOpen, setIsRefreshed }) => {
   const dispatch = useDispatch();
@@ -37,7 +38,7 @@ const AmenitiesAdd = ({ setIsAddOpen, setIsRefreshed }) => {
         dispatch(hideLoading());
       } catch (err) {
         dispatch(hideLoading());
-        toast.error(err.response?.data?.message || "Failed to add amenity!");
+        // toast.error(err.response?.data?.message || "Failed to add amenity!");
         console.error("Error adding amenity:", err);
       }
     },
@@ -87,15 +88,10 @@ const AmenitiesAdd = ({ setIsAddOpen, setIsRefreshed }) => {
         />
 
         {/* Submit Button */}
-        <Button
+        <FormButton
           type="submit"
-          variant="contained"
-          color="primary"
-          fullWidth
-          sx={{ mt: 2 }}
-        >
-          Add Amenity
-        </Button>
+          btnName={"Add Amenity"}
+        />
       </Box>
     </div>
   );

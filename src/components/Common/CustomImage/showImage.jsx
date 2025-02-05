@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { AccountCircleRoundedIcon } from "../Buttons/CustomIcon";
 import { Tooltip } from "@mui/material";
 
-const CheckAndShowImage = ({ imageUrl }) => {
+const CheckAndShowImage = ({ imageUrl, placement }) => {
   const [imageExists, setImageExists] = useState(null); // null: not checked, true: exists, false: doesn't exist
 
   const checkImage = (url) => {
@@ -22,7 +22,7 @@ const CheckAndShowImage = ({ imageUrl }) => {
   return (
     <>
       <Tooltip
-        placement="right"
+        placement={placement || "right"}
         title={
           <img
             src={imageUrl}

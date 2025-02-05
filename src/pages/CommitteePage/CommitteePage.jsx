@@ -11,6 +11,7 @@ import {
   Button,
   Chip,
   Switch,
+  Paper,
 } from "@mui/material";
 import axios from "axios";
 import CommitteeCard from "../../components/CommitteeCard/CommitteeCard";
@@ -69,7 +70,7 @@ const CommitteeManagementMUI = () => {
     if (filter === "inactive") return committee.status === false;
     return true;
   });
-  const filteredCommittees= filteredCommitteesMediate.map((data)=>Object.assign({}, data, {"committeeTypeName":data?.CommitteeType?.name}))
+  const filteredCommittees = filteredCommitteesMediate.map((data) => Object.assign({}, data, { "committeeTypeName": data?.CommitteeType?.name }))
 
   const handleDeleteCommittee = async (id) => {
     try {
@@ -85,7 +86,7 @@ const CommitteeManagementMUI = () => {
       dispatch(hideLoading());
       setDeleteModalOpen(false);
       console.error("Error deleting committee:", error);
-      toast.error("Failed to delete committee. Please try again.");
+      // toast.error("Failed to delete committee. Please try again.");
     } finally {
       dispatch(hideLoading());
     }
@@ -107,13 +108,13 @@ const CommitteeManagementMUI = () => {
         setRefreshPage((prev) => prev + 1);
         toast.success("Committee status changed successfully!");
       } else {
-        toast.error("Failed to change committee status. Please try again.");
+        // toast.error("Failed to change committee status. Please try again.");
       }
       dispatch(hideLoading());
     } catch (error) {
       dispatch(hideLoading());
       console.error("Error changing committee status:", error);
-      toast.error("Failed to change committee status. Please try again.");
+      // toast.error("Failed to change committee status. Please try again.");
     } finally {
       dispatch(hideLoading());
     }
@@ -248,6 +249,36 @@ const CommitteeManagementMUI = () => {
             user.UserType.committeeModule.split(",").includes("add")
           }
         >
+          {user.UserType.committeeTypeModule &&
+            user.UserType.committeeTypeModule.split(",").includes("view") && <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Tooltip title="Committee Type List">
+                <Paper sx={{
+                  borderRadius: '20px',
+                  background: 'none',
+                  transition: 'transform 0.3s ease-in-out',
+                  '&:hover': {
+                    transform: 'scale(1.1)',
+                  },
+                }}
+                  elevation={4} >
+                  <Chip
+                    label="Committee Type"
+                    size="large"
+                    variant="outlined"
+                    icon=""
+                    onClick={handleNavigateToCommitteeTypeList}
+                    sx={{ cursor: "pointer", padding: "8px", borderColor: 'var(--linear-gradient-main)', color: 'var(--linear-gradient-main)', fontSize: '16px' }}
+                    className="committee-view"
+                  />
+                </Paper>
+              </Tooltip>
+            </Box>}
           <FormControl
             className="committee-filter"
             style={{ marginRight: "5 px", width: "100px" }}
@@ -266,27 +297,7 @@ const CommitteeManagementMUI = () => {
               <MenuItem value="inactive">Inactive</MenuItem>
             </Select>
           </FormControl>
-          {user.UserType.committeeTypeModule &&
-            user.UserType.committeeTypeModule.split(",").includes("view") && <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <Tooltip title="Committee Type List">
-              <Chip
-                label="Committee Type"
-                size="large"
-                color="error"
-                variant="outlined"
-                icon=""
-                onClick={handleNavigateToCommitteeTypeList}
-                sx={{ cursor: "pointer", padding: "5px" }}
-                className="committee-view"
-              />
-            </Tooltip>
-          </Box>}
+
         </PageHeader>
 
         {isSmallScreen ? (
@@ -353,7 +364,7 @@ const CommitteeManagementMUI = () => {
           isOpen={isAddCommittee}
           title={"Add Committee"}
           setIsOpen={setIsAddCommittee}
-          // width={600}
+        // width={600}
         />
 
         <NewPopUpModal
@@ -367,7 +378,7 @@ const CommitteeManagementMUI = () => {
               setIsEditOpen={setIsEditOpen}
             />
           }
-          // width={500}
+        // width={500}
         />
 
         <DeleteModal

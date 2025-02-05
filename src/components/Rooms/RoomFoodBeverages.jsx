@@ -87,7 +87,7 @@ const RoomFoodBeverages = ({ room }) => {
       toast.success("Food beverage deleted successfully!");
       hideLoading();
     } catch (error) {
-      toast.error("Failed to delete food beverage!");
+      // toast.error("Failed to delete food beverage!");
       console.error("Error deleting food beverage:", error);
       hideLoading();
     }

@@ -87,7 +87,7 @@ const RoomAmenities = ({ room }) => {
       toast.success("Amenity quantity deleted successfully!");
       dispatch(hideLoading());
     } catch (error) {
-      toast.error("Failed to delete amenity quantity!");
+      // toast.error("Failed to delete amenity quantity!");
       console.error("Error deleting amenity quantity:", error);
       dispatch(hideLoading());
     }

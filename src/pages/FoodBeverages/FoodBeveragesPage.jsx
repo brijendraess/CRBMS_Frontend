@@ -86,7 +86,7 @@ const FoodBeveragePage = () => {
       hideLoading();
     } catch (error) {
       hideLoading();
-      toast.error("Failed to delete foodBeverage!");
+      // toast.error("Failed to delete foodBeverage!");
       console.error("Error deleting foodBeverage:", error);
     }
   };
@@ -128,7 +128,7 @@ const FoodBeveragePage = () => {
     } catch (error) {
       hideLoading();
       console.error("Error changing status:", error);
-      toast.error("Failed to change foodBeverage status!");
+      // toast.error("Failed to change foodBeverage status!");
     }
   };
 

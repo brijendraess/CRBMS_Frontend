@@ -65,7 +65,7 @@ const AddRoomAmenities = ({
         dispatch(hideLoading());
       } catch (err) {
         dispatch(hideLoading());
-        toast.error(err.response?.data?.message || "An error occurred");
+        // toast.error(err.response?.data?.message || "An error occurred");
         console.error("Error adding amenity quantity:", err);
       } finally {
         setIsAmenityQuantityOpen(false);
@@ -127,6 +127,7 @@ const AddRoomAmenities = ({
         >
           <InputLabel id="amenity-select-label">Amenity Name</InputLabel>
           <Select
+            label="Amenity Name"
             labelId="amenity-select-label"
             id="amenityId"
             name="amenityId"

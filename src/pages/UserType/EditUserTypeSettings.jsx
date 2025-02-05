@@ -59,7 +59,7 @@ const EditUserTypeSettings = () => {
         ?.split(",")
         .includes("changeStatus"),
 
-        committeeTypeAdd: userRole?.committeeTypeModule?.split(",").includes("add"),
+      committeeTypeAdd: userRole?.committeeTypeModule?.split(",").includes("add"),
       committeeTypeEdit: userRole?.committeeTypeModule?.split(",").includes("edit"),
       committeeTypeDelete: userRole?.committeeTypeModule?.split(",").includes("delete"),
       committeeTypeView: userRole?.committeeTypeModule?.split(",").includes("view"),
@@ -372,7 +372,6 @@ const EditUserTypeSettings = () => {
         };
         dispatch(showLoading());
         await axios.put(`api/v1/user-type/edit/${userRole.uid}`, submittedData);
-
         toast.success("User role update Successfully");
         resetForm(); // Reset form after successful submission
         goBack();
@@ -384,6 +383,7 @@ const EditUserTypeSettings = () => {
       }
     },
   });
+  
   return (
     <PaperWrapper>
       <Typography variant="h6" component="h6">
@@ -428,7 +428,7 @@ const EditUserTypeSettings = () => {
               labelId="admin-label"
               id="isAdmin"
               name="isAdmin"
-              value={formik.values.isAdmin} // Bind value to Formik's state
+              value={formik.values.isAdmin}
               onChange={(e) => {
                 formik.handleChange(e);
 
@@ -769,6 +769,33 @@ const EditUserTypeSettings = () => {
             ],
           },
           {
+            title: "Meeting Notification",
+            permissions: [
+              { name: "notificationView", label: "View" },
+              { name: "notificationDelete", label: "Delete" },
+              { name: "notificationRead", label: "Read" },
+            ],
+          },
+          {
+            title: "Inventory",
+            permissions: [
+              { name: "inventoryView", label: "View" },
+              {
+                name: "inventoryAdd",
+                label: <span>Add&nbsp;&nbsp;&nbsp;&nbsp;</span>,
+              },
+              {
+                name: "inventoryIncrease",
+                label: (
+                  <span>
+                    Increase&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  </span>
+                ),
+              },
+              { name: "inventoryDecrease", label: "Decrease" },
+            ],
+          },
+          {
             title: "User",
             permissions: [
               { name: "userView", label: "View" },
@@ -798,23 +825,7 @@ const EditUserTypeSettings = () => {
               { name: "committeeTypeChangeStatus", label: "Status" },
             ],
           },
-          {
-            title: "Meeting Notification",
-            permissions: [
-              { name: "notificationRead", label: "Read" },
-              { name: "notificationDelete", label: "Delete" },
-              { name: "notificationView", label: "View" },
-            ],
-          },
-          {
-            title: "Inventory",
-            permissions: [
-              { name: "inventoryAdd", label: "Add" },
-              { name: "inventoryIncrease", label: "Increase" },
-              { name: "inventoryDecrease", label: "Decrease" },
-              { name: "inventoryView", label: "View" },
-            ],
-          },
+
           {
             title: "Amenities",
             permissions: [
@@ -865,6 +876,7 @@ const EditUserTypeSettings = () => {
               { name: "foodBeverageChangeStatus", label: "Status" },
             ],
           },
+
           {
             title: "Meeting Logs",
             permissions: [
@@ -878,10 +890,10 @@ const EditUserTypeSettings = () => {
           {
             title: "Room",
             permissions: [
+              { name: "roomView", label: "View" },
+              { name: "roomDelete", label: "Delete" },
               { name: "roomAdd", label: "Add" },
               { name: "roomEdit", label: "Edit" },
-              { name: "roomDelete", label: "Delete" },
-              { name: "roomView", label: "View" },
               { name: "roomGallery", label: "Gallery" },
               { name: "roomAmenities", label: "Amenities" },
               { name: "roomBarcode", label: "BarCode" },

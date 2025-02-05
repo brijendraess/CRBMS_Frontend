@@ -55,7 +55,7 @@ const DashboardStock = () => {
       dispatch(hideLoading());
     } catch (err) {
       dispatch(hideLoading());
-      toast.error(err.response?.data?.message || "An error occurred");
+      // toast.error(err.response?.data?.message || "An error occurred");
       console.error("Error adding amenity stock:", err);
     } finally {
       setIsAddOpen(false);

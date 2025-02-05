@@ -74,7 +74,7 @@ const PendingMeeting = () => {
       setRefreshPage(Math.random());
       toast.success("Meeting cancelled successfully!");
     } catch (error) {
-      toast.error("Failed to cancelled meeting!");
+      // toast.error("Failed to cancelled meeting!");
       console.error("Error cancelled meeting:", error);
     }
   };
@@ -192,7 +192,7 @@ const PendingMeeting = () => {
         }
         // Format the data for DataGrid
       } catch (error) {
-        toast.error("Failed to fetch meetings");
+        // toast.error("Failed to fetch meetings");
         console.error("Error fetching meetings:", error);
       }
     };
@@ -228,7 +228,7 @@ const PendingMeeting = () => {
         dispatch(hideLoading());
       } catch (error) {
         dispatch(hideLoading());
-        toast.error("Failed to fetch meetings");
+        // toast.error("Failed to fetch meetings");
         console.error("Error fetching meetings:", error);
       }
     };
