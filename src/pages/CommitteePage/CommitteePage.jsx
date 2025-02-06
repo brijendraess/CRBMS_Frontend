@@ -249,36 +249,6 @@ const CommitteeManagementMUI = () => {
             user.UserType.committeeModule.split(",").includes("add")
           }
         >
-          {user.UserType.committeeTypeModule &&
-            user.UserType.committeeTypeModule.split(",").includes("view") && <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <Tooltip title="Committee Type List">
-                <Paper sx={{
-                  borderRadius: '20px',
-                  background: 'none',
-                  transition: 'transform 0.3s ease-in-out',
-                  '&:hover': {
-                    transform: 'scale(1.1)',
-                  },
-                }}
-                  elevation={4} >
-                  <Chip
-                    label="Committee Type"
-                    size="large"
-                    variant="outlined"
-                    icon=""
-                    onClick={handleNavigateToCommitteeTypeList}
-                    sx={{ cursor: "pointer", padding: "8px", borderColor: 'var(--linear-gradient-main)', color: 'var(--linear-gradient-main)', fontSize: '16px' }}
-                    className="committee-view"
-                  />
-                </Paper>
-              </Tooltip>
-            </Box>}
           <FormControl
             className="committee-filter"
             style={{ marginRight: "5 px", width: "100px" }}
@@ -299,7 +269,39 @@ const CommitteeManagementMUI = () => {
           </FormControl>
 
         </PageHeader>
-
+        {user.UserType.committeeTypeModule &&
+          user.UserType.committeeTypeModule.split(",").includes("view") &&
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+              mb: 2,
+            }}
+          >
+            <Tooltip title="Committee Type List">
+              <Paper sx={{
+                borderRadius: '20px',
+                background: 'none',
+                transition: 'transform 0.3s ease-in-out',
+                '&:hover': {
+                  transform: 'scale(1.1)',
+                },
+              }}
+                elevation={24} >
+                <Chip
+                  label="Committee Type"
+                  size="large"
+                  variant="outlined"
+                  icon=""
+                  onClick={handleNavigateToCommitteeTypeList}
+                  sx={{ cursor: "pointer", padding: "8px", borderColor: 'var(--linear-gradient-main)', color: 'var(--linear-gradient-main)', fontSize: '16px' }}
+                  className="committee-view"
+                />
+              </Paper>
+            </Tooltip>
+          </Box>
+        }
         {isSmallScreen ? (
           <Grid2
             container

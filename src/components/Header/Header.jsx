@@ -55,7 +55,6 @@ import NewPopUpModal from "../Common/Modals/Popup/NewPopUpModal";
 const Header = () => {
   const context = useContext(MyContext);
   const { user } = useSelector((state) => state.user);
-  // console.log(user);
   const [menuAnchor, setMenuAnchor] = useState(null);
   const [notificationsAnchor, setNotificationsAnchor] = useState(null);
   const [isFullScreen, setIsFullScreen] = useState(false);
@@ -67,17 +66,17 @@ const Header = () => {
   const [isHelpPopupOpen, setIsHelpPopupOpen] = useState(false);
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
   const location = useLocation();
-  const { changeTheme } = useContext(ThemeContext);
-  const [themeMenuAnchor, setThemeMenuAnchor] = useState(null);
-  const [selectedThemeIndex, setSelectedThemeIndex] = useState(0);
+  // const { changeTheme } = useContext(ThemeContext);
+  // const [themeMenuAnchor, setThemeMenuAnchor] = useState(null);
+  // const [selectedThemeIndex, setSelectedThemeIndex] = useState(0);
   const dispatch = useDispatch();
-
+  const { changeTheme, selectedThemeIndex, themeColors } = useContext(ThemeContext);
+  const [themeMenuAnchor, setThemeMenuAnchor] = useState(null);
   const handleThemeMenuToggle = (event) => {
     setThemeMenuAnchor(themeMenuAnchor ? null : event.currentTarget);
   };
 
   const handleThemeChange = (index) => {
-    setSelectedThemeIndex(index);
     changeTheme(index);
     setThemeMenuAnchor(null);
   };
@@ -92,14 +91,6 @@ const Header = () => {
       animate: true,
     });
     driverObj.drive(); // Start the guide
-  };
-
-  const handleOpenPopup = () => {
-    setIsHelpPopupOpen(true); // Open the popup
-  };
-
-  const handleClosePopup = () => {
-    setIsHelpPopupOpen(false); // Close the popup
   };
 
   // Common Function to Toggle Menus
@@ -234,7 +225,6 @@ const Header = () => {
             ) : (
               <Button
                 className="rounded-circle"
-                // onClick={handleOpenPopup}
                 onClick={handleStartGuide}
               >
                 <Tooltip title="Help">
@@ -390,7 +380,7 @@ const Header = () => {
             key={index}
             onClick={() => handleThemeChange(index)}
             style={{
-              backgroundColor: `#${theme.linearGradientColorMain}`,
+              backgroundColor: theme.linearGradientColorMain,
               color: theme.textColor,
               display: "flex",
               alignItems: "center",
@@ -403,7 +393,7 @@ const Header = () => {
                 display: "inline-block",
                 width: "20px",
                 height: "20px",
-                background: `linear-gradient(90deg, #${theme.linearGradientColorMain}, #${theme.linearGradientColorMain2})`,
+                background: `linear-gradient(90deg, ${theme.linearGradientColorMain}, ${theme.linearGradientColorMain2})`,
                 borderRadius: "50%",
                 marginLeft: "10px",
               }}

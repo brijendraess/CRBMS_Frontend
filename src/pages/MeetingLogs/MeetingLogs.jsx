@@ -109,50 +109,50 @@ const MeetingLogs = () => {
     {
       field: "subject",
       headerName: "Subject",
-      flex: 1,
+      width: 400,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "roomName",
       headerName: "Room Name",
-      flex: 1,
+      width: 250,
       headerClassName: "super-app-theme--header",
     },
 
     {
       field: "startTime",
       headerName: "Start Time",
-      flex: 1,
+      width: 150,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "endTime",
       headerName: "End Time",
-      flex: 1,
+      width: 150,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "meetingDate",
       headerName: "Meeting Date",
-      flex: 1,
+      width: 150,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "roomLocation",
       headerName: "Room Location",
-      flex: 1,
+      width: 250,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "organizerName",
       headerName: "Organizer",
-      flex: 1,
+      width: 250,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "status",
       headerName: "Status",
-      flex: 1,
+      width: 200,
       headerClassName: "super-app-theme--header",
     },
     {
@@ -160,7 +160,7 @@ const MeetingLogs = () => {
       headerName: "Action",
       disableColumnMenu: true,
       hideSortIcons: true,
-      flex: 1,
+      width: 250,
       headerClassName: "super-app-theme--header",
       renderCell: (params) => (
         <Box
@@ -197,7 +197,7 @@ const MeetingLogs = () => {
                 />
               </Tooltip>
             )}
-            {user.UserType.meetingLogsModule &&
+          {user.UserType.meetingLogsModule &&
             user.UserType.meetingLogsModule.split(",").includes("edit") && (
               <Tooltip title="Swap meeting">
                 <SwapHorizIcon
@@ -336,10 +336,10 @@ const MeetingLogs = () => {
           rowHeight={50}
           getRowClassName={(params) =>
             params.row.status === "cancelled"
-            ? classes.rowCancelled
-            : params.row.status === "completed"
-            ? classes.rowConfirmed
-            : classes.rowActive
+              ? classes.rowCancelled
+              : params.row.status === "completed"
+                ? classes.rowConfirmed
+                : classes.rowActive
           }
           sx={{
             "& .super-app-theme--header": {
@@ -347,6 +347,12 @@ const MeetingLogs = () => {
               color: "#fff",
               fontWeight: "600",
               fontSize: "16px",
+            },
+            '& .MuiDataGrid-columnHeader:first-child, .MuiDataGrid-cell:first-child': {
+              position: 'sticky',
+              left: 0,
+              zIndex: 1,
+              background: 'white',
             },
           }}
         />

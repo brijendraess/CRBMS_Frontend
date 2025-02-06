@@ -12,11 +12,11 @@ export const defaultTheme = {
   button: "#0462ffd1",
 };
 
-const themeColors = [
+export const themeColors = [
   {
     linearGradientColorMain: "#3F72AF",
     linearGradientColorMain2: "#112D4E",
-    menuLink: "#3aadef", // Light complementary blue
+    menuLink: "#3aadef",
     bodyColor: "#DBE2EF",
     bodyColor2: "#F9F7F7",
     textColor: "white",
@@ -25,7 +25,7 @@ const themeColors = [
   {
     linearGradientColorMain: "#6D2323",
     linearGradientColorMain2: "#A31D1D",
-    menuLink: "#FFA07A", // Warm salmon color for contrast
+    menuLink: "#FFA07A",
     bodyColor: "#E5D0AC",
     bodyColor2: "#FEF9E1",
     textColor: "white",
@@ -34,7 +34,7 @@ const themeColors = [
   {
     linearGradientColorMain: "#8174A0",
     linearGradientColorMain2: "#441752",
-    menuLink: "#FFC0CB", // Light pink for harmony
+    menuLink: "#FFC0CB",
     bodyColor: "#A888B5",
     bodyColor2: "#EFB6C8",
     textColor: "white",
@@ -52,71 +52,47 @@ const themeColors = [
   {
     linearGradientColorMain: "#71C9CE",
     linearGradientColorMain2: "#71C9CE",
-    menuLink: "#000", // Soft mint green for balance
+    menuLink: "#000",
     bodyColor: "#CBF1F5",
     bodyColor2: "#E3FDFD",
-    textColor: "white",
-    button: "#000957",
-  },
-  {
-    linearGradientColorMain: "#F93827",
-    linearGradientColorMain2: "#FF9D23",
-    bodyColor: "#FFD65A",
-    bodyColor2: "#16C47F",
-    textColor: "white",
-    button: "#000957",
-  },
-  {
-    linearGradientColorMain: "#F14A00",
-    linearGradientColorMain2: "#C62300",
-    bodyColor: "#500073",
-    bodyColor2: "#2A004E",
-    textColor: "white",
-    button: "#000957",
-  },
-  {
-    linearGradientColorMain: "#E8E7AB",
-    linearGradientColorMain2: "#F2AE66",
-    bodyColor: "#E82561",
-    bodyColor2: "#C30E59",
     textColor: "white",
     button: "#000957",
   },
 ];
 
 export const ThemeProvider = ({ children }) => {
+  // Load both the theme and the selected index from local storage (if available)
   const [theme, setTheme] = useState(() => {
     const savedTheme = localStorage.getItem("appTheme");
     return savedTheme ? JSON.parse(savedTheme) : defaultTheme;
   });
 
+  const [selectedThemeIndex, setSelectedThemeIndex] = useState(() => {
+    const savedIndex = localStorage.getItem("selectedThemeIndex");
+    return savedIndex !== null ? Number(savedIndex) : 0;
+  });
+
   useEffect(() => {
     localStorage.setItem("appTheme", JSON.stringify(theme));
+    localStorage.setItem("selectedThemeIndex", selectedThemeIndex);
     const root = document.documentElement;
-
-    // Set CSS variables dynamically
-    root.style.setProperty(
-      "--linear-gradient-main",
-      theme.linearGradientColorMain
-    );
-    root.style.setProperty(
-      "--linear-gradient-main-2",
-      theme.linearGradientColorMain2
-    );
-    root.style.setProperty("--menu-link-color", theme.menuLink);
+    root.style.setProperty("--linear-gradient-main", theme.linearGradientColorMain);
+    root.style.setProperty("--linear-gradient-main-2", theme.linearGradientColorMain2);
+    root.style.setProperty("--menu-link-color", theme.menuLink || "");
     root.style.setProperty("--body-color", theme.bodyColor);
     root.style.setProperty("--body-color-2", theme.bodyColor2);
     root.style.setProperty("--text-color", theme.textColor);
     root.style.setProperty("--button-color", theme.button);
-  }, [theme]);
+  }, [theme, selectedThemeIndex]);
 
   const changeTheme = (index) => {
     const selectedTheme = themeColors[index];
     setTheme(selectedTheme);
+    setSelectedThemeIndex(index);
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, changeTheme }}>
+    <ThemeContext.Provider value={{ theme, changeTheme, selectedThemeIndex, themeColors }}>
       {children}
     </ThemeContext.Provider>
   );

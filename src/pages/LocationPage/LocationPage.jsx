@@ -131,7 +131,7 @@ const LocationPage = () => {
       headerName: "Image",
       disableColumnMenu: true,
       hideSortIcons: true,
-      flex: 2,
+      flex: 1,
       renderCell: (params) => (
         <CheckAndShowImage
           imageUrl={`${import.meta.env.VITE_API_URL}/${params.value}`}
@@ -150,7 +150,7 @@ const LocationPage = () => {
       headerName: "Action",
       disableColumnMenu: true,
       hideSortIcons: true,
-      flex: 1,
+      flex: 2,
       renderCell: (params) => (
         <Box display="flex" alignItems="center" gap={1}>
           {user.UserType.locationModule &&

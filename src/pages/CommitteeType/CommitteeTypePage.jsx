@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { PaperWrapper } from "../../Style";
-import { Box, Switch, Tooltip, useMediaQuery, Grid2 } from "@mui/material";
+import { Box, Switch, Tooltip, useMediaQuery, Grid2, Chip, Paper } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import CommitteeTypeAdd from "./CommitteeTypeAdd";
@@ -19,6 +19,7 @@ import {
   EditOutlinedIcon,
 } from "../../components/Common/Buttons/CustomIcon";
 import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
+import { useNavigate } from "react-router-dom";
 
 const CommitteeTypePage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -30,6 +31,8 @@ const CommitteeTypePage = () => {
   const [refreshPage, setRefreshPage] = useState(0);
   const { user } = useSelector((state) => state.user);
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
+  const navigate = useNavigate()
+
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchCommitteeTypes = async () => {
@@ -90,6 +93,10 @@ const CommitteeTypePage = () => {
   const handleOpen = (id) => {
     setDeleteId(id);
     setOpen(true);
+  };
+
+  const handleNavigateToCommitteeList = () => {
+    navigate(`/committee`);
   };
 
   const handleStatusChange = async (id) => {
@@ -194,6 +201,40 @@ const CommitteeTypePage = () => {
           user.UserType.committeeTypeModule.split(",").includes("add")
         }
       />
+
+      {user.UserType.committeeTypeModule &&
+        user.UserType.committeeTypeModule.split(",").includes("view") &&
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-end",
+            mb: 2,
+          }}
+        >
+          <Tooltip title="Committee List">
+            <Paper sx={{
+              borderRadius: '20px',
+              background: 'none',
+              transition: 'transform 0.3s ease-in-out',
+              '&:hover': {
+                transform: 'scale(1.1)',
+              },
+            }}
+              elevation={24} >
+              <Chip
+                label="Committee"
+                size="large"
+                variant="outlined"
+                icon=""
+                onClick={handleNavigateToCommitteeList}
+                sx={{ cursor: "pointer", padding: "8px", borderColor: 'var(--linear-gradient-main)', color: 'var(--linear-gradient-main)', fontSize: '16px' }}
+                className="committee-view"
+              />
+            </Paper>
+          </Tooltip>
+        </Box>
+      }
       {isSmallScreen ? (
         <Grid2
           container

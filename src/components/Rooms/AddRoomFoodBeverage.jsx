@@ -99,9 +99,10 @@ const AddRoomFoodBeverage = ({
           }}
         >
           <InputLabel id="food-beverage-select-label">
-            Food & Beverage Name
+            Food & Beverage
           </InputLabel>
           <Select
+            label="Food & Beverage"
             labelId="food-beverage-select-label"
             id="foodBeverage"
             name="foodBeverageId"
