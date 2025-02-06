@@ -92,13 +92,13 @@ const EditRoomFoodBeverage = ({
           size="small"
           fullWidth
         >
-          <InputLabel id="demo-multiple-name-label">Amenity Name</InputLabel>
+          <InputLabel id="demo-multiple-name-label">Food & Beverage</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="foodBeverageId"
             name="foodBeverageId"
             value={formData.foodBeverageId}
-            label="Amenity Name"
+            label="Food & Beverage"
             required
             size="small"
             onChange={handleChange}

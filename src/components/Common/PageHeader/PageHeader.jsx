@@ -50,7 +50,7 @@ const PageHeader = ({
           <CustomButton
             nameOfTheClass={nameOfTheClass}
             onClick={() => func(true)}
-            title={title || "Add"}
+            title={"Add New " + heading}
             placement={"left"}
             Icon={icon}
             fontSize={"medium"}

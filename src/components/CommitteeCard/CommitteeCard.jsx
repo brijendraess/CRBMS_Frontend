@@ -19,12 +19,14 @@ import {
   EditOutlinedIcon,
   PeopleIcon,
 } from "../Common/Buttons/CustomIcon";
+import { useDispatch } from "react-redux";
 
 const CommitteeCard = ({ committee, setRefreshPage }) => {
   const [hover, setHover] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleOpen = () => {
     setOpen(true);
@@ -46,7 +48,7 @@ const CommitteeCard = ({ committee, setRefreshPage }) => {
     } catch (error) {
       dispatch(hideLoading());
       console.error("Error deleting committee:", error);
-      // toast.error("Failed to delete committee. Please try again.");
+      toast.error("Failed to delete committee. Please try again.");
     } finally {
       dispatch(hideLoading());
     }
@@ -92,26 +94,24 @@ const CommitteeCard = ({ committee, setRefreshPage }) => {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       sx={{
-        height: "300px",
         display: "flex",
         flexDirection: "column",
-        width: 320,
+        maxWidth: 400,
+        minHeight: 300,
         background: "#fafafa80",
         justifyContent: "space-between",
+        m: 1,
       }}
       className="committee-card"
     >
-      <CardActionArea
-        sx={{
-          height: "100%",
-        }}
-      >
+      <CardActionArea>
         <CardContent
           sx={{
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-evenly",
-            height: "100%",
+            justifyContent: "space-between",
+            minHeight: 260,
+            p: { xs: 1.5, sm: 2 },
           }}
         >
           {/* Card Header */}
@@ -120,7 +120,7 @@ const CommitteeCard = ({ committee, setRefreshPage }) => {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "flex-start",
-              marginBottom: "10px",
+              mb: { xs: 1, sm: 2 },
               gap: "10px",
             }}
           >
@@ -128,26 +128,20 @@ const CommitteeCard = ({ committee, setRefreshPage }) => {
               variant="h5"
               component="h5"
               sx={{
-                fontSize: "18px",
+                fontSize: { xs: "16px", sm: "18px" },
                 fontWeight: 400,
-                lineHeight: "1.5",
+                lineHeight: 1.3,
                 color: "#2E2E2E",
               }}
             >
               {committee.name}
             </Typography>
 
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
+            <Box sx={{ display: "flex", gap: { xs: 0.5, sm: 1 } }}>
               <Tooltip title="Delete">
                 <DeleteOutlineIcon
                   onClick={handleOpen}
-                  sx={{ cursor: "pointer" }}
+                  sx={{ cursor: "pointer", fontSize: { xs: "20px", sm: "24px" } }}
                   fontSize="medium"
                   color="error"
                   className="committee-delete"
@@ -157,7 +151,7 @@ const CommitteeCard = ({ committee, setRefreshPage }) => {
                 <EditOutlinedIcon
                   color="success"
                   onClick={() => setIsEditOpen(true)}
-                  sx={{ cursor: "pointer" }}
+                  sx={{ cursor: "pointer", fontSize: { xs: "20px", sm: "24px" } }}
                   className="committee-edit"
                 />
               </Tooltip>
@@ -165,7 +159,16 @@ const CommitteeCard = ({ committee, setRefreshPage }) => {
           </Box>
 
           {/* Description */}
-          <Typography color="text.secondary" variant="body2" sx={{ mb: 2 }}>
+          <Typography
+            color="text.secondary"
+            variant="body2"
+            sx={{
+              mb: { xs: 1, sm: 2 },
+              fontSize: { xs: "0.875rem", sm: "0.9rem" },
+              lineHeight: 1.4,
+              flexGrow: 1,
+            }}
+          >
             {committee.description}
           </Typography>
 
@@ -175,6 +178,7 @@ const CommitteeCard = ({ committee, setRefreshPage }) => {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
+              mt: { xs: 1, sm: 2 },
             }}
           >
             <Tooltip title="View all members">
@@ -185,7 +189,11 @@ const CommitteeCard = ({ committee, setRefreshPage }) => {
                 variant="outlined"
                 icon={<PeopleIcon />}
                 onClick={handleView}
-                sx={{ cursor: "pointer", padding: "5px" }}
+                sx={{
+                  cursor: "pointer",
+                  padding: { xs: "4px", sm: "5px" },
+                  fontSize: { xs: "0.875rem", sm: "1rem" },
+                }}
                 className="committee-view"
               />
             </Tooltip>
@@ -194,6 +202,9 @@ const CommitteeCard = ({ committee, setRefreshPage }) => {
                 size="small"
                 checked={!!committee.status}
                 onChange={handleChangeStatus}
+                sx={{
+                  transform: { xs: "scale(0.8)", sm: "scale(1)" },
+                }}
                 className="committee-switch"
               />
             </Tooltip>

@@ -154,7 +154,7 @@ const RoomsCard = ({
         elevation={hover ? 20 : 4}
         sx={{
           position: "relative",
-          borderRadius: "15px",
+          borderRadius: "8px",
           overflow: "hidden",
           backgroundColor: "#fff",
           transformOrigin: "center",
@@ -202,6 +202,8 @@ const RoomsCard = ({
               transformOrigin: "center",
               transform: "scale(1.001)",
               transition: "transform 0.4s ease-in-out",
+              borderRadius: "8px 8px 0 0",
+
             }}
           />
         </Box>

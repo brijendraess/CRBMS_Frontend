@@ -164,7 +164,6 @@ const AddRoomAmenities = ({
           helperText={formik.touched.quantity && formik.errors.quantity}
         />
         <FormButton type='submit' btnName={"Add Quantity"} />
-
       </Box>
     </PopContent>
   );
