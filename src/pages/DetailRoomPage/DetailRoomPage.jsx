@@ -98,94 +98,131 @@ const columns = [
     field: "status",
     headerName: "Status",
     width: 206,
-    renderCell: (params) => renderProgressBar(params),
+    renderCell: (params) => calculateTimeDifference(params),
     headerClassName: "super-app-theme--header",
   },
 ];
 
-const renderProgressBar = (params) => {
-  const status = params.row.status;
-  const meetingStartTime = `${params.row.meetingDate}T${params.row.startTime}Z`; // ISO 8601 format
-  const meetingEndTime = `${params.row.meetingDate}T${params.row.endTime}Z`;
-  const percentage = getMeetingTimePercentage(meetingStartTime, meetingEndTime);
-  let progress = 0;
+// const renderProgressBar = (params) => {
+//   const status = params.row.status;
+//   const meetingStartTime = `${params.row.meetingDate}T${params.row.startTime}Z`; // ISO 8601 format
+//   const meetingEndTime = `${params.row.meetingDate}T${params.row.endTime}Z`;
+//   const percentage = getMeetingTimePercentage(meetingStartTime, meetingEndTime);
+//   let progress = 0;
 
-  if (status === "Completed") progress = percentage;
-  else if (status === "start") progress = percentage;
-  else if (status === "scheduled") progress = 0;
+//   if (status === "completed") progress = percentage;
+//   else if (status === "start") progress = percentage;
+//   else if (status === "scheduled") progress = 0;
 
-  const getCustomColor = (percentage) => {
-    if (percentage >= 0 && percentage <= 10)
-      return theme.palette.progress.color10;
-    if (percentage >= 11 && percentage <= 20)
-      return theme.palette.progress.color20;
-    if (percentage >= 21 && percentage <= 30)
-      return theme.palette.progress.color30;
-    if (percentage >= 31 && percentage <= 40)
-      return theme.palette.progress.color40;
-    if (percentage >= 41 && percentage <= 50)
-      return theme.palette.progress.color50;
+//   const getCustomColor = (percentage) => {
+//     if (percentage >= 0 && percentage <= 10)
+//       return theme.palette.progress.color10;
+//     if (percentage >= 11 && percentage <= 20)
+//       return theme.palette.progress.color20;
+//     if (percentage >= 21 && percentage <= 30)
+//       return theme.palette.progress.color30;
+//     if (percentage >= 31 && percentage <= 40)
+//       return theme.palette.progress.color40;
+//     if (percentage >= 41 && percentage <= 50)
+//       return theme.palette.progress.color50;
 
-    if (percentage >= 51 && percentage <= 60)
-      return theme.palette.progress.color60;
-    if (percentage >= 61 && percentage <= 70)
-      return theme.palette.progress.color70;
-    if (percentage >= 71 && percentage <= 80)
-      return theme.palette.progress.color80;
-    if (percentage >= 81 && percentage <= 90)
-      return theme.palette.progress.color90;
-    if (percentage >= 91 && percentage <= 100)
-      return theme.palette.progress.color100;
+//     if (percentage >= 51 && percentage <= 60)
+//       return theme.palette.progress.color60;
+//     if (percentage >= 61 && percentage <= 70)
+//       return theme.palette.progress.color70;
+//     if (percentage >= 71 && percentage <= 80)
+//       return theme.palette.progress.color80;
+//     if (percentage >= 81 && percentage <= 90)
+//       return theme.palette.progress.color90;
+//     if (percentage >= 91 && percentage <= 100)
+//       return theme.palette.progress.color100;
+//   };
+
+//   return (
+//     <Box
+//       sx={{
+//         display: "flex",
+//         alignItems: "center",
+//         justifyContent: "center", // Center the progress bar horizontally
+//         width: "100%",
+//         height: "100%",
+//       }}
+//     >
+//       <Box
+//         sx={{
+//           position: "relative", // Needed for placing text inside the bar
+//           width: "90%", // Occupies 90% of the cell width
+//         }}
+//       >
+//         <LinearProgress
+//           variant="determinate"
+//           value={progress}
+//           sx={{
+//             height: 20, // Increased thickness
+//             borderRadius: 6, // Rounded edges
+//             "& .MuiLinearProgress-bar": {
+//               backgroundColor: getCustomColor(percentage),
+//             },
+//           }}
+//         />
+//         <Typography
+//           sx={{
+//             position: "absolute", // Position the text inside the bar
+//             top: 0,
+//             left: 0,
+//             right: 0,
+//             bottom: 0,
+//             display: "flex",
+//             alignItems: "center",
+//             justifyContent: "center", // Center the text within the bar
+//             color: "white", // Ensure text is visible
+//             fontSize: "0.75rem",
+//             fontWeight: "bold",
+//           }}
+//         >
+//           {`${progress}%`}
+//         </Typography>
+//       </Box>
+//     </Box>
+//   );
+// };
+
+const calculateTimeDifference = (params) => {
+
+  const meeting = params.row;
+  if (meeting.status === "cancelled" || meeting.status === "completed") {
+    return <>
+      <b>{meeting.status}</b>
+    </>
+  }
+
+  const now = new Date();
+  const startDateTime = new Date(`${meeting.meetingDate}T${meeting.startTime}`);
+  const endDateTime = new Date(`${meeting.meetingDate}T${meeting.endTime}`);
+
+  const formatTime = (minutes) => {
+    if (minutes >= 60) {
+      const hours = Math.floor(minutes / 60);
+      const remainingMinutes = minutes % 60;
+      return remainingMinutes > 0
+        ? `${hours} hr ${remainingMinutes} min`
+        : `${hours} hr`;
+    }
+    return `${minutes} min`;
   };
 
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center", // Center the progress bar horizontally
-        width: "100%",
-        height: "100%",
-      }}
-    >
-      <Box
-        sx={{
-          position: "relative", // Needed for placing text inside the bar
-          width: "90%", // Occupies 90% of the cell width
-        }}
-      >
-        <LinearProgress
-          variant="determinate"
-          value={progress}
-          sx={{
-            height: 20, // Increased thickness
-            borderRadius: 6, // Rounded edges
-            "& .MuiLinearProgress-bar": {
-              backgroundColor: getCustomColor(percentage),
-            },
-          }}
-        />
-        <Typography
-          sx={{
-            position: "absolute", // Position the text inside the bar
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center", // Center the text within the bar
-            color: "white", // Ensure text is visible
-            fontSize: "0.75rem",
-            fontWeight: "bold",
-          }}
-        >
-          {`${progress}%`}
-        </Typography>
-      </Box>
-    </Box>
-  );
-};
+  if (now < startDateTime) {
+      const minutesUntilStart = Math.round((startDateTime - now) / (1000 * 60));
+      return `Starts in ${formatTime(minutesUntilStart)}.`;
+  } else if (now >= startDateTime && now <= endDateTime) {
+      const minutesRemaining = Math.round((endDateTime - now) / (1000 * 60));
+      return `Meeting ongoing, ${formatTime(minutesRemaining)} remaining.`;
+  } else {
+      return "Meeting ended but still pending.";
+  }
+
+
+}
 
 const DetailRoomPage = () => {
   const { id } = useParams();
@@ -210,7 +247,8 @@ const DetailRoomPage = () => {
   };
 
   const getAllMeeting = () => {
-    const meeting = room?.Meetings.map((meeting) => {
+    const todayDate = new Date().toISOString().split('T')[0];
+    const meeting = room?.Meetings?.filter((meeting) => meeting.meetingDate === todayDate).map((meeting) => {
       const timeDiff = timeDifference(meeting?.startTime, meeting?.endTime);
       return {
         id: meeting.id,
