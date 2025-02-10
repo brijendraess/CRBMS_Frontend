@@ -163,12 +163,10 @@ const MeetingLogs = () => {
       width: 250,
       headerClassName: "super-app-theme--header",
       renderCell: (params) => {
-        console.log("Rendering action cell for:", params.row);
 
         const [day, month, year] = params.row.meetingDate.split("/").map(Number);
 
-        // Convert "10:00 AM" format to 24-hour format
-        const timeString = params.row.endTime; // "10:00 AM"
+        const timeString = params.row.endTime;
         const [time, modifier] = timeString.split(" ");
         let [hours, minutes] = time.split(":").map(Number);
   
