@@ -7,6 +7,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
+import { DataGrid } from "@mui/x-data-grid";
 
 const ReportPage = () => {
   const [counts, setCounts] = useState({
@@ -25,7 +26,9 @@ const ReportPage = () => {
   const [cancelledMeetingFilter, setCancelledMeetingFilter] = useState("Today");
   const [completedMeetingFilter, setCompletedMeetingFilter] = useState("Today");
 
-  // const [selectedOption, setSelectedOption] = useState("Today");
+  const [roomData, setRoomData] = useState([]);
+  const [organizerData, setOrganizerData] = useState([]);
+
   const dispatch = useDispatch();
   const fetchCounts = async () => {
     try {
@@ -84,46 +87,50 @@ const ReportPage = () => {
     setMeetingFilter(option);
     await fetchMeetingCounts(option, setMeetingCount, "/api/v1/report/meeting-count");
   };
-  
+
   const handleCancelledMeetingSelect = async (option) => {
     setCancelledMeetingFilter(option);
     await fetchCancelledMeetingCounts(option, setCancelledMeetingCount, "/api/v1/report/meeting-count");
   };
-  
+
   const handleCompletedMeetingSelect = async (option) => {
     setCompletedMeetingFilter(option);
     await fetchCompletedMeetingCounts(option, setCompletedMeetingCount, "/api/v1/report/meeting-count");
   };
 
-  
-  // const handleOptionSelect = async (option) => {
-  //   setSelectedOption(option);
-  //   try {
-  //     let queryParam = "";
-  //     switch (option) {
-  //       case "Today":
-  //         queryParam = "?filter=Today";
-  //         break;
-  //       case "This Week":
-  //         queryParam = "?filter=This Week";
-  //         break;
-  //       case "This Month":
-  //         queryParam = "?filter=This Month";
-  //         break;
-  //       default:
-  //         queryParam = "?filter=Today";
-  //     }
 
-  //     const response = await axios.get(
-  //       `/api/v1/report/meeting-count${queryParam}`
-  //     );
-  //     setMeetingCount(response?.data?.data?.meetingCount || 0);
-  //     setCancelledMeetingCount(response?.data?.data?.cancelledMeetingCount || 0);
-  //     setCompletedMeetingCount(response?.data?.data?.completedMeetingCount || 0);
-  //   } catch (error) {
-  //     console.error("Error fetching meeting count:", error);
-  //   }
-  // };
+  const fetchRoomAndOrganizerData = async () => {
+    try {
+      const response = await axios.get(`/api/v1/report/stats`);
+
+      const rooms = response?.data?.data?.roomCount;
+      const organizers = response?.data?.data?.organizerCount;
+
+      const formatedRooms = rooms.map((room) => ({
+        id: room?.roomData?.id,
+        roomName: room?.roomData?.name,
+        capacity: room?.roomData?.capacity,
+        count: room?.count,
+        percentage: room?.roomPercentage
+      }))
+
+      const formatedOrganizers = organizers.map((organizer) => ({
+        id: organizer?.userData?.id,
+        name: organizer?.userData?.fullname,
+        email: organizer?.userData?.email,
+        username: organizer?.userData?.userName,
+        percentage: organizer?.organizerPercentage,
+        count: organizer?.count
+      }))
+
+      setRoomData(formatedRooms);
+      setOrganizerData(formatedOrganizers);
+    }
+    catch (error) {
+      console.error("Error fetching:", error);
+    }
+  }
+
 
   const fetchMeetingCounts = async (option, setCount) => {
     try {
@@ -145,6 +152,7 @@ const ReportPage = () => {
     }
   };
 
+
   const fetchCancelledMeetingCounts = async (option, setCount) => {
     try {
       let queryParam = `?filter=${option}`;
@@ -155,11 +163,70 @@ const ReportPage = () => {
     }
   };
 
+  const roomColumns = [
+    {
+      field: "roomName",
+      headerName: "Room Name",
+      width: 250,
+      headerClassName: "super-app-theme--header",
+    },
+
+    {
+      field: "capacity",
+      headerName: "Capacity",
+      width: 150,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "count",
+      headerName: "Room Used",
+      width: 150,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "percentage",
+      headerName: "Percentage",
+      width: 150,
+      headerClassName: "super-app-theme--header",
+    },
+  ];
+
+  const organizerColumns = [
+    {
+      field: "name",
+      headerName: "Organizer Name",
+      width: 250,
+      headerClassName: "super-app-theme--header",
+    },
+
+    {
+      field: "email",
+      headerName: "Email",
+      width: 150,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "username",
+      headerName: "Username",
+      width: 150,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "percentage",
+      headerName: "Percentage",
+      width: 150,
+      headerClassName: "super-app-theme--header",
+    },
+  ];
+
   useEffect(() => {
     fetchCounts();
     fetchMeetingCounts(meetingFilter, setMeetingCount);
     fetchCancelledMeetingCounts(cancelledMeetingFilter, setCancelledMeetingCount);
     fetchCompletedMeetingCounts(completedMeetingFilter, setCompletedMeetingCount);
+    fetchRoomAndOrganizerData()
+    // fetchMostUsedRoom(mostUsedRoomFilter, setMostUsedRoom);
+    // fetchMostActiveOrganizer(mostActiveOrganizerFilter, setMostActiveOrganizer);
     // handleOptionSelect(selectedOption);
   }, []);
 
@@ -220,6 +287,28 @@ const ReportPage = () => {
         </Grid>
         {/* <Grid size={{ xs: 12, sm: 6, md: 4 }}>
           <InfoCard
+            color={["#2c78e5", "#60aff5"]}
+            tittle="Most Used Room"
+            count={mostUsedRoom}
+            show={true}
+            options={["This Week", "This Month"]}
+            onOptionSelect={handleMostUsedRoomSelect}
+            subHeading={mostUsedRoomFilter}
+          />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+          <InfoCard
+            color={["#2c78e5", "#60aff5"]}
+            tittle="Active Organizer"
+            count={mostActiveOrganizer}
+            show={true}
+            options={["This Week", "This Month"]}
+            onOptionSelect={handleMostActiveOrganizerSelect}
+            subHeading={mostActiveOrganizerFilter}
+          />
+        </Grid> */}
+        {/* <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+          <InfoCard
             color={["#d30d56", "#ff478b"]}
             tittle="Visitors"
             count="80"
@@ -241,6 +330,55 @@ const ReportPage = () => {
             count={counts.rooms}
             options={[]}
             show={false}
+          />
+        </Grid>
+      </Grid>
+      <Grid container spacing={2}>
+        <Grid size={{ xs: 12, sm: 6, md: 6 }}>
+          <DataGrid
+            rows={roomData}
+            columns={roomColumns}
+            pageSize={10}
+            rowsPerPageOptions={[10, 20, 50]}
+            rowHeight={50}
+            sx={{
+              "& .super-app-theme--header": {
+                backgroundColor: `var(--linear-gradient-main)`,
+                color: "#fff",
+                fontWeight: "600",
+                fontSize: "16px",
+              },
+              '& .MuiDataGrid-columnHeader:first-child, .MuiDataGrid-cell:first-child': {
+                position: 'sticky',
+                left: 0,
+                zIndex: 1,
+                background: 'white',
+              },
+            }}
+          />
+        </Grid>
+
+        <Grid size={{ xs: 12, sm: 6, md: 6 }}>
+        <DataGrid
+            rows={organizerData}
+            columns={organizerColumns}
+            pageSize={10}
+            rowsPerPageOptions={[10, 20, 50]}
+            rowHeight={50}
+            sx={{
+              "& .super-app-theme--header": {
+                backgroundColor: `var(--linear-gradient-main)`,
+                color: "#fff",
+                fontWeight: "600",
+                fontSize: "16px",
+              },
+              '& .MuiDataGrid-columnHeader:first-child, .MuiDataGrid-cell:first-child': {
+                position: 'sticky',
+                left: 0,
+                zIndex: 1,
+                background: 'white',
+              },
+            }}
           />
         </Grid>
       </Grid>
