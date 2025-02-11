@@ -18,7 +18,14 @@ const ReportPage = () => {
     inactiveCommittees: 0,
   });
   const [meetingCount, setMeetingCount] = useState(0);
-  const [selectedOption, setSelectedOption] = useState("Today");
+  const [cancelledMeetingCount, setCancelledMeetingCount] = useState(0);
+  const [completedMeetingCount, setCompletedMeetingCount] = useState(0);
+
+  const [meetingFilter, setMeetingFilter] = useState("Today");
+  const [cancelledMeetingFilter, setCancelledMeetingFilter] = useState("Today");
+  const [completedMeetingFilter, setCompletedMeetingFilter] = useState("Today");
+
+  // const [selectedOption, setSelectedOption] = useState("Today");
   const dispatch = useDispatch();
   const fetchCounts = async () => {
     try {
@@ -73,35 +80,87 @@ const ReportPage = () => {
     }
   };
 
-  const handleOptionSelect = async (option) => {
-    setSelectedOption(option);
-    try {
-      let queryParam = "";
-      switch (option) {
-        case "Today":
-          queryParam = "?filter=Today";
-          break;
-        case "This Week":
-          queryParam = "?filter=This Week";
-          break;
-        case "This Month":
-          queryParam = "?filter=This Month";
-          break;
-        default:
-          queryParam = "?filter=Today";
-      }
+  const handleMeetingSelect = async (option) => {
+    setMeetingFilter(option);
+    await fetchMeetingCounts(option, setMeetingCount, "/api/v1/report/meeting-count");
+  };
+  
+  const handleCancelledMeetingSelect = async (option) => {
+    setCancelledMeetingFilter(option);
+    await fetchCancelledMeetingCounts(option, setCancelledMeetingCount, "/api/v1/report/meeting-count");
+  };
+  
+  const handleCompletedMeetingSelect = async (option) => {
+    setCompletedMeetingFilter(option);
+    await fetchCompletedMeetingCounts(option, setCompletedMeetingCount, "/api/v1/report/meeting-count");
+  };
 
-      const response = await axios.get(
-        `/api/v1/report/meeting-count${queryParam}`
-      );
-      setMeetingCount(response?.data?.data?.meetingCount || 0);
+  
+  // const handleOptionSelect = async (option) => {
+  //   setSelectedOption(option);
+  //   try {
+  //     let queryParam = "";
+  //     switch (option) {
+  //       case "Today":
+  //         queryParam = "?filter=Today";
+  //         break;
+  //       case "This Week":
+  //         queryParam = "?filter=This Week";
+  //         break;
+  //       case "This Month":
+  //         queryParam = "?filter=This Month";
+  //         break;
+  //       default:
+  //         queryParam = "?filter=Today";
+  //     }
+
+  //     const response = await axios.get(
+  //       `/api/v1/report/meeting-count${queryParam}`
+  //     );
+  //     setMeetingCount(response?.data?.data?.meetingCount || 0);
+  //     setCancelledMeetingCount(response?.data?.data?.cancelledMeetingCount || 0);
+  //     setCompletedMeetingCount(response?.data?.data?.completedMeetingCount || 0);
+  //   } catch (error) {
+  //     console.error("Error fetching meeting count:", error);
+  //   }
+  // };
+
+  const fetchMeetingCounts = async (option, setCount) => {
+    try {
+      let queryParam = `?filter=${option}`;
+      const response = await axios.get(`/api/v1/report/meeting-count${queryParam}`);
+      setCount(response?.data?.data?.meetingCount || 0);
     } catch (error) {
       console.error("Error fetching meeting count:", error);
     }
   };
+
+  const fetchCompletedMeetingCounts = async (option, setCount) => {
+    try {
+      let queryParam = `?filter=${option}`;
+      const response = await axios.get(`/api/v1/report/meeting-count${queryParam}`);
+      setCount(response?.data?.data?.completedMeetingCount || 0);
+    } catch (error) {
+      console.error("Error fetching meeting count:", error);
+    }
+  };
+
+  const fetchCancelledMeetingCounts = async (option, setCount) => {
+    try {
+      let queryParam = `?filter=${option}`;
+      const response = await axios.get(`/api/v1/report/meeting-count${queryParam}`);
+      setCount(response?.data?.data?.cancelledMeetingCount || 0);
+    } catch (error) {
+      console.error("Error fetching meeting count:", error);
+    }
+  };
+
   useEffect(() => {
     fetchCounts();
-    handleOptionSelect(selectedOption);
+    fetchMeetingCounts(meetingFilter, setMeetingCount);
+    fetchCancelledMeetingCounts(cancelledMeetingFilter, setCancelledMeetingCount);
+    fetchCompletedMeetingCounts(completedMeetingFilter, setCompletedMeetingCount);
+    // handleOptionSelect(selectedOption);
   }, []);
 
   return (
@@ -133,8 +192,30 @@ const ReportPage = () => {
             count={meetingCount}
             show={true}
             options={["Today", "This Week", "This Month"]}
-            onOptionSelect={handleOptionSelect}
-            subHeading={selectedOption}
+            onOptionSelect={handleMeetingSelect}
+            subHeading={meetingFilter}
+          />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+          <InfoCard
+            color={["#1da256", "#48d483"]}
+            tittle="Cancelled Meetings"
+            count={cancelledMeetingCount}
+            show={true}
+            options={["Today", "This Week", "This Month"]}
+            onOptionSelect={handleCancelledMeetingSelect}
+            subHeading={cancelledMeetingFilter}
+          />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+          <InfoCard
+            color={["#2c78e5", "#60aff5"]}
+            tittle="Completed Meetings"
+            count={completedMeetingCount}
+            show={true}
+            options={["Today", "This Week", "This Month"]}
+            onOptionSelect={handleCompletedMeetingSelect}
+            subHeading={completedMeetingFilter}
           />
         </Grid>
         {/* <Grid size={{ xs: 12, sm: 6, md: 4 }}>
