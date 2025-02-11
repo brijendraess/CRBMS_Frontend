@@ -22,7 +22,6 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import dayjs from "dayjs";
 import { MyContext } from "../Layout/Layout";
-
 // Notifications Menu Component
 import NotificationsMenu from "../Notifications/NotificationsMenu";
 import PopupModals from "../Common/Modals/Popup/PopupModals";
@@ -69,6 +68,8 @@ const Header = () => {
   // const { changeTheme } = useContext(ThemeContext);
   // const [themeMenuAnchor, setThemeMenuAnchor] = useState(null);
   // const [selectedThemeIndex, setSelectedThemeIndex] = useState(0);
+  const isAdmin = user?.UserType?.isAdmin === 'admin';
+
   const dispatch = useDispatch();
   const { changeTheme, selectedThemeIndex, themeColors } = useContext(ThemeContext);
   const [themeMenuAnchor, setThemeMenuAnchor] = useState(null);
@@ -87,11 +88,14 @@ const Header = () => {
       overlayOpacity: "0.8",
       prevBtnText: "← Go Back",
       popoverClass: "driverjs-theme",
-      steps: guideSteps[location.pathname]?.(isSmallScreen),
+      steps: guideSteps[location.pathname]?.(isSmallScreen, isAdmin),
       animate: true,
     });
-    driverObj.drive(); // Start the guide
+    driverObj.drive(); // Start the tour
+    console.log(isAdmin);
+
   };
+
 
   // Common Function to Toggle Menus
   const handleMenuToggle = (anchorSetter) => (event) => {
@@ -191,16 +195,7 @@ const Header = () => {
     <header>
       <div className="container-fluid w-100">
         <div className="headerWrapper">
-          <div className="col-lg-3 col-md-4 col-sm-4 col-xs-3 part1">
-            <Link
-              to={"/dashboard"}
-              className="d-flex align-items-center logo gap-2"
-            >
-              <img src={logo} alt="logo" />
-              <span>Harambee</span>
-            </Link>
-          </div>
-          <div className="part2 col-lg-2 col-md-2 col-sm-3 col-xs-3">
+          <div className="part2 col-lg-1 col-md-1 col-sm-3 col-xs-3">
             <Tooltip title="Menu Bar">
               <Button
                 id="sidebar-icon"
@@ -212,6 +207,15 @@ const Header = () => {
                 {context.isSidebarVisible ? <MenuOpenIcon /> : <MenuOutlined />}
               </Button>
             </Tooltip>
+          </div>
+          <div className="col-lg-4 col-md-4 col-sm-4 col-xs-3 part1">
+            <Link
+              to={"/dashboard"}
+              className="d-flex align-items-center logo gap-2"
+            >
+              <img src={logo} alt="logo" />
+              <span>Harambee</span>
+            </Link>
           </div>
           <div className="col-lg-1 col-md-4 col-sm-4 col-xs-3">
             <Typography className="heading" sx={{ display: "none" }}>
@@ -259,7 +263,8 @@ const Header = () => {
                     </Badge>
                   </Tooltip>
                 </Button>
-              )}
+              )
+            }
             <Button
               id="fullscreen-icon"
               className="rounded-circle"
@@ -325,6 +330,21 @@ const Header = () => {
             Change Theme
           </MenuItem>
         )}
+        <MenuItem
+          onClick={() => {
+            handleStartGuide();
+            setMenuAnchor(null);
+          }}
+          sx={{ color: "black" }}
+        >
+          <ListItemIcon>
+            <InfoOutlinedIcon
+              fontSize="small"
+              sx={{ color: "black" }}
+            />
+          </ListItemIcon>
+          Take A Tour
+        </MenuItem>
         <MenuItem
           onClick={() => {
             handleEdit();

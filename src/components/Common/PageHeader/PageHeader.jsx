@@ -44,7 +44,7 @@ const PageHeader = ({
       >
         {heading || "Page Header"}
       </Typography>
-      <Box display="flex" alignItems="center" justifyContent="center" gap={2}>
+      <Box display="flex" alignItems="center" justifyContent="center" gap={1}>
         {children}
         {func && statusIcon && (
           <CustomButton

@@ -19,17 +19,18 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const InfoCard = ({
   color,
-  tittle,
+  title,
   count,
   show,
   options = [],
   onOptionSelect,
   subHeading,
+  nameOfTheClass
 }) => {
   const [elevation, setElevation] = useState(2);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-
+  console.log(nameOfTheClass)
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -53,11 +54,13 @@ const InfoCard = ({
       style={{
         backgroundImage: `linear-gradient(to right, ${color[0]}, ${color[1]})`,
       }}
+      className={nameOfTheClass || ""}
     >
+
       <Box display="flex" width="100%">
         <Box className="col1">
           <h4 className="text-white">
-            {tittle} {subHeading && <span>|| {subHeading}</span>}
+            {title} {subHeading && <span>|| {subHeading}</span>}
           </h4>
           <span className="number text-white">{count}</span>
         </Box>
@@ -66,10 +69,9 @@ const InfoCard = ({
             <AccountCircleIcon />
           </span>
         </Box>
-        <div style={{ display: show ? "block" : "none" }}>
+        <div style={{ display: show ? "block" : "none" }} >
           <IconButton
             aria-label="more"
-            id="long-button"
             aria-controls={open ? "long-menu" : undefined}
             aria-expanded={open ? "true" : undefined}
             aria-haspopup="true"

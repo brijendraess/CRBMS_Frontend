@@ -215,20 +215,6 @@ const VerifyEmail = () => {
             {isResendDisabled ? `Resend OTP in ${timer}s` : "Resend OTP"}
           </motion.button>
         </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            height: "100%",
-            alignItems: "center",
-            gap: 5,
-          }}
-        >
-          <i>powered by</i>
-          <div style={{ objectFit: "cover", width: "75px", height: "40px" }}>
-            <img src={ebizLogo} style={{ mixBlendMode: "color-burn" }} />
-          </div>
-        </div>
       </motion.div>
     </div>
   );

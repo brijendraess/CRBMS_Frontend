@@ -22,6 +22,7 @@ import CancelMeetingModal from "../../components/Common/Modals/Delete/CancelMeet
 import MeetingApproval from "../MeetingPage/MeetingApproval";
 import { dateStringFormatting, formatTimeShort } from "../../utils/utils";
 import MeetingFormSwap from "../MeetingPage/MeetingSwap";
+import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
 
 const MeetingLogs = () => {
   const { user } = useSelector((state) => state.user);
@@ -199,10 +200,10 @@ const MeetingLogs = () => {
             user.UserType.meetingLogsModule.split(",").includes("edit") && (
               <Tooltip title="Edit meeting">
                 <EditOutlinedIcon
-                  className="meeting-logs-edit"
                   color="success"
                   onClick={() => handleEdit(params.row.roomId, params.row.id)}
                   style={{ cursor: "pointer" }}
+                  className="meeting-logs-edit"
                 />
               </Tooltip>
             )}
@@ -223,10 +224,10 @@ const MeetingLogs = () => {
             user.UserType.meetingLogsModule.split(",").includes("edit") && (
               <Tooltip title="Swap meeting">
                 <SwapHorizIcon
-                  className="meeting-logs-edit"
                   color="success"
                   onClick={() => handleSwap(params.row.roomId, params.row.id)}
                   style={{ cursor: "pointer" }}
+                  className="meeting-logs-swap"
                 />
               </Tooltip>
             )}
@@ -380,7 +381,7 @@ const MeetingLogs = () => {
         />
       </div>
 
-      <PopupModals
+      <NewPopUpModal
         isOpen={isEditBookingOpen}
         setIsOpen={setIsEditBookingOpen}
         title={"Edit Meeting"}
@@ -392,7 +393,7 @@ const MeetingLogs = () => {
           />
         }
       />
-      <PopupModals
+      <NewPopUpModal
         isOpen={isPostponeBookingOpen}
         setIsOpen={setIsPostponeBookingOpen}
         title={"Postpone Meeting"}
@@ -404,7 +405,7 @@ const MeetingLogs = () => {
           />
         }
       />
-      <PopupModals
+      <NewPopUpModal
         isOpen={isSwapMeetingOpen}
         setIsOpen={setIsSwapMeetingOpen}
         title={"Swap Meeting"}
@@ -418,7 +419,7 @@ const MeetingLogs = () => {
           />
         }
       />
-      <PopupModals
+      <NewPopUpModal
         isOpen={isApprovalBookingOpen}
         setIsOpen={setIsApprovalBookingOpen}
         title={"Meeting Change Status"}

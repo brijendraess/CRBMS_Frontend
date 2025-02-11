@@ -67,6 +67,7 @@ const DashboardStock = () => {
     const fetchStock = async () => {
       try {
         const response = await axios.get(`/api/v1/stock/all`);
+        console.log(response.data.data);
 
         if (response.data && response.data.data?.result) {
           // Map the API data into the desired format
@@ -96,6 +97,14 @@ const DashboardStock = () => {
 
   // Column Definitions
   const amenitiesColumn = [
+    {
+      field: "serialNo",
+      headerName: "#",
+      disableColumnMenu: true,
+      hideSortIcons: true,
+      flex: 0.25,
+      headerClassName: "super-app-theme--header",
+    },
     {
       field: "name",
       headerName: "Amenity",
@@ -133,6 +142,7 @@ const DashboardStock = () => {
               backgroundColor: "#ff0000c4",
               color: "#000",
             }}
+            className=""
           >
             <RemoveIcon fontSize="small" />
           </IconButton>
@@ -167,7 +177,7 @@ const DashboardStock = () => {
     params.row.quantity < 5 ? classes.lowQuantity : "";
 
   return (
-    <Box sx={{ width: "100%", height: "75vh" }}>
+    <Box sx={{ width: "100%", height: "75vh" }} className="inventory" >
       <DataGrid
         rows={amenitiesData}
         columns={amenitiesColumn}

@@ -17,9 +17,11 @@ import {
   AddOutlinedIcon,
   DeleteOutlineOutlinedIcon,
   EditOutlinedIcon,
+  Diversity2Icon
 } from "../../components/Common/Buttons/CustomIcon";
 import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
 import { useNavigate } from "react-router-dom";
+import CustomButton from "../../components/Common/Buttons/CustomButton";
 
 const CommitteeTypePage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -152,7 +154,7 @@ const CommitteeTypePage = () => {
             user.UserType.committeeTypeModule.split(",").includes("edit") && (
               <Tooltip title="Edit">
                 <EditOutlinedIcon
-                  className="committeeType-edit"
+                  className="committee-type-edit"
                   color="success"
                   onClick={() => handleEdit(params.row.id)}
                   style={{ cursor: "pointer" }}
@@ -163,7 +165,7 @@ const CommitteeTypePage = () => {
             user.UserType.committeeTypeModule.split(",").includes("delete") && (
               <Tooltip title="Delete">
                 <DeleteOutlineOutlinedIcon
-                  className="committeeType-delete"
+                  className="committee-type-delete"
                   color="error"
                   style={{ cursor: "pointer" }}
                   onClick={() => handleOpen(params.row.id)}
@@ -176,7 +178,7 @@ const CommitteeTypePage = () => {
               .includes("changeStatus") && (
               <Tooltip title="Change Status">
                 <Switch
-                  className="committeeType-switch"
+                  className="committee-type-switch"
                   checked={params.row.status}
                   onChange={() => handleStatusChange(params.row.id)}
                 />
@@ -200,41 +202,19 @@ const CommitteeTypePage = () => {
           user.UserType.committeeTypeModule &&
           user.UserType.committeeTypeModule.split(",").includes("add")
         }
-      />
-
-      {user.UserType.committeeTypeModule &&
-        user.UserType.committeeTypeModule.split(",").includes("view") &&
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-            mb: 2,
-          }}
-        >
-          <Tooltip title="Committee List">
-            <Paper sx={{
-              borderRadius: '20px',
-              background: 'none',
-              transition: 'transform 0.3s ease-in-out',
-              '&:hover': {
-                transform: 'scale(1.1)',
-              },
-            }}
-              elevation={24} >
-              <Chip
-                label="Committee"
-                size="large"
-                variant="outlined"
-                icon=""
-                onClick={handleNavigateToCommitteeList}
-                sx={{ cursor: "pointer", padding: "8px", borderColor: 'var(--linear-gradient-main)', color: 'var(--linear-gradient-main)', fontSize: '16px' }}
-                className="committee-view"
-              />
-            </Paper>
-          </Tooltip>
-        </Box>
-      }
+      >
+        {user.UserType.committeeTypeModule &&
+          user.UserType.committeeTypeModule.split(",").includes("view") &&
+          <CustomButton
+            onClick={handleNavigateToCommitteeList}
+            iconStyles
+            fontSize={"medium"}
+            background={"var(--linear-gradient-main)"}
+            Icon={Diversity2Icon}
+            nameOfTheClass="go-to-committee"
+            title="Committee"
+          />}
+      </PageHeader>
       {isSmallScreen ? (
         <Grid2
           container
