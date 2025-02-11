@@ -163,11 +163,33 @@ const MeetingLogs = () => {
       hideSortIcons: true,
       width: 250,
       headerClassName: "super-app-theme--header",
-      renderCell: (params) => (
+      renderCell: (params) => {
+
+        const [day, month, year] = params.row.meetingDate.split("/").map(Number);
+
+        const timeString = params.row.endTime;
+        const [time, modifier] = timeString.split(" ");
+        let [hours, minutes] = time.split(":").map(Number);
+  
+        if (modifier === "PM" && hours !== 12) hours += 12;
+        if (modifier === "AM" && hours === 12) hours = 0;
+  
+        // Construct the correct endDateTime
+        const endDateTime = new Date(year, month - 1, day, hours, minutes);
+        const currentDateTime = new Date();
+
+        return (
         <Box
           alignItems="center"
           sx={{
-            display: params.row.status !== "cancelled" && params.row.status !== "completed" ? "flex" : "none",
+            // display: params.row.status !== "cancelled" &&  && params.row.status !== "completed" ? "flex" : "none",
+            display: (() => {
+              return params.row.status !== "cancelled" &&
+                params.row.status !== "completed" &&
+                endDateTime > currentDateTime
+                ? "flex"
+                : "none";
+            })(),
             justifyContent: "center",
             alignItems: "center",
             height: "100%",
@@ -241,7 +263,7 @@ const MeetingLogs = () => {
               </Tooltip>
             )}
         </Box>
-      ),
+      )},
     },
   ];
 

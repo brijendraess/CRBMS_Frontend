@@ -20,7 +20,7 @@ const AddMembersToCommittee = ({ id, members }) => {
     const fetchUsers = async () => {
       try {
         dispatch(showLoading());
-        const response = await axios.get(`/api/v1/user/users`);
+        const response = await axios.get(`/api/v1/user/active/users`);
         if (response.data.success) {
           setUsers(response.data.data.users.rows);
         }
