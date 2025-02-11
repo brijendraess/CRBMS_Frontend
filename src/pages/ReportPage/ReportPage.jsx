@@ -20,10 +20,14 @@ const ReportPage = () => {
   const [meetingCount, setMeetingCount] = useState(0);
   const [cancelledMeetingCount, setCancelledMeetingCount] = useState(0);
   const [completedMeetingCount, setCompletedMeetingCount] = useState(0);
+  const [mostUsedRoom, setMostUsedRoom] = useState(0);
+  const [mostActiveOrganizer, setMostActiveOrganizer] = useState(0);
 
   const [meetingFilter, setMeetingFilter] = useState("Today");
   const [cancelledMeetingFilter, setCancelledMeetingFilter] = useState("Today");
   const [completedMeetingFilter, setCompletedMeetingFilter] = useState("Today");
+  const [mostUsedRoomFilter, setMostUsedRoomFilter] = useState("This Week");
+  const [mostActiveOrganizerFilter, setMostActiveOrganizerFilter] = useState("This Week");
 
   // const [selectedOption, setSelectedOption] = useState("Today");
   const dispatch = useDispatch();
@@ -95,6 +99,16 @@ const ReportPage = () => {
     await fetchCompletedMeetingCounts(option, setCompletedMeetingCount, "/api/v1/report/meeting-count");
   };
 
+  const handleMostUsedRoomSelect = async (option) => {
+    setMostUsedRoomFilter(option);
+    await fetchMostUsedRoom(option, setMostUsedRoom, "/api/v1/report/stats");
+  };
+
+  const handleMostActiveOrganizerSelect = async (option) => {
+    setMostActiveOrganizerFilter(option);
+    await fetchMostActiveOrganizer(option, setMostActiveOrganizer, "/api/v1/report/stats");
+  };
+
   
   // const handleOptionSelect = async (option) => {
   //   setSelectedOption(option);
@@ -145,6 +159,26 @@ const ReportPage = () => {
     }
   };
 
+  const fetchMostUsedRoom = async (option, setCount) => {
+    try {
+      let queryParam = `?filter=${option}`;
+      const response = await axios.get(`/api/v1/report/stats${queryParam}`);
+      setCount(response?.data?.data?.mostUsedRoom?.roomData?.name || "--");
+    } catch (error) {
+      console.error("Error fetching meeting count:", error);
+    }
+  };
+
+  const fetchMostActiveOrganizer = async (option, setCount) => {
+    try {
+      let queryParam = `?filter=${option}`;
+      const response = await axios.get(`/api/v1/report/stats${queryParam}`);
+      setCount(response?.data?.data?.mostMeetingsOrganizedByUser?.userData?.fullname || "--");
+    } catch (error) {
+      console.error("Error fetching meeting count:", error);
+    }
+  };
+
   const fetchCancelledMeetingCounts = async (option, setCount) => {
     try {
       let queryParam = `?filter=${option}`;
@@ -160,6 +194,8 @@ const ReportPage = () => {
     fetchMeetingCounts(meetingFilter, setMeetingCount);
     fetchCancelledMeetingCounts(cancelledMeetingFilter, setCancelledMeetingCount);
     fetchCompletedMeetingCounts(completedMeetingFilter, setCompletedMeetingCount);
+    fetchMostUsedRoom(mostUsedRoomFilter, setMostUsedRoom);
+    fetchMostActiveOrganizer(mostActiveOrganizerFilter, setMostActiveOrganizer);
     // handleOptionSelect(selectedOption);
   }, []);
 
@@ -216,6 +252,28 @@ const ReportPage = () => {
             options={["Today", "This Week", "This Month"]}
             onOptionSelect={handleCompletedMeetingSelect}
             subHeading={completedMeetingFilter}
+          />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+          <InfoCard
+            color={["#2c78e5", "#60aff5"]}
+            tittle="Most Used Room"
+            count={mostUsedRoom}
+            show={true}
+            options={["This Week", "This Month"]}
+            onOptionSelect={handleMostUsedRoomSelect}
+            subHeading={mostUsedRoomFilter}
+          />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+          <InfoCard
+            color={["#2c78e5", "#60aff5"]}
+            tittle="Active Organizer"
+            count={mostActiveOrganizer}
+            show={true}
+            options={["This Week", "This Month"]}
+            onOptionSelect={handleMostActiveOrganizerSelect}
+            subHeading={mostActiveOrganizerFilter}
           />
         </Grid>
         {/* <Grid size={{ xs: 12, sm: 6, md: 4 }}>
