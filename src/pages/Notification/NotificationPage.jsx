@@ -116,30 +116,42 @@ const Notification = () => {
       renderCell: (params) => (
         <Box display="flex" alignItems="center" gap={1}>
           {user.UserType.notificationModule &&
-      user.UserType.notificationModule.split(",").includes("delete")&&<Tooltip title="Delete">
-            <DeleteIcon
-              color="error"
-              style={{ cursor: "pointer" }}
-              onClick={() => handleOpen(params.row.id)}
-            />
-          </Tooltip>}
+            user.UserType.notificationModule.split(",").includes("delete") && <Tooltip title="Delete">
+              <DeleteIcon
+                color="error"
+                style={{ cursor: "pointer" }}
+                onClick={() => handleOpen(params.row.id)}
+              />
+            </Tooltip>}
           {user.UserType.notificationModule &&
-      user.UserType.notificationModule.split(",").includes("read")&&
-      <Tooltip title="Change the read Status">
-            <Switch
-              checked={params.row.isRead}
-              onChange={() => handleStatusChange(params.row.id)}
-            />
-          </Tooltip>}
+            user.UserType.notificationModule.split(",").includes("read") &&
+            <Tooltip title="Change the read Status">
+              <Switch
+                checked={params.row.isRead}
+                onChange={() => handleStatusChange(params.row.id)}
+              />
+            </Tooltip>}
         </Box>
       ),
     },
   ];
 
+  const formatTime = (timeString) => {
+    if (!timeString) return "";
+    const [hours, minutes] = timeString.split(":"); // Extract hours and minutes
+    const date = new Date();
+    date.setHours(hours, minutes);
+
+    return date.toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
   useEffect(() => {
     const fetchNotification = async () => {
       try {
-        const endpoint = user?.UserType?.isAdmin==='admin'
+        const endpoint = user?.UserType?.isAdmin === 'admin'
           ? `/api/v1/notification/all-notification`
           : `/api/v1/notification/all-notification`;
         const response = await axios.get(endpoint, { withCredentials: true });
@@ -156,8 +168,10 @@ const Notification = () => {
           meetingDate: notify?.Meeting?.meetingDate || "",
           isRead: notify?.isRead || false,
           meetingTime:
-            `${notify?.Meeting?.startTime} - ${notify?.Meeting?.endTime}` || "",
+            `${formatTime(notify?.Meeting?.startTime)} - ${formatTime(notify?.Meeting?.endTime)}` || "",
         }));
+
+        
 
         setEvents(formattedNotifications);
       } catch (error) {
@@ -179,9 +193,9 @@ const Notification = () => {
           rowsPerPageOptions={[10, 20, 50]}
           rowHeight={50}
           sx={{
+            background: `linear-gradient(45deg, var(--body-color), var(--body-color-2))`,
             "& .super-app-theme--header": {
-              backgroundColor: "#006400",
-              // backgroundColor: "rgba(255, 223, 0, 1)",
+              backgroundColor: `var(--linear-gradient-main)`,
               color: "#fff",
               fontWeight: "600",
               fontSize: "16px",

@@ -13,7 +13,6 @@ import {
 
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import PopupModals from "../Common/Modals/Popup/PopupModals";
 import RoomGallery from "./RoomGallery";
 import RoomAmenities from "./RoomAmenities";
 import toast from "react-hot-toast";
@@ -214,22 +213,22 @@ const RoomsCard = ({
             p: 1,
             display: "flex",
             flexDirection: "column",
-            // justifyContent: "space-between"
             gap: 1,
             minHeight: "200px",
+            justifyContent: "space-around",
           }}
         >
           <Typography
             variant="h6"
-            component="h2"
             className="title"
             onClick={handleCardClick}
             sx={{
-              fontFamily: "'Bebas Neue', cursive",
+              // fontFamily: "'Bebas Neue', cursive",
               fontSize: "1.2rem",
               color: "black",
               cursor: "pointer",
               transition: "color 0.3s ease-out",
+              textTransform: 'uppercase'
             }}
           >
             {room.name}
@@ -240,13 +239,36 @@ const RoomsCard = ({
             sx={{
               display: "flex",
               alignItems: "center",
-              gap: 1,
+              gap: 2,
             }}
           >
             <Tooltip title="Location">
               <LocationOnOutlinedIcon />
             </Tooltip>
             {room.Location?.locationName || "Unknown Location"}
+          </Typography>
+          <Typography
+            variant="body2"
+            sx={{ display: "flex", alignItems: "end", gap: 2 }}
+          >
+            <Tooltip title="Capacity">
+              <GroupsOutlinedIcon />
+            </Tooltip>
+            {room.capacity} People
+          </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              display: "flex",
+              alignItems: "end",
+              gap: 2,
+              textTransform: "capitalize",
+            }}
+          >
+            <Tooltip title="Tolerance Period">
+              <ExtensionIcon />
+            </Tooltip>{" "}
+            {room.tolerancePeriod} minutes
           </Typography>
           <Box
             sx={{
@@ -257,16 +279,7 @@ const RoomsCard = ({
           >
             <Typography
               variant="body2"
-              sx={{ display: "flex", alignItems: "center" }}
-            >
-              <Tooltip title="Capacity">
-                <GroupsOutlinedIcon />
-              </Tooltip>
-              {room.capacity} People
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{ display: "flex", alignItems: "center" }}
+              sx={{ display: "flex", alignItems: "center", gap: 2 }}
             >
               <Tooltip title="Sanitation Status">
                 <CleaningServicesIcon />
@@ -296,31 +309,10 @@ const RoomsCard = ({
                 />
               )}
             </Typography>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              width: "100%",
-            }}
-          >
+
             <Typography
               variant="body2"
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-                textTransform: "capitalize",
-              }}
-            >
-              <Tooltip title="Tolerance Period">
-                <ExtensionIcon />
-              </Tooltip>{" "}
-              {room.tolerancePeriod} minutes
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{ display: "flex", alignItems: "center" }}
+              sx={{ display: "flex", alignItems: "center", gap: 2 }}
             >
               <Tooltip title="Room Status">
                 <AirlineSeatLegroomExtraOutlinedIcon />
@@ -340,7 +332,7 @@ const RoomsCard = ({
               sx={{
                 display: "flex",
                 alignItems: "center",
-                gap: 1,
+                gap: 2,
                 textTransform: "capitalize",
               }}
             >
@@ -533,7 +525,7 @@ const RoomsCard = ({
             </Box>
           )}
         </CardActions>
-      </Paper>
+      </Paper >
 
 
       <NewPopUpModal

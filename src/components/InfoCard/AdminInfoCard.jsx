@@ -9,11 +9,11 @@ const Item = styled(Paper)(({ theme }) => ({
   height: "auto",
   width: "100%",
   lineHeight: "10px",
-  borderRadius: "20px",
+  borderRadius: "8px",
   padding: "15px",
 }));
 
-const AdminInfoCard = ({ color, tittle, Component, Icons }) => {
+const AdminInfoCard = ({ color, title, Component, Icons, width }) => {
   const [elevation, setElevation] = useState(2);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -30,12 +30,17 @@ const AdminInfoCard = ({ color, tittle, Component, Icons }) => {
       }}
     >
       <Box display="flex" width="100%">
-        <Box className="col1">
-          <h4 className="text-black">{tittle}</h4>
-        </Box>
-        <Box className="ms-auto">
-          <span className="iconContainer">{Icons && <Icons />}</span>
-        </Box>
+        {
+          title && <Box className="col1">
+            <h4 className="text-black">{title}</h4>
+          </Box>
+        }
+        {
+          Icons &&
+          <Box className="ms-auto">
+            <span className="iconContainer">{<Icons />}</span>
+          </Box>
+        }
       </Box>
       <Box className="scrollingBar">
         {Component && <Component height="75vh" />}

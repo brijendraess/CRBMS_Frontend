@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
-import { ArrowLeft, Mail} from "../../components/Common/Buttons/CustomIcon";
+import { ArrowLeft, Mail } from "../../components/Common/Buttons/CustomIcon";
 import {
   Button,
 } from "@mui/material";
@@ -74,15 +74,15 @@ const ForgotPassword = () => {
                 onChange={(e) => setEmail(e.target.value)}
               />
               <div className="loginButtonBox">
-              <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
-            sx={{ mb: 2, width:"50%" }}
-          >
-             Send Reset Link
-          </Button>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  sx={{ mb: 2, width: "50%" }}
+                >
+                  Send Reset Link
+                </Button>
               </div>
             </form>
           ) : (
@@ -114,32 +114,15 @@ const ForgotPassword = () => {
             display: "flex",
             justifyContent: "center",
           }}
+
         >
           <Link
             to="/login"
             underline="hover"
-            style={{
-              fontSize: "12px",
-              display: "flex",
-              alignItems: "center",
-            }}
+            className="back-to-login"
           >
             <ArrowLeft /> Back to Login
           </Link>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            height: "100%",
-            alignItems: "center",
-            gap: 5,
-          }}
-        >
-          <i>powered by</i>
-          <div style={{ objectFit: "cover", width: "75px", height: "40px" }}>
-            <img src={ebizLogo} style={{ mixBlendMode: "color-burn" }} alt="Ebiz logo" />
-          </div>
         </div>
       </motion.div>
     </div>

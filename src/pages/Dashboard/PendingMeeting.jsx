@@ -12,7 +12,7 @@ import {
   EditOutlinedIcon,
   EventBusyOutlinedIcon,
 } from "../../components/Common/Buttons/CustomIcon";
-import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
+import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
 import MeetingFormEdit from "../MeetingPage/MeetingFormEdit";
 import MeetingFormPostPone from "../MeetingPage/MeetingFormPostPone";
 import CancelMeetingModal from "../../components/Common/Modals/Delete/CancelMeetingModal";
@@ -92,25 +92,26 @@ const PendingMeeting = () => {
     {
       field: "subject",
       headerName: "Subject",
-      flex: 1,
+      // width:'500px',
+      flex: 5,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "startTime",
       headerName: "Start",
-      flex: 1,
+      flex: 0.75,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "endTime",
       headerName: "End",
-      flex: 1,
+      flex:  0.75,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "meetingDate",
       headerName: "Date",
-      flex: 1,
+      flex:  0.75,
       headerClassName: "super-app-theme--header",
     },
     {
@@ -211,7 +212,7 @@ const PendingMeeting = () => {
         const meetings =
           response.data.data.myMeetings || response.data.data.meetings;
         // Format the data for DataGrid
-        console.log(meetings);
+        // console.log(meetings);
         const formattedMeetings = meetings
           .filter((item) => item.status === "pending")
           .map((meeting) => ({
@@ -251,7 +252,7 @@ const PendingMeeting = () => {
 
   return (
     <>
-      <Box sx={{ width: "100%", height: "75vh" }}>
+      <Box sx={{ width: "100%", height: "75vh" }} className="pending-meetings">
         <DataGrid
           rows={events}
           columns={columns}
@@ -275,7 +276,7 @@ const PendingMeeting = () => {
         />
       </Box>
 
-      <PopupModals
+      <NewPopUpModal
         isOpen={isEditBookingOpen}
         setIsOpen={setIsEditBookingOpen}
         title={"Edit Meeting"}
@@ -287,7 +288,7 @@ const PendingMeeting = () => {
           />
         }
       />
-      <PopupModals
+      <NewPopUpModal
         isOpen={isPostponeBookingOpen}
         setIsOpen={setIsPostponeBookingOpen}
         title={"Postpone Meeting"}
@@ -299,7 +300,7 @@ const PendingMeeting = () => {
           />
         }
       />
-      <PopupModals
+      <NewPopUpModal
         isOpen={isApprovalBookingOpen}
         setIsOpen={setIsApprovalBookingOpen}
         title={"Meeting Change Status"}

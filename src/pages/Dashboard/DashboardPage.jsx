@@ -1,5 +1,5 @@
 import React from "react";
-import CalenderPage from "../CalenderPage/CalederPage";
+import CalendarPage from "../CalendarPage/CalendarPage";
 import { useSelector } from "react-redux";
 import AdminDashboard from "./AdminDashboard";
 
@@ -10,7 +10,7 @@ const DashboardPage = () => {
       {user?.UserType?.isAdmin === "admin" ? (
         <AdminDashboard />
       ) : (
-        <CalenderPage />
+        <CalendarPage />
       )}
     </div>
   );

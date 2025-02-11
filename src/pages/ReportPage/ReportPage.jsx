@@ -111,55 +111,60 @@ const ReportPage = () => {
         <Grid size={{ xs: 12, sm: 6, md: 4 }}>
           <InfoCard
             color={["#1da256", "#48d483"]}
-            tittle="Users"
+            title="Users"
             count={counts.users}
             show={false}
             options={[]}
+            nameOfTheClass={"user-report-card"}
           />
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 4 }}>
           <InfoCard
             color={["#2c78e5", "#60aff5"]}
-            tittle="Amenities"
+            title="Amenities"
             count={counts.amenities}
             show={false}
             options={[]}
+            nameOfTheClass={"amenity-report-card"}
           />
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 4 }}>
           <InfoCard
             color={["#e1950e", "#f3cd29"]}
-            tittle="Meetings"
+            title="Meetings"
             count={meetingCount}
             show={true}
             options={["Today", "This Week", "This Month"]}
             onOptionSelect={handleOptionSelect}
             subHeading={selectedOption}
+            nameOfTheClass={"meeting-report-card"}
           />
         </Grid>
         {/* <Grid size={{ xs: 12, sm: 6, md: 4 }}>
           <InfoCard
             color={["#d30d56", "#ff478b"]}
-            tittle="Visitors"
+            title="Visitors"
             count="80"
           />
         </Grid> */}
         <Grid size={{ xs: 12, sm: 6, md: 4 }}>
           <InfoCard
             color={["#2dd2a6", "#88f2d5"]}
-            tittle="Committee"
+            title="Committee"
             options={["Active", "Inactive"]}
             count={counts.activeCommittees + counts.inactiveCommittees}
             show={false}
+            nameOfTheClass={"committee-report-card"}
           />
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 4 }}>
           <InfoCard
             color={["#c012e2", "#eb64fe"]}
-            tittle="Rooms"
+            title="Rooms"
             count={counts.rooms}
             options={[]}
             show={false}
+            nameOfTheClass={"room-report-card"}
           />
         </Grid>
       </Grid>
