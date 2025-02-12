@@ -6,9 +6,11 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useDispatch, useSelector } from "react-redux";
-import { AddOutlinedIcon } from "../../components/Common/Buttons/CustomIcon";
+import { AddOutlinedIcon, KeyboardBackspaceOutlinedIcon } from "../../components/Common/Buttons/CustomIcon";
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
 import PendingFoodBeverageCard from "../../components/Responsive/Stock/PendingFoodBeverageCard";
+import { useNavigate } from "react-router-dom";
+import CustomButton from "../../components/Common/Buttons/CustomButton";
 
 const PendingFoodBeveragePage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -21,7 +23,11 @@ const PendingFoodBeveragePage = () => {
   const { user } = useSelector((state) => state.user);
   const isSmallScreen = useMediaQuery("(max-width:768px)");
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
+  const handleBackButton = () => {
+    navigate(-1)
+  }
   useEffect(() => {
     const fetchFoodBeverage = async () => {
       try {
@@ -64,8 +70,7 @@ const PendingFoodBeveragePage = () => {
       );
       setRefreshPage(Math.random());
       toast.success(
-        `FoodBeverage status changed to ${
-          updatedFoodBeverage.status ? "Approve" : "Pending"
+        `FoodBeverage status changed to ${updatedFoodBeverage.status ? "Approve" : "Pending"
         }`
       );
       dispatch(hideLoading());
@@ -127,10 +132,20 @@ const PendingFoodBeveragePage = () => {
     <PaperWrapper>
       <PageHeader
         heading="Pending FoodBeverage"
-        icon={AddOutlinedIcon}
+        icon={''}
         func={""}
         nameOfTheClass="add-new-service"
-      />
+      >
+        <CustomButton
+          onClick={handleBackButton}
+          iconStyles
+          fontSize={"medium"}
+          background={"var(--linear-gradient-main)"}
+          Icon={KeyboardBackspaceOutlinedIcon}
+          nameOfTheClass="go-to-inventory"
+          title="Back To Inventory"
+        />
+      </PageHeader>
       {isSmallScreen && (
         <Grid2
           container
