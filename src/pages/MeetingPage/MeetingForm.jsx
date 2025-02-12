@@ -136,13 +136,58 @@ const MeetingForm = ({ room }) => {
       console.error("Error checking availability:", error);
     }
   };
+
+  const fetchCommitteeIsAvailable = async (committeeList) => {
+    if (!formik.values.startTime || !formik.values.endTime || !formik.values.date) return;
+  
+    try {
+      const response = await axios.post(`/api/v1/committee/isAvailable`, {
+        committees: committeeList.map((committee) => committee.id),
+        startTime: formik.values.startTime,
+        endTime: formik.values.endTime,
+        meetingDate: formik.values.date,
+      });
+  
+      const notAvailableCommittees = response?.data?.data?.notAvailableCommittees;
+      if(notAvailableCommittees.length == 0){
+        const formattedCommitteeList = committeeList.map((committeeData) => {return {
+          ...committeeData,
+          isAvailable: true
+        }});
+        setCommitteeList(formattedCommitteeList)
+      }
+
+      if(notAvailableCommittees.length > 0){
+        let formattedCommittees = [];
+        for(let committee of committeeList){
+          let isAvailable = true;
+
+          const notAvailable = notAvailableCommittees.find((committee) => committee.committeeId === committee.id);
+          if(notAvailable){
+            isAvailable = false
+          }
+
+          formattedCommittees.push({...committee, isAvailable: isAvailable})
+        }
+
+        setEmailsList(formattedCommittees)
+      }
+    } catch (error) {
+      console.error("Error checking availability:", error);
+    }
+  };
   
 
   useEffect(() => {
     if (emailsList.length > 0) {
       fetchIsAvailable(emailsList);
     }
-  }, [formik.values.startTime, formik.values.endTime, formik.values.date, formik.values.attendees]);  
+
+    if (committeeList.length > 0) {
+      fetchCommitteeIsAvailable(committeeList);
+    }
+
+  }, [formik.values.startTime, formik.values.endTime, formik.values.date, formik.values.attendees, formik.values.committees]);  
 
   const calculateDifference = () => {
     // Parse times into Date objects (using today's date)
@@ -349,18 +394,10 @@ const MeetingForm = ({ room }) => {
                 <div sx={{ width: "100%", float: "right" }}>
                   {/* Render a hardcoded Chip for availability */}
                   <Chip
-                    label={
-                      option.id === "15b8126b-8ce7-443c-a231-007179da901a"
-                        ? "Unavailable"
-                        : "Available"
-                    }
-                    color={
-                      option.id === "15b8126b-8ce7-443c-a231-007179da901a"
-                        ? "error"
-                        : "success"
-                    }
-                    size="small"
-                  />
+                  label={option.isAvailable ? "Available" : "Unavailable"}
+                  color={option.isAvailable ? "success" : "error"}
+                  size="small"
+                />
                 </div>
               </Box>
             )}
