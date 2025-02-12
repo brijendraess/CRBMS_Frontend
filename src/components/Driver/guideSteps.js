@@ -1009,6 +1009,80 @@ const guideSteps = {
       },
     },
   ],
+  "/reports": (isSmallScreen, isAdmin) => [
+    {
+      element: ".user-report-card",
+      popover: {
+        title: "Users",
+        description:
+          "Total Number Of User",
+        position: "top",
+      },
+    },
+    {
+      element: ".amenity-report-card",
+      popover: {
+        title: "Amenities",
+        description:
+          "Total Number Of Amenities",
+        position: "top",
+      },
+    },
+    {
+      element: ".meetings-report-card",
+      popover: {
+        title: "Meetings",
+        description:
+          "Total Number Of Meetinds",
+        position: "top",
+      },
+    },
+    {
+      element: ".cancelled-meetings-report-card",
+      popover: {
+        title: "Cancelled Meetings",
+        description:
+          "Total Number Of meetings that are cancelled. You Can Filter them on the basis of Today, This Week, This Month by clicking on three dots.",
+        position: "top",
+      },
+    },
+    {
+      element: ".completed-meetings-report-card",
+      popover: {
+        title: "Completed Meetings",
+        description:
+          "Total Number Of meetings that are completed. You Can Filter them on the basis of Today, This Week, This Month by clicking on three dots.",
+        position: "top",
+      },
+    },
+    {
+      element: ".food-report-card",
+      popover: {
+        title: "Food & Beverages",
+        description:
+          "Total Number Of Food & Beverages",
+        position: "top",
+      },
+    },
+    {
+      element: ".committee-report-card",
+      popover: {
+        title: "Committee Meetings",
+        description:
+          "Total Number Of Committee",
+        position: "top",
+      },
+    },
+    {
+      element: ".room-report-card",
+      popover: {
+        title: "Room",
+        description:
+          "Total Number Of Rooms",
+        position: "top",
+      },
+    },
+  ],
 };
 
 export default guideSteps;

@@ -20,6 +20,7 @@ const ReportComponent = () => {
     const [meetingCount, setMeetingCount] = useState(0);
     const [selectedOption, setSelectedOption] = useState("Today");
     const dispatch = useDispatch();
+
     const fetchCounts = async () => {
         try {
             dispatch(showLoading());

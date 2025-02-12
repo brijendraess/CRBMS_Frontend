@@ -205,7 +205,7 @@ const CalendarComponent = ({ height }) => {
         startAccessor="start"
         endAccessor="end"
         style={{
-          borderRadius: "10px",
+          borderRadius: "8px",
         }}
         view={lastView}
         onView={handleViewChange}

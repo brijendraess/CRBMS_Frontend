@@ -22,7 +22,7 @@ import {
 import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
 import { useNavigate } from "react-router-dom";
 import CustomButton from "../../components/Common/Buttons/CustomButton";
-
+import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
 const CommitteeTypePage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(false);
@@ -210,7 +210,7 @@ const CommitteeTypePage = () => {
             iconStyles
             fontSize={"medium"}
             background={"var(--linear-gradient-main)"}
-            Icon={Diversity2Icon}
+            Icon={GroupsOutlinedIcon}
             nameOfTheClass="go-to-committee"
             title="Committee"
           />}
