@@ -46,7 +46,10 @@ const MyCommitteePage = () => {
   return (
     <PaperWrapper>
       <PageHeader heading={"My Committees"}>
-        <FormControl style={{ marginRight: "5px", width: "100px" }} className="my-committee-filter">
+        <FormControl
+          style={{ marginRight: "5px", width: "100px" }}
+          className="my-committee-filter"
+        >
           <InputLabel id="filter-select-label">Show</InputLabel>
           <Select
             labelId="filter-select-label"

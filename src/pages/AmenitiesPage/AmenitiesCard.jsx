@@ -15,6 +15,7 @@ import {
 } from "../../components/Common/Buttons/CustomIcon";
 
 const AmenitiesCard = ({
+  user,
   amenity,
   handleEdit,
   handleDelete,
@@ -54,7 +55,8 @@ const AmenitiesCard = ({
             gap: "10px",
           }}
         >
-          <CustomButton
+          {user.UserType.amenitiesModule &&
+            user.UserType.amenitiesModule.split(",").includes("edit") && <CustomButton
             title={"Edit Amenity"}
             placement={"top"}
             onClick={() => handleEdit(amenity.id)} // Pass the amenity.id for editing
@@ -62,8 +64,9 @@ const AmenitiesCard = ({
             fontSize={"small"}
             background={"rgba(8, 90, 232, 0.62)"}
             nameOfTheClass="amenity-edit"
-          />
-          <CustomButton
+          />}
+          {user.UserType.amenitiesModule &&
+            user.UserType.amenitiesModule.split(",").includes("delete") && <CustomButton
             title={"Delete Amenity"}
             placement={"top"}
             onClick={() => handleDelete(amenity.id)} // Pass the amenity.id for deletion
@@ -71,12 +74,15 @@ const AmenitiesCard = ({
             fontSize={"small"}
             background={"rgba(231, 26, 7, 0.77)"}
             nameOfTheClass="amenity-delete"
-          />
-          <Switch
+          />}
+          {user.UserType.amenitiesModule &&
+            user.UserType.amenitiesModule
+              .split(",")
+              .includes("changeStatus") && <Switch
             checked={amenity.status}
             onChange={() => handleStatusChange(amenity.id)} // Handle status change for this amenity
             className="amenity-switch"
-          />
+          />}
         </Box>
       </CardActions>
     </Card>

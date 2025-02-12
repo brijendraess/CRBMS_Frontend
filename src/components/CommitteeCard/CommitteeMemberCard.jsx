@@ -22,15 +22,15 @@ import {
 const CommitteeMemberCard = ({
   member,
   handleView,
+  key,
   handleEdit,
   handleDelete,
   handleBlockStatusChange,
   children,
 }) => {
   const { user } = useSelector((state) => state.user);
-
   return (
-    <Card sx={{ width: 320 }}>
+    <Card sx={{ width: 320 }} key={key}>
       <CardActionArea>
         <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>
           <CardMedia
@@ -96,7 +96,6 @@ const CommitteeMemberCard = ({
           </Typography>
         </CardContent>
       </CardActionArea>
-      {user?.UserType?.isAdmin ==='admin'? (
         <Box
           sx={{
             display: "flex",
@@ -106,45 +105,19 @@ const CommitteeMemberCard = ({
             gap: "10px",
           }}
         >
-          {handleView && (
-            <CustomButton
-              title={"View User"}
-              placement={"top"}
-              onClick={() => handleView(user.id)}
-              Icon={RemoveRedEyeIcon}
-              fontSize={"small"}
-              background={"rgba(3, 176, 48, 0.68)"}
-            />
-          )}
-          {handleEdit && (
-            <CustomButton
-              title={"Edit User"}
-              placement={"top"}
-              onClick={() => handleEdit(user.id)}
-              Icon={EditOutlinedIcon}
-              fontSize={"small"}
-              background={"rgba(8, 90, 232, 0.62)"}
-            />
-          )}
-          {handleDelete && (
+         
+          {user.UserType.committeeMemberModule &&
+          user.UserType.committeeMemberModule.split(",").includes("delete") && (
             <CustomButton
               title={"Delete User"}
               placement={"top"}
-              onClick={() => handleDelete(user.id)}
+              onClick={() => handleDelete(member.id)}
               Icon={DeleteOutlineOutlinedIcon}
               fontSize={"small"}
               background={"rgba(231, 26, 7, 0.77)"}
             />
           )}
-          {handleBlockStatusChange && (
-            <Switch
-              checked={user.isBlocked}
-              onChange={() => handleBlockStatusChange(user.id, user.isBlocked)}
-            />
-          )}
-          {children}
         </Box>
-      ) : null}
     </Card>
   );
 };

@@ -75,6 +75,7 @@ const AddUserTypeSettings = () => {
 
       committeeMemberDelete: "",
       committeeMemberView: "",
+      committeeMemberAdd: "",
 
       amenitiesAdd: "",
       amenitiesEdit: "",
@@ -169,6 +170,7 @@ const AddUserTypeSettings = () => {
 
       committeeMemberDelete: Yup.boolean().optional(),
       committeeMemberView: Yup.boolean().optional(),
+      committeeMemberAdd: Yup.boolean().optional(),
       // Amenities
       amenitiesAdd: Yup.boolean().optional(),
       amenitiesEdit: Yup.boolean().optional(),
@@ -274,7 +276,7 @@ const AddUserTypeSettings = () => {
             values.inventoryPendingFoodBeverageStatus
           ),
           committeeMemberModule: notificationStringManipulation(
-            false,
+            values.committeeMemberAdd,
             false,
             values.committeeMemberDelete,
             values.committeeMemberView,
@@ -432,6 +434,7 @@ const AddUserTypeSettings = () => {
 
                   formik.setFieldValue("committeeMemberDelete", "");
                   formik.setFieldValue("committeeMemberView", true);
+                  formik.setFieldValue("committeeMemberAdd", true);
 
                   formik.setFieldValue("amenitiesAdd", "");
                   formik.setFieldValue("amenitiesEdit", "");
@@ -513,6 +516,7 @@ const AddUserTypeSettings = () => {
 
                   formik.setFieldValue("committeeMemberDelete", true);
                   formik.setFieldValue("committeeMemberView", true);
+                  formik.setFieldValue("committeeMemberAdd", true);
 
                   formik.setFieldValue("amenitiesAdd", true);
                   formik.setFieldValue("amenitiesEdit", true);
@@ -596,6 +600,7 @@ const AddUserTypeSettings = () => {
 
                   formik.setFieldValue("committeeMemberDelete", "");
                   formik.setFieldValue("committeeMemberView", true);
+                   formik.setFieldValue("committeeMemberAdd", true);
 
                   formik.setFieldValue("amenitiesAdd", "");
                   formik.setFieldValue("amenitiesEdit", "");
@@ -677,6 +682,7 @@ const AddUserTypeSettings = () => {
 
                   formik.setFieldValue("committeeMemberDelete", "");
                   formik.setFieldValue("committeeMemberView", "");
+                  formik.setFieldValue("committeeMemberAdd", "");
 
                   formik.setFieldValue("amenitiesAdd", "");
                   formik.setFieldValue("amenitiesEdit", "");
@@ -757,6 +763,7 @@ const AddUserTypeSettings = () => {
             title: "Committee Member",
             permissions: [
               { name: "committeeMemberView", label: "View" },
+              { name: "committeeMemberAdd", label: "Add" },
               { name: "committeeMemberDelete", label: "Delete" },
             ],
           },

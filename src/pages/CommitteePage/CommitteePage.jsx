@@ -33,7 +33,7 @@ import {
 } from "../../components/Common/Buttons/CustomIcon";
 import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
 import CustomButton from "../../components/Common/Buttons/CustomButton";
-import BackupTableOutlinedIcon from '@mui/icons-material/BackupTableOutlined';
+import BackupTableOutlinedIcon from "@mui/icons-material/BackupTableOutlined";
 
 const CommitteeManagementMUI = () => {
   const [committeeData, setCommitteeData] = useState([]);
@@ -72,7 +72,9 @@ const CommitteeManagementMUI = () => {
     if (filter === "inactive") return committee.status === false;
     return true;
   });
-  const filteredCommittees = filteredCommitteesMediate.map((data) => Object.assign({}, data, { "committeeTypeName": data?.CommitteeType?.name }))
+  const filteredCommittees = filteredCommitteesMediate.map((data) =>
+    Object.assign({}, data, { committeeTypeName: data?.CommitteeType?.name })
+  );
 
   const handleDeleteCommittee = async (id) => {
     try {
@@ -215,7 +217,10 @@ const CommitteeManagementMUI = () => {
                 />
               </Tooltip>
             )}
-          <Tooltip title="View all members">
+          {user.UserType.committeeMemberModule &&
+            user.UserType.committeeMemberModule
+              .split(",")
+              .includes("view") &&<Tooltip title="View all members">
             <Chip
               label={`${params.row.CommitteeMembers?.length}`}
               size="large"
@@ -231,7 +236,7 @@ const CommitteeManagementMUI = () => {
               className="committee-view"
               disabled={params.row.CommitteeMembers?.length === 0}
             />
-          </Tooltip>
+          </Tooltip>}
         </div>
       ),
     },
@@ -256,7 +261,9 @@ const CommitteeManagementMUI = () => {
             style={{ width: "80px" }}
             size="small"
           >
-            <InputLabel size="small" id="filter-select-label">Show</InputLabel>
+            <InputLabel size="small" id="filter-select-label">
+              Show
+            </InputLabel>
             <Select
               labelId="filter-select-label"
               id="filter-select"
@@ -271,17 +278,18 @@ const CommitteeManagementMUI = () => {
             </Select>
           </FormControl>
           {user.UserType.committeeTypeModule &&
-            user.UserType.committeeTypeModule.split(",").includes("view") &&
-            <CustomButton
-              onClick={handleNavigateToCommitteeTypeList}
-              iconStyles
-              fontSize={"medium"}
-              background={"var(--linear-gradient-main)"}
-              Icon={BackupTableOutlinedIcon}
-              // fontSize
-              nameOfTheClass="go-to-committee-type"
-              title="Committee Type"
-            />}
+            user.UserType.committeeTypeModule.split(",").includes("view") && (
+              <CustomButton
+                onClick={handleNavigateToCommitteeTypeList}
+                iconStyles
+                fontSize={"medium"}
+                background={"var(--linear-gradient-main)"}
+                Icon={BackupTableOutlinedIcon}
+                // fontSize
+                nameOfTheClass="go-to-committee-type"
+                title="Committee Type"
+              />
+            )}
         </PageHeader>
         {isSmallScreen ? (
           <Grid2
@@ -297,6 +305,7 @@ const CommitteeManagementMUI = () => {
           >
             {filteredCommittees.map((committee) => (
               <CommitteeCard
+                user={user}
                 key={committee.id}
                 committee={committee}
                 heading={committee.name}
@@ -347,7 +356,7 @@ const CommitteeManagementMUI = () => {
           isOpen={isAddCommittee}
           title={"Add Committee"}
           setIsOpen={setIsAddCommittee}
-        // width={600}
+          // width={600}
         />
 
         <NewPopUpModal
@@ -361,7 +370,7 @@ const CommitteeManagementMUI = () => {
               setIsEditOpen={setIsEditOpen}
             />
           }
-        // width={500}
+          // width={500}
         />
 
         <DeleteModal

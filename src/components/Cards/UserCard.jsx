@@ -22,7 +22,9 @@ import {
 import CustomButton from "../Common/Buttons/CustomButton";
 
 const UserCard = ({
+  users,
   user,
+  key,
   handleView,
   handleEdit,
   handleDelete,
@@ -34,6 +36,7 @@ const UserCard = ({
       className="user-card"
       elevation={2}
       sx={{ width: 300, border: "1px solid #00000021", padding: "5px" }}
+      key={key}
     >
       <CardActionArea>
         <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>
@@ -41,8 +44,8 @@ const UserCard = ({
             component="img"
             height="100"
             image={
-              user.avatarPath
-                ? `${import.meta.env.VITE_API_URL}/${user.avatarPath}`
+              users.avatarPath
+                ? `${import.meta.env.VITE_API_URL}/${users.avatarPath}`
                 : "/default-avatar.png"
             }
             alt="User Avatar"
@@ -65,7 +68,7 @@ const UserCard = ({
             }}
           >
             <BadgeOutlinedIcon fontSize="small" />
-            {user.fullname}
+            {users.fullname}
           </Typography>
           <Typography
             variant="h5"
@@ -77,7 +80,7 @@ const UserCard = ({
             }}
           >
             <Person3OutlinedIcon fontSize="small" />
-            {user.userName}
+            {users.userName}
           </Typography>
           <Typography
             variant="body2"
@@ -89,7 +92,7 @@ const UserCard = ({
             }}
           >
             <MailOutlinedIcon fontSize="small" />
-            {user.email}
+            {users.email}
           </Typography>
           <Typography
             gutterBottom
@@ -102,7 +105,7 @@ const UserCard = ({
             }}
           >
             <LocalPhoneOutlinedIcon fontSize="small" />
-            {user.phoneNumber}
+            {users.phoneNumber}
           </Typography>
           <Typography
             variant="body2"
@@ -117,7 +120,7 @@ const UserCard = ({
               fontSize="small"
               sx={{ marginBottom: "6px" }}
             />
-            {user?.UserType?.userTypeName}
+            {users?.UserType?.userTypeName}
           </Typography>
         </CardContent>
       </CardActionArea>
@@ -132,44 +135,48 @@ const UserCard = ({
           background: "#6464641f",
         }}
       >
-        {handleView && (
+        {handleView && user.UserType.userModule &&
+            user.UserType.userModule.split(",").includes("view") && (
           <CustomButton
             nameOfTheClass="view-button"
             title={"View User"}
             placement={"top"}
-            onClick={() => handleView(user.id)}
+            onClick={() => handleView(users.id)}
             Icon={RemoveRedEyeIcon}
             fontSize={"small"}
             background={"rgba(3, 176, 48, 0.68)"}
           />
         )}
-        {handleEdit && (
+        {handleEdit && user.UserType.userModule &&
+            user.UserType.userModule.split(",").includes("edit") && (
           <CustomButton
             nameOfTheClass="edit-button"
             title={"Edit User"}
             placement={"top"}
-            onClick={() => handleEdit(user.id)}
+            onClick={() => handleEdit(users.id)}
             Icon={EditOutlinedIcon}
             fontSize={"small"}
             background={"rgba(8, 90, 232, 0.62)"}
           />
         )}
-        {handleDelete && (
+        {handleDelete && user.UserType.userModule &&
+            user.UserType.userModule.split(",").includes("delete") && (
           <CustomButton
             nameOfTheClass="delete-button"
             title={"Delete User"}
             placement={"top"}
-            onClick={() => handleDelete(user.id)}
+            onClick={() => handleDelete(users.id)}
             Icon={DeleteOutlineOutlinedIcon}
             fontSize={"small"}
             background={"rgba(231, 26, 7, 0.77)"}
           />
         )}
-        {handleBlockStatusChange && (
+        {handleBlockStatusChange && user.UserType.userModule &&
+            user.UserType.userModule.split(",").includes("changeStatus") && (
           <Switch
             className="switch-button"
-            checked={user.isBlocked}
-            onChange={() => handleBlockStatusChange(user.id, user.isBlocked)}
+            checked={users.isBlocked}
+            onChange={() => handleBlockStatusChange(users.id, users.isBlocked)}
           />
         )}
         {children}

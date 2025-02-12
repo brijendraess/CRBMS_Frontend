@@ -113,7 +113,9 @@ const EditUserTypeSettings = () => {
       committeeMemberView: userRole?.committeeMemberModule
         ?.split(",")
         .includes("view"),
-
+      committeeMemberAdd: userRole?.committeeMemberModule
+        ?.split(",")
+        .includes("add"),
       amenitiesAdd: userRole?.amenitiesModule?.split(",").includes("add"),
       amenitiesEdit: userRole?.amenitiesModule?.split(",").includes("edit"),
       amenitiesDelete: userRole?.amenitiesModule?.split(",").includes("delete"),
@@ -227,6 +229,7 @@ const EditUserTypeSettings = () => {
 
       committeeMemberDelete: Yup.boolean().optional(),
       committeeMemberView: Yup.boolean().optional(),
+      committeeMemberAdd: Yup.boolean().optional(),
 
       amenitiesAdd: Yup.boolean().optional(),
       amenitiesEdit: Yup.boolean().optional(),
@@ -329,7 +332,7 @@ const EditUserTypeSettings = () => {
             values.inventoryPendingFoodBeverageStatus
           ),
           committeeMemberModule: userRoleStringManipulation(
-            false,
+            values.committeeMemberAdd,
             false,
             values.committeeMemberDelete,
             values.committeeMemberView,
@@ -489,6 +492,7 @@ const EditUserTypeSettings = () => {
 
                   formik.setFieldValue("committeeMemberDelete", "");
                   formik.setFieldValue("committeeMemberView", true);
+                  formik.setFieldValue("committeeMemberAdd", true);
 
                   formik.setFieldValue("amenitiesAdd", "");
                   formik.setFieldValue("amenitiesEdit", "");
@@ -564,12 +568,19 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("inventoryIncrease", true);
                   formik.setFieldValue("inventoryDecrease", true);
                   formik.setFieldValue("inventoryPendingAmenityView", true);
-                  formik.setFieldValue("inventoryPendingFoodBeverageView", true);
+                  formik.setFieldValue(
+                    "inventoryPendingFoodBeverageView",
+                    true
+                  );
                   formik.setFieldValue("inventoryPendingAmenityStatus", true);
-                  formik.setFieldValue("inventoryPendingFoodBeverageStatus", true);
+                  formik.setFieldValue(
+                    "inventoryPendingFoodBeverageStatus",
+                    true
+                  );
 
                   formik.setFieldValue("committeeMemberDelete", true);
                   formik.setFieldValue("committeeMemberView", true);
+                  formik.setFieldValue("committeeMemberAdd", true);
 
                   formik.setFieldValue("amenitiesAdd", true);
                   formik.setFieldValue("amenitiesEdit", true);
@@ -645,6 +656,7 @@ const EditUserTypeSettings = () => {
 
                   formik.setFieldValue("committeeMemberDelete", "");
                   formik.setFieldValue("committeeMemberView", true);
+                  formik.setFieldValue("committeeMemberAdd", true);
 
                   formik.setFieldValue("amenitiesAdd", "");
                   formik.setFieldValue("amenitiesEdit", "");
@@ -720,12 +732,19 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("inventoryIncrease", true);
                   formik.setFieldValue("inventoryDecrease", true);
                   formik.setFieldValue("inventoryPendingAmenityView", true);
-                  formik.setFieldValue("inventoryPendingFoodBeverageView", true);
+                  formik.setFieldValue(
+                    "inventoryPendingFoodBeverageView",
+                    true
+                  );
                   formik.setFieldValue("inventoryPendingAmenityStatus", true);
-                  formik.setFieldValue("inventoryPendingFoodBeverageStatus", true);
+                  formik.setFieldValue(
+                    "inventoryPendingFoodBeverageStatus",
+                    true
+                  );
 
                   formik.setFieldValue("committeeMemberDelete", "");
                   formik.setFieldValue("committeeMemberView", "");
+                  formik.setFieldValue("committeeMemberAdd", "");
 
                   formik.setFieldValue("amenitiesAdd", "");
                   formik.setFieldValue("amenitiesEdit", "");
@@ -807,6 +826,7 @@ const EditUserTypeSettings = () => {
             title: "Committee Member",
             permissions: [
               { name: "committeeMemberView", label: "View" },
+              { name: "committeeMemberAdd", label: "Add" },
               { name: "committeeMemberDelete", label: "Delete" },
             ],
           },
@@ -835,10 +855,22 @@ const EditUserTypeSettings = () => {
                 ),
               },
               { name: "inventoryDecrease", label: "Decrease" },
-              { name: "inventoryPendingAmenityView", label: "Pending Amenity View" },
-              { name: "inventoryPendingFoodBeverageView", label: "Pending FoodBeverage View" },
-              { name: "inventoryPendingAmenityStatus", label: "Pending Amenity Status" },
-              { name: "inventoryPendingFoodBeverageStatus", label: "Pending FoodBeverage Status" },
+              {
+                name: "inventoryPendingAmenityView",
+                label: "Pending Amenity View",
+              },
+              {
+                name: "inventoryPendingFoodBeverageView",
+                label: "Pending FoodBeverage View",
+              },
+              {
+                name: "inventoryPendingAmenityStatus",
+                label: "Pending Amenity Status",
+              },
+              {
+                name: "inventoryPendingFoodBeverageStatus",
+                label: "Pending FoodBeverage Status",
+              },
             ],
           },
           {

@@ -14,7 +14,7 @@ import {
   EditOutlinedIcon,
 } from "../../components/Common/Buttons/CustomIcon";
 
-const LocationCard = ({ location, onEdit, onDelete, onStatusChange }) => {
+const LocationCard = ({ user,location, onEdit, onDelete, onStatusChange }) => {
   return (
     <Card
       sx={{
@@ -61,7 +61,8 @@ const LocationCard = ({ location, onEdit, onDelete, onStatusChange }) => {
               gap: "10px",
             }}
           >
-            <CustomButton
+            {user.UserType.locationModule &&
+            user.UserType.locationModule.split(",").includes("edit") && <CustomButton
               title="Edit Location"
               placement="top"
               onClick={() => onEdit(location.id)} // Use location.id for editing
@@ -69,8 +70,9 @@ const LocationCard = ({ location, onEdit, onDelete, onStatusChange }) => {
               fontSize="small"
               background="rgba(8, 90, 232, 0.62)"
               nameOfTheClass="location-edit"
-            />
-            <CustomButton
+            />}
+            {user.UserType.locationModule &&
+            user.UserType.locationModule.split(",").includes("delete") && <CustomButton
               title="Delete Location"
               placement="top"
               onClick={() => onDelete(location.id)} // Use location.id for deletion
@@ -78,12 +80,15 @@ const LocationCard = ({ location, onEdit, onDelete, onStatusChange }) => {
               fontSize="small"
               background="rgba(231, 26, 7, 0.77)"
               nameOfTheClass="location-delete"
-            />
-            <Switch
+            />}
+            {user.UserType.locationModule &&
+            user.UserType.locationModule
+              .split(",")
+              .includes("changeStatus") && <Switch
               checked={location.status || false}
               onChange={() => onStatusChange(location.id)} // Handle status change
               className="location-switch"
-            />
+            />}
           </Box>
         </CardActions>
       </Box>

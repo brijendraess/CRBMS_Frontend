@@ -27,14 +27,13 @@ const CommitteeMemberList = () => {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [heading, setHeading] = useState();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleBackButton = () => {
-    navigate(-1)
-  }
+    navigate(-1);
+  };
 
   useEffect(() => {
-
     const fetchMembers = async () => {
       try {
         dispatch(showLoading());
@@ -52,7 +51,7 @@ const CommitteeMemberList = () => {
           committeeName: member.Committee?.name,
         }));
 
-        console.log(members)
+        console.log(members);
         setHeading(response.data?.data?.members[0]?.Committee?.name);
         // console.log(response.data?.data?.members[0]?.Committee?.name);
         setData(formattedData);
@@ -65,7 +64,6 @@ const CommitteeMemberList = () => {
     };
 
     fetchMembers();
-
   }, [committeeId]);
 
   const removeUserFromCommittee = async (userId) => {
@@ -137,8 +135,7 @@ const CommitteeMemberList = () => {
       width: 200,
       renderCell: (params) =>
         user.UserType.committeeMemberModule &&
-          user.UserType.committeeMemberModule.split(",").includes("delete") &&
-          user?.UserType?.isAdmin === "admin" ? (
+        user.UserType.committeeMemberModule.split(",").includes("delete") ? (
           <Tooltip title="Remove User">
             <DeleteOutlineIcon
               color="error"
@@ -188,15 +185,7 @@ const CommitteeMemberList = () => {
           }}
         >
           {data.map((member) => (
-            <CommitteeMemberCard key={member.id} member={member}>
-              <CustomButton
-                title={"Add User To Committee"}
-                Icon={DeleteOutlineIcon}
-                fontSize="small"
-                background="red"
-                placement={"right"}
-              />
-            </CommitteeMemberCard>
+            <CommitteeMemberCard key={member.id} member={member} />
           ))}
         </Grid2>
       ) : (
