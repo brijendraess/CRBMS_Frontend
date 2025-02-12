@@ -119,6 +119,41 @@ const MeetingFormEdit = ({ updatedBookingId, room, setRefreshPage }) => {
     },
   });
 
+  console.log(formik?.values?.attendees, "attendees")
+
+
+  const fetchIsAvailable = async (attendeesList) => {
+    if (!formik.values.startTime || !formik.values.endTime || !formik.values.date) return;
+  
+    try {
+      const response = await axios.post(`/api/v1/user/isAvailable`, {
+        attendees: attendeesList.map((attendee) => attendee.id),
+        startTime: formik.values.startTime,
+        endTime: formik.values.endTime,
+        meetingDate: formik.values.date,
+      });
+  
+      const notAvailableAttendees = response?.data?.data?.notAvailableAttendees;
+      setEmailsList((prevEmailsList) =>
+        prevEmailsList.map((email) => ({
+          ...email,
+          isAvailable: !notAvailableAttendees.some(
+            (attendee) => attendee.attendeeId === email.id
+          ),
+        }))
+      );
+    } catch (error) {
+      console.error("Error checking availability:", error);
+    }
+  };
+  
+
+  useEffect(() => {
+    if (emailsList.length > 0) {
+      fetchIsAvailable(emailsList);
+    }
+  }, [formik.values.startTime, formik.values.endTime, formik.values.date, formik.values.attendees])
+
   const calculateDifference = () => {
     // Parse times into Date objects (using today's date)
     const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD
@@ -257,60 +292,26 @@ const MeetingFormEdit = ({ updatedBookingId, room, setRefreshPage }) => {
           id="attendees"
           name="attendees"
           size="small"
-          sx={{
-            width: "100%",
-          }}
+          sx={{ width: "100%" }}
           options={emailsList}
           value={formik.values.attendees || []}
-          onChange={(_, newValue) =>
-            formik.setFieldValue("attendees", newValue)
-          }
+          onChange={(_, newValue) => formik.setFieldValue("attendees", newValue)}
           getOptionLabel={(option) => option.name}
           renderOption={(props, option) => (
-            <Box
-              component="li"
-              {...props}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                width: "100%",
-              }}
-            >
-              <div>
-                {/* Render the attendee's name */}
-                <span>{option.name}</span>
-              </div>
-              <div sx={{ width: "100%", float: "right" }}>
-                {/* Render a hardcoded Chip for availability */}
-                <Chip
-                  label={
-                    option.id === "15b8126b-8ce7-443c-a231-007179da901a"
-                      ? "Unavailable"
-                      : "Available"
-                  }
-                  color={
-                    option.id === "15b8126b-8ce7-443c-a231-007179da901a"
-                      ? "error"
-                      : "success"
-                  }
-                  size="small"
-                />
-              </div>
+            <Box component="li" {...props}>
+              {option.name}
+              <Chip
+                label={option.isAvailable ? "Available" : "Unavailable"}
+                color={option.isAvailable ? "success" : "error"}
+                size="small"
+              />
             </Box>
           )}
           renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Select Attendees"
-              error={
-                formik.touched.attendees && Boolean(formik.errors.attendees)
-              }
-              helperText={formik.touched.attendees && formik.errors.attendees}
-            />
+            <TextField {...params} label="Select Attendees" />
           )}
           disableCloseOnSelect
-          isOptionEqualToValue={(option, value) => option.id === value.id}
+          isOptionEqualToValue={(option, value) => option.id === value.id} // Ensures correct selection matching
         />
         <Autocomplete
           multiple
