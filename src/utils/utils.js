@@ -277,7 +277,47 @@ const notificationStringManipulation = (
     return "";
   }
 };
-
+const inventoryStringManipulation = (
+  addData = false,
+ viewData = false,
+  increaseData = false,
+  decreaseData = false,
+  pendingAmenityViewData=false,
+  pendingAmenityStatusData = false,
+  pendingFoodBeverageViewData = false,
+  pendingFoodBeverageStatusData = false,
+) => {
+  let arrData = [];
+  if (addData) {
+    arrData.push("add");
+  }
+  if (viewData) {
+    arrData.push("view");
+  }
+  if (increaseData) {
+    arrData.push("increase");
+  }
+  if (decreaseData) {
+    arrData.push("decrease");
+  }
+  if (pendingAmenityViewData) {
+    arrData.push("pendingAmenityView");
+  }
+  if (pendingAmenityStatusData) {
+    arrData.push("pendingAmenityStatus");
+  }
+  if (pendingFoodBeverageViewData) {
+    arrData.push("pendingFoodBeverageView");
+  }
+  if (pendingFoodBeverageStatusData) {
+    arrData.push("pendingFoodBeverageStatus");
+  }
+  if (arrData.length > 0) {
+    return arrData.join(",");
+  } else {
+    return "";
+  }
+};
 const replaceAndUppercase = (str) => {
   if (str) {
     return str
@@ -366,5 +406,6 @@ export {
   disablePastDates,
   notificationStringManipulation,
   generateRandomPassword,
-  isPasswordValid
+  isPasswordValid,
+  inventoryStringManipulation
 };

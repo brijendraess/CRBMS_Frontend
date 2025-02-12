@@ -1,9 +1,9 @@
 import { Box, Card, Switch, Typography } from "@mui/material";
 import React from "react";
 
-const PendingFoodBeverageCard = ({ foodBeverage,handleStatusChange }) => {
+const PendingFoodBeverageCard = ({user,key, foodBeverage,handleStatusChange }) => {
   return (
-    <Card sx={{ width: 320 }}>
+    <Card sx={{ width: 320 }} key={key}>
       <Typography
         sx={{
           fontSize: "18px",
@@ -29,10 +29,13 @@ const PendingFoodBeverageCard = ({ foodBeverage,handleStatusChange }) => {
           gap: "10px",
         }}
       >
-        <Switch
+        {user.UserType.inventoryModule &&
+            user.UserType.inventoryModule
+              .split(",")
+              .includes("pendingFoodBeverageStatus") &&<Switch
          checked={foodBeverage.status}
          onChange={() => handleStatusChange(foodBeverage.id)}
-          />
+          />}
       </Box>
     </Card>
   );

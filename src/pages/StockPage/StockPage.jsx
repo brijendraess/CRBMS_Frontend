@@ -235,7 +235,8 @@ const StockPage = () => {
         }
       />
       <div className="col-lg-12 d-flex align-items-center pb-2 justify-content-end gap-2">
-        <Button
+        {user.UserType.inventoryModule &&
+            user.UserType.inventoryModule.split(",").includes("pendingAmenityView") &&<Button
           id="amenities-icon"
           className="rounded-circle"
           onClick={handleNavigatePendingAmenities}
@@ -245,8 +246,9 @@ const StockPage = () => {
               <Groups2OutlinedIcon color="white" className="cursor" />
             </Badge>
           </Tooltip>
-        </Button>
-        <Button
+        </Button>}
+        {user.UserType.inventoryModule &&
+            user.UserType.inventoryModule.split(",").includes("pendingFoodBeverageView") &&<Button
           id="notification-icon"
           className="rounded-circle"
           onClick={handleNavigatePendingFoodBeverage}
@@ -256,7 +258,7 @@ const StockPage = () => {
               <FoodBankOutlinedIcon color="white" className="cursor" />
             </Badge>
           </Tooltip>
-        </Button>
+        </Button>}
       </div>
       <Box
         style={{

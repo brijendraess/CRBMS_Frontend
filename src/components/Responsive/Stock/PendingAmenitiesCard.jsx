@@ -1,9 +1,9 @@
 import { Box, Card, Switch, Typography } from "@mui/material";
 import React from "react";
 
-const PendingAmenitiesCard = ({ amenities,handleStatusChange }) => {
+const PendingAmenitiesCard = ({user,key, amenities,handleStatusChange }) => {
   return (
-    <Card sx={{ width: 320 }}>
+    <Card sx={{ width: 320 }} key={key}>
       <Typography
         sx={{
           fontSize: "18px",
@@ -29,10 +29,13 @@ const PendingAmenitiesCard = ({ amenities,handleStatusChange }) => {
           gap: "10px",
         }}
       >
-        <Switch
+        {user.UserType.inventoryModule &&
+            user.UserType.inventoryModule
+              .split(",")
+              .includes("pendingAmenityStatus") &&<Switch
          checked={amenities.status}
          onChange={() => handleStatusChange(amenities.id)}
-          />
+          />}
       </Box>
     </Card>
   );

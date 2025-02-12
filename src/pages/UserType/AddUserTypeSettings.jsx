@@ -20,6 +20,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  inventoryStringManipulation,
   notificationStringManipulation,
   userRoleStringManipulation,
   userRoleStringMeetingManipulation,
@@ -63,10 +64,14 @@ const AddUserTypeSettings = () => {
       notificationDelete: "",
       notificationView: "",
 
-      inventoryAdd: "",
+      inventoryAdd: "", 
       inventoryIncrease: "",
       inventoryDecrease: "",
       inventoryView: "",
+      inventoryPendingAmenityView: "",
+      inventoryPendingFoodBeverageView: "",
+      inventoryPendingAmenityStatus: "",
+      inventoryPendingFoodBeverageStatus: "",
 
       committeeMemberDelete: "",
       committeeMemberView: "",
@@ -157,6 +162,10 @@ const AddUserTypeSettings = () => {
       inventoryIncrease: Yup.boolean().optional(),
       inventoryDecrease: Yup.boolean().optional(),
       inventoryView: Yup.boolean().optional(),
+      inventoryPendingAmenityView: Yup.boolean().optional(),
+      inventoryPendingFoodBeverageView: Yup.boolean().optional(),
+      inventoryPendingAmenityStatus: Yup.boolean().optional(),
+      inventoryPendingFoodBeverageStatus: Yup.boolean().optional(),
 
       committeeMemberDelete: Yup.boolean().optional(),
       committeeMemberView: Yup.boolean().optional(),
@@ -254,13 +263,15 @@ const AddUserTypeSettings = () => {
             false,
             false
           ),
-          inventoryModule: notificationStringManipulation(
+          inventoryModule: inventoryStringManipulation(
             values.inventoryAdd,
-            false,
-            false,
             values.inventoryView,
             values.inventoryIncrease,
-            values.inventoryDecrease
+            values.inventoryDecrease,
+            values.inventoryPendingAmenityView,
+            values.inventoryPendingAmenityStatus,
+            values.inventoryPendingFoodBeverageView,
+            values.inventoryPendingFoodBeverageStatus
           ),
           committeeMemberModule: notificationStringManipulation(
             false,
@@ -495,6 +506,10 @@ const AddUserTypeSettings = () => {
                   formik.setFieldValue("inventoryView", true);
                   formik.setFieldValue("inventoryIncrease", true);
                   formik.setFieldValue("inventoryDecrease", true);
+                  formik.setFieldValue("inventoryPendingAmenityView", true);
+                  formik.setFieldValue("inventoryPendingFoodBeverageView", true);
+                  formik.setFieldValue("inventoryPendingAmenityStatus", true);
+                  formik.setFieldValue("inventoryPendingFoodBeverageStatus", true);
 
                   formik.setFieldValue("committeeMemberDelete", true);
                   formik.setFieldValue("committeeMemberView", true);
@@ -655,6 +670,10 @@ const AddUserTypeSettings = () => {
                   formik.setFieldValue("inventoryView", true);
                   formik.setFieldValue("inventoryIncrease", true);
                   formik.setFieldValue("inventoryDecrease", true);
+                  formik.setFieldValue("inventoryPendingAmenityView", true);
+                  formik.setFieldValue("inventoryPendingFoodBeverageView", true);
+                  formik.setFieldValue("inventoryPendingAmenityStatus", true);
+                  formik.setFieldValue("inventoryPendingFoodBeverageStatus", true);
 
                   formik.setFieldValue("committeeMemberDelete", "");
                   formik.setFieldValue("committeeMemberView", "");
@@ -848,6 +867,10 @@ const AddUserTypeSettings = () => {
                 ),
               },
               { name: "inventoryDecrease", label: "Decrease" },
+              { name: "inventoryPendingAmenityView", label: "Pending Amenity View" },
+              { name: "inventoryPendingFoodBeverageView", label: "Pending FoodBeverage View" },
+              { name: "inventoryPendingAmenityStatus", label: "Pending Amenity Status" },
+              { name: "inventoryPendingFoodBeverageStatus", label: "Pending FoodBeverage Status" },
             ],
           },
           {

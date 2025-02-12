@@ -21,6 +21,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  inventoryStringManipulation,
   notificationStringManipulation,
   userRoleStringManipulation,
   userRoleStringMeetingManipulation,
@@ -93,6 +94,18 @@ const EditUserTypeSettings = () => {
         ?.split(",")
         .includes("decrease"),
       inventoryView: userRole?.inventoryModule?.split(",").includes("view"),
+      inventoryPendingAmenityView: userRole?.inventoryModule
+        ?.split(",")
+        .includes("pendingAmenityView"),
+      inventoryPendingFoodBeverageView: userRole?.inventoryModule
+        ?.split(",")
+        .includes("pendingFoodBeverageView"),
+      inventoryPendingAmenityStatus: userRole?.inventoryModule
+        ?.split(",")
+        .includes("pendingAmenityStatus"),
+      inventoryPendingFoodBeverageStatus: userRole?.inventoryModule
+        ?.split(",")
+        .includes("pendingFoodBeverageStatus"),
 
       committeeMemberDelete: userRole?.committeeMemberModule
         ?.split(",")
@@ -207,6 +220,10 @@ const EditUserTypeSettings = () => {
       inventoryIncrease: Yup.boolean().optional(),
       inventoryDecrease: Yup.boolean().optional(),
       inventoryView: Yup.boolean().optional(),
+      inventoryPendingAmenityView: Yup.boolean().optional(),
+      inventoryPendingFoodBeverageView: Yup.boolean().optional(),
+      inventoryPendingAmenityStatus: Yup.boolean().optional(),
+      inventoryPendingFoodBeverageStatus: Yup.boolean().optional(),
 
       committeeMemberDelete: Yup.boolean().optional(),
       committeeMemberView: Yup.boolean().optional(),
@@ -301,13 +318,15 @@ const EditUserTypeSettings = () => {
             false,
             false
           ),
-          inventoryModule: notificationStringManipulation(
+          inventoryModule: inventoryStringManipulation(
             values.inventoryAdd,
-            false,
-            false,
             values.inventoryView,
             values.inventoryIncrease,
-            values.inventoryDecrease
+            values.inventoryDecrease,
+            values.inventoryPendingAmenityView,
+            values.inventoryPendingAmenityStatus,
+            values.inventoryPendingFoodBeverageView,
+            values.inventoryPendingFoodBeverageStatus
           ),
           committeeMemberModule: userRoleStringManipulation(
             false,
@@ -544,6 +563,10 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("inventoryView", true);
                   formik.setFieldValue("inventoryIncrease", true);
                   formik.setFieldValue("inventoryDecrease", true);
+                  formik.setFieldValue("inventoryPendingAmenityView", true);
+                  formik.setFieldValue("inventoryPendingFoodBeverageView", true);
+                  formik.setFieldValue("inventoryPendingAmenityStatus", true);
+                  formik.setFieldValue("inventoryPendingFoodBeverageStatus", true);
 
                   formik.setFieldValue("committeeMemberDelete", true);
                   formik.setFieldValue("committeeMemberView", true);
@@ -696,6 +719,10 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("inventoryView", true);
                   formik.setFieldValue("inventoryIncrease", true);
                   formik.setFieldValue("inventoryDecrease", true);
+                  formik.setFieldValue("inventoryPendingAmenityView", true);
+                  formik.setFieldValue("inventoryPendingFoodBeverageView", true);
+                  formik.setFieldValue("inventoryPendingAmenityStatus", true);
+                  formik.setFieldValue("inventoryPendingFoodBeverageStatus", true);
 
                   formik.setFieldValue("committeeMemberDelete", "");
                   formik.setFieldValue("committeeMemberView", "");
@@ -808,6 +835,10 @@ const EditUserTypeSettings = () => {
                 ),
               },
               { name: "inventoryDecrease", label: "Decrease" },
+              { name: "inventoryPendingAmenityView", label: "Pending Amenity View" },
+              { name: "inventoryPendingFoodBeverageView", label: "Pending FoodBeverage View" },
+              { name: "inventoryPendingAmenityStatus", label: "Pending Amenity Status" },
+              { name: "inventoryPendingFoodBeverageStatus", label: "Pending FoodBeverage Status" },
             ],
           },
           {
