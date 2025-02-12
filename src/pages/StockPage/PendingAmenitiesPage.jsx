@@ -109,10 +109,10 @@ const PendingAmenitiesPage = () => {
 
       renderCell: (params) => (
         <Box display="flex" alignItems="center" gap={1}>
-          {user.UserType.servicesModule &&
-            user.UserType.servicesModule
+          {user.UserType.inventoryModule &&
+            user.UserType.inventoryModule
               .split(",")
-              .includes("changeStatus") && (
+              .includes("pendingAmenityStatus") && (
               <Tooltip title="Change Status">
                 <Switch
                   checked={params.row.status}
@@ -148,6 +148,7 @@ const PendingAmenitiesPage = () => {
         >
           {amenities.map((amenities) => (
             <PendingAmenitiesCard
+            user={user}
               key={amenities.id}
               amenities={amenities}
               handleStatusChange={handleStatusChange}
