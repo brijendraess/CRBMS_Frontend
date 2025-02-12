@@ -52,7 +52,6 @@ const EditRoomAmenities = ({
         const formData = {
           ...values,
           roomId: room.id,
-          status: true,
           createdBy: user.id,
         };
         await axios.put(

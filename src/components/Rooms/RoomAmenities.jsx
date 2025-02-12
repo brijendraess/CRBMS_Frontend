@@ -47,6 +47,7 @@ const RoomAmenities = ({ room }) => {
             id: index + 1,
             uid: amenity.id,
             name: amenity.RoomAmenity.name,
+            status: amenity.status?"Approved":"Pending",
             amenityId: amenity.RoomAmenity.id,
             quantity: Number(amenity.quantity),
           })
@@ -103,6 +104,7 @@ const RoomAmenities = ({ room }) => {
     },
     { field: "name", headerName: "Name", width: 100 },
     { field: "quantity", headerName: "Quantity", width: 100 },
+    { field: "status", headerName: "Status", width: 100 },
     {
       field: "actions",
       headerName: "Actions",

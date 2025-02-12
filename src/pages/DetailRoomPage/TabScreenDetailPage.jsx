@@ -286,7 +286,7 @@ const TabScreenDetailPage = () => {
                 width: "100%",
               }}
             >
-              <Wrapper>
+              {room.RoomAmenityQuantities?.filter((item)=>item.status===true)?.length>0 &&<Wrapper>
                 <Typography
                   variant="h6"
                   component="h6"
@@ -296,12 +296,12 @@ const TabScreenDetailPage = () => {
                   Amenities:
                 </Typography>
                 {room.RoomAmenityQuantities &&
-                  room.RoomAmenityQuantities.map((amenity) => (
+                  room.RoomAmenityQuantities?.filter((item)=>item.status===true)?.map((amenity) => (
                     <Typography key={amenity.RoomAmenity.id} fontSize={"14px"}>
                       <b>|</b> {amenity.RoomAmenity.name} <b>|</b>
                     </Typography>
                   ))}
-              </Wrapper>
+              </Wrapper>}
             </Box>
             <Box
               sx={{
@@ -311,7 +311,7 @@ const TabScreenDetailPage = () => {
                 width: "100%",
               }}
             >
-              <Wrapper>
+              {room?.RoomFoodBeverages?.filter((item)=>item.status===true)?.length>0 &&<Wrapper>
                 <Typography
                   variant="h6"
                   component="h6"
@@ -321,12 +321,12 @@ const TabScreenDetailPage = () => {
                   Food Beverages:
                 </Typography>
                 {room.RoomFoodBeverages &&
-                  room.RoomFoodBeverages.map((food) => (
+                  room.RoomFoodBeverages?.filter((item)=>item.status===true)?.map((food) => (
                     <Typography key={food.FoodBeverage.id} fontSize={"14px"}>
                       <b>|</b> {food.FoodBeverage.foodBeverageName} <b>|</b>
                     </Typography>
                   ))}
-              </Wrapper>
+              </Wrapper>}
             </Box>
             <Box
               sx={{
