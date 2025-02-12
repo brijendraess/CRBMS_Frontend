@@ -49,6 +49,7 @@ const MyComitteeCard = ({ committee, onDelete, setRefreshPage, heading }) => {
         background: "#fafafa80",
         justifyContent: "space-between",
       }}
+      className="my-committee-card"
     >
       <CardActionArea
         sx={{
@@ -113,6 +114,7 @@ const MyComitteeCard = ({ committee, onDelete, setRefreshPage, heading }) => {
                   color: `var(--linear-gradient-main)`,
                   borderColor: `var(--linear-gradient-main)`,
                 }}
+                className="my-committee-view"
               />
             </Tooltip>
           </Box>

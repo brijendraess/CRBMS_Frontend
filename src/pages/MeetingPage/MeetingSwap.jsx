@@ -20,6 +20,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { dateStringFormatting, disablePastDates, fetchActiveCommittee, fetchUsers, formatTimeShort } from "../../utils/utils";
 import dayjs from "dayjs";
+import { PopContent } from "../../Style";
+import FormButton from "../../components/Common/Buttons/FormButton/FormButton";
 
 const MeetingFormSwap = ({ updatedBookingId, room, setRefreshPage, isOpen }) => {
     const { user } = useSelector((state) => state.user);
@@ -29,33 +31,33 @@ const MeetingFormSwap = ({ updatedBookingId, room, setRefreshPage, isOpen }) => 
 
     useEffect(() => {
         if (isOpen) {
-          // Only fetch data if the modal is open
-          const fetchData = async () => {
-            const endpoint = "/api/v1/meeting/get-all-admin-meeting";
-            const response = await axios.get(endpoint, { withCredentials: true });
-            const meetings = await response?.data?.data?.meetings;
-    
-            const formattedMeetings = meetings.map((meeting) => ({
-              id: meeting?.id,
-              subject: meeting?.subject,
-              roomId: meeting?.Room.id,
-              agenda: meeting?.agenda,
-              notes: meeting?.notes || "",
-              startTime: formatTimeShort(meeting?.startTime),
-              endTime: formatTimeShort(meeting?.endTime),
-              meetingDate: dateStringFormatting(meeting?.meetingDate),
-              roomLocation: meeting?.Room?.Location?.locationName || "N/A",
-              roomName: meeting?.Room?.name || "N/A",
-              organizerName: meeting?.User?.fullname || "N/A",
-              status: meeting?.status || "N/A",
-            }));
-    
-            setMeetings(formattedMeetings);
-          };
-    
-          fetchData();
+            // Only fetch data if the modal is open
+            const fetchData = async () => {
+                const endpoint = "/api/v1/meeting/get-all-admin-meeting";
+                const response = await axios.get(endpoint, { withCredentials: true });
+                const meetings = await response?.data?.data?.meetings;
+
+                const formattedMeetings = meetings.map((meeting) => ({
+                    id: meeting?.id,
+                    subject: meeting?.subject,
+                    roomId: meeting?.Room.id,
+                    agenda: meeting?.agenda,
+                    notes: meeting?.notes || "",
+                    startTime: formatTimeShort(meeting?.startTime),
+                    endTime: formatTimeShort(meeting?.endTime),
+                    meetingDate: dateStringFormatting(meeting?.meetingDate),
+                    roomLocation: meeting?.Room?.Location?.locationName || "N/A",
+                    roomName: meeting?.Room?.name || "N/A",
+                    organizerName: meeting?.User?.fullname || "N/A",
+                    status: meeting?.status || "N/A",
+                }));
+
+                setMeetings(formattedMeetings);
+            };
+
+            fetchData();
         }
-      }, [isOpen]);
+    }, [isOpen]);
 
     useEffect(() => {
         setTimeout(() => {
@@ -95,7 +97,7 @@ const MeetingFormSwap = ({ updatedBookingId, room, setRefreshPage, isOpen }) => 
             }
         }, 500);
     }, [room]);
-    
+
 
     const formik = useFormik({
         initialValues: { ...initialValueState, meetingId: null },
@@ -107,24 +109,24 @@ const MeetingFormSwap = ({ updatedBookingId, room, setRefreshPage, isOpen }) => 
 
             try {
                 const payload = {
-                  ...values,
+                    ...values,
                 };
                 const response = await axios.put(
-                  `/api/v1/meeting/swap-meeting/${updatedBookingId}`,
-                  payload,
-                  {
-                    withCredentials: true,
-                  }
+                    `/api/v1/meeting/swap-meeting/${updatedBookingId}`,
+                    payload,
+                    {
+                        withCredentials: true,
+                    }
                 );
-                if(response.status === 200){
+                if (response.status === 200) {
                     toast.success("Meeting Swapped successfully");
                     setRefreshPage(Math.random());
                     resetForm();
                 }
-                else{
+                else {
                     toast.error("Unable to swap meeting.");
                     setRefreshPage(Math.random());
-                    resetForm();  
+                    resetForm();
                 }
             } catch (error) {
                 toast.error(error.response?.data?.message || "An error occurred");
@@ -135,56 +137,52 @@ const MeetingFormSwap = ({ updatedBookingId, room, setRefreshPage, isOpen }) => 
 
 
     return (
-        <Box component="form" onSubmit={formik.handleSubmit}>
-            <Box display="flex" justifyContent="space-between" gap={1}>
-                <Box>
-                    <div>
-                        <b>{formik?.values?.subject || ""}
-    {formik?.values?.date ? ` - ${formik?.values?.date}` : ""}{" "}
-    {formik?.values?.startTime && formik?.values?.endTime
-      ? `(${formik?.values?.startTime} - ${formik?.values?.endTime})`
-      : ""}</b>
-                    </div>
+        <PopContent>
+            <Box component="form" onSubmit={formik.handleSubmit}>
+                <Box display="flex" justifyContent="space-between" gap={1} mb={2}>
+                    <Box>
+                        <div>
+                            <b>{formik?.values?.subject || ""}
+                                {formik?.values?.date ? ` - ${formik?.values?.date}` : ""}{" "}
+                                {formik?.values?.startTime && formik?.values?.endTime
+                                    ? `(${formik?.values?.startTime} - ${formik?.values?.endTime})`
+                                    : ""}</b>
+                        </div>
+                    </Box>
                 </Box>
+                <Box mb={2}>
+                    <Autocomplete
+                        id="meetingId"
+                        name="meetingId"
+                        size="small"
+                        sx={{ width: "100%" }}
+                        options={meetings.filter((m) => m.id != updatedBookingId)} // ✅ List of meetings
+                        value={meetings.find(m => m.id === formik.values.meetingId) || null} // ✅ Ensure it holds the selected object
+                        onChange={(_, newValue) =>
+                            formik.setFieldValue("meetingId", newValue ? newValue.id : null) // ✅ Store only meeting.id
+                        }
+                        getOptionLabel={(option) =>
+                            option ? `${option.subject} ${option.meetingDate} (${option.startTime} - ${option.endTime})` : ""
+                        } // ✅ Show subject & timings
+                        renderOption={(props, option) => (
+                            <Box component="li" {...props}>
+                                {option.subject} {option.meetingDate} ({option.startTime} - {option.endTime})
+                            </Box>
+                        )}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                label="Select Meeting for Swap"
+                                error={formik.touched?.meetingId && Boolean(formik.errors?.meetingId)}
+                                helperText={formik.touched?.meetingId && formik.errors?.meetingId}
+                            />
+                        )}
+                        isOptionEqualToValue={(option, value) => option.id === value} // ✅ Compare only by id
+                    />
+                </Box>
+                <FormButton type='submit' btnName='Save meeting' />
             </Box>
-            <Box>
-                <Autocomplete
-                    id="meetingId"
-                    name="meetingId"
-                    size="small"
-                    sx={{ width: "100%" }}
-                    options={meetings.filter((m) => m.id != updatedBookingId)} // ✅ List of meetings
-                    value={meetings.find(m => m.id === formik.values.meetingId) || null} // ✅ Ensure it holds the selected object
-                    onChange={(_, newValue) =>
-                        formik.setFieldValue("meetingId", newValue ? newValue.id : null) // ✅ Store only meeting.id
-                    }
-                    getOptionLabel={(option) =>
-                        option ? `${option.subject} ${option.meetingDate} (${option.startTime} - ${option.endTime})` : ""
-                    } // ✅ Show subject & timings
-                    renderOption={(props, option) => (
-                        <Box component="li" {...props}>
-                            {option.subject} {option.meetingDate} ({option.startTime} - {option.endTime})
-                        </Box>
-                    )}
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label="Select Meeting for Swap"
-                            error={formik.touched?.meetingId && Boolean(formik.errors?.meetingId)}
-                            helperText={formik.touched?.meetingId && formik.errors?.meetingId}
-                        />
-                    )}
-                    isOptionEqualToValue={(option, value) => option.id === value} // ✅ Compare only by id
-                />
-
-
-            </Box>
-            <Box mt={2} display="flex" justifyContent="flex-end">
-                <Button type="submit" variant="contained" color="primary">
-                    Swap Meeting
-                </Button>
-            </Box>
-        </Box>
+        </PopContent>
     );
 };
 

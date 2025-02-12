@@ -13,8 +13,10 @@ import * as Yup from "yup";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { fetchActiveCommittee, fetchUsers } from "../../utils/utils";
+import { PopContent } from "../../Style";
+import FormButton from "../../components/Common/Buttons/FormButton/FormButton";
 
-const MeetingApproval = ({ updatedBookingId, meetingUpdatedStatus, setRefreshPage,setIsApprovalBookingOpen }) => {
+const MeetingApproval = ({ updatedBookingId, meetingUpdatedStatus, setRefreshPage, setIsApprovalBookingOpen }) => {
   const [emailsList, setEmailsList] = useState([]);
   const [committeeList, setCommitteeList] = useState([]);
   const [initialValueState, setInitialValueState] = useState("");
@@ -26,7 +28,7 @@ const MeetingApproval = ({ updatedBookingId, meetingUpdatedStatus, setRefreshPag
   }, []);
 
   const formik = useFormik({
-    initialValues:{meetingStatus:meetingUpdatedStatus},
+    initialValues: { meetingStatus: meetingUpdatedStatus },
     enableReinitialize: true,
     validationSchema: Yup.object({
       meetingStatus: Yup.string().required("Meeting Status is required"),
@@ -59,34 +61,36 @@ const MeetingApproval = ({ updatedBookingId, meetingUpdatedStatus, setRefreshPag
   });
 
   return (
-    <Box component="form" onSubmit={formik.handleSubmit}>
-      <InputLabel id="meetingStatus-select-label">Meeting Status</InputLabel>
-      <Select
-        labelId="meetingStatus-select-label"
-        id="meetingStatus"
-        value={formik?.values?.meetingStatus}
-        label="Meeting Status"
-        name="meetingStatus"
-        fullWidth
-        onChange={formik.handleChange}
-        error={
-          formik.touched.meetingStatus && Boolean(formik.errors.meetingStatus)
-        }
-        required
-      >
-        <MenuItem value={"pending"}>pending</MenuItem>
-        <MenuItem value={"scheduled"}>scheduled</MenuItem>
-        <MenuItem value={"start"}>Start</MenuItem>
-        <MenuItem value={"completed"}>completed</MenuItem>
-        <MenuItem value={"cancelled"}>cancelled</MenuItem>
-      </Select>
-      {/* Submit Button */}
-      <Box mt={2} display="flex" justifyContent="flex-end">
-        <Button type="submit" variant="contained" color="primary">
-          Change Status
-        </Button>
+    <PopContent>
+      <Box component="form" onSubmit={formik.handleSubmit}>
+        <FormControl margin="normal" fullWidth>
+          <InputLabel id="meetingStatus-select-label">Meeting Status</InputLabel>
+          <Select
+            size="small"
+            label="Meeting Status"
+            labelId="meetingStatus-select-label"
+            id="meetingStatus"
+            value={formik?.values?.meetingStatus}
+            // label="Meeting Status"
+            name="meetingStatus"
+            fullWidth
+            onChange={formik.handleChange}
+            error={
+              formik.touched.meetingStatus && Boolean(formik.errors.meetingStatus)
+            }
+            required
+          >
+            <MenuItem value={"pending"}>Pending</MenuItem>
+            <MenuItem value={"scheduled"}>Scheduled</MenuItem>
+            <MenuItem value={"start"}>Start</MenuItem>
+            <MenuItem value={"completed"}>Completed</MenuItem>
+            <MenuItem value={"cancelled"}>Cancelled</MenuItem>
+          </Select>
+        </FormControl>
+        {/* Submit Button */}
+        <FormButton type="submit" btnName="Change Status" />
       </Box>
-    </Box>
+    </PopContent >
   );
 };
 

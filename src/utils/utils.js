@@ -50,7 +50,7 @@ const dateStringFormatting = (dateString) => {
 
 const fetchUsers = async (toast, setEmailsList) => {
   try {
-    const response = await axios.get("/api/v1/user/users");
+    const response = await axios.get("/api/v1/user/active/users");
     const emails = response.data.data.users.rows.map((user) => ({
       email: user.email,
       id: user.id,

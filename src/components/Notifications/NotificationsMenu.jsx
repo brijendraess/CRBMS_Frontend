@@ -13,13 +13,13 @@ import {
 } from "@mui/material";
 import CheckAndShowImage from "../Common/CustomImage/showImage";
 
-const NotificationsMenu = ({ notifications,unReadCount }) => {
+const NotificationsMenu = ({ notifications, unReadCount }) => {
 
   const navigate = useNavigate();
 
 
-  const onViewAll=()=>{
-    navigate("/notification-all"); 
+  const onViewAll = () => {
+    navigate("/notification-all");
   }
 
 
@@ -28,7 +28,7 @@ const NotificationsMenu = ({ notifications,unReadCount }) => {
       sx={{
         width: 320,
         backgroundColor: "white",
-        borderRadius: 2,
+        borderRadius: 1,
         boxShadow: "0px 2px 8px rgba(0,0,0,0.32)",
         overflow: "hidden",
       }}
@@ -37,7 +37,7 @@ const NotificationsMenu = ({ notifications,unReadCount }) => {
       <Box
         sx={{
           padding: "10px 16px",
-          backgroundColor: "#f5f5f5",
+          backgroundColor: `var(--linear-gradient-bodyColor2)`,
           borderBottom: "1px solid #ddd",
         }}
       >
@@ -70,9 +70,8 @@ const NotificationsMenu = ({ notifications,unReadCount }) => {
       >
         <Button
           variant="contained"
-          color="primary"
           onClick={onViewAll}
-          sx={{ width: "100%" }}
+          sx={{ width: "100%", background:`var(--linear-gradient-main-2)` }}
         >
           View All Notifications
         </Button>
@@ -85,7 +84,7 @@ const NotificationItem = ({ avatar, name, action, item, time }) => {
   return (
     <ListItem alignItems="flex-start" sx={{ padding: "8px 16px" }}>
       <ListItemAvatar>
-      <CheckAndShowImage imageUrl={avatar} />
+        <CheckAndShowImage imageUrl={avatar} />
       </ListItemAvatar>
       <ListItemText
         primary={

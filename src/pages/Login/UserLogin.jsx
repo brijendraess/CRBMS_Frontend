@@ -13,7 +13,7 @@ import { setLoginEmail } from "../../Redux/verifyEmailSlicer";
 import Input from "../../components/Common/Input/Input";
 // Assets Import
 import ebizLogo from "../../assets/Images/ebizlogo.png";
-import { Mail,Lock } from "../../components/Common/Buttons/CustomIcon";
+import { Mail, Lock } from "../../components/Common/Buttons/CustomIcon";
 
 const UserLogin = () => {
   const [userName, setUserName] = useState("");
@@ -74,13 +74,11 @@ const UserLogin = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginBottom: "24px",
-              }}
-            >
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              marginBottom: '24px'
+            }}>
               <Link to="/forgot-password" className="forgotLink">
                 Forgot Password?
               </Link>
@@ -100,7 +98,7 @@ const UserLogin = () => {
               </Button>
             </div>
           </form>
-          <div
+          {/* <div
             style={{
               display: "flex",
               justifyContent: "flex-end",
@@ -113,7 +111,7 @@ const UserLogin = () => {
             <div style={{ objectFit: "cover", width: "75px", height: "40px" }}>
               <img src={ebizLogo} style={{ borderRadius: "10px" }} />
             </div>
-          </div>
+          </div> */}
         </div>
       </motion.div>
     </div>

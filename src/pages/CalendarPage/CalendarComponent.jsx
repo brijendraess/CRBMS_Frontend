@@ -21,7 +21,8 @@ import MeetingFormPostPone from "../MeetingPage/MeetingFormPostPone";
 import CancelMeetingModal from "../../components/Common/Modals/Delete/CancelMeetingModal";
 import MeetingFormEdit from "../MeetingPage/MeetingFormEdit";
 
-const CalederComponent = ({ height }) => {
+const CalendarComponent = ({ height }) => {
+
   const CalenderWrapper = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
     borderRadius: "10px",
@@ -32,9 +33,10 @@ const CalederComponent = ({ height }) => {
     height: height,
     backgroundImage: `linear-gradient(45deg, var(--body-color), var(--body-color-2))`,
     [theme.breakpoints.down("md")]: {
-      height: "100vh",
+      height: height || "100vh",
       marginTop: "0px",
     },
+
   }));
 
   const localizer = dayjsLocalizer(dayjs);
@@ -343,4 +345,4 @@ const CalederComponent = ({ height }) => {
   );
 };
 
-export default CalederComponent;
+export default CalendarComponent;
