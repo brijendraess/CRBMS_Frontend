@@ -154,6 +154,6 @@ export {
   SwapHorizIcon,
   AssessmentOutlinedIcon,
   CategoryOutlinedIcon,
-  KeyboardBackspaceOutlinedIcon
+  KeyboardBackspaceOutlinedIcon,
   VideoCallOutlinedIcon
 };
