@@ -17,6 +17,7 @@ import Carousel from "../../components/Carousel/Carousel";
 import {
   DesignServicesOutlinedIcon,
   GroupsIcon,
+  KeyboardBackspaceOutlinedIcon,
   LocationOnOutlinedIcon,
 } from "../../components/Common/Buttons/CustomIcon";
 import { getMeetingTimePercentage, timeDifference } from "../../utils/utils";
@@ -25,6 +26,8 @@ import Loader from "../../components/Common/Loader/Loader";
 import { PaperWrapper } from "../../Style";
 import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import MeetingForm from "../MeetingPage/MeetingForm";
+import PageHeader from "../../components/Common/PageHeader/PageHeader";
+import CustomButton from "../../components/Common/Buttons/CustomButton";
 
 const BoxWrapper = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -212,13 +215,13 @@ const calculateTimeDifference = (params) => {
   };
 
   if (now < startDateTime) {
-      const minutesUntilStart = Math.round((startDateTime - now) / (1000 * 60));
-      return `Starts in ${formatTime(minutesUntilStart)}.`;
+    const minutesUntilStart = Math.round((startDateTime - now) / (1000 * 60));
+    return `Starts in ${formatTime(minutesUntilStart)}.`;
   } else if (now >= startDateTime && now <= endDateTime) {
-      const minutesRemaining = Math.round((endDateTime - now) / (1000 * 60));
-      return `Meeting ongoing, ${formatTime(minutesRemaining)} remaining.`;
+    const minutesRemaining = Math.round((endDateTime - now) / (1000 * 60));
+    return `Meeting ongoing, ${formatTime(minutesRemaining)} remaining.`;
   } else {
-      return "Meeting ended but still pending.";
+    return "Meeting ended but still pending.";
   }
 
 
@@ -286,16 +289,24 @@ const DetailRoomPage = () => {
     setIsBookNowOpen(true);
   };
   console.log(room);
+
+
+  const handleBackButton = () => {
+    navigate(-1)
+  }
   return (
     <PaperWrapper sx={{ display: "flex", gap: "5px", flexDirection: "column" }}>
-      <Typography
-        variant="h5"
-        component="h5"
-        textAlign="center"
-        fontWeight={"500"}
-      >
-        {room.name}
-      </Typography>
+      <PageHeader heading={room.name} >
+        <CustomButton
+          onClick={handleBackButton}
+          iconStyles
+          fontSize={"medium"}
+          background={"var(--linear-gradient-main)"}
+          Icon={KeyboardBackspaceOutlinedIcon}
+          nameOfTheClass="go-to-committee-type"
+          title="Back to Rooms"
+        />
+      </PageHeader>
       <Box
         sx={{
           display: "flex",
@@ -384,7 +395,7 @@ const DetailRoomPage = () => {
                 width: "100%",
               }}
             >
-              <Wrapper>
+              {room.RoomAmenityQuantities?.filter((item)=>item.status===true)?.length>0 && <Wrapper>
                 <Typography
                   variant="h6"
                   component="h6"
@@ -394,12 +405,12 @@ const DetailRoomPage = () => {
                   Amenities:
                 </Typography>
                 {room.RoomAmenityQuantities &&
-                  room.RoomAmenityQuantities.map((amenity) => (
+                  room.RoomAmenityQuantities?.filter((item)=>item.status===true)?.map((amenity) => (
                     <Typography key={amenity.RoomAmenity.id} fontSize={"14px"}>
                       <b>|</b> {amenity.RoomAmenity.name} <b>|</b>
                     </Typography>
                   ))}
-              </Wrapper>
+              </Wrapper>}
             </Box>
             <Box
               sx={{
@@ -409,7 +420,7 @@ const DetailRoomPage = () => {
                 width: "100%",
               }}
             >
-              <Wrapper>
+              {room?.RoomFoodBeverages?.filter((item)=>item.status===true)?.length>0 &&<Wrapper>
                 <Typography
                   variant="h6"
                   component="h6"
@@ -419,12 +430,12 @@ const DetailRoomPage = () => {
                   Food Beverages:
                 </Typography>
                 {room.RoomFoodBeverages &&
-                  room.RoomFoodBeverages.map((food) => (
+                  room.RoomFoodBeverages?.filter((item)=>item.status===true)?.map((food) => (
                     <Typography key={food.FoodBeverage.id} fontSize={"14px"}>
                       <b>|</b> {food.FoodBeverage.foodBeverageName} <b>|</b>
                     </Typography>
                   ))}
-              </Wrapper>
+              </Wrapper>}
             </Box>
             <Box
               sx={{

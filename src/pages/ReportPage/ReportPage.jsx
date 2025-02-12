@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
 import { DataGrid } from "@mui/x-data-grid";
+import { Paper, Typography } from "@mui/material";
 
 const ReportPage = () => {
   const [counts, setCounts] = useState({
@@ -166,20 +167,20 @@ const ReportPage = () => {
   const roomColumns = [
     {
       field: "roomName",
-      headerName: "Room Name",
-      width: 250,
+      headerName: "Most Used Room",
+      width: 260,
       headerClassName: "super-app-theme--header",
     },
 
-    {
-      field: "capacity",
-      headerName: "Capacity",
-      width: 150,
-      headerClassName: "super-app-theme--header",
-    },
+    // {
+    //   field: "capacity",
+    //   headerName: "Capacity",
+    //   width: 150,
+    //   headerClassName: "super-app-theme--header",
+    // },
     {
       field: "count",
-      headerName: "Room Used",
+      headerName: "Used Count",
       width: 150,
       headerClassName: "super-app-theme--header",
     },
@@ -194,27 +195,26 @@ const ReportPage = () => {
   const organizerColumns = [
     {
       field: "name",
-      headerName: "Organizer Name",
-      width: 250,
+      headerName: "Most Frequent Organizer",
+      width: 225,
       headerClassName: "super-app-theme--header",
     },
-
     {
       field: "email",
       headerName: "Email",
-      width: 150,
+      width: 225,
       headerClassName: "super-app-theme--header",
     },
-    {
-      field: "username",
-      headerName: "Username",
-      width: 150,
-      headerClassName: "super-app-theme--header",
-    },
+    // {
+    //   field: "username",
+    //   headerName: "Username",
+    //   width: 150,
+    //   headerClassName: "super-app-theme--header",
+    // },
     {
       field: "percentage",
       headerName: "Percentage",
-      width: 150,
+      width: 110,
       headerClassName: "super-app-theme--header",
     },
   ];
@@ -237,52 +237,67 @@ const ReportPage = () => {
         <Grid size={{ xs: 12, sm: 6, md: 4 }}>
           <InfoCard
             color={["#1da256", "#48d483"]}
-            tittle="Users"
+            title="Users"
             count={counts.users}
             show={false}
             options={[]}
+            nameOfTheClass={"user-report-card"}
           />
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 4 }}>
           <InfoCard
             color={["#2c78e5", "#60aff5"]}
-            tittle="Amenities"
+            title="Amenities"
             count={counts.amenities}
             show={false}
             options={[]}
+            nameOfTheClass={"amenity-report-card"}
           />
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 4 }}>
           <InfoCard
             color={["#e1950e", "#f3cd29"]}
-            tittle="Meetings"
+            title="Meetings"
             count={meetingCount}
             show={true}
             options={["Today", "This Week", "This Month"]}
             onOptionSelect={handleMeetingSelect}
             subHeading={meetingFilter}
+            nameOfTheClass={"meetings-report-card"}
           />
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 4 }}>
           <InfoCard
             color={["#1da256", "#48d483"]}
-            tittle="Cancelled Meetings"
+            title="Cancelled Meetings"
             count={cancelledMeetingCount}
             show={true}
             options={["Today", "This Week", "This Month"]}
             onOptionSelect={handleCancelledMeetingSelect}
             subHeading={cancelledMeetingFilter}
+            nameOfTheClass={"cancelled-meetings-report-card"}
           />
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 4 }}>
           <InfoCard
             color={["#2c78e5", "#60aff5"]}
-            tittle="Completed Meetings"
+            title="Completed Meetings"
             count={completedMeetingCount}
             show={true}
             options={["Today", "This Week", "This Month"]}
             onOptionSelect={handleCompletedMeetingSelect}
             subHeading={completedMeetingFilter}
+            nameOfTheClass={"completed-meetings-report-card"}
+          />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+          <InfoCard
+            color={["#2c78e5", "#60aff5"]}
+            title="Food & Beverages"
+            count={counts.food}
+            show={false}
+            options={[]}
+            nameOfTheClass={"food-report-card"}
           />
         </Grid>
         {/* <Grid size={{ xs: 12, sm: 6, md: 4 }}>
@@ -310,76 +325,82 @@ const ReportPage = () => {
         {/* <Grid size={{ xs: 12, sm: 6, md: 4 }}>
           <InfoCard
             color={["#d30d56", "#ff478b"]}
-            tittle="Visitors"
+            title="Visitors"
             count="80"
           />
         </Grid> */}
         <Grid size={{ xs: 12, sm: 6, md: 4 }}>
           <InfoCard
             color={["#2dd2a6", "#88f2d5"]}
-            tittle="Committee"
+            title="Committee"
             options={["Active", "Inactive"]}
             count={counts.activeCommittees + counts.inactiveCommittees}
             show={false}
+            nameOfTheClass={"committee-report-card"}
           />
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 4 }}>
           <InfoCard
             color={["#c012e2", "#eb64fe"]}
-            tittle="Rooms"
+            title="Rooms"
             count={counts.rooms}
             options={[]}
             show={false}
+            nameOfTheClass={"room-report-card"}
           />
         </Grid>
       </Grid>
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, sm: 6, md: 6 }}>
-          <DataGrid
-            rows={roomData}
-            columns={roomColumns}
-            pageSize={10}
-            rowsPerPageOptions={[10, 20, 50]}
-            rowHeight={50}
-            sx={{
-              "& .super-app-theme--header": {
-                backgroundColor: `var(--linear-gradient-main)`,
-                color: "#fff",
-                fontWeight: "600",
-                fontSize: "16px",
-              },
-              '& .MuiDataGrid-columnHeader:first-child, .MuiDataGrid-cell:first-child': {
-                position: 'sticky',
-                left: 0,
-                zIndex: 1,
-                background: 'white',
-              },
-            }}
-          />
+          <PaperWrapper elevation={12}>
+            <DataGrid
+              rows={roomData}
+              columns={roomColumns}
+              pageSize={10}
+              rowsPerPageOptions={[10, 20, 50]}
+              rowHeight={50}
+              sx={{
+                "& .super-app-theme--header": {
+                  backgroundColor: `var(--linear-gradient-main)`,
+                  color: "#fff",
+                  fontWeight: "600",
+                  fontSize: "16px",
+                },
+                '& .MuiDataGrid-columnHeader:first-child, .MuiDataGrid-cell:first-child': {
+                  position: 'sticky',
+                  left: 0,
+                  zIndex: 1,
+                  background: 'white',
+                },
+              }}
+            />
+          </PaperWrapper>
         </Grid>
 
         <Grid size={{ xs: 12, sm: 6, md: 6 }}>
-        <DataGrid
-            rows={organizerData}
-            columns={organizerColumns}
-            pageSize={10}
-            rowsPerPageOptions={[10, 20, 50]}
-            rowHeight={50}
-            sx={{
-              "& .super-app-theme--header": {
-                backgroundColor: `var(--linear-gradient-main)`,
-                color: "#fff",
-                fontWeight: "600",
-                fontSize: "16px",
-              },
-              '& .MuiDataGrid-columnHeader:first-child, .MuiDataGrid-cell:first-child': {
-                position: 'sticky',
-                left: 0,
-                zIndex: 1,
-                background: 'white',
-              },
-            }}
-          />
+          <PaperWrapper elevation={12}>
+            <DataGrid
+              rows={organizerData}
+              columns={organizerColumns}
+              pageSize={10}
+              rowsPerPageOptions={[10, 20, 50]}
+              rowHeight={50}
+              sx={{
+                "& .super-app-theme--header": {
+                  backgroundColor: `var(--linear-gradient-main)`,
+                  color: "#fff",
+                  fontWeight: "600",
+                  fontSize: "16px",
+                },
+                '& .MuiDataGrid-columnHeader:first-child, .MuiDataGrid-cell:first-child': {
+                  position: 'sticky',
+                  left: 0,
+                  zIndex: 1,
+                  background: 'white',
+                },
+              }}
+            />
+          </PaperWrapper>
         </Grid>
       </Grid>
     </PaperWrapper>

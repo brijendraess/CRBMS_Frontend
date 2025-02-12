@@ -21,6 +21,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  inventoryStringManipulation,
   notificationStringManipulation,
   userRoleStringManipulation,
   userRoleStringMeetingManipulation,
@@ -59,10 +60,18 @@ const EditUserTypeSettings = () => {
         ?.split(",")
         .includes("changeStatus"),
 
-      committeeTypeAdd: userRole?.committeeTypeModule?.split(",").includes("add"),
-      committeeTypeEdit: userRole?.committeeTypeModule?.split(",").includes("edit"),
-      committeeTypeDelete: userRole?.committeeTypeModule?.split(",").includes("delete"),
-      committeeTypeView: userRole?.committeeTypeModule?.split(",").includes("view"),
+      committeeTypeAdd: userRole?.committeeTypeModule
+        ?.split(",")
+        .includes("add"),
+      committeeTypeEdit: userRole?.committeeTypeModule
+        ?.split(",")
+        .includes("edit"),
+      committeeTypeDelete: userRole?.committeeTypeModule
+        ?.split(",")
+        .includes("delete"),
+      committeeTypeView: userRole?.committeeTypeModule
+        ?.split(",")
+        .includes("view"),
       committeeTypeChangeStatus: userRole?.committeeTypeModule
         ?.split(",")
         .includes("changeStatus"),
@@ -85,6 +94,18 @@ const EditUserTypeSettings = () => {
         ?.split(",")
         .includes("decrease"),
       inventoryView: userRole?.inventoryModule?.split(",").includes("view"),
+      inventoryPendingAmenityView: userRole?.inventoryModule
+        ?.split(",")
+        .includes("pendingAmenityView"),
+      inventoryPendingFoodBeverageView: userRole?.inventoryModule
+        ?.split(",")
+        .includes("pendingFoodBeverageView"),
+      inventoryPendingAmenityStatus: userRole?.inventoryModule
+        ?.split(",")
+        .includes("pendingAmenityStatus"),
+      inventoryPendingFoodBeverageStatus: userRole?.inventoryModule
+        ?.split(",")
+        .includes("pendingFoodBeverageStatus"),
 
       committeeMemberDelete: userRole?.committeeMemberModule
         ?.split(",")
@@ -122,6 +143,7 @@ const EditUserTypeSettings = () => {
       roomSanitization: userRole?.roomModule
         ?.split(",")
         .includes("sanitization"),
+      roomAddMeeting: userRole?.roomModule?.split(",").includes("addMeeting"),
 
       locationAdd: userRole?.locationModule?.split(",").includes("add"),
       locationEdit: userRole?.locationModule?.split(",").includes("edit"),
@@ -198,6 +220,10 @@ const EditUserTypeSettings = () => {
       inventoryIncrease: Yup.boolean().optional(),
       inventoryDecrease: Yup.boolean().optional(),
       inventoryView: Yup.boolean().optional(),
+      inventoryPendingAmenityView: Yup.boolean().optional(),
+      inventoryPendingFoodBeverageView: Yup.boolean().optional(),
+      inventoryPendingAmenityStatus: Yup.boolean().optional(),
+      inventoryPendingFoodBeverageStatus: Yup.boolean().optional(),
 
       committeeMemberDelete: Yup.boolean().optional(),
       committeeMemberView: Yup.boolean().optional(),
@@ -223,6 +249,7 @@ const EditUserTypeSettings = () => {
       roomFoodBeverage: Yup.boolean().optional(),
       roomBarcode: Yup.boolean().optional(),
       roomSanitization: Yup.boolean().optional(),
+      roomAddMeeting: Yup.boolean().optional(),
 
       locationAdd: Yup.boolean().optional(),
       locationEdit: Yup.boolean().optional(),
@@ -291,13 +318,15 @@ const EditUserTypeSettings = () => {
             false,
             false
           ),
-          inventoryModule: notificationStringManipulation(
+          inventoryModule: inventoryStringManipulation(
             values.inventoryAdd,
-            false,
-            false,
             values.inventoryView,
             values.inventoryIncrease,
-            values.inventoryDecrease
+            values.inventoryDecrease,
+            values.inventoryPendingAmenityView,
+            values.inventoryPendingAmenityStatus,
+            values.inventoryPendingFoodBeverageView,
+            values.inventoryPendingFoodBeverageStatus
           ),
           committeeMemberModule: userRoleStringManipulation(
             false,
@@ -329,7 +358,8 @@ const EditUserTypeSettings = () => {
             values.roomAmenities,
             values.roomFoodBeverage,
             values.roomBarcode,
-            values.roomSanitization
+            values.roomSanitization,
+            values.roomAddMeeting
           ),
           locationModule: userRoleStringManipulation(
             values.locationAdd,
@@ -383,7 +413,7 @@ const EditUserTypeSettings = () => {
       }
     },
   });
-  
+
   return (
     <PaperWrapper>
       <Typography variant="h6" component="h6">
@@ -480,6 +510,7 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("roomFoodBeverage", "");
                   formik.setFieldValue("roomBarcode", "");
                   formik.setFieldValue("roomSanitization", "");
+                  formik.setFieldValue("roomAddMeeting", "");
 
                   formik.setFieldValue("locationAdd", "");
                   formik.setFieldValue("locationEdit", "");
@@ -532,6 +563,10 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("inventoryView", true);
                   formik.setFieldValue("inventoryIncrease", true);
                   formik.setFieldValue("inventoryDecrease", true);
+                  formik.setFieldValue("inventoryPendingAmenityView", true);
+                  formik.setFieldValue("inventoryPendingFoodBeverageView", true);
+                  formik.setFieldValue("inventoryPendingAmenityStatus", true);
+                  formik.setFieldValue("inventoryPendingFoodBeverageStatus", true);
 
                   formik.setFieldValue("committeeMemberDelete", true);
                   formik.setFieldValue("committeeMemberView", true);
@@ -557,6 +592,7 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("roomFoodBeverage", true);
                   formik.setFieldValue("roomBarcode", true);
                   formik.setFieldValue("roomSanitization", true);
+                  formik.setFieldValue("roomAddMeeting", true);
 
                   formik.setFieldValue("locationAdd", true);
                   formik.setFieldValue("locationEdit", true);
@@ -630,6 +666,7 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("roomFoodBeverage", "");
                   formik.setFieldValue("roomBarcode", "");
                   formik.setFieldValue("roomSanitization", "");
+                  formik.setFieldValue("roomAddMeeting", "");
 
                   formik.setFieldValue("locationAdd", "");
                   formik.setFieldValue("locationEdit", "");
@@ -682,6 +719,10 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("inventoryView", true);
                   formik.setFieldValue("inventoryIncrease", true);
                   formik.setFieldValue("inventoryDecrease", true);
+                  formik.setFieldValue("inventoryPendingAmenityView", true);
+                  formik.setFieldValue("inventoryPendingFoodBeverageView", true);
+                  formik.setFieldValue("inventoryPendingAmenityStatus", true);
+                  formik.setFieldValue("inventoryPendingFoodBeverageStatus", true);
 
                   formik.setFieldValue("committeeMemberDelete", "");
                   formik.setFieldValue("committeeMemberView", "");
@@ -707,6 +748,7 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("roomFoodBeverage", "");
                   formik.setFieldValue("roomBarcode", "");
                   formik.setFieldValue("roomSanitization", "");
+                  formik.setFieldValue("roomAddMeeting", "");
 
                   formik.setFieldValue("locationAdd", "");
                   formik.setFieldValue("locationEdit", "");
@@ -793,6 +835,10 @@ const EditUserTypeSettings = () => {
                 ),
               },
               { name: "inventoryDecrease", label: "Decrease" },
+              { name: "inventoryPendingAmenityView", label: "Pending Amenity View" },
+              { name: "inventoryPendingFoodBeverageView", label: "Pending FoodBeverage View" },
+              { name: "inventoryPendingAmenityStatus", label: "Pending Amenity Status" },
+              { name: "inventoryPendingFoodBeverageStatus", label: "Pending FoodBeverage Status" },
             ],
           },
           {
@@ -898,6 +944,7 @@ const EditUserTypeSettings = () => {
               { name: "roomAmenities", label: "Amenities" },
               { name: "roomBarcode", label: "BarCode" },
               { name: "roomSanitization", label: "Sanitization" },
+              { name: "roomAddMeeting", label: "addMeeting" },
               { name: "roomFoodBeverage", label: "Food Beverage" },
             ],
           },
@@ -941,7 +988,7 @@ const EditUserTypeSettings = () => {
           </>
         ))}
         <br />
-        <FormButton type='submit' btnName='Update User Role' />
+        <FormButton type="submit" btnName="Update User Role" />
       </Box>
     </PaperWrapper>
   );

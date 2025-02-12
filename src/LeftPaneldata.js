@@ -8,11 +8,13 @@ import {
   LocationOnOutlinedIcon,
   HistoryOutlinedIcon,
   FoodBankOutlinedIcon,
-  SettingsApplicationsOutlinedIcon,
   DesignServicesOutlinedIcon,
   Inventory2OutlinedIcon,
 } from "./components/Common/Buttons/CustomIcon";
-
+import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
+import WifiOutlinedIcon from '@mui/icons-material/WifiOutlined';
+import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 const getSideBarMenuContent = async (user) => {
   let sideBarData = [];
   try {
@@ -46,7 +48,7 @@ const getSideBarMenuContent = async (user) => {
       sideBarData.push({
         id: 3,
         name: "Committee",
-        icon: Diversity2Icon,
+        icon: GroupsOutlinedIcon,
         path: "/committee",
       });
     }
@@ -59,7 +61,7 @@ const getSideBarMenuContent = async (user) => {
       sideBarData.push({
         id: 4,
         name: "My Committee",
-        icon: Diversity2Icon,
+        icon: GroupsOutlinedIcon,
         path: "/my-committee",
       });
     }
@@ -71,7 +73,7 @@ const getSideBarMenuContent = async (user) => {
       sideBarData.push({
         id: 5,
         name: "Amenities",
-        icon: ChairIcon,
+        icon: WifiOutlinedIcon,
         path: "/amenities",
       });
     }
@@ -119,7 +121,7 @@ const getSideBarMenuContent = async (user) => {
       sideBarData.push({
         id: 9,
         name: "Food & Beverages",
-        icon: FoodBankOutlinedIcon,
+        icon: RestaurantOutlinedIcon,
         path: "/food-beverages",
       });
     }
@@ -130,7 +132,7 @@ const getSideBarMenuContent = async (user) => {
       sideBarData.push({
         id: 10,
         name: "User Role",
-        icon: SettingsApplicationsOutlinedIcon,
+        icon: SettingsOutlinedIcon,
         path: "/user-role",
       });
     }

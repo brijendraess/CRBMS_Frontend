@@ -20,6 +20,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  inventoryStringManipulation,
   notificationStringManipulation,
   userRoleStringManipulation,
   userRoleStringMeetingManipulation,
@@ -52,7 +53,7 @@ const AddUserTypeSettings = () => {
       committeeDelete: "",
       committeeView: "",
       committeeChangeStatus: "",
-      
+
       committeeTypeAdd: "",
       committeeTypeEdit: "",
       committeeTypeDelete: "",
@@ -63,10 +64,14 @@ const AddUserTypeSettings = () => {
       notificationDelete: "",
       notificationView: "",
 
-      inventoryAdd: "",
+      inventoryAdd: "", 
       inventoryIncrease: "",
       inventoryDecrease: "",
       inventoryView: "",
+      inventoryPendingAmenityView: "",
+      inventoryPendingFoodBeverageView: "",
+      inventoryPendingAmenityStatus: "",
+      inventoryPendingFoodBeverageStatus: "",
 
       committeeMemberDelete: "",
       committeeMemberView: "",
@@ -92,6 +97,7 @@ const AddUserTypeSettings = () => {
       roomFoodBeverage: "",
       roomBarcode: "",
       roomSanitization: "",
+      roomAddMeeting: "",
 
       locationAdd: "",
       locationEdit: "",
@@ -156,6 +162,10 @@ const AddUserTypeSettings = () => {
       inventoryIncrease: Yup.boolean().optional(),
       inventoryDecrease: Yup.boolean().optional(),
       inventoryView: Yup.boolean().optional(),
+      inventoryPendingAmenityView: Yup.boolean().optional(),
+      inventoryPendingFoodBeverageView: Yup.boolean().optional(),
+      inventoryPendingAmenityStatus: Yup.boolean().optional(),
+      inventoryPendingFoodBeverageStatus: Yup.boolean().optional(),
 
       committeeMemberDelete: Yup.boolean().optional(),
       committeeMemberView: Yup.boolean().optional(),
@@ -181,6 +191,7 @@ const AddUserTypeSettings = () => {
       roomFoodBeverage: Yup.boolean().optional(),
       roomBarcode: Yup.boolean().optional(),
       roomSanitization: Yup.boolean().optional(),
+      roomAddMeeting: Yup.boolean().optional(),
       // Location
       locationAdd: Yup.boolean().optional(),
       locationEdit: Yup.boolean().optional(),
@@ -252,13 +263,15 @@ const AddUserTypeSettings = () => {
             false,
             false
           ),
-          inventoryModule: notificationStringManipulation(
+          inventoryModule: inventoryStringManipulation(
             values.inventoryAdd,
-            false,
-            false,
             values.inventoryView,
             values.inventoryIncrease,
-            values.inventoryDecrease
+            values.inventoryDecrease,
+            values.inventoryPendingAmenityView,
+            values.inventoryPendingAmenityStatus,
+            values.inventoryPendingFoodBeverageView,
+            values.inventoryPendingFoodBeverageStatus
           ),
           committeeMemberModule: notificationStringManipulation(
             false,
@@ -290,7 +303,8 @@ const AddUserTypeSettings = () => {
             values.roomAmenities,
             values.roomFoodBeverage,
             values.roomBarcode,
-            values.roomSanitization
+            values.roomSanitization,
+            values.roomAddMeeting
           ),
           locationModule: userRoleStringManipulation(
             values.locationAdd,
@@ -439,6 +453,7 @@ const AddUserTypeSettings = () => {
                   formik.setFieldValue("roomFoodBeverage", "");
                   formik.setFieldValue("roomBarcode", "");
                   formik.setFieldValue("roomSanitization", "");
+                  formik.setFieldValue("roomAddMeeting", "");
 
                   formik.setFieldValue("locationAdd", "");
                   formik.setFieldValue("locationEdit", "");
@@ -491,6 +506,10 @@ const AddUserTypeSettings = () => {
                   formik.setFieldValue("inventoryView", true);
                   formik.setFieldValue("inventoryIncrease", true);
                   formik.setFieldValue("inventoryDecrease", true);
+                  formik.setFieldValue("inventoryPendingAmenityView", true);
+                  formik.setFieldValue("inventoryPendingFoodBeverageView", true);
+                  formik.setFieldValue("inventoryPendingAmenityStatus", true);
+                  formik.setFieldValue("inventoryPendingFoodBeverageStatus", true);
 
                   formik.setFieldValue("committeeMemberDelete", true);
                   formik.setFieldValue("committeeMemberView", true);
@@ -515,6 +534,7 @@ const AddUserTypeSettings = () => {
                   formik.setFieldValue("roomFoodBeverage", true);
                   formik.setFieldValue("roomBarcode", true);
                   formik.setFieldValue("roomSanitization", true);
+                  formik.setFieldValue("roomAddMeeting", true);
                   formik.setFieldValue("gallery", true);
                   formik.setFieldValue("roomEdit", true);
                   formik.setFieldValue("roomDelete", true);
@@ -597,6 +617,7 @@ const AddUserTypeSettings = () => {
                   formik.setFieldValue("roomFoodBeverage", "");
                   formik.setFieldValue("roomBarcode", "");
                   formik.setFieldValue("roomSanitization", "");
+                  formik.setFieldValue("roomAddMeeting", "");
 
                   formik.setFieldValue("locationAdd", "");
                   formik.setFieldValue("locationEdit", "");
@@ -649,6 +670,10 @@ const AddUserTypeSettings = () => {
                   formik.setFieldValue("inventoryView", true);
                   formik.setFieldValue("inventoryIncrease", true);
                   formik.setFieldValue("inventoryDecrease", true);
+                  formik.setFieldValue("inventoryPendingAmenityView", true);
+                  formik.setFieldValue("inventoryPendingFoodBeverageView", true);
+                  formik.setFieldValue("inventoryPendingAmenityStatus", true);
+                  formik.setFieldValue("inventoryPendingFoodBeverageStatus", true);
 
                   formik.setFieldValue("committeeMemberDelete", "");
                   formik.setFieldValue("committeeMemberView", "");
@@ -674,6 +699,7 @@ const AddUserTypeSettings = () => {
                   formik.setFieldValue("roomFoodBeverage", "");
                   formik.setFieldValue("roomBarcode", "");
                   formik.setFieldValue("roomSanitization", "");
+                  formik.setFieldValue("roomAddMeeting", "");
 
                   formik.setFieldValue("locationAdd", "");
                   formik.setFieldValue("locationEdit", "");
@@ -841,6 +867,10 @@ const AddUserTypeSettings = () => {
                 ),
               },
               { name: "inventoryDecrease", label: "Decrease" },
+              { name: "inventoryPendingAmenityView", label: "Pending Amenity View" },
+              { name: "inventoryPendingFoodBeverageView", label: "Pending FoodBeverage View" },
+              { name: "inventoryPendingAmenityStatus", label: "Pending Amenity Status" },
+              { name: "inventoryPendingFoodBeverageStatus", label: "Pending FoodBeverage Status" },
             ],
           },
           {
@@ -864,6 +894,7 @@ const AddUserTypeSettings = () => {
               { name: "roomAmenities", label: "Amenities" },
               { name: "roomBarcode", label: "BarCode" },
               { name: "roomSanitization", label: "Sanitization" },
+              { name: "roomAddMeeting", label: "addMeeting" },
               { name: "roomFoodBeverage", label: "Food Beverage" },
             ],
           },
@@ -907,7 +938,7 @@ const AddUserTypeSettings = () => {
           </>
         ))}
         <br />
-        <FormButton type='submit' btnName='Add User Role' />
+        <FormButton type="submit" btnName="Add User Role" />
       </Box>
     </PaperWrapper>
   );

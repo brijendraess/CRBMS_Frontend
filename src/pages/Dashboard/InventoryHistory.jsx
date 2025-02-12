@@ -28,7 +28,7 @@ const InventoryHistory = () => {
     const fetchStock = async () => {
       try {
         const response = await axios.get(`/api/v1/stock/stock-history`);
-  
+
         if (response.data && response.data.data?.result) {
           // Use Promise.all to handle async operations in map
           const stockData = await Promise.all(
@@ -43,7 +43,7 @@ const InventoryHistory = () => {
               quantity: type.stockUsed,
             }))
           );
-  
+
           // Update state
           setAmenitiesData(stockData);
         } else {
@@ -53,10 +53,10 @@ const InventoryHistory = () => {
         console.error("Error fetching stock data:", error);
       }
     };
-  
+
     fetchStock();
   }, [refreshPage]);
-  
+
 
   // Column Definitions
   const amenitiesColumn = [
@@ -90,7 +90,7 @@ const InventoryHistory = () => {
   const getRowClassName = (params) => "";
 
   return (
-    <Box sx={{ width: "100%", height: "75vh" }}>
+    <Box sx={{ width: "100%", height: "75vh" }} className="inventory-history" >
       <DataGrid
         rows={amenitiesData}
         columns={amenitiesColumn}

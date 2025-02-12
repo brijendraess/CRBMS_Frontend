@@ -27,7 +27,6 @@ const EditRoomFoodBeverage = ({
     foodBeverageId: editInfo?.foodBeverageId,
     quantity: editInfo?.quantity,
     roomId: room.id,
-    status: true,
     updatedBy: user.id,
   });
   const [amenitiesList, setAmenitiesList] = useState([]);

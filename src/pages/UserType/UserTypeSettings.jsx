@@ -64,7 +64,7 @@ const UserTypeSettings = () => {
                 type.committeeModule
               )}`,
             });
-            type.committeeTypeModule &&
+          type.committeeTypeModule &&
             permissionArray.push({
               name: `<b>Committee Type:</b> ${replaceAndUppercase(
                 type.committeeTypeModule
@@ -293,6 +293,7 @@ const UserTypeSettings = () => {
                   color="success"
                   onClick={() => handleEdit(params.row.uid)}
                   style={{ cursor: "pointer" }}
+                  className="user-role-edit"
                 />
               </Tooltip>
             )}
@@ -303,6 +304,7 @@ const UserTypeSettings = () => {
                   color="error"
                   style={{ cursor: "pointer" }}
                   onClick={() => handleOpen(params.row.uid)}
+                  className="user-role-delete"
                 />
               </Tooltip>
             )}
