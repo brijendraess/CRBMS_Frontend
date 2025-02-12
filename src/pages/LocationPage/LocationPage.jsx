@@ -106,7 +106,8 @@ const LocationPage = () => {
       );
 
       toast.success(
-        `Location status changed to ${updatedLocation.status ? "Active" : "Inactive"
+        `Location status changed to ${
+          updatedLocation.status ? "Active" : "Inactive"
         }`
       );
       dispatch(hideLoading());
@@ -220,6 +221,7 @@ const LocationPage = () => {
         >
           {location.map((loc, index) => (
             <LocationCard
+              user={user}
               key={loc.id}
               location={loc}
               onEdit={handleEdit}

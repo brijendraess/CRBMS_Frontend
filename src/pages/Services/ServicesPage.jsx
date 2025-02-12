@@ -113,7 +113,8 @@ const ServicesPage = () => {
       );
 
       toast.success(
-        `Services status changed to ${updatedServices.status ? "Active" : "Inactive"
+        `Services status changed to ${
+          updatedServices.status ? "Active" : "Inactive"
         }`
       );
       dispatch(hideLoading());
@@ -211,6 +212,7 @@ const ServicesPage = () => {
         >
           {services.map((services) => (
             <ServicesCard
+              user={user}
               key={services.id}
               services={services}
               handleEdit={handleEdit}

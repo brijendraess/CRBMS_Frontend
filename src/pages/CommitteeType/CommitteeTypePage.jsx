@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { PaperWrapper } from "../../Style";
-import { Box, Switch, Tooltip, useMediaQuery, Grid2, Chip, Paper } from "@mui/material";
+import {
+  Box,
+  Switch,
+  Tooltip,
+  useMediaQuery,
+  Grid2,
+  Chip,
+  Paper,
+} from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import CommitteeTypeAdd from "./CommitteeTypeAdd";
@@ -17,12 +25,12 @@ import {
   AddOutlinedIcon,
   DeleteOutlineOutlinedIcon,
   EditOutlinedIcon,
-  Diversity2Icon
+  Diversity2Icon,
 } from "../../components/Common/Buttons/CustomIcon";
 import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
 import { useNavigate } from "react-router-dom";
 import CustomButton from "../../components/Common/Buttons/CustomButton";
-import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
+import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 const CommitteeTypePage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(false);
@@ -33,15 +41,17 @@ const CommitteeTypePage = () => {
   const [refreshPage, setRefreshPage] = useState(0);
   const { user } = useSelector((state) => state.user);
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchCommitteeTypes = async () => {
       try {
         dispatch(showLoading());
-        const response = await axios.get("/api/v1/committeeType/committeeTypes");
-        console.log(response)
+        const response = await axios.get(
+          "/api/v1/committeeType/committeeTypes"
+        );
+        console.log(response);
         const committeeTypeWithSerial = response.data.data.committeeTypes.map(
           (committeeType, index) => ({
             ...committeeType,
@@ -73,7 +83,9 @@ const CommitteeTypePage = () => {
   const handleDelete = async () => {
     try {
       dispatch(showLoading());
-      await axios.delete(`/api/v1/committeeType/committeeTypes/delete/${deleteId}`);
+      await axios.delete(
+        `/api/v1/committeeType/committeeTypes/delete/${deleteId}`
+      );
       handleClose(false);
       setRefreshPage(Math.random());
       toast.success("committeeType deleted successfully!");
@@ -87,7 +99,9 @@ const CommitteeTypePage = () => {
 
   const handleUpdateSuccess = (updatedCommitteeType) => {
     setCommitteeType((prev) =>
-      prev.map((loc) => (loc.id === updatedCommitteeType.id ? updatedCommitteeType : loc))
+      prev.map((loc) =>
+        loc.id === updatedCommitteeType.id ? updatedCommitteeType : loc
+      )
     );
     setIsEditOpen(false);
   };
@@ -116,7 +130,8 @@ const CommitteeTypePage = () => {
       );
 
       toast.success(
-        `committeeType status changed to ${updatedCommitteeType.status ? "Active" : "Inactive"
+        `committeeType status changed to ${
+          updatedCommitteeType.status ? "Active" : "Inactive"
         }`
       );
       dispatch(hideLoading());
@@ -204,16 +219,17 @@ const CommitteeTypePage = () => {
         }
       >
         {user.UserType.committeeTypeModule &&
-          user.UserType.committeeTypeModule.split(",").includes("view") &&
-          <CustomButton
-            onClick={handleNavigateToCommitteeList}
-            iconStyles
-            fontSize={"medium"}
-            background={"var(--linear-gradient-main)"}
-            Icon={GroupsOutlinedIcon}
-            nameOfTheClass="go-to-committee"
-            title="Committee"
-          />}
+          user.UserType.committeeTypeModule.split(",").includes("view") && (
+            <CustomButton
+              onClick={handleNavigateToCommitteeList}
+              iconStyles
+              fontSize={"medium"}
+              background={"var(--linear-gradient-main)"}
+              Icon={GroupsOutlinedIcon}
+              nameOfTheClass="go-to-committee"
+              title="Committee"
+            />
+          )}
       </PageHeader>
       {isSmallScreen ? (
         <Grid2
@@ -227,10 +243,11 @@ const CommitteeTypePage = () => {
             justifyContent: "center",
           }}
         >
-          {committeeType.map((loc, index) => (
+          {committeeType.map((committee, index) => (
             <CommitteeTypeCard
-              key={loc.id}
-              committeeType={loc}
+              user={user}
+              key={committee.id}
+              committeeType={committee}
               onEdit={handleEdit}
               onDelete={handleOpen} // Assuming handleOpen manages delete modal
               onStatusChange={handleStatusChange}

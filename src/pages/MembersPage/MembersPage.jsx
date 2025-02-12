@@ -285,9 +285,10 @@ const MembersPage = () => {
             }}
           >
             {filteredUsers.length > 0 ? (
-              filteredUsers.map((user) => (
+              filteredUsers.map((users) => (
                 <UserCard
-                  key={user.id}
+                  key={users.id}
+                  users={users}
                   user={user}
                   handleView={handleView}
                   handleEdit={handleEdit}

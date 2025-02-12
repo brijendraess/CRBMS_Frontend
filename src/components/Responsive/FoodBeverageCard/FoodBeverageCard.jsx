@@ -6,7 +6,7 @@ import {
   DeleteOutlineOutlinedIcon,
 } from "../../Common/Buttons/CustomIcon";
 
-const FoodBeverageCard = ({ food, handleEdit, handleDelete }) => {
+const FoodBeverageCard = ({user, food, handleEdit, handleDelete,handleStatusChange }) => {
   return (
     <Card sx={{ width: 320 }} className="food-card">
       <Typography
@@ -26,7 +26,8 @@ const FoodBeverageCard = ({ food, handleEdit, handleDelete }) => {
           gap: "10px",
         }}
       >
-        <CustomButton
+        {user.UserType.foodBeverageModule &&
+            user.UserType.foodBeverageModule.split(",").includes("edit") && <CustomButton
           title={"Edit Food"}
           placement={"top"}
           onClick={() => handleEdit(food.id)}
@@ -34,8 +35,9 @@ const FoodBeverageCard = ({ food, handleEdit, handleDelete }) => {
           fontSize={"small"}
           background={"rgba(8, 90, 232, 0.62)"}
           nameOfTheClass="food-edit"
-        />
-        <CustomButton
+        />}
+        {user.UserType.foodBeverageModule &&
+            user.UserType.foodBeverageModule.split(",").includes("delete") && <CustomButton
           title={"Delete Food"}
           placement={"top"}
           onClick={() => handleDelete(food.id)}
@@ -43,8 +45,15 @@ const FoodBeverageCard = ({ food, handleEdit, handleDelete }) => {
           fontSize={"small"}
           background={"rgba(231, 26, 7, 0.77)"}
           nameOfTheClass="food-delete"
-        />
-        <Switch className="food-switch" />
+        />}
+        {user.UserType.foodBeverageModule &&
+            user.UserType.foodBeverageModule
+              .split(",")
+              .includes("changeStatus") &&
+              <Switch className="food-switch"
+              checked={food.status}
+                  onChange={() => handleStatusChange(food.id)}
+                  />}
       </Box>
     </Card>
   );

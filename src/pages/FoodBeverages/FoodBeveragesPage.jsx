@@ -222,6 +222,7 @@ const FoodBeveragePage = () => {
         >
           {foodBeverage.map((food) => (
             <FoodBeverageCard
+              user={user}
               key={food.id}
               food={food}
               handleEdit={handleEdit}

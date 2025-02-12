@@ -8,7 +8,6 @@ import { PaperWrapper } from "../../Style";
 import AmenitiesAdd from "./AmenitiesAdd";
 import DeleteModal from "../../components/Common/Modals/Delete/DeleteModal";
 import AmenitiesEdit from "./AmenitiesEdit";
-import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import AmenitiesCard from "./AmenitiesCard";
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
@@ -213,6 +212,7 @@ const AmenitiesList = () => {
         >
           {amenities.map((amenity) => (
             <AmenitiesCard
+            user={user}
               key={amenity.id}
               amenity={amenity}
               handleEdit={handleEdit}

@@ -13,7 +13,7 @@ import {
     EditOutlinedIcon,
   } from "../../components/Common/Buttons/CustomIcon";
   
-  const CommitteeTypeCard = ({ committeeType, onEdit, onDelete, onStatusChange }) => {
+  const CommitteeTypeCard = ({ user,key,committeeType, onEdit, onDelete, onStatusChange }) => {
     return (
       <Card
         sx={{
@@ -26,6 +26,7 @@ import {
           maxHeight: "150px",
         }}
         className="committeeType-card"
+        key={key}
       >
         <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
           <CardContent>
@@ -54,7 +55,8 @@ import {
                 gap: "10px",
               }}
             >
-              <CustomButton
+              {user.UserType.committeeTypeModule &&
+            user.UserType.committeeTypeModule.split(",").includes("edit") && <CustomButton
                 title="Edit Committee Type"
                 placement="top"
                 onClick={() => onEdit(committeeType.id)} // Use committeeType.id for editing
@@ -62,8 +64,9 @@ import {
                 fontSize="small"
                 background="rgba(8, 90, 232, 0.62)"
                 nameOfTheClass="committeeType-edit"
-              />
-              <CustomButton
+              />}
+              {user.UserType.committeeTypeModule &&
+            user.UserType.committeeTypeModule.split(",").includes("delete") && <CustomButton
                 title="Delete CommitteeType"
                 placement="top"
                 onClick={() => onDelete(committeeType.id)} // Use committeeType.id for deletion
@@ -71,12 +74,15 @@ import {
                 fontSize="small"
                 background="rgba(231, 26, 7, 0.77)"
                 nameOfTheClass="committeeType-delete"
-              />
-              <Switch
+              />}
+              {user.UserType.committeeTypeModule &&
+            user.UserType.committeeTypeModule
+              .split(",")
+              .includes("changeStatus") && <Switch
                 checked={committeeType.status || false}
                 onChange={() => onStatusChange(committeeType.id)} // Handle status change
                 className="committeeType-switch"
-              />
+              />}
             </Box>
           </CardActions>
         </Box>

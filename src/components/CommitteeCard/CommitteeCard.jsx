@@ -21,7 +21,7 @@ import {
 } from "../Common/Buttons/CustomIcon";
 import { useDispatch } from "react-redux";
 
-const CommitteeCard = ({ committee, setRefreshPage }) => {
+const CommitteeCard = ({user,key, committee, setRefreshPage }) => {
   const [hover, setHover] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [open, setOpen] = useState(false);
@@ -103,6 +103,7 @@ const CommitteeCard = ({ committee, setRefreshPage }) => {
         m: 1,
       }}
       className="committee-card"
+      key={key}
     >
       <CardActionArea>
         <CardContent
@@ -138,7 +139,8 @@ const CommitteeCard = ({ committee, setRefreshPage }) => {
             </Typography>
 
             <Box sx={{ display: "flex", gap: { xs: 0.5, sm: 1 } }}>
-              <Tooltip title="Delete">
+              {user.UserType.committeeModule &&
+            user.UserType.committeeModule.split(",").includes("delete") && <Tooltip title="Delete">
                 <DeleteOutlineIcon
                   onClick={handleOpen}
                   sx={{ cursor: "pointer", fontSize: { xs: "20px", sm: "24px" } }}
@@ -146,15 +148,16 @@ const CommitteeCard = ({ committee, setRefreshPage }) => {
                   color="error"
                   className="committee-delete"
                 />
-              </Tooltip>
-              <Tooltip title="Edit">
+              </Tooltip>}
+              {user.UserType.committeeModule &&
+            user.UserType.committeeModule.split(",").includes("edit") && <Tooltip title="Edit">
                 <EditOutlinedIcon
                   color="success"
                   onClick={() => setIsEditOpen(true)}
                   sx={{ cursor: "pointer", fontSize: { xs: "20px", sm: "24px" } }}
                   className="committee-edit"
                 />
-              </Tooltip>
+              </Tooltip>}
             </Box>
           </Box>
 
@@ -181,7 +184,10 @@ const CommitteeCard = ({ committee, setRefreshPage }) => {
               mt: { xs: 1, sm: 2 },
             }}
           >
-            <Tooltip title="View all members">
+            {user.UserType.committeeMemberModule &&
+            user.UserType.committeeMemberModule
+              .split(",")
+              .includes("view") && <Tooltip title="View all members">
               <Chip
                 label={`${committee.CommitteeMembers?.length || 0}`}
                 size="large"
@@ -196,8 +202,11 @@ const CommitteeCard = ({ committee, setRefreshPage }) => {
                 }}
                 className="committee-view"
               />
-            </Tooltip>
-            <Tooltip title="Change Status">
+            </Tooltip>}
+            {user.UserType.committeeModule &&
+            user.UserType.committeeModule
+              .split(",")
+              .includes("changeStatus") && <Tooltip title="Change Status">
               <Switch
                 size="small"
                 checked={!!committee.status}
@@ -207,7 +216,7 @@ const CommitteeCard = ({ committee, setRefreshPage }) => {
                 }}
                 className="committee-switch"
               />
-            </Tooltip>
+            </Tooltip>}
           </Box>
         </CardContent>
       </CardActionArea>
