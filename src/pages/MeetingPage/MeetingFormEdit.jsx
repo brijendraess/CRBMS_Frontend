@@ -122,6 +122,39 @@ const MeetingFormEdit = ({ updatedBookingId, room, setRefreshPage }) => {
     },
   });
 
+
+  const fetchIsAvailable = async (attendeesList) => {
+    if (!formik.values.startTime || !formik.values.endTime || !formik.values.date) return;
+  
+    try {
+      const response = await axios.post(`/api/v1/user/isAvailable`, {
+        attendees: attendeesList.map((attendee) => attendee.id),
+        startTime: formik.values.startTime,
+        endTime: formik.values.endTime,
+        meetingDate: formik.values.date,
+      });
+  
+      const notAvailableAttendees = response?.data?.data?.notAvailableAttendees;
+      setEmailsList((prevEmailsList) =>
+        prevEmailsList.map((email) => ({
+          ...email,
+          isAvailable: !notAvailableAttendees.some(
+            (attendee) => attendee.attendeeId === email.id
+          ),
+        }))
+      );
+    } catch (error) {
+      console.error("Error checking availability:", error);
+    }
+  };
+  
+
+  useEffect(() => {
+    if (emailsList.length > 0) {
+      fetchIsAvailable(emailsList);
+    }
+  }, [formik.values.startTime, formik.values.endTime, formik.values.date, formik.values.attendees])
+
   const calculateDifference = () => {
     // Parse times into Date objects (using today's date)
     const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD
@@ -258,78 +291,107 @@ const MeetingFormEdit = ({ updatedBookingId, room, setRefreshPage }) => {
           />
         </Box>
         <Box display="flex" gap={2} justifyContent="space-between" flexDirection={'column'}>
-          <Autocomplete
-            multiple
-            id="attendees"
-            name="attendees"
-            size="small"
-            sx={{
-              width: "100%",
-            }}
-            options={emailsList}
-            value={formik.values.attendees || []}
-            onChange={(_, newValue) =>
-              formik.setFieldValue("attendees", newValue)
-            }
-            getOptionLabel={(option) => option.name}
-            renderOption={(props, option) => (
-              <Box
-                component="li"
-                {...props}
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  width: "100%",
-                }}
-              >
-                <div>
-                  {/* Render the attendee's name */}
-                  <span>{option.name}</span>
-                </div>
-                <div sx={{ width: "100%", float: "right" }}>
-                  {/* Render a hardcoded Chip for availability */}
-                  <Chip
-                    label={
-                      option.id === "15b8126b-8ce7-443c-a231-007179da901a"
-                        ? "Unavailable"
-                        : "Available"
-                    }
-                    color={
-                      option.id === "15b8126b-8ce7-443c-a231-007179da901a"
-                        ? "error"
-                        : "success"
-                    }
-                    size="small"
-                  />
-                </div>
-              </Box>
-            )}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Select Attendees"
-                error={
-                  formik.touched.attendees && Boolean(formik.errors.attendees)
-                }
-                helperText={formik.touched.attendees && formik.errors.attendees}
+        <Autocomplete
+          multiple
+          id="attendees"
+          name="attendees"
+          size="small"
+          sx={{ width: "100%" }}
+          options={emailsList}
+          value={formik.values.attendees || []}
+          onChange={(_, newValue) => formik.setFieldValue("attendees", newValue)}
+          getOptionLabel={(option) => option.name}
+          renderOption={(props, option) => (
+            <Box component="li" {...props}>
+              {option.name}
+              <Chip
+                label={option.isAvailable ? "Available" : "Unavailable"}
+                color={option.isAvailable ? "success" : "error"}
+                size="small"
               />
-            )}
-            disableCloseOnSelect
-            isOptionEqualToValue={(option, value) => option.id === value.id}
-          />
-          <Autocomplete
-            multiple
-            id="committees"
-            name="committees"
-            size="small"
-            sx={{
-              width: "100%", // Adjust the width as needed
-            }}
-            options={committeeList}
-            value={formik.values.committees || []}
-            onChange={(_, newValue) =>
-              formik.setFieldValue("committees", newValue)
+            </Box>
+          )}
+          renderInput={(params) => (
+            <TextField {...params} label="Select Attendees" />
+          )}
+          disableCloseOnSelect
+          isOptionEqualToValue={(option, value) => option.id === value.id} // Ensures correct selection matching
+        />
+        <Autocomplete
+          multiple
+          id="attendees"
+          name="attendees"
+          size="small"
+          sx={{ width: "100%" }}
+          options={emailsList}
+          value={formik.values.attendees || []}
+          onChange={(_, newValue) => formik.setFieldValue("attendees", newValue)}
+          getOptionLabel={(option) => option.name}
+          renderOption={(props, option) => (
+            <Box component="li" {...props}>
+              {option.name}
+              <Chip
+                label={option.isAvailable ? "Available" : "Unavailable"}
+                color={option.isAvailable ? "success" : "error"}
+                size="small"
+              />
+            </Box>
+          )}
+          renderInput={(params) => (
+            <TextField {...params} label="Select Attendees" />
+          )}
+          disableCloseOnSelect
+          isOptionEqualToValue={(option, value) => option.id === value.id} // Ensures correct selection matching
+        />
+      </Box>
+      <Box display="flex" gap={1} justifyContent="space-between">
+        {/* Description */}
+        <TextField
+          label="Notes"
+          name="notes"
+          margin="normal"
+          fullWidth
+          multiline
+          rows={3}
+          value={formik.values.notes || ""}
+          onChange={formik.handleChange}
+          error={formik.touched.notes && Boolean(formik.errors.notes)}
+          helperText={formik.touched.notes && formik.errors.notes}
+          size="small"
+        />
+
+        {/* Description */}
+        <TextField
+          label="Additional Equipment Needed"
+          name="additionalEquipment"
+          margin="normal"
+          fullWidth
+          multiline
+          rows={3}
+          value={formik.values.additionalEquipment || ""}
+          onChange={formik.handleChange}
+          error={
+            formik.touched.additionalEquipment &&
+            Boolean(formik.errors.additionalEquipment)
+          }
+          helperText={
+            formik.touched.additionalEquipment &&
+            formik.errors.additionalEquipment
+          }
+          size="small"
+        />
+      </Box>
+      {/* Private Meeting */}
+      <Box display="flex" gap={1} justifyContent="space-between">
+        <Box component="p">
+          <Typography variant="subtitle1" component="p" sx={{ mt: 2 }}>
+            Is this a private meeting?
+          </Typography>
+          <RadioGroup
+            name="isPrivate"
+            value={formik.values.isPrivate || false}
+            onChange={(e) =>
+              formik.setFieldValue("isPrivate", e.target.value === "true")
             }
             getOptionLabel={(option) => option.name}
             renderOption={(props, option) => (
@@ -455,6 +517,7 @@ const MeetingFormEdit = ({ updatedBookingId, room, setRefreshPage }) => {
 
         {/* Submit Button */}
         <FormButton type="submit" btnName="Save Meeting" />
+      </Box>
       </Box>
     </PopContent>
   );
