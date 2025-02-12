@@ -35,6 +35,7 @@ import {
   VisibilityOutlinedIcon,
   AirlineSeatLegroomExtraOutlinedIcon,
   DesignServicesOutlinedIcon,
+  VideoCallOutlinedIcon
 } from "../Common/Buttons/CustomIcon";
 import RoomFoodBeverages from "./RoomFoodBeverages";
 import BarCode from "../../pages/BarCodePage/BarCode";
@@ -468,6 +469,24 @@ const RoomsCard = ({
                     size="small"
                   >
                     <EditOutlinedIcon color="white" className="cursor" />
+                  </Button>
+                )}
+                {meetingCurrentData?.length==0 && user.UserType.roomModule &&
+                user.UserType.roomModule.split(",").includes("addMeeting") && (
+                  <Button
+                    className="room-book"
+                    variant="contained"
+                    title="Book Room"
+                    onClick={handleBookNowClick}
+                    sx={{
+                      background: "white",
+                      color: "black",
+                      flex: 1,
+                      minWidth: "40px",
+                    }}
+                    size="small"
+                  >
+                    <VideoCallOutlinedIcon color="black" className="cursor" />
                   </Button>
                 )}
               {user.UserType.roomModule &&

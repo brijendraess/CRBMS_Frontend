@@ -59,10 +59,18 @@ const EditUserTypeSettings = () => {
         ?.split(",")
         .includes("changeStatus"),
 
-      committeeTypeAdd: userRole?.committeeTypeModule?.split(",").includes("add"),
-      committeeTypeEdit: userRole?.committeeTypeModule?.split(",").includes("edit"),
-      committeeTypeDelete: userRole?.committeeTypeModule?.split(",").includes("delete"),
-      committeeTypeView: userRole?.committeeTypeModule?.split(",").includes("view"),
+      committeeTypeAdd: userRole?.committeeTypeModule
+        ?.split(",")
+        .includes("add"),
+      committeeTypeEdit: userRole?.committeeTypeModule
+        ?.split(",")
+        .includes("edit"),
+      committeeTypeDelete: userRole?.committeeTypeModule
+        ?.split(",")
+        .includes("delete"),
+      committeeTypeView: userRole?.committeeTypeModule
+        ?.split(",")
+        .includes("view"),
       committeeTypeChangeStatus: userRole?.committeeTypeModule
         ?.split(",")
         .includes("changeStatus"),
@@ -122,6 +130,7 @@ const EditUserTypeSettings = () => {
       roomSanitization: userRole?.roomModule
         ?.split(",")
         .includes("sanitization"),
+      roomAddMeeting: userRole?.roomModule?.split(",").includes("addMeeting"),
 
       locationAdd: userRole?.locationModule?.split(",").includes("add"),
       locationEdit: userRole?.locationModule?.split(",").includes("edit"),
@@ -223,6 +232,7 @@ const EditUserTypeSettings = () => {
       roomFoodBeverage: Yup.boolean().optional(),
       roomBarcode: Yup.boolean().optional(),
       roomSanitization: Yup.boolean().optional(),
+      roomAddMeeting: Yup.boolean().optional(),
 
       locationAdd: Yup.boolean().optional(),
       locationEdit: Yup.boolean().optional(),
@@ -329,7 +339,8 @@ const EditUserTypeSettings = () => {
             values.roomAmenities,
             values.roomFoodBeverage,
             values.roomBarcode,
-            values.roomSanitization
+            values.roomSanitization,
+            values.roomAddMeeting
           ),
           locationModule: userRoleStringManipulation(
             values.locationAdd,
@@ -383,7 +394,7 @@ const EditUserTypeSettings = () => {
       }
     },
   });
-  
+
   return (
     <PaperWrapper>
       <Typography variant="h6" component="h6">
@@ -480,6 +491,7 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("roomFoodBeverage", "");
                   formik.setFieldValue("roomBarcode", "");
                   formik.setFieldValue("roomSanitization", "");
+                  formik.setFieldValue("roomAddMeeting", "");
 
                   formik.setFieldValue("locationAdd", "");
                   formik.setFieldValue("locationEdit", "");
@@ -557,6 +569,7 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("roomFoodBeverage", true);
                   formik.setFieldValue("roomBarcode", true);
                   formik.setFieldValue("roomSanitization", true);
+                  formik.setFieldValue("roomAddMeeting", true);
 
                   formik.setFieldValue("locationAdd", true);
                   formik.setFieldValue("locationEdit", true);
@@ -630,6 +643,7 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("roomFoodBeverage", "");
                   formik.setFieldValue("roomBarcode", "");
                   formik.setFieldValue("roomSanitization", "");
+                  formik.setFieldValue("roomAddMeeting", "");
 
                   formik.setFieldValue("locationAdd", "");
                   formik.setFieldValue("locationEdit", "");
@@ -707,6 +721,7 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("roomFoodBeverage", "");
                   formik.setFieldValue("roomBarcode", "");
                   formik.setFieldValue("roomSanitization", "");
+                  formik.setFieldValue("roomAddMeeting", "");
 
                   formik.setFieldValue("locationAdd", "");
                   formik.setFieldValue("locationEdit", "");
@@ -898,6 +913,7 @@ const EditUserTypeSettings = () => {
               { name: "roomAmenities", label: "Amenities" },
               { name: "roomBarcode", label: "BarCode" },
               { name: "roomSanitization", label: "Sanitization" },
+              { name: "roomAddMeeting", label: "addMeeting" },
               { name: "roomFoodBeverage", label: "Food Beverage" },
             ],
           },
@@ -941,7 +957,7 @@ const EditUserTypeSettings = () => {
           </>
         ))}
         <br />
-        <FormButton type='submit' btnName='Update User Role' />
+        <FormButton type="submit" btnName="Update User Role" />
       </Box>
     </PaperWrapper>
   );

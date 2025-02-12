@@ -52,7 +52,7 @@ const AddUserTypeSettings = () => {
       committeeDelete: "",
       committeeView: "",
       committeeChangeStatus: "",
-      
+
       committeeTypeAdd: "",
       committeeTypeEdit: "",
       committeeTypeDelete: "",
@@ -92,6 +92,7 @@ const AddUserTypeSettings = () => {
       roomFoodBeverage: "",
       roomBarcode: "",
       roomSanitization: "",
+      roomAddMeeting: "",
 
       locationAdd: "",
       locationEdit: "",
@@ -181,6 +182,7 @@ const AddUserTypeSettings = () => {
       roomFoodBeverage: Yup.boolean().optional(),
       roomBarcode: Yup.boolean().optional(),
       roomSanitization: Yup.boolean().optional(),
+      roomAddMeeting: Yup.boolean().optional(),
       // Location
       locationAdd: Yup.boolean().optional(),
       locationEdit: Yup.boolean().optional(),
@@ -290,7 +292,8 @@ const AddUserTypeSettings = () => {
             values.roomAmenities,
             values.roomFoodBeverage,
             values.roomBarcode,
-            values.roomSanitization
+            values.roomSanitization,
+            values.roomAddMeeting
           ),
           locationModule: userRoleStringManipulation(
             values.locationAdd,
@@ -439,6 +442,7 @@ const AddUserTypeSettings = () => {
                   formik.setFieldValue("roomFoodBeverage", "");
                   formik.setFieldValue("roomBarcode", "");
                   formik.setFieldValue("roomSanitization", "");
+                  formik.setFieldValue("roomAddMeeting", "");
 
                   formik.setFieldValue("locationAdd", "");
                   formik.setFieldValue("locationEdit", "");
@@ -515,6 +519,7 @@ const AddUserTypeSettings = () => {
                   formik.setFieldValue("roomFoodBeverage", true);
                   formik.setFieldValue("roomBarcode", true);
                   formik.setFieldValue("roomSanitization", true);
+                  formik.setFieldValue("roomAddMeeting", true);
                   formik.setFieldValue("gallery", true);
                   formik.setFieldValue("roomEdit", true);
                   formik.setFieldValue("roomDelete", true);
@@ -597,6 +602,7 @@ const AddUserTypeSettings = () => {
                   formik.setFieldValue("roomFoodBeverage", "");
                   formik.setFieldValue("roomBarcode", "");
                   formik.setFieldValue("roomSanitization", "");
+                  formik.setFieldValue("roomAddMeeting", "");
 
                   formik.setFieldValue("locationAdd", "");
                   formik.setFieldValue("locationEdit", "");
@@ -674,6 +680,7 @@ const AddUserTypeSettings = () => {
                   formik.setFieldValue("roomFoodBeverage", "");
                   formik.setFieldValue("roomBarcode", "");
                   formik.setFieldValue("roomSanitization", "");
+                  formik.setFieldValue("roomAddMeeting", "");
 
                   formik.setFieldValue("locationAdd", "");
                   formik.setFieldValue("locationEdit", "");
@@ -864,6 +871,7 @@ const AddUserTypeSettings = () => {
               { name: "roomAmenities", label: "Amenities" },
               { name: "roomBarcode", label: "BarCode" },
               { name: "roomSanitization", label: "Sanitization" },
+              { name: "roomAddMeeting", label: "addMeeting" },
               { name: "roomFoodBeverage", label: "Food Beverage" },
             ],
           },
@@ -907,7 +915,7 @@ const AddUserTypeSettings = () => {
           </>
         ))}
         <br />
-        <FormButton type='submit' btnName='Add User Role' />
+        <FormButton type="submit" btnName="Add User Role" />
       </Box>
     </PaperWrapper>
   );

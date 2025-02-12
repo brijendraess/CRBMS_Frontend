@@ -72,6 +72,7 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
 import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
+import VideoCallOutlinedIcon from '@mui/icons-material/VideoCallOutlined';
 export {
   AddIcon,
   RemoveIcon,
@@ -149,5 +150,6 @@ export {
   ErrorOutlineIcon,
   SwapHorizIcon,
   AssessmentOutlinedIcon,
-  CategoryOutlinedIcon
+  CategoryOutlinedIcon,
+  VideoCallOutlinedIcon
 };

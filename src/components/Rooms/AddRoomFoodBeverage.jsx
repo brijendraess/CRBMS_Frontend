@@ -39,7 +39,7 @@ const AddRoomFoodBeverage = ({
         const formData = {
           ...values,
           roomId: room.id,
-          status: true,
+          status: false,
           createdBy: user.id,
         };
         await axios.post("api/v1/rooms/add-food-beverage", formData);

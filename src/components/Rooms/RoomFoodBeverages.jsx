@@ -48,6 +48,7 @@ const RoomFoodBeverages = ({ room }) => {
             id: index + 1,
             uid: foodBeverage.id,
             foodBeverageName: foodBeverage.FoodBeverage.foodBeverageName,
+            status: foodBeverage.status?"Approved":"Pending",
             foodBeverageId: foodBeverage.FoodBeverage.id,
           })
         );
@@ -101,7 +102,8 @@ const RoomFoodBeverages = ({ room }) => {
       hideSortIcons: true,
       width: 60,
     },
-    { field: "foodBeverageName", headerName: "Name", width: 300 },
+    { field: "foodBeverageName", headerName: "Name", width: 250 },
+    { field: "status", headerName: "Status", width: 100 },
     {
       field: "actions",
       headerName: "Actions",
