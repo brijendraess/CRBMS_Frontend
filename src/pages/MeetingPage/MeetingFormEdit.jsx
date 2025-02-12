@@ -119,8 +119,6 @@ const MeetingFormEdit = ({ updatedBookingId, room, setRefreshPage }) => {
     },
   });
 
-  console.log(formik?.values?.attendees, "attendees")
-
 
   const fetchIsAvailable = async (attendeesList) => {
     if (!formik.values.startTime || !formik.values.endTime || !formik.values.date) return;
@@ -315,63 +313,29 @@ const MeetingFormEdit = ({ updatedBookingId, room, setRefreshPage }) => {
         />
         <Autocomplete
           multiple
-          id="committees"
-          name="committees"
+          id="attendees"
+          name="attendees"
           size="small"
-          sx={{
-            width: "100%", // Adjust the width as needed
-          }}
-          options={committeeList}
-          value={formik.values.committees || []}
-          onChange={(_, newValue) =>
-            formik.setFieldValue("committees", newValue)
-          }
+          sx={{ width: "100%" }}
+          options={emailsList}
+          value={formik.values.attendees || []}
+          onChange={(_, newValue) => formik.setFieldValue("attendees", newValue)}
           getOptionLabel={(option) => option.name}
           renderOption={(props, option) => (
-            <Box
-              component="li"
-              {...props}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                width: "100%",
-              }}
-            >
-              <div>
-                {/* Render the attendee's name */}
-                <span>{option.name}</span>
-              </div>
-              <div sx={{ width: "100%", float: "right" }}>
-                {/* Render a hardcoded Chip for availability */}
-                <Chip
-                  label={
-                    option.id === "15b8126b-8ce7-443c-a231-007179da901a"
-                      ? "Unavailable"
-                      : "Available"
-                  }
-                  color={
-                    option.id === "15b8126b-8ce7-443c-a231-007179da901a"
-                      ? "error"
-                      : "success"
-                  }
-                  size="small"
-                />
-              </div>
+            <Box component="li" {...props}>
+              {option.name}
+              <Chip
+                label={option.isAvailable ? "Available" : "Unavailable"}
+                color={option.isAvailable ? "success" : "error"}
+                size="small"
+              />
             </Box>
           )}
           renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Select Committee"
-              error={
-                formik.touched.committees && Boolean(formik.errors.committees)
-              }
-              helperText={formik.touched.committees && formik.errors.committees}
-            />
+            <TextField {...params} label="Select Attendees" />
           )}
           disableCloseOnSelect
-          isOptionEqualToValue={(option, value) => option.id === value.id}
+          isOptionEqualToValue={(option, value) => option.id === value.id} // Ensures correct selection matching
         />
       </Box>
       <Box display="flex" gap={1} justifyContent="space-between">
