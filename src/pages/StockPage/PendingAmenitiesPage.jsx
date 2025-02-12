@@ -14,9 +14,12 @@ import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { useDispatch, useSelector } from "react-redux";
 import {
   AddOutlinedIcon,
+  KeyboardBackspaceOutlinedIcon,
 } from "../../components/Common/Buttons/CustomIcon";
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
 import PendingAmenitiesCard from "../../components/Responsive/Stock/PendingAmenitiesCard";
+import { useNavigate } from "react-router-dom";
+import CustomButton from "../../components/Common/Buttons/CustomButton";
 
 const PendingAmenitiesPage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -29,7 +32,11 @@ const PendingAmenitiesPage = () => {
   const { user } = useSelector((state) => state.user);
   const isSmallScreen = useMediaQuery("(max-width:768px)");
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
+  const handleBackButton = () => {
+    navigate(-1)
+  }
   useEffect(() => {
     const fetchAmenities = async () => {
       try {
@@ -37,10 +44,10 @@ const PendingAmenitiesPage = () => {
         const response = await axios.get("/api/v1/stock/pending-amenities");
         const amenitiesWithSerial = response.data.data.result.map(
           (amenities, index) => ({
-            amenityName:amenities?.RoomAmenity?.name,
-            status:amenities.status,
-            roomName:amenities.Room.name,
-            id:amenities.id,
+            amenityName: amenities?.RoomAmenity?.name,
+            status: amenities.status,
+            roomName: amenities.Room.name,
+            id: amenities.id,
             serialNo: index + 1,
           })
         );
@@ -63,7 +70,7 @@ const PendingAmenitiesPage = () => {
 
       setAmenities((prev) =>
         prev.map((amenities) =>
-            amenities.id === id ? { ...amenities, status: updatedAmenities.status } : amenities
+          amenities.id === id ? { ...amenities, status: updatedAmenities.status } : amenities
         )
       );
       setRefreshPage(Math.random())
@@ -130,10 +137,20 @@ const PendingAmenitiesPage = () => {
     <PaperWrapper>
       <PageHeader
         heading="Pending Amenities"
-        icon={AddOutlinedIcon}
+        icon={''}
         func={''}
         nameOfTheClass="add-new-service"
-      />
+      >
+        <CustomButton
+          onClick={handleBackButton}
+          iconStyles
+          fontSize={"medium"}
+          background={"var(--linear-gradient-main)"}
+          Icon={KeyboardBackspaceOutlinedIcon}
+          nameOfTheClass="go-to-inventory"
+          title="Back To Inventory"
+        />
+      </PageHeader>
       {isSmallScreen && (
         <Grid2
           container
@@ -148,7 +165,7 @@ const PendingAmenitiesPage = () => {
         >
           {amenities.map((amenities) => (
             <PendingAmenitiesCard
-            user={user}
+              user={user}
               key={amenities.id}
               amenities={amenities}
               handleStatusChange={handleStatusChange}

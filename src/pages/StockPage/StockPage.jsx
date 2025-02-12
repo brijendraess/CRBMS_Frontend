@@ -25,6 +25,7 @@ import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import toast from "react-hot-toast";
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
 import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
+import CustomButton from "../../components/Common/Buttons/CustomButton";
 
 const useStyles = makeStyles({
   lowQuantity: {
@@ -135,7 +136,7 @@ const StockPage = () => {
       headerName: "#",
       disableColumnMenu: true,
       hideSortIcons: true,
-      flex: 0.5,
+      flex: 0.10,
       headerClassName: "super-app-theme--header",
     },
     {
@@ -148,7 +149,7 @@ const StockPage = () => {
       field: "quantity",
       headerName: "Stock",
       headerClassName: "super-app-theme--header",
-      flex: 1,
+      flex: 0.5,
       renderCell: (params) => (
         <Box
           sx={{
@@ -156,7 +157,7 @@ const StockPage = () => {
             height: "100%",
             display: "flex",
             alignItems: "center",
-            justifyContent: "space-evenly",
+            justifyContent: "space-between",
           }}
         >
           {user.UserType.inventoryModule &&
@@ -233,33 +234,34 @@ const StockPage = () => {
           user.UserType.inventoryModule &&
           user.UserType.inventoryModule.split(",").includes("add")
         }
-      />
-      <div className="col-lg-12 d-flex align-items-center pb-2 justify-content-end gap-2">
+      >
         {user.UserType.inventoryModule &&
-            user.UserType.inventoryModule.split(",").includes("pendingAmenityView") &&<Button
-          id="amenities-icon"
-          className="rounded-circle"
-          onClick={handleNavigatePendingAmenities}
-        >
-          <Tooltip title="Pending Amenities">
-            <Badge badgeContent={pendingAmenities} color="error">
-              <Groups2OutlinedIcon color="white" className="cursor" />
-            </Badge>
-          </Tooltip>
-        </Button>}
+          user.UserType.inventoryModule.split(",").includes("pendingAmenityView") &&
+          <CustomButton
+            // id="amenities-icon"
+            iconStyles
+            fontSize={"medium"}
+            background={"var(--linear-gradient-main)"}
+            className="pending-amenities"
+            onClick={handleNavigatePendingAmenities}
+            Icon={Groups2OutlinedIcon}
+            title="Pending Amenities"
+            badgeContent={pendingAmenities}
+          />
+        }
         {user.UserType.inventoryModule &&
-            user.UserType.inventoryModule.split(",").includes("pendingFoodBeverageView") &&<Button
-          id="notification-icon"
-          className="rounded-circle"
-          onClick={handleNavigatePendingFoodBeverage}
-        >
-          <Tooltip title="Pending Food & Beverage">
-            <Badge badgeContent={pendingFoodBeverage} color="error">
-              <FoodBankOutlinedIcon color="white" className="cursor" />
-            </Badge>
-          </Tooltip>
-        </Button>}
-      </div>
+          user.UserType.inventoryModule.split(",").includes("pendingFoodBeverageView") &&
+          <CustomButton
+            className="pending-food"
+            onClick={handleNavigatePendingFoodBeverage}
+            title="Pending Food & Beverage"
+            Icon={FoodBankOutlinedIcon}
+            fontSize={"medium"}
+            background={"var(--linear-gradient-main)"}
+            badgeContent={pendingFoodBeverage} // Badge appears only when this prop is passed
+          />
+        }
+      </PageHeader>
       <Box
         style={{
           display: "flex",

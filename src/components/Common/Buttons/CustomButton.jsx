@@ -1,14 +1,15 @@
-import { IconButton, Paper, Tooltip, useMediaQuery } from "@mui/material";
+import React from "react";
+import { IconButton, Paper, Tooltip, useMediaQuery, Badge } from "@mui/material";
 
 const CustomButton = ({
   onClick,
   disabled,
-  iconStyles,
   background,
   Icon,
   fontSize,
   nameOfTheClass,
-  title
+  title,
+  badgeContent, // Only pass this prop when needed
 }) => {
   const isXs = useMediaQuery("(max-width:600px)");
   const isSm = useMediaQuery("(max-width:960px)");
@@ -34,7 +35,7 @@ const CustomButton = ({
             cursor: disabled ? "not-allowed" : "pointer",
             transition: "all 0.3s ease-in-out",
             boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-            position: "relative",
+            position: "relative", // Allows the badge to be absolutely positioned
             "&:hover": {
               background: `${background}`,
               transform: "scale(1.1)",
@@ -61,7 +62,18 @@ const CustomButton = ({
           size={buttonSize}
           className={nameOfTheClass}
         >
-          {Icon && <Icon fontSize={fontSize} sx={{ color: "white" }} />}
+          {Icon &&
+            (badgeContent !== undefined && badgeContent !== null ? (
+              <Badge
+                badgeContent={badgeContent}
+                color="error"
+                anchorOrigin={{ vertical: "top", horizontal: "right" }}
+              >
+                <Icon fontSize={fontSize} sx={{ color: "white" }} />
+              </Badge>
+            ) : (
+              <Icon fontSize={fontSize} sx={{ color: "white" }} />
+            ))}
         </IconButton>
       </Tooltip>
     </Paper>
