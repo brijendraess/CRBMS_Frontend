@@ -16,7 +16,6 @@ import {
 import axios from "axios";
 import CommitteeCard from "../../components/CommitteeCard/CommitteeCard";
 import { PaperWrapper } from "../../Style";
-import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import AddCommitteeForm from "./AddCommitteeForm";
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
 import toast from "react-hot-toast";
@@ -30,8 +29,11 @@ import {
   EditOutlinedIcon,
   DeleteOutlineOutlinedIcon,
   PeopleIcon,
+  CategoryOutlinedIcon,
 } from "../../components/Common/Buttons/CustomIcon";
 import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
+import CustomButton from "../../components/Common/Buttons/CustomButton";
+import BackupTableOutlinedIcon from '@mui/icons-material/BackupTableOutlined';
 
 const CommitteeManagementMUI = () => {
   const [committeeData, setCommitteeData] = useState([]);
@@ -251,9 +253,10 @@ const CommitteeManagementMUI = () => {
         >
           <FormControl
             className="committee-filter"
-            style={{ marginRight: "5 px", width: "100px" }}
+            style={{ width: "80px" }}
+            size="small"
           >
-            <InputLabel id="filter-select-label">Show</InputLabel>
+            <InputLabel size="small" id="filter-select-label">Show</InputLabel>
             <Select
               labelId="filter-select-label"
               id="filter-select"
@@ -267,41 +270,19 @@ const CommitteeManagementMUI = () => {
               <MenuItem value="inactive">Inactive</MenuItem>
             </Select>
           </FormControl>
-
+          {user.UserType.committeeTypeModule &&
+            user.UserType.committeeTypeModule.split(",").includes("view") &&
+            <CustomButton
+              onClick={handleNavigateToCommitteeTypeList}
+              iconStyles
+              fontSize={"medium"}
+              background={"var(--linear-gradient-main)"}
+              Icon={BackupTableOutlinedIcon}
+              // fontSize
+              nameOfTheClass="go-to-committee-type"
+              title="Committee Type"
+            />}
         </PageHeader>
-        {user.UserType.committeeTypeModule &&
-          user.UserType.committeeTypeModule.split(",").includes("view") &&
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-end",
-              mb: 2,
-            }}
-          >
-            <Tooltip title="Committee Type List">
-              <Paper sx={{
-                borderRadius: '20px',
-                background: 'none',
-                transition: 'transform 0.3s ease-in-out',
-                '&:hover': {
-                  transform: 'scale(1.1)',
-                },
-              }}
-                elevation={24} >
-                <Chip
-                  label="Committee Type"
-                  size="large"
-                  variant="outlined"
-                  icon=""
-                  onClick={handleNavigateToCommitteeTypeList}
-                  sx={{ cursor: "pointer", padding: "8px", borderColor: 'var(--linear-gradient-main)', color: 'var(--linear-gradient-main)', fontSize: '16px' }}
-                  className="committee-view"
-                />
-              </Paper>
-            </Tooltip>
-          </Box>
-        }
         {isSmallScreen ? (
           <Grid2
             container

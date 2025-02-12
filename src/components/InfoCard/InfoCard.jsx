@@ -19,12 +19,13 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const InfoCard = ({
   color,
-  tittle,
+  title,
   count,
   show,
   options = [],
   onOptionSelect,
   subHeading,
+  nameOfTheClass,
 }) => {
   const [elevation, setElevation] = useState(2);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -41,9 +42,39 @@ const InfoCard = ({
   const handleOptionClick = (option) => {
     setAnchorEl(null);
     if (onOptionSelect) {
-      onOptionSelect(option); // Call the passed function with the selected option
+      onOptionSelect(option);
     }
   };
+
+  // Define custom title mappings for different meeting types
+  const defaultMeetingTitles = {
+    Today: "Today's Meetings",
+    "This Week": "This Week's Meetings",
+    "This Month": "This Month's Meetings",
+  };
+
+  const cancelledMeetingTitles = {
+    Today: "Today's Cancelled Meetings",
+    "This Week": "This Week's Cancelled Meetings",
+    "This Month": "This Month's Cancelled Meetings",
+  };
+
+  const completedMeetingTitles = {
+    Today: "Today's Completed Meetings",
+    "This Week": "This Week's Completed Meetings",
+    "This Month": "This Month's Completed Meetings",
+  };
+
+  // Choose appropriate mapping based on the title prop
+  let meetingMapping = defaultMeetingTitles;
+  if (title === "Cancelled Meetings") {
+    meetingMapping = cancelledMeetingTitles;
+  } else if (title === "Completed Meetings") {
+    meetingMapping = completedMeetingTitles;
+  }
+
+  // If subHeading exists, use the mapped title; otherwise, fallback to the provided title.
+  const formattedTitle = subHeading ? (meetingMapping[subHeading] || `${subHeading} Meetings`) : title;
 
   return (
     <Item
@@ -53,54 +84,56 @@ const InfoCard = ({
       style={{
         backgroundImage: `linear-gradient(to right, ${color[0]}, ${color[1]})`,
       }}
+      className={nameOfTheClass || ""}
     >
-      <Box display="flex" width="100%">
+      <Box display="flex" width="100%" justifyContent="space-between">
         <Box className="col1">
           <h4 className="text-white">
-            {tittle} {subHeading && <span>|| {subHeading}</span>}
+            {formattedTitle}
           </h4>
           <span className="number text-white">{count}</span>
         </Box>
-        <Box className="ms-auto">
-          <span className="iconContainer">
-            <AccountCircleIcon />
-          </span>
-        </Box>
-        <div style={{ display: show ? "block" : "none" }}>
-          <IconButton
-            aria-label="more"
-            id="long-button"
-            aria-controls={open ? "long-menu" : undefined}
-            aria-expanded={open ? "true" : undefined}
-            aria-haspopup="true"
-            onClick={handleClick}
-          >
-            <MoreVertIcon />
-          </IconButton>
-          <Menu
-            id="long-menu"
-            MenuListProps={{
-              "aria-labelledby": "long-button",
-            }}
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            slotProps={{
-              paper: {
-                style: {
-                  maxHeight: "175px",
-                  width: "125px",
+        <Box display="flex" flexDirection="column">
+          <Box className="ms-auto">
+            <span className="iconContainer">
+              <AccountCircleIcon />
+            </span>
+          </Box>
+          <div style={{ display: show ? "block" : "none" }}>
+            <IconButton
+              aria-label="more"
+              aria-controls={open ? "long-menu" : undefined}
+              aria-expanded={open ? "true" : undefined}
+              aria-haspopup="true"
+              onClick={handleClick}
+            >
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              id="long-menu"
+              MenuListProps={{
+                "aria-labelledby": "long-button",
+              }}
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              slotProps={{
+                paper: {
+                  style: {
+                    maxHeight: "175px",
+                    width: "125px",
+                  },
                 },
-              },
-            }}
-          >
-            {options.map((option) => (
-              <MenuItem key={option} onClick={() => handleOptionClick(option)}>
-                {option}
-              </MenuItem>
-            ))}
-          </Menu>
-        </div>
+              }}
+            >
+              {options.map((option) => (
+                <MenuItem key={option} onClick={() => handleOptionClick(option)}>
+                  {option}
+                </MenuItem>
+              ))}
+            </Menu>
+          </div>
+        </Box>
       </Box>
     </Item>
   );

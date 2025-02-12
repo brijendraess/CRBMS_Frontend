@@ -37,6 +37,8 @@ import DashboardPage from "./pages/Dashboard/DashboardPage";
 import AddUserTypeSettings from "./pages/UserType/AddUserTypeSettings";
 import EditUserTypeSettings from "./pages/UserType/EditUserTypeSettings";
 import CommitteeTypePage from "./pages/CommitteeType/CommitteeTypePage";
+import PendingAmenitiesPage from "./pages/StockPage/PendingAmenitiesPage";
+import PendingFoodBeveragePage from "./pages/StockPage/PendingFoodBeveragePage";
 
 const AppRouter = () => {
   return (
@@ -95,6 +97,8 @@ const AppRouter = () => {
         <Route path="/home" element={<DashboardPage />} />
         <Route path="/rooms" element={<RoomsPage />} />
         <Route path="/reports" element={<ReportPage />} />
+        <Route path="/pending-amenities" element={<PendingAmenitiesPage />} />
+        <Route path="/pending-food-beverage" element={<PendingFoodBeveragePage />} />
         <Route path="/members" element={<MembersPage />} />
         <Route path="/meetings" element={<MainMeetingPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />

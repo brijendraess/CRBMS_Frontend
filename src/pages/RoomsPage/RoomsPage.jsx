@@ -37,6 +37,7 @@ const RoomsPage = () => {
   const [refreshPage, setRefreshPage] = useState(0);
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+
   const fetchRoomsData = async () => {
     try {
       dispatch(showLoading());
@@ -198,6 +199,7 @@ const RoomsPage = () => {
   };
 
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
+  
   return (
     <>
       <PaperWrapper>

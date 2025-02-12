@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { DataGrid } from "@mui/x-data-grid";
 import { toast } from "react-hot-toast";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Box, Grid2, Tooltip, useMediaQuery } from "@mui/material";
-import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import AddMembersToCommittee from "./AddMembersToCommittee";
 import unknownUser from "../../assets/Images/unknownUser.png";
 import { PaperWrapper } from "../../Style";
@@ -16,6 +15,7 @@ import CommitteeMemberCard from "../../components/CommitteeCard/CommitteeMemberC
 import {
   DeleteOutlineIcon,
   PersonAddOutlinedIcon,
+  KeyboardBackspaceOutlinedIcon,
 } from "../../components/Common/Buttons/CustomIcon";
 import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
 
@@ -27,6 +27,11 @@ const CommitteeMemberList = () => {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [heading, setHeading] = useState();
+  const navigate = useNavigate()
+
+  const handleBackButton = () => {
+    navigate(-1)
+  }
 
   useEffect(() => {
 
@@ -159,7 +164,17 @@ const CommitteeMemberList = () => {
           user.UserType.committeeMemberModule &&
           user.UserType.committeeMemberModule.split(",").includes("add")
         }
-      />
+      >
+        <CustomButton
+          onClick={handleBackButton}
+          iconStyles
+          fontSize={"medium"}
+          background={"var(--linear-gradient-main)"}
+          Icon={KeyboardBackspaceOutlinedIcon}
+          nameOfTheClass="go-to-committee-type"
+          title="Back To Committee"
+        />
+      </PageHeader>
       {isSmallScreen ? (
         <Grid2
           container

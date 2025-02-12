@@ -6,7 +6,12 @@ import {
   DeleteOutlineOutlinedIcon,
 } from "../../Common/Buttons/CustomIcon";
 
-const ServicesCard = ({ services, handleEdit, handleDelete,handleStatusChange }) => {
+const ServicesCard = ({
+  services,
+  handleEdit,
+  handleDelete,
+  handleStatusChange,
+}) => {
   return (
     <Card sx={{ width: 320 }}>
       <Typography
@@ -42,8 +47,11 @@ const ServicesCard = ({ services, handleEdit, handleDelete,handleStatusChange })
           fontSize={"small"}
           background={"rgba(231, 26, 7, 0.77)"}
         />
-        
-        <Switch />
+
+        <Switch
+          checked={services.status}
+          onChange={() => handleStatusChange(services.id)}
+        />
       </Box>
     </Card>
   );
