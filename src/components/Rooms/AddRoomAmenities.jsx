@@ -47,7 +47,7 @@ const AddRoomAmenities = ({
         const formData = {
           ...values,
           roomId: room.id,
-          status: true,
+          status: false,
           createdBy: user.id,
         };
         await axios.post("api/v1/rooms/add-amenity-quantity", formData).then(async () => {

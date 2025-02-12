@@ -201,7 +201,8 @@ const userRoleStringRoomManipulation = (
   amenitiesData = false,
   foodBeverageData = false,
   barcodeData = false,
-  sanitizationData = false
+  sanitizationData = false,
+  addMeetingData = false
 ) => {
   let arrData = [];
   if (addData) {
@@ -230,6 +231,9 @@ const userRoleStringRoomManipulation = (
   }
   if (sanitizationData) {
     arrData.push("sanitization");
+  }
+   if (addMeetingData) {
+    arrData.push("addMeeting");
   }
   if (arrData.length > 0) {
     console.log("ARRAY", addData);

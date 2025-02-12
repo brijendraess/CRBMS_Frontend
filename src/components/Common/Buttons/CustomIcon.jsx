@@ -70,6 +70,7 @@ import AddIcon from "@mui/icons-material/Add";
 import HourglassTopOutlinedIcon from '@mui/icons-material/HourglassTopOutlined';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
+import VideoCallOutlinedIcon from '@mui/icons-material/VideoCallOutlined';
 
 export {
   AddIcon,
@@ -146,5 +147,6 @@ export {
   AirlineSeatLegroomExtraOutlinedIcon,
   HourglassTopOutlinedIcon,
   ErrorOutlineIcon,
-  SwapHorizIcon
+  SwapHorizIcon,
+  VideoCallOutlinedIcon
 };

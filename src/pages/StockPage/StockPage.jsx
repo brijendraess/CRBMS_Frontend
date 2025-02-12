@@ -1,17 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { PaperWrapper } from "../../Style";
 import { DataGrid } from "@mui/x-data-grid";
-import { Grid2 as Grid, IconButton, Typography, Box } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import {
+  IconButton,
+  Typography,
+  Box,
+  Tooltip,
+  Badge,
+  Button,
+} from "@mui/material";
 import {
   AddIcon,
   AddOutlinedIcon,
+  FoodBankOutlinedIcon,
+  Groups2OutlinedIcon,
   RemoveIcon,
 } from "../../components/Common/Buttons/CustomIcon";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@mui/styles";
 import axios from "axios";
-import CustomButton from "../../components/Common/Buttons/CustomButton";
-import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import AddStock from "./AddStock";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import toast from "react-hot-toast";
@@ -30,10 +38,12 @@ const StockPage = () => {
   // State for rows
   const [amenitiesData, setAmenitiesData] = useState([]);
   const [refreshPage, setRefreshPage] = useState(0);
+  const [pendingAmenities, setPendingAmenities] = useState(0);
+  const [pendingFoodBeverage, setPendingFoodBeverage] = useState(0);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
-
+  const navigate = useNavigate();
   // Handle quantity change
   const handleQuantityChange = async (amenityId, uid, id, delta, setData) => {
     try {
@@ -91,7 +101,31 @@ const StockPage = () => {
       }
     };
 
+    const fetchPendingAmenitiesCount = async () => {
+      try {
+        const response = await axios.get(
+          `/api/v1/stock/pending-amenities-count`
+        );
+        setPendingAmenities(response.data.data?.result);
+      } catch (error) {
+        console.error("Error fetching amenities data:", error);
+      }
+    };
+
+    const fetchPendingFoodBeverageCount = async () => {
+      try {
+        const response = await axios.get(
+          `/api/v1/stock/pending-food-beverage-count`
+        );
+        setPendingFoodBeverage(response.data.data?.result);
+      } catch (error) {
+        console.error("Error fetching food beverage data:", error);
+      }
+    };
+
     fetchStock();
+    fetchPendingAmenitiesCount();
+    fetchPendingFoodBeverageCount();
   }, [refreshPage]);
 
   // Column Definitions
@@ -180,6 +214,14 @@ const StockPage = () => {
   const getRowClassName = (params) =>
     params.row.quantity < 5 ? classes.lowQuantity : "";
 
+  const handleNavigatePendingAmenities = () => {
+    navigate(`/pending-amenities`);
+  };
+
+  const handleNavigatePendingFoodBeverage = () => {
+    navigate(`/pending-food-beverage`);
+  };
+
   return (
     <PaperWrapper>
       <PageHeader
@@ -190,7 +232,32 @@ const StockPage = () => {
         statusIcon={
           user.UserType.inventoryModule &&
           user.UserType.inventoryModule.split(",").includes("add")
-        } />
+        }
+      />
+      <div className="col-lg-12 d-flex align-items-center pb-2 justify-content-end gap-2">
+        <Button
+          id="amenities-icon"
+          className="rounded-circle"
+          onClick={handleNavigatePendingAmenities}
+        >
+          <Tooltip title="Pending Amenities">
+            <Badge badgeContent={pendingAmenities} color="error">
+              <Groups2OutlinedIcon color="white" className="cursor" />
+            </Badge>
+          </Tooltip>
+        </Button>
+        <Button
+          id="notification-icon"
+          className="rounded-circle"
+          onClick={handleNavigatePendingFoodBeverage}
+        >
+          <Tooltip title="Pending Food & Beverage">
+            <Badge badgeContent={pendingFoodBeverage} color="error">
+              <FoodBankOutlinedIcon color="white" className="cursor" />
+            </Badge>
+          </Tooltip>
+        </Button>
+      </div>
       <Box
         style={{
           display: "flex",
