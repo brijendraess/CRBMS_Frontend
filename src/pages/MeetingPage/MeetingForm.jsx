@@ -97,6 +97,53 @@ const MeetingForm = ({ room }) => {
     },
   });
 
+  const fetchIsAvailable = async (attendeesList) => {
+    if (!formik.values.startTime || !formik.values.endTime || !formik.values.date) return;
+  
+    try {
+      const response = await axios.post(`/api/v1/user/isAvailable`, {
+        attendees: attendeesList.map((attendee) => attendee.id),
+        startTime: formik.values.startTime,
+        endTime: formik.values.endTime,
+        meetingDate: formik.values.date,
+      });
+  
+      const notAvailableAttendees = response?.data?.data?.notAvailableAttendees;
+      if(notAvailableAttendees.length == 0){
+        const formattedEmailList = emailsList.map((emailData) => {return {
+          ...emailData,
+          isAvailable: true
+        }});
+        setEmailsList(formattedEmailList)
+      }
+
+      if(notAvailableAttendees.length > 0){
+        let formattedEmails = [];
+        for(let email of emailsList){
+          let isAvailable = true;
+
+          const notAvailable = notAvailableAttendees.find((attendee) => attendee.attendeeId === email.id);
+          if(notAvailable){
+            isAvailable = false
+          }
+
+          formattedEmails.push({...email, isAvailable: isAvailable})
+        }
+
+        setEmailsList(formattedEmails)
+      }
+    } catch (error) {
+      console.error("Error checking availability:", error);
+    }
+  };
+  
+
+  useEffect(() => {
+    if (emailsList.length > 0) {
+      fetchIsAvailable(emailsList);
+    }
+  }, [formik.values.startTime, formik.values.endTime, formik.values.date, formik.values.attendees]);  
+
   const calculateDifference = () => {
     // Parse times into Date objects (using today's date)
     const today = new Date()?.toISOString()?.split("T")[0]; // Get today's date in YYYY-MM-DD
@@ -247,50 +294,23 @@ const MeetingForm = ({ room }) => {
             }}
             options={emailsList}
             value={formik.values.attendees}
-            onChange={(_, newValue) =>
-              formik.setFieldValue("attendees", newValue)
-            }
+            onChange={(_, newValue) => formik.setFieldValue("attendees", newValue)}
             getOptionLabel={(option) => option.name}
             renderOption={(props, option) => (
-              <Box
-                component="li"
-                {...props}
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  width: "100%",
-                }}
-              >
-                <div>
-                  {/* Render the attendee's name */}
-                  <span>{option.name}</span>
-                </div>
-                <div sx={{ width: "100%", float: "right" }}>
-                  {/* Render a hardcoded Chip for availability */}
-                  <Chip
-                    label={
-                      option.id === "15b8126b-8ce7-443c-a231-007179da901a"
-                        ? "Unavailable"
-                        : "Available"
-                    }
-                    color={
-                      option.id === "15b8126b-8ce7-443c-a231-007179da901a"
-                        ? "error"
-                        : "success"
-                    }
-                    size="small"
-                  />
-                </div>
+              <Box component="li" {...props} sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+                <span>{option.name}</span>
+                <Chip
+                  label={option.isAvailable ? "Available" : "Unavailable"}
+                  color={option.isAvailable ? "success" : "error"}
+                  size="small"
+                />
               </Box>
             )}
             renderInput={(params) => (
               <TextField
                 {...params}
                 label="Select Attendees"
-                error={
-                  formik.touched.attendees && Boolean(formik.errors.attendees)
-                }
+                error={formik.touched.attendees && Boolean(formik.errors.attendees)}
                 helperText={formik.touched.attendees && formik.errors.attendees}
               />
             )}
