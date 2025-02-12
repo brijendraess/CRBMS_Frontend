@@ -33,6 +33,7 @@ import {
 } from "../../components/Common/Buttons/CustomIcon";
 import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
 import CustomButton from "../../components/Common/Buttons/CustomButton";
+import BackupTableOutlinedIcon from '@mui/icons-material/BackupTableOutlined';
 
 const CommitteeManagementMUI = () => {
   const [committeeData, setCommitteeData] = useState([]);
@@ -252,7 +253,7 @@ const CommitteeManagementMUI = () => {
         >
           <FormControl
             className="committee-filter"
-            style={{width: "80px" }}
+            style={{ width: "80px" }}
             size="small"
           >
             <InputLabel size="small" id="filter-select-label">Show</InputLabel>
@@ -276,7 +277,7 @@ const CommitteeManagementMUI = () => {
               iconStyles
               fontSize={"medium"}
               background={"var(--linear-gradient-main)"}
-              Icon={CategoryOutlinedIcon}
+              Icon={BackupTableOutlinedIcon}
               // fontSize
               nameOfTheClass="go-to-committee-type"
               title="Committee Type"
