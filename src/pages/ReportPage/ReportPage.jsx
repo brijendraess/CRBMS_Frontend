@@ -171,13 +171,6 @@ const ReportPage = () => {
       width: 260,
       headerClassName: "super-app-theme--header",
     },
-
-    // {
-    //   field: "capacity",
-    //   headerName: "Capacity",
-    //   width: 150,
-    //   headerClassName: "super-app-theme--header",
-    // },
     {
       field: "count",
       headerName: "Used Count",
@@ -205,12 +198,6 @@ const ReportPage = () => {
       width: 225,
       headerClassName: "super-app-theme--header",
     },
-    // {
-    //   field: "username",
-    //   headerName: "Username",
-    //   width: 150,
-    //   headerClassName: "super-app-theme--header",
-    // },
     {
       field: "percentage",
       headerName: "Percentage",
@@ -373,10 +360,10 @@ const ReportPage = () => {
                   background: 'white',
                 },
               }}
+              className="most-used-room"
             />
           </PaperWrapper>
         </Grid>
-
         <Grid size={{ xs: 12, sm: 6, md: 6 }}>
           <PaperWrapper elevation={12}>
             <DataGrid
@@ -399,6 +386,7 @@ const ReportPage = () => {
                   background: 'white',
                 },
               }}
+              className="most-frequent-organizer"
             />
           </PaperWrapper>
         </Grid>

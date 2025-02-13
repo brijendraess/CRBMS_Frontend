@@ -155,6 +155,7 @@ const ServicesPage = () => {
                   color="success"
                   onClick={() => handleEdit(params.row.id)}
                   style={{ cursor: "pointer" }}
+                  className="edit-service"
                 />
               </Tooltip>
             )}
@@ -165,6 +166,7 @@ const ServicesPage = () => {
                   color="error"
                   style={{ cursor: "pointer" }}
                   onClick={() => handleOpen(params.row.id)}
+                  className="delete-service"
                 />
               </Tooltip>
             )}
