@@ -121,7 +121,8 @@ const Notification = () => {
                 color="error"
                 style={{ cursor: "pointer" }}
                 onClick={() => handleOpen(params.row.id)}
-              />
+                className="delete-notification"
+                />
             </Tooltip>}
           {user.UserType.notificationModule &&
             user.UserType.notificationModule.split(",").includes("read") &&
@@ -129,6 +130,7 @@ const Notification = () => {
               <Switch
                 checked={params.row.isRead}
                 onChange={() => handleStatusChange(params.row.id)}
+                className="read-unread-notification"
               />
             </Tooltip>}
         </Box>

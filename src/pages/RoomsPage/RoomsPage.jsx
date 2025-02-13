@@ -278,8 +278,8 @@ const RoomsPage = () => {
               alignItems: "center",
               justifyContent: {
                 xs: "center",
-                sm: "center",
-                md: "center",
+                sm: "space-evenly",
+                md: "space-evenly",
               },
             }}
           >

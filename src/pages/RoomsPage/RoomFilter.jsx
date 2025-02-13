@@ -80,7 +80,7 @@ const RoomFilter = ({
           },
         }}
       />
-      <FormControl sx={{ width: 300 }} size="small">
+      <FormControl sx={{ width: 250 }} size="small">
         <InputLabel id="demo-multiple-checkbox-label">Amenities</InputLabel>
         <Select
           labelId="demo-multiple-checkbox-label"
@@ -105,7 +105,7 @@ const RoomFilter = ({
           ))}
         </Select>
       </FormControl>
-      <FormControl sx={{ width: 300 }} size="small">
+      <FormControl sx={{ width: 250 }} size="small">
         <InputLabel id="demo-multiple-checkbox-label">Location</InputLabel>
         <Select
           labelId="demo-multiple-checkbox-label"
@@ -130,7 +130,7 @@ const RoomFilter = ({
           ))}
         </Select>
       </FormControl>
-      <FormControl sx={{ width: 300 }} size="small">
+      <FormControl sx={{ width: 250 }} size="small">
         <InputLabel id="demo-multiple-checkbox-label">Services</InputLabel>
         <Select
           labelId="demo-multiple-checkbox-label"
@@ -155,7 +155,7 @@ const RoomFilter = ({
           ))}
         </Select>
       </FormControl>
-      <FormControl sx={{ width: 300 }} size="small">
+      <FormControl sx={{ width: 360 }} size="small">
         <InputLabel id="demo-multiple-checkbox-label">Food & Beverage</InputLabel>
         <Select
           labelId="demo-multiple-checkbox-label"
@@ -180,7 +180,7 @@ const RoomFilter = ({
           ))}
         </Select>
       </FormControl>
-      <FormControl sx={{ marginRight: "10px", minWidth: 100 }} size="small">
+      <FormControl sx={{minWidth: 125 }} size="small">
         <InputLabel id="demo-select-small-label">Capacity</InputLabel>
         <Select
           label="Capacity"
