@@ -949,66 +949,6 @@ const guideSteps = {
       },
     },
   ],
-  "/logs": (isSmallScreen, isAdmin) => [
-    {
-      element: ".MuiDataGrid-root",
-      popover: {
-        title: "Logs Table",
-        description:
-          "View all logs in a tabular format for better insights.",
-        position: "top",
-      },
-    },
-    {
-      element: ".meeting-logs-edit",
-      popover: {
-        title: "Edit Meeting",
-        description: "Click to Edit the meeting.",
-        position: "left",
-      },
-    },
-    {
-      element: ".meeting-logs-postpone",
-      popover: {
-        title: "Postpone Meeting",
-        description: "Click to Postpone the meeting.",
-        position: "left",
-      },
-    },
-    {
-      element: ".meeting-logs-swap",
-      popover: {
-        title: "Swap Meeting",
-        description: "Click to Swap the meeting.",
-        position: "left",
-      },
-    },
-    {
-      element: ".meeting-logs-cancel",
-      popover: {
-        title: "Cancel Meeting",
-        description: "Click to Cancel the meeting.",
-        position: "left",
-      },
-    },
-    {
-      element: ".meeting-logs-approve",
-      popover: {
-        title: "Approve Meeting",
-        description: "Click to Approve the meeting.",
-        position: "left",
-      },
-    },
-    {
-      element: ".MuiTablePagination-actions",
-      popover: {
-        title: "Pagination Controls",
-        description:
-          "Navigate through the log entries using these controls.",
-        position: "bottom",
-      },
-    },
-  ],
   "/reports": (isSmallScreen, isAdmin) => [
     {
       element: ".user-report-card",
@@ -1080,6 +1020,229 @@ const guideSteps = {
         description:
           "Total Number Of Rooms",
         position: "top",
+      },
+    },
+    {
+      element: ".most-used-room",
+      popover: {
+        title: "Most Used Room",
+        description:
+          "Table shows the most used rooms in percentage",
+        position: "top",
+      },
+    },
+    {
+      element: ".most-frequent-organizer",
+      popover: {
+        title: "Most Frequent Organizer",
+        description:
+          "Table shows the most frequent organizer in percentage",
+        position: "top",
+      },
+    },
+  ],
+  "/notification-all": (isSmallScreen, isAdmin) => [
+    {
+      element: ".MuiDataGrid-root",
+      popover: {
+        title: "Notification",
+        description:
+          "See Your Latest meeting alerts here",
+        position: "top",
+      },
+    },
+    {
+      element: ".delete-notification",
+      popover: {
+        title: "Delete a Notification",
+        description:
+          "Delete a notification",
+        position: "top",
+      },
+    },
+    {
+      element: ".read-unread-notification",
+      popover: {
+        title: "Change Notification Status",
+        description:
+          "Mark Status as read or unread",
+        position: "top",
+      },
+    },
+  ],
+  "/logs": (isSmallScreen, isAdmin) => [
+    {
+      element: ".MuiDataGrid-root",
+      popover: {
+        title: "Logs Table",
+        description:
+          "View all logs in a tabular format for better insights.",
+        position: "top",
+      },
+    },
+    {
+      element: ".MuiDataGrid-root .meeting-logs-edit",
+      popover: {
+        title: "Edit Meeting",
+        description: "Click to Edit the meeting.",
+        position: "left",
+      },
+    },
+    {
+      element: ".meeting-logs-postpone",
+      popover: {
+        title: "Postpone Meeting",
+        description: "Click to Postpone the meeting.",
+        position: "left",
+      },
+    },
+    {
+      element: ".meeting-logs-swap",
+      popover: {
+        title: "Swap Meeting",
+        description: "Click to Swap the meeting.",
+        position: "left",
+      },
+    },
+    {
+      element: ".meeting-logs-cancel",
+      popover: {
+        title: "Cancel Meeting",
+        description: "Click to Cancel the meeting.",
+        position: "left",
+      },
+    },
+    {
+      element: ".meeting-logs-approve",
+      popover: {
+        title: "Approve Meeting",
+        description: "Click to Approve the meeting.",
+        position: "left",
+      },
+    },
+    {
+      element: ".MuiTablePagination-actions",
+      popover: {
+        title: "Pagination Controls",
+        description:
+          "Navigate through the log entries using these controls.",
+        position: "bottom",
+      },
+    },
+  ],
+  "/services": (isSmallScreen, isAdmin) => [
+    {
+      element: ".add-new-service",
+      popover: {
+        title: "Add New Service",
+        description:
+          "List of services",
+        position: "top",
+      },
+    },
+    {
+      element: ".MuiDataGrid-root",
+      popover: {
+        title: "Service Table",
+        description:
+          "List of services",
+        position: "top",
+      },
+    },
+    {
+      element: ".edit-service",
+      popover: {
+        title: "Edit Service",
+        description: "Click to Edit the meeting.",
+        position: "left",
+      },
+    },
+    {
+      element: ".delete-service",
+      popover: {
+        title: "Delete Service",
+        description: "Click to Postpone the meeting.",
+        position: "left",
+      },
+    },
+    {
+      element: ".MuiSwitch-root",
+      popover: {
+        title: "Activate or Deactivate a service",
+        description: "Click to Swap the meeting.",
+        position: "left",
+      },
+    },
+    {
+      element: ".MuiTablePagination-actions",
+      popover: {
+        title: "Pagination Controls",
+        description:
+          "Navigate through the log entries using these controls.",
+        position: "bottom",
+      },
+    },
+  ],
+  "/stocks": (isSmallScreen, isAdmin) => [
+    {
+      element: ".add-new-stock",
+      popover: {
+        title: "Add New Item",
+        description:
+          "List of services",
+        position: "top",
+      },
+    },
+    {
+      element: ".pending-amenities",
+      popover: {
+        title: "Pending Amenities",
+        description:
+          "List of services",
+        position: "top",
+      },
+    },
+    {
+      element: ".pending-food",
+      popover: {
+        title: "Pending Food",
+        description:
+          "List of services",
+        position: "top",
+      },
+    },
+    {
+      element: ".MuiDataGrid-root",
+      popover: {
+        title: "Service Table",
+        description:
+          "List of services",
+        position: "top",
+      },
+    },
+    {
+      element: ".decrease-stock",
+      popover: {
+        title: "Decrease",
+        description: "Click to Edit the meeting.",
+        position: "left",
+      },
+    },
+    {
+      element: ".increase-stock",
+      popover: {
+        title: "Delete Service",
+        description: "Click to Postpone the meeting.",
+        position: "left",
+      },
+    },
+    {
+      element: ".MuiTablePagination-actions",
+      popover: {
+        title: "Pagination Controls",
+        description:
+          "Navigate through the log entries using these controls.",
+        position: "bottom",
       },
     },
   ],

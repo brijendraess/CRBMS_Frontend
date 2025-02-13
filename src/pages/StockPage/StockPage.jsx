@@ -9,6 +9,8 @@ import {
   Tooltip,
   Badge,
   Button,
+  useMediaQuery,
+  Grid2,
 } from "@mui/material";
 import {
   AddIcon,
@@ -26,6 +28,8 @@ import toast from "react-hot-toast";
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
 import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
 import CustomButton from "../../components/Common/Buttons/CustomButton";
+import { Restaurant } from "@mui/icons-material";
+import InventoryCard from "./InventoryCard";
 
 const useStyles = makeStyles({
   lowQuantity: {
@@ -45,6 +49,9 @@ const StockPage = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
+
+  const isSmallScreen = useMediaQuery("(max-width: 768px)");
+
   // Handle quantity change
   const handleQuantityChange = async (amenityId, uid, id, delta, setData) => {
     try {
@@ -178,6 +185,7 @@ const StockPage = () => {
                   backgroundColor: "#ff0000c4",
                   color: "#000",
                 }}
+                className="decrease-stock"
               >
                 <RemoveIcon fontSize="small" />
               </IconButton>
@@ -202,6 +210,7 @@ const StockPage = () => {
                   color: "#000",
                   borderRadius: "50%",
                 }}
+                className="increase-stock"
               >
                 <AddIcon fontSize="small" />
               </IconButton>
@@ -229,12 +238,24 @@ const StockPage = () => {
         heading="Inventory"
         icon={AddOutlinedIcon}
         func={setIsAddOpen}
-        nameOfTheClass="add-new-service"
+        nameOfTheClass="add-new-stock"
         statusIcon={
           user.UserType.inventoryModule &&
           user.UserType.inventoryModule.split(",").includes("add")
         }
       >
+        {user.UserType.inventoryModule &&
+          user.UserType.inventoryModule.split(",").includes("pendingFoodBeverageView") &&
+          <CustomButton
+            nameOfTheClass="pending-food"
+            onClick={handleNavigatePendingFoodBeverage}
+            title="Pending Food & Beverage"
+            Icon={Restaurant}
+            fontSize={"medium"}
+            background={"var(--linear-gradient-main)"}
+            badgeContent={pendingFoodBeverage} // Badge appears only when this prop is passed
+          />
+        }
         {user.UserType.inventoryModule &&
           user.UserType.inventoryModule.split(",").includes("pendingAmenityView") &&
           <CustomButton
@@ -242,27 +263,15 @@ const StockPage = () => {
             iconStyles
             fontSize={"medium"}
             background={"var(--linear-gradient-main)"}
-            className="pending-amenities"
+            nameOfTheClass="pending-amenities"
             onClick={handleNavigatePendingAmenities}
             Icon={Groups2OutlinedIcon}
             title="Pending Amenities"
             badgeContent={pendingAmenities}
           />
         }
-        {user.UserType.inventoryModule &&
-          user.UserType.inventoryModule.split(",").includes("pendingFoodBeverageView") &&
-          <CustomButton
-            className="pending-food"
-            onClick={handleNavigatePendingFoodBeverage}
-            title="Pending Food & Beverage"
-            Icon={FoodBankOutlinedIcon}
-            fontSize={"medium"}
-            background={"var(--linear-gradient-main)"}
-            badgeContent={pendingFoodBeverage} // Badge appears only when this prop is passed
-          />
-        }
       </PageHeader>
-      <Box
+      {!isSmallScreen && <Box
         style={{
           display: "flex",
           flexDirection: "column",
@@ -291,6 +300,30 @@ const StockPage = () => {
           }}
         />
       </Box>
+      }
+      {
+        isSmallScreen && <Grid2
+          container
+          spacing={3}
+          sx={{
+            borderRadius: "20px",
+            position: "relative",
+            top: "10px",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {amenitiesData.map((stock) => (
+            <InventoryCard
+              key={stock.id}
+              stockItem={stock}
+              handleQuantityChange={(amenityId, uid, id, delta) =>
+                handleQuantityChange(amenityId, uid, id, delta, setAmenitiesData)
+              }
+            />
+          ))}
+        </Grid2>
+      }
       <NewPopUpModal
         isOpen={isAddOpen}
         setIsOpen={setIsAddOpen}

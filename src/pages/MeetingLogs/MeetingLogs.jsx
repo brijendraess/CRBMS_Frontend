@@ -170,100 +170,101 @@ const MeetingLogs = () => {
         const timeString = params.row.endTime;
         const [time, modifier] = timeString.split(" ");
         let [hours, minutes] = time.split(":").map(Number);
-  
+
         if (modifier === "PM" && hours !== 12) hours += 12;
         if (modifier === "AM" && hours === 12) hours = 0;
-  
+
         // Construct the correct endDateTime
         const endDateTime = new Date(year, month - 1, day, hours, minutes);
         const currentDateTime = new Date();
 
         return (
-        <Box
-          alignItems="center"
-          sx={{
-            // display: params.row.status !== "cancelled" &&  && params.row.status !== "completed" ? "flex" : "none",
-            display: (() => {
-              return params.row.status !== "cancelled" &&
-                params.row.status !== "completed" &&
-                endDateTime > currentDateTime
-                ? "flex"
-                : "none";
-            })(),
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100%",
-          }}
-          gap={"10px"}
-        >
-          {user.UserType.meetingLogsModule &&
-            user.UserType.meetingLogsModule.split(",").includes("edit") && (
-              <Tooltip title="Edit meeting">
-                <EditOutlinedIcon
-                  color="success"
-                  onClick={() => handleEdit(params.row.roomId, params.row.id)}
-                  style={{ cursor: "pointer" }}
-                  className="meeting-logs-edit"
-                />
-              </Tooltip>
-            )}
-          {user.UserType.meetingLogsModule &&
-            user.UserType.meetingLogsModule.split(",").includes("postpone") && (
-              <Tooltip title="Postpone meeting">
-                <HistoryOutlinedIcon
-                  className="meeting-logs-postpone"
-                  color="message"
-                  style={{ cursor: "pointer" }}
-                  onClick={() =>
-                    handlePostpone(params.row.roomId, params.row.id)
-                  }
-                />
-              </Tooltip>
-            )}
-          {user.UserType.meetingLogsModule &&
-            user.UserType.meetingLogsModule.split(",").includes("edit") && (
-              <Tooltip title="Swap meeting">
-                <SwapHorizIcon
-                  color="success"
-                  onClick={() => handleSwap(params.row.roomId, params.row.id)}
-                  style={{ cursor: "pointer" }}
-                  className="meeting-logs-swap"
-                />
-              </Tooltip>
-            )}
-          {user.UserType.meetingLogsModule &&
-            user.UserType.meetingLogsModule.split(",").includes("cancel") && (
-              <Tooltip title="Cancel meeting">
-                <EventBusyOutlinedIcon
-                  className="meeting-logs-cancel"
-                  color="error"
-                  style={{ cursor: "pointer" }}
-                  onClick={() =>
-                    handleCancelMeeting(params.row.roomId, params.row.id)
-                  }
-                />
-              </Tooltip>
-            )}
-          {user.UserType.isAdmin === "admin" &&
-            user.UserType.meetingLogsModule &&
-            user.UserType.meetingLogsModule.split(",").includes("approval") && (
-              <Tooltip title="Change the status of meeting">
-                <ApprovalOutlinedIcon
-                  className="meeting-logs-approve"
-                  color="success"
-                  style={{ cursor: "pointer" }}
-                  onClick={() =>
-                    handleApproval(
-                      params.row.roomId,
-                      params.row.id,
-                      params.row.status
-                    )
-                  }
-                />
-              </Tooltip>
-            )}
-        </Box>
-      )},
+          <Box
+            alignItems="center"
+            sx={{
+              // display: params.row.status !== "cancelled" &&  && params.row.status !== "completed" ? "flex" : "none",
+              display: (() => {
+                return params.row.status !== "cancelled" &&
+                  params.row.status !== "completed" &&
+                  endDateTime > currentDateTime
+                  ? "flex"
+                  : "none";
+              })(),
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100%",
+            }}
+            gap={"10px"}
+          >
+            {user.UserType.meetingLogsModule &&
+              user.UserType.meetingLogsModule.split(",").includes("edit") && (
+                <Tooltip title="Edit meeting">
+                  <EditOutlinedIcon
+                    color="success"
+                    onClick={() => handleEdit(params.row.roomId, params.row.id)}
+                    style={{ cursor: "pointer" }}
+                    className="meeting-logs-edit"
+                  />
+                </Tooltip>
+              )}
+            {user.UserType.meetingLogsModule &&
+              user.UserType.meetingLogsModule.split(",").includes("postpone") && (
+                <Tooltip title="Postpone meeting">
+                  <HistoryOutlinedIcon
+                    color="message"
+                    style={{ cursor: "pointer" }}
+                    onClick={() =>
+                      handlePostpone(params.row.roomId, params.row.id)
+                    }
+                    className="meeting-logs-postpone"
+                  />
+                </Tooltip>
+              )}
+            {user.UserType.meetingLogsModule &&
+              user.UserType.meetingLogsModule.split(",").includes("edit") && (
+                <Tooltip title="Swap meeting">
+                  <SwapHorizIcon
+                    color="success"
+                    onClick={() => handleSwap(params.row.roomId, params.row.id)}
+                    style={{ cursor: "pointer" }}
+                    className="meeting-logs-swap"
+                  />
+                </Tooltip>
+              )}
+            {user.UserType.meetingLogsModule &&
+              user.UserType.meetingLogsModule.split(",").includes("cancel") && (
+                <Tooltip title="Cancel meeting">
+                  <EventBusyOutlinedIcon
+                    className="meeting-logs-cancel"
+                    color="error"
+                    style={{ cursor: "pointer" }}
+                    onClick={() =>
+                      handleCancelMeeting(params.row.roomId, params.row.id)
+                    }
+                  />
+                </Tooltip>
+              )}
+            {user.UserType.isAdmin === "admin" &&
+              user.UserType.meetingLogsModule &&
+              user.UserType.meetingLogsModule.split(",").includes("approval") && (
+                <Tooltip title="Change the status of meeting">
+                  <ApprovalOutlinedIcon
+                    className="meeting-logs-approve"
+                    color="success"
+                    style={{ cursor: "pointer" }}
+                    onClick={() =>
+                      handleApproval(
+                        params.row.roomId,
+                        params.row.id,
+                        params.row.status
+                      )
+                    }
+                  />
+                </Tooltip>
+              )}
+          </Box>
+        )
+      },
     },
   ];
 

@@ -204,7 +204,7 @@ const Header = () => {
                   context.setIsSidebarVisible(!context.isSidebarVisible)
                 }
               >
-                {context.isSidebarVisible ? <MenuOpenIcon /> : <MenuOutlined />}
+                {context.isSidebarVisible ? <MenuOutlined /> : <MenuOpenIcon />}
               </Button>
             </Tooltip>
           </div>

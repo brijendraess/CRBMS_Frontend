@@ -28,7 +28,7 @@ const MyComitteeCard = ({ committee, onDelete, setRefreshPage, heading }) => {
 
   return (
     <Card
-      elevation={hover ? 2 : 1}
+      elevation={hover ? 12 : 1}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       sx={{
@@ -44,13 +44,16 @@ const MyComitteeCard = ({ committee, onDelete, setRefreshPage, heading }) => {
         width: 320,
         background: "#fafafa80",
         justifyContent: "space-between",
+        cursor: 'default'
       }}
       className="my-committee-card"
     >
       <CardActionArea
         sx={{
           height: "100%",
+          cursor: 'default'
         }}
+
       >
         <CardContent
           sx={{
@@ -58,6 +61,7 @@ const MyComitteeCard = ({ committee, onDelete, setRefreshPage, heading }) => {
             flexDirection: "column",
             justifyContent: "space-evenly",
             height: "100%",
+            cursor:'default'
           }}
         >
           {/* Card Header */}

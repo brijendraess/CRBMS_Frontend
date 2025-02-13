@@ -42,6 +42,7 @@ import BarCode from "../../pages/BarCodePage/BarCode";
 import StatusSymbol from "../Common/Buttons/StatusSymbol";
 import DeleteNotAllowModel from "../Common/Modals/Delete/DeleteNotAllowModel";
 import NewPopUpModal from "../Common/Modals/Popup/NewPopUpModal";
+import { WifiOutlined } from "@mui/icons-material";
 
 const RoomsCard = ({
   room,
@@ -161,9 +162,9 @@ const RoomsCard = ({
           width: {
             xs: "100%",
             sm: 320,
-            md: 320,
-            xl: 320,
-            lg: 320,
+            md: 350,
+            xl: 350,
+            lg: 350,
           },
           transition: "all 0.4s ease-in-out",
           ":hover": {
@@ -410,7 +411,7 @@ const RoomsCard = ({
                     }}
                     size="small"
                   >
-                    <Groups2OutlinedIcon color="white" className="cursor" />
+                    <WifiOutlined color="white" className="cursor" />
                   </Button>
                 )}
               {user.UserType.roomModule &&
@@ -471,7 +472,7 @@ const RoomsCard = ({
                     <EditOutlinedIcon color="white" className="cursor" />
                   </Button>
                 )}
-                {meetingCurrentData?.length==0 && user.UserType.roomModule &&
+              {meetingCurrentData?.length == 0 && user.UserType.roomModule &&
                 user.UserType.roomModule.split(",").includes("addMeeting") && (
                   <Button
                     className="room-book"

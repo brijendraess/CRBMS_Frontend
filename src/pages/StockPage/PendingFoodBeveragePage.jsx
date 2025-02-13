@@ -131,7 +131,7 @@ const PendingFoodBeveragePage = () => {
   return (
     <PaperWrapper>
       <PageHeader
-        heading="Pending FoodBeverage"
+        heading="Pending Food & Beverage"
         icon={''}
         func={""}
         nameOfTheClass="add-new-service"
