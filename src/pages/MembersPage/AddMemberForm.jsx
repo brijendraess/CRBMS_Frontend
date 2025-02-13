@@ -7,6 +7,8 @@ import {
   IconButton,
   Autocomplete,
   InputAdornment,
+  Divider,
+  Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
@@ -105,6 +107,8 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
       email: "",
       user_type: "",
       phoneNumber: "",
+      zimbraUsername: "",
+      zimbraPassword: "",
       committee: [],
       setServices: [],
       avatar: "",
@@ -124,6 +128,8 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
         .length(10, "Phone number must be 10 digits"),
       password: Yup.string().required("Password is required"),
       userName: Yup.string().required("user name is required"),
+      zimbraPassword: Yup.string().optional(),
+      zimbraUsername: Yup.string().optional(),
       committee: Yup.array()
         .of(Yup.string().required("Committee ID is required"))
         .min(1, "Select at least one committee"),
@@ -141,6 +147,8 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
         formData.append("email", values.email);
         formData.append("user_type", values.user_type);
         formData.append("phoneNumber", values.phoneNumber);
+        formData.append("zimbraUsername", values.zimbraUsername);
+        formData.append("zimbraPassword", values.zimbraPassword);
         formData.append(
           "password",
           strongPassword ? strongPassword : values.password
@@ -451,6 +459,45 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
             </IconButton>
           </label>
         </Box>
+
+        {/* <Divider sx={{ my: 3, borderBottomWidth: 2, borderColor: "black", width: "40%" }} /> */}
+        <Divider sx={{ my: 3, borderBottomWidth: 3 }} textAlign="center">
+          <Typography variant="subtitle1" sx={{ px: 2 }}>
+            Zimbra Credentials(Optional)
+          </Typography>
+        </Divider>
+
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          flexDirection={{ xs: "column", sm: "row" }}
+          mb={2}
+          gap={2}
+        >
+          <TextField
+            label="Zimbra Username"
+            name="zimbraUsername"
+            value={formik.values.zimbraUsername}
+            onChange={formik.handleChange}
+            error={formik.touched.zimbraUsername && Boolean(formik.errors.zimbraUsername)}
+            helperText={formik.touched.zimbraUsername && formik.errors.zimbraUsername}
+            style={{ flex: 1 }}
+            size="small"
+          />
+          <TextField
+            label="Zimbra Password"
+            name="zimbraPassword"
+            value={formik.values.zimbraPassword}
+            onChange={formik.handleChange}
+            error={
+              formik.touched.zimbraPassword && Boolean(formik.errors.zimbraPassword)
+            }
+            helperText={formik.touched.zimbraPassword && formik.errors.zimbraPassword}
+            size="small"
+            style={{ flex: 1 }}
+          />
+        </Box>
+        
 
         {/* Submit Button */}
         <FormButton type="submit" btnName="Add Member" />
