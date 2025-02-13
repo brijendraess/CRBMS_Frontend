@@ -150,7 +150,7 @@ const MeetingForm = ({ room }) => {
   
       const notAvailableCommittees = response?.data?.data?.notAvailableCommittees;
       if(notAvailableCommittees.length == 0){
-        const formattedCommitteeList = committeeList.map((committeeData) => {return {
+        const formattedCommitteeList = await committeeList.map((committeeData) => {return {
           ...committeeData,
           isAvailable: true
         }});
@@ -162,7 +162,7 @@ const MeetingForm = ({ room }) => {
         for(let committee of committeeList){
           let isAvailable = true;
 
-          const notAvailable = notAvailableCommittees.find((committee) => committee.committeeId === committee.id);
+          const notAvailable = await notAvailableCommittees.find((committeeData) => committeeData.committeeId === committee.id);
           if(notAvailable){
             isAvailable = false
           }
@@ -170,7 +170,7 @@ const MeetingForm = ({ room }) => {
           formattedCommittees.push({...committee, isAvailable: isAvailable})
         }
 
-        setEmailsList(formattedCommittees)
+        setCommitteeList(formattedCommittees)
       }
     } catch (error) {
       console.error("Error checking availability:", error);
