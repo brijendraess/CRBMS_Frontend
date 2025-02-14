@@ -23,10 +23,10 @@ import {
 } from "../../components/Common/Buttons/CustomIcon";
 import EditUserTypeSettings from "./EditUserTypeSettings";
 import AddUserTypeSettings from "./AddUserTypeSettings";
-import UserTypeCard from "../../components/Responsive/UserType/UserTypeCard";
 import { useNavigate } from "react-router-dom";
 import { replaceAndUppercase } from "../../utils/utils";
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
+import UserTypeRoleCard from "./UserTypeCard";
 
 const UserTypeSettings = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -337,7 +337,7 @@ const UserTypeSettings = () => {
           user.UserType.userRoleModule.split(",").includes("add")
         }
       />
-      <Box
+      {!isSmallScreen && <Box
         style={{
           display: "flex",
           flexDirection: "column",
@@ -361,7 +361,33 @@ const UserTypeSettings = () => {
             },
           }}
         />
-      </Box>
+      </Box>}
+      {isSmallScreen &&
+        <Grid2
+          container
+          spacing={3}
+          sx={{
+            borderRadius: "20px",
+            position: "relative",
+            top: "10px",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+
+          {isSmallScreen &&
+            userRole.map((role) => (
+              <UserTypeRoleCard
+                key={role.uid}
+                role={role}
+                handleEdit={handleEdit}
+                handleDelete={handleOpen}
+                handleStatusChange={handleStatusChange}
+              />
+            ))}
+
+        </Grid2>
+      }
       <DeleteModal
         open={open}
         onClose={handleClose}

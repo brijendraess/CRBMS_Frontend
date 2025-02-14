@@ -24,7 +24,7 @@ const AdminDashboard = () => {
     <PaperWrapper>
       <PageHeader heading={`Welcome, ${user.fullname}`} />
       <Grid container spacing={2} mb={2}>
-        <Grid size={{ xs: 12, sm: 8, md: 8 }}>
+        <Grid size={{ xs: 12, sm: 12, md: 12 }}>
           <AdminInfoCard
             color={[
               "var(--linear-gradient-main-2)",
@@ -35,7 +35,7 @@ const AdminDashboard = () => {
             Icons={CalendarMonthOutlinedIcon}
           />
         </Grid>
-        <Grid size={{ xs: 12, sm: 4, md: 4 }} gap={2} display='flex' flexDirection={'column'}>
+        <Grid size={{ xs: 12, sm: 12, md: 12 }} gap={2} display='flex' flexDirection={'column'}>
           <AdminInfoCard
             color={[
               "var(--linear-gradient-main-2)",
