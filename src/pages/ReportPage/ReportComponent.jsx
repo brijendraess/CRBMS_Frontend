@@ -106,7 +106,7 @@ const ReportComponent = () => {
     }, []);
 
     return (
-        <Grid container spacing={1.5} display={'flex'} flexDirection={'column'} className="report-component" >
+        <Grid container spacing={1.5} display={'flex'} className="report-component" >
             <InfoCard
                 color={["#1da256", "#48d483"]}
                 title="Users"

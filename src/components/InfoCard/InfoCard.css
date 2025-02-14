@@ -35,3 +35,48 @@
   opacity: 1;
   color: #000;
 }
+
+/* Set a perspective for the 3D effect */
+.flip {
+  perspective: 1000px;
+  position: relative;
+  display: inline-block;
+  height: 150px;
+  width: 310px;
+}
+
+/* Both faces are absolutely positioned within the flip container */
+.flip .front,
+.flip .back {
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 10px;
+  transition: transform 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    opacity 0.5s;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Front is shown by default */
+.flip .front {
+  transform: rotateY(0deg);
+  z-index: 2;
+}
+
+/* Back is hidden initially */
+.flip .back {
+  transform: rotateY(-180deg);
+  opacity: 0;
+}
+
+/* On hover, flip the front and reveal the back */
+.flip:hover .front {
+  transform: rotateY(180deg);
+}
+
+.flip:hover .back {
+  transform: rotateY(0deg);
+  opacity: 1;
+}

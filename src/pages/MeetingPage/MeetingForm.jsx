@@ -99,7 +99,7 @@ const MeetingForm = ({ room }) => {
 
   const fetchIsAvailable = async (attendeesList) => {
     if (!formik.values.startTime || !formik.values.endTime || !formik.values.date) return;
-  
+
     try {
       const response = await axios.post(`/api/v1/user/isAvailable`, {
         attendees: attendeesList.map((attendee) => attendee.id),
@@ -107,27 +107,29 @@ const MeetingForm = ({ room }) => {
         endTime: formik.values.endTime,
         meetingDate: formik.values.date,
       });
-  
+
       const notAvailableAttendees = response?.data?.data?.notAvailableAttendees;
-      if(notAvailableAttendees.length == 0){
-        const formattedEmailList = emailsList.map((emailData) => {return {
-          ...emailData,
-          isAvailable: true
-        }});
+      if (notAvailableAttendees.length == 0) {
+        const formattedEmailList = emailsList.map((emailData) => {
+          return {
+            ...emailData,
+            isAvailable: true
+          }
+        });
         setEmailsList(formattedEmailList)
       }
 
-      if(notAvailableAttendees.length > 0){
+      if (notAvailableAttendees.length > 0) {
         let formattedEmails = [];
-        for(let email of emailsList){
+        for (let email of emailsList) {
           let isAvailable = true;
 
           const notAvailable = notAvailableAttendees.find((attendee) => attendee.attendeeId === email.id);
-          if(notAvailable){
+          if (notAvailable) {
             isAvailable = false
           }
 
-          formattedEmails.push({...email, isAvailable: isAvailable})
+          formattedEmails.push({ ...email, isAvailable: isAvailable })
         }
 
         setEmailsList(formattedEmails)
@@ -139,7 +141,7 @@ const MeetingForm = ({ room }) => {
 
   const fetchCommitteeIsAvailable = async (committeeList) => {
     if (!formik.values.startTime || !formik.values.endTime || !formik.values.date) return;
-  
+
     try {
       const response = await axios.post(`/api/v1/committee/isAvailable`, {
         committees: committeeList.map((committee) => committee.id),
@@ -147,27 +149,29 @@ const MeetingForm = ({ room }) => {
         endTime: formik.values.endTime,
         meetingDate: formik.values.date,
       });
-  
+
       const notAvailableCommittees = response?.data?.data?.notAvailableCommittees;
-      if(notAvailableCommittees.length == 0){
-        const formattedCommitteeList = await committeeList.map((committeeData) => {return {
-          ...committeeData,
-          isAvailable: true
-        }});
+      if (notAvailableCommittees.length == 0) {
+        const formattedCommitteeList = await committeeList.map((committeeData) => {
+          return {
+            ...committeeData,
+            isAvailable: true
+          }
+        });
         setCommitteeList(formattedCommitteeList)
       }
 
-      if(notAvailableCommittees.length > 0){
+      if (notAvailableCommittees.length > 0) {
         let formattedCommittees = [];
-        for(let committee of committeeList){
+        for (let committee of committeeList) {
           let isAvailable = true;
 
           const notAvailable = await notAvailableCommittees.find((committeeData) => committeeData.committeeId === committee.id);
-          if(notAvailable){
+          if (notAvailable) {
             isAvailable = false
           }
 
-          formattedCommittees.push({...committee, isAvailable: isAvailable})
+          formattedCommittees.push({ ...committee, isAvailable: isAvailable })
         }
 
         setCommitteeList(formattedCommittees)
@@ -176,7 +180,7 @@ const MeetingForm = ({ room }) => {
       console.error("Error checking availability:", error);
     }
   };
-  
+
 
   useEffect(() => {
     if (emailsList.length > 0) {
@@ -187,7 +191,7 @@ const MeetingForm = ({ room }) => {
       fetchCommitteeIsAvailable(committeeList);
     }
 
-  }, [formik.values.startTime, formik.values.endTime, formik.values.date, formik.values.attendees, formik.values.committees]);  
+  }, [formik.values.startTime, formik.values.endTime, formik.values.date, formik.values.attendees, formik.values.committees]);
 
   const calculateDifference = () => {
     // Parse times into Date objects (using today's date)
@@ -394,10 +398,10 @@ const MeetingForm = ({ room }) => {
                 <div sx={{ width: "100%", float: "right" }}>
                   {/* Render a hardcoded Chip for availability */}
                   <Chip
-                  label={option.isAvailable ? "Available" : "Unavailable"}
-                  color={option.isAvailable ? "success" : "error"}
-                  size="small"
-                />
+                    label={option.isAvailable ? "Available" : "Unavailable"}
+                    color={option.isAvailable ? "success" : "error"}
+                    size="small"
+                  />
                 </div>
               </Box>
             )}

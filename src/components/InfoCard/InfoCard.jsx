@@ -1,21 +1,13 @@
 import React, { useState } from "react";
 import { Box, IconButton, Menu, MenuItem, Paper, styled } from "@mui/material";
 import "./InfoCard.css";
+// import "./FlipCard.css"; // Import our flip animation CSS
 import {
   AccountCircleIcon,
   MoreVertIcon,
 } from "../Common/Buttons/CustomIcon";
 
-const Item = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-  height: "100px",
-  width: "100%",
-  lineHeight: "10px",
-  borderRadius: "20px",
-  padding: "15px",
-}));
+// Adjusted Paper styling so it fits inside our flip container.
 
 const InfoCard = ({
   color,
@@ -27,6 +19,17 @@ const InfoCard = ({
   subHeading,
   nameOfTheClass,
 }) => {
+  const Item = styled(Paper)(({ theme }) => ({
+    ...theme.typography.body2,
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+    height: "100%",
+    width: "100%",
+    borderRadius: "10px",
+    padding: "15px",
+    boxShadow: "none",
+    backgroundImage: `linear-gradient(to right, ${color[0]}, ${color[1]})`,
+  }));
   const [elevation, setElevation] = useState(2);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -46,7 +49,7 @@ const InfoCard = ({
     }
   };
 
-  // Define custom title mappings for different meeting types
+  // Define custom title mappings
   const defaultMeetingTitles = {
     Today: "Today's Meetings",
     "This Week": "This Week's Meetings",
@@ -65,7 +68,6 @@ const InfoCard = ({
     "This Month": "This Month's Completed Meetings",
   };
 
-  // Choose appropriate mapping based on the title prop
   let meetingMapping = defaultMeetingTitles;
   if (title === "Cancelled Meetings") {
     meetingMapping = cancelledMeetingTitles;
@@ -73,32 +75,37 @@ const InfoCard = ({
     meetingMapping = completedMeetingTitles;
   }
 
-  // If subHeading exists, use the mapped title; otherwise, fallback to the provided title.
-  const formattedTitle = subHeading ? (meetingMapping[subHeading] || `${subHeading} Meetings`) : title;
+  const formattedTitle = subHeading
+    ? meetingMapping[subHeading] || `${subHeading} Meetings`
+    : title;
 
   return (
-    <Item
-      elevation={elevation}
-      onMouseEnter={() => setElevation(24)}
-      onMouseLeave={() => setElevation(6)}
-      style={{
-        backgroundImage: `linear-gradient(to right, ${color[0]}, ${color[1]})`,
-      }}
-      className={nameOfTheClass || ""}
-    >
-      <Box display="flex" width="100%" justifyContent="space-between">
-        <Box className="col1">
-          <h4 className="text-white">
-            {formattedTitle}
-          </h4>
-          <span className="number text-white">{count}</span>
-        </Box>
-        <Box display="flex" flexDirection="column">
-          <Box className="ms-auto">
-            <span className="iconContainer">
-              <AccountCircleIcon />
-            </span>
+    <div className={`flip ${nameOfTheClass || ""}`}>
+      <div
+        className="front"
+        onMouseEnter={() => setElevation(24)}
+        onMouseLeave={() => setElevation(6)}
+      >
+        <Item elevation={elevation}>
+          <Box display="flex" width="100%" justifyContent="space-between">
+            <Box className="col1">
+              <h4 className="text-white">{formattedTitle}</h4>
+              <span className="number text-white">{count}</span>
+            </Box>
+            <Box display="flex" flexDirection="column">
+              <Box className="ms-auto">
+                <span className="iconContainer">
+                  <AccountCircleIcon />
+                </span>
+              </Box>
+            </Box>
           </Box>
+        </Item>
+      </div>
+
+      {/* Back Side */}
+      <div className="back">
+        <Item elevation={elevation}>
           <div style={{ display: show ? "block" : "none" }}>
             <IconButton
               aria-label="more"
@@ -127,15 +134,22 @@ const InfoCard = ({
               }}
             >
               {options.map((option) => (
-                <MenuItem key={option} onClick={() => handleOptionClick(option)}>
+                <MenuItem
+                  key={option}
+                  onClick={() => handleOptionClick(option)}
+                >
                   {option}
                 </MenuItem>
               ))}
             </Menu>
           </div>
-        </Box>
-      </Box>
-    </Item>
+          <h2>Text</h2>
+          <p>
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+          </p>
+        </Item>
+      </div>
+    </div>
   );
 };
 

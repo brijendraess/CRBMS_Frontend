@@ -6,7 +6,6 @@ import {
   Box,
   Paper,
   styled,
-  LinearProgress,
   Typography,
   Button,
 } from "@mui/material";
@@ -28,6 +27,7 @@ import PopupModals from "../../components/Common/Modals/Popup/PopupModals";
 import MeetingForm from "../MeetingPage/MeetingForm";
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
 import CustomButton from "../../components/Common/Buttons/CustomButton";
+import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
 
 const BoxWrapper = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -106,92 +106,7 @@ const columns = [
   },
 ];
 
-// const renderProgressBar = (params) => {
-//   const status = params.row.status;
-//   const meetingStartTime = `${params.row.meetingDate}T${params.row.startTime}Z`; // ISO 8601 format
-//   const meetingEndTime = `${params.row.meetingDate}T${params.row.endTime}Z`;
-//   const percentage = getMeetingTimePercentage(meetingStartTime, meetingEndTime);
-//   let progress = 0;
-
-//   if (status === "completed") progress = percentage;
-//   else if (status === "start") progress = percentage;
-//   else if (status === "scheduled") progress = 0;
-
-//   const getCustomColor = (percentage) => {
-//     if (percentage >= 0 && percentage <= 10)
-//       return theme.palette.progress.color10;
-//     if (percentage >= 11 && percentage <= 20)
-//       return theme.palette.progress.color20;
-//     if (percentage >= 21 && percentage <= 30)
-//       return theme.palette.progress.color30;
-//     if (percentage >= 31 && percentage <= 40)
-//       return theme.palette.progress.color40;
-//     if (percentage >= 41 && percentage <= 50)
-//       return theme.palette.progress.color50;
-
-//     if (percentage >= 51 && percentage <= 60)
-//       return theme.palette.progress.color60;
-//     if (percentage >= 61 && percentage <= 70)
-//       return theme.palette.progress.color70;
-//     if (percentage >= 71 && percentage <= 80)
-//       return theme.palette.progress.color80;
-//     if (percentage >= 81 && percentage <= 90)
-//       return theme.palette.progress.color90;
-//     if (percentage >= 91 && percentage <= 100)
-//       return theme.palette.progress.color100;
-//   };
-
-//   return (
-//     <Box
-//       sx={{
-//         display: "flex",
-//         alignItems: "center",
-//         justifyContent: "center", // Center the progress bar horizontally
-//         width: "100%",
-//         height: "100%",
-//       }}
-//     >
-//       <Box
-//         sx={{
-//           position: "relative", // Needed for placing text inside the bar
-//           width: "90%", // Occupies 90% of the cell width
-//         }}
-//       >
-//         <LinearProgress
-//           variant="determinate"
-//           value={progress}
-//           sx={{
-//             height: 20, // Increased thickness
-//             borderRadius: 6, // Rounded edges
-//             "& .MuiLinearProgress-bar": {
-//               backgroundColor: getCustomColor(percentage),
-//             },
-//           }}
-//         />
-//         <Typography
-//           sx={{
-//             position: "absolute", // Position the text inside the bar
-//             top: 0,
-//             left: 0,
-//             right: 0,
-//             bottom: 0,
-//             display: "flex",
-//             alignItems: "center",
-//             justifyContent: "center", // Center the text within the bar
-//             color: "white", // Ensure text is visible
-//             fontSize: "0.75rem",
-//             fontWeight: "bold",
-//           }}
-//         >
-//           {`${progress}%`}
-//         </Typography>
-//       </Box>
-//     </Box>
-//   );
-// };
-
 const calculateTimeDifference = (params) => {
-
   const meeting = params.row;
   if (meeting.status === "cancelled" || meeting.status === "completed") {
     return <>
@@ -200,8 +115,25 @@ const calculateTimeDifference = (params) => {
   }
 
   const now = new Date();
-  const startDateTime = new Date(`${meeting.meetingDate}T${meeting.startTime}`);
-  const endDateTime = new Date(`${meeting.meetingDate}T${meeting.endTime}`);
+
+  // Function to convert AM/PM time to 24-hour format
+  const convertTo24HourFormat = (time) => {
+    const [timePart, modifier] = time.split(' ');
+    let [hours, minutes] = timePart.split(':');
+    if (hours === '12') {
+      hours = '00';
+    }
+    if (modifier === 'PM') {
+      hours = parseInt(hours, 10) + 12;
+    }
+    return `${hours}:${minutes}`;
+  };
+
+  const startTime24 = convertTo24HourFormat(meeting.startTime);
+  const endTime24 = convertTo24HourFormat(meeting.endTime);
+
+  const startDateTime = new Date(`${meeting.meetingDate}T${startTime24}`);
+  const endDateTime = new Date(`${meeting.meetingDate}T${endTime24}`);
 
   const formatTime = (minutes) => {
     if (minutes >= 60) {
@@ -221,10 +153,8 @@ const calculateTimeDifference = (params) => {
     const minutesRemaining = Math.round((endDateTime - now) / (1000 * 60));
     return `Meeting ongoing, ${formatTime(minutesRemaining)} remaining.`;
   } else {
-    return "Meeting ended but still pending.";
+    return "Meeting approval time expired";
   }
-
-
 }
 
 const DetailRoomPage = () => {
@@ -249,9 +179,17 @@ const DetailRoomPage = () => {
     }
   };
 
+  const formatTimeTo12Hour = (time) => {
+    const [hours, minutes] = time.split(":");
+    const date = new Date();
+    date.setHours(hours, minutes);
+    return date.toLocaleString("en-US", { hour: "numeric", minute: "2-digit", hour12: true });
+  };
+
   const getAllMeeting = () => {
     const todayDate = new Date().toISOString().split('T')[0];
-    const meeting = room?.Meetings?.filter((meeting) => meeting.meetingDate === todayDate).map((meeting) => {
+
+    const meeting = room?.Meetings?.filter((meeting) => meeting.meetingDate === todayDate && meeting.status === "scheduled").map((meeting) => {
       const timeDiff = timeDifference(meeting?.startTime, meeting?.endTime);
       return {
         id: meeting.id,
@@ -259,14 +197,15 @@ const DetailRoomPage = () => {
         agenda: meeting.agenda,
         private: meeting.isPrivate,
         notes: meeting.notes,
-        startTime: meeting.startTime,
+        startTime: formatTimeTo12Hour(meeting.startTime),  // Convert time here
         meetingDate: meeting.meetingDate,
-        endTime: meeting.endTime, // 45 minutes duration
+        endTime: formatTimeTo12Hour(meeting.endTime),  // Convert time here
         duration: timeDiff,
         organizerName: meeting.User?.fullname,
         status: meeting.status,
       };
     });
+
     setMeeting(meeting);
   };
 
@@ -395,7 +334,7 @@ const DetailRoomPage = () => {
                 width: "100%",
               }}
             >
-              {room.RoomAmenityQuantities?.filter((item)=>item.status===true)?.length>0 && <Wrapper>
+              {room.RoomAmenityQuantities?.filter((item) => item.status === true)?.length > 0 && <Wrapper>
                 <Typography
                   variant="h6"
                   component="h6"
@@ -405,7 +344,7 @@ const DetailRoomPage = () => {
                   Amenities:
                 </Typography>
                 {room.RoomAmenityQuantities &&
-                  room.RoomAmenityQuantities?.filter((item)=>item.status===true)?.map((amenity) => (
+                  room.RoomAmenityQuantities?.filter((item) => item.status === true)?.map((amenity) => (
                     <Typography key={amenity.RoomAmenity.id} fontSize={"14px"}>
                       <b>|</b> {amenity.RoomAmenity.name} <b>|</b>
                     </Typography>
@@ -420,7 +359,7 @@ const DetailRoomPage = () => {
                 width: "100%",
               }}
             >
-              {room?.RoomFoodBeverages?.filter((item)=>item.status===true)?.length>0 &&<Wrapper>
+              {room?.RoomFoodBeverages?.filter((item) => item.status === true)?.length > 0 && <Wrapper>
                 <Typography
                   variant="h6"
                   component="h6"
@@ -430,7 +369,7 @@ const DetailRoomPage = () => {
                   Food Beverages:
                 </Typography>
                 {room.RoomFoodBeverages &&
-                  room.RoomFoodBeverages?.filter((item)=>item.status===true)?.map((food) => (
+                  room.RoomFoodBeverages?.filter((item) => item.status === true)?.map((food) => (
                     <Typography key={food.FoodBeverage.id} fontSize={"14px"}>
                       <b>|</b> {food.FoodBeverage.foodBeverageName} <b>|</b>
                     </Typography>
@@ -493,14 +432,11 @@ const DetailRoomPage = () => {
                 "& .MuiDataGrid-footerContainer": {
                   display: "none",
                 },
-                // Header styles
                 "& .super-app-theme--header": {
                   backgroundColor: `var(--linear-gradient-main)`,
                   color: "#fff",
                   fontWeight: "bold",
                 },
-
-                // Row styles
                 "& .MuiDataGrid-row": {
                   "&:nth-of-type(odd)": {
                     backgroundColor: "rgba(93, 220, 205, 0.05)",
@@ -511,8 +447,6 @@ const DetailRoomPage = () => {
                   color: "#333",
                   fontSize: "14px",
                 },
-
-                // Hover effect for rows
                 "& .MuiDataGrid-row:hover": {
                   backgroundColor: "#e0f7fa",
                 },
@@ -521,7 +455,7 @@ const DetailRoomPage = () => {
           </Box>
         </Box>
       </Box>
-      <PopupModals
+      <NewPopUpModal
         isOpen={isBookNowOpen}
         setIsOpen={setIsBookNowOpen}
         title={"Add New Meeting"}
