@@ -527,6 +527,7 @@ const AddUserTypeSettings = () => {
                   formik.setFieldValue("servicesEdit", true);
                   formik.setFieldValue("servicesDelete", true);
                   formik.setFieldValue("servicesView", true);
+                  formik.setFieldValue("servicesChangeStatus", true);
 
                   formik.setFieldValue("amenitiesChangeStatus", true);
                   formik.setFieldValue("roomAdd", true);
@@ -543,11 +544,6 @@ const AddUserTypeSettings = () => {
                   formik.setFieldValue("roomEdit", true);
                   formik.setFieldValue("roomDelete", true);
                   formik.setFieldValue("roomView", true);
-                  values.gallery,
-                    values.amenities,
-                    values.foodBeverage,
-                    values.barcode,
-                    values.sanitization;
 
                   formik.setFieldValue("locationAdd", true);
                   formik.setFieldValue("locationEdit", true);
@@ -667,18 +663,18 @@ const AddUserTypeSettings = () => {
                   formik.setFieldValue("committeeTypeView", "");
                   formik.setFieldValue("committeeTypeChangeStatus", "");
 
-                  formik.setFieldValue("notificationRead", true);
-                  formik.setFieldValue("notificationDelete", true);
-                  formik.setFieldValue("notificationView", true);
+                  formik.setFieldValue("notificationRead", "");
+                  formik.setFieldValue("notificationDelete", "");
+                  formik.setFieldValue("notificationView", "");
 
-                  formik.setFieldValue("inventoryAdd", true);
-                  formik.setFieldValue("inventoryView", true);
-                  formik.setFieldValue("inventoryIncrease", true);
-                  formik.setFieldValue("inventoryDecrease", true);
-                  formik.setFieldValue("inventoryPendingAmenityView", true);
-                  formik.setFieldValue("inventoryPendingFoodBeverageView", true);
-                  formik.setFieldValue("inventoryPendingAmenityStatus", true);
-                  formik.setFieldValue("inventoryPendingFoodBeverageStatus", true);
+                  formik.setFieldValue("inventoryAdd", "");
+                  formik.setFieldValue("inventoryView", "");
+                  formik.setFieldValue("inventoryIncrease", "");
+                  formik.setFieldValue("inventoryDecrease", "");
+                  formik.setFieldValue("inventoryPendingAmenityView", "");
+                  formik.setFieldValue("inventoryPendingFoodBeverageView", "");
+                  formik.setFieldValue("inventoryPendingAmenityStatus", "");
+                  formik.setFieldValue("inventoryPendingFoodBeverageStatus", "");
 
                   formik.setFieldValue("committeeMemberDelete", "");
                   formik.setFieldValue("committeeMemberView", "");
@@ -875,9 +871,9 @@ const AddUserTypeSettings = () => {
               },
               { name: "inventoryDecrease", label: "Decrease" },
               { name: "inventoryPendingAmenityView", label: "Pending Amenity View" },
-              { name: "inventoryPendingFoodBeverageView", label: "Pending FoodBeverage View" },
+              { name: "inventoryPendingFoodBeverageView", label: "Pending Food & Beverage View" },
               { name: "inventoryPendingAmenityStatus", label: "Pending Amenity Status" },
-              { name: "inventoryPendingFoodBeverageStatus", label: "Pending FoodBeverage Status" },
+              { name: "inventoryPendingFoodBeverageStatus", label: "Pending Food & Beverage Status" },
             ],
           },
           {
@@ -901,7 +897,7 @@ const AddUserTypeSettings = () => {
               { name: "roomAmenities", label: "Amenities" },
               { name: "roomBarcode", label: "BarCode" },
               { name: "roomSanitization", label: "Sanitization" },
-              { name: "roomAddMeeting", label: "addMeeting" },
+              { name: "roomAddMeeting", label: "Book Room" },
               { name: "roomFoodBeverage", label: "Food Beverage" },
             ],
           },

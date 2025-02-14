@@ -861,7 +861,7 @@ const EditUserTypeSettings = () => {
               },
               {
                 name: "inventoryPendingFoodBeverageView",
-                label: "Pending FoodBeverage View",
+                label: "Pending Food & Beverage View",
               },
               {
                 name: "inventoryPendingAmenityStatus",
@@ -869,7 +869,7 @@ const EditUserTypeSettings = () => {
               },
               {
                 name: "inventoryPendingFoodBeverageStatus",
-                label: "Pending FoodBeverage Status",
+                label: "Pending Food & Beverage Status",
               },
             ],
           },
@@ -976,7 +976,7 @@ const EditUserTypeSettings = () => {
               { name: "roomAmenities", label: "Amenities" },
               { name: "roomBarcode", label: "BarCode" },
               { name: "roomSanitization", label: "Sanitization" },
-              { name: "roomAddMeeting", label: "addMeeting" },
+              { name: "roomAddMeeting", label: "Book Room" },
               { name: "roomFoodBeverage", label: "Food Beverage" },
             ],
           },
