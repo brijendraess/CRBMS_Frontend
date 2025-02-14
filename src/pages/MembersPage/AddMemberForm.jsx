@@ -461,7 +461,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
         </Box>
 
         {/* <Divider sx={{ my: 3, borderBottomWidth: 2, borderColor: "black", width: "40%" }} /> */}
-        <Divider sx={{ my: 3, borderBottomWidth: 3 }} textAlign="center">
+        {/* <Divider sx={{ my: 3, borderBottomWidth: 3 }} textAlign="center">
           <Typography variant="subtitle1" sx={{ px: 2 }}>
             Zimbra Credentials(Optional)
           </Typography>
@@ -496,7 +496,7 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
             size="small"
             style={{ flex: 1 }}
           />
-        </Box>
+        </Box> */}
         
 
         {/* Submit Button */}
