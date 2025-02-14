@@ -23,8 +23,8 @@ import {
 } from "../../components/Common/Buttons/CustomIcon";
 import EditUserTypeSettings from "./EditUserTypeSettings";
 import AddUserTypeSettings from "./AddUserTypeSettings";
-import { useNavigate } from "react-router-dom";
-import { replaceAndUppercase } from "../../utils/utils";
+import { useLocation, useNavigate } from "react-router-dom";
+import { handleStartGuide, replaceAndUppercase } from "../../utils/utils";
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
 import UserTypeRoleCard from "./UserTypeCard";
 
@@ -40,6 +40,17 @@ const UserTypeSettings = () => {
   const { user } = useSelector((state) => state.user);
   const isSmallScreen = useMediaQuery("(max-width:768px)");
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const isAdmin = user?.UserType?.isAdmin === 'admin';
+  
+  useEffect(() => {
+    const hasSeenTour = localStorage.getItem("hasSeenUserRole");
+      if(user && !user.lastLoggedIn && (hasSeenTour === "false" || hasSeenTour === null)){
+        handleStartGuide(location, isSmallScreen, isAdmin);
+        localStorage.setItem("hasSeenUserRole", "true");
+      }
+  }, [])
 
   useEffect(() => {
     const fetchUserType = async () => {

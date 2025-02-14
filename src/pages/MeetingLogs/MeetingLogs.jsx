@@ -6,7 +6,7 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
-import { Box, Tooltip } from "@mui/material";
+import { Box, Tooltip, useMediaQuery } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import {
   ApprovalOutlinedIcon,
@@ -20,9 +20,10 @@ import MeetingFormEdit from "../MeetingPage/MeetingFormEdit";
 import MeetingFormPostPone from "../MeetingPage/MeetingFormPostPone";
 import CancelMeetingModal from "../../components/Common/Modals/Delete/CancelMeetingModal";
 import MeetingApproval from "../MeetingPage/MeetingApproval";
-import { dateStringFormatting, formatTimeShort } from "../../utils/utils";
+import { dateStringFormatting, formatTimeShort, handleStartGuide } from "../../utils/utils";
 import MeetingFormSwap from "../MeetingPage/MeetingSwap";
 import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
+import { useLocation } from "react-router-dom";
 
 const MeetingLogs = () => {
   const { user } = useSelector((state) => state.user);
@@ -40,6 +41,18 @@ const MeetingLogs = () => {
   const [meetingUpdatedStatus, setMeetingUpdatedStatus] = useState("");
   const [refreshPage, setRefreshPage] = useState(0);
   const [roomsData, setRoomsData] = useState([]); // State for rooms data
+
+  const isSmallScreen = useMediaQuery("(max-width: 768px)");
+  const location = useLocation();
+  const isAdmin = user?.UserType?.isAdmin === 'admin';
+
+  useEffect(() => {
+    const hasSeenTour = localStorage.getItem("hasSeenLogs");
+      if(user && !user.lastLoggedIn && (hasSeenTour === "false" || hasSeenTour === null)){
+        handleStartGuide(location, isSmallScreen, isAdmin);
+        localStorage.setItem("hasSeenLogs", "true");
+      }
+  }, [])
 
   const handleEdit = (roomId, meetingId) => {
     setIsEditBookingOpen(true);

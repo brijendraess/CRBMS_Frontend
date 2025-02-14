@@ -1,6 +1,6 @@
 .driver-popover.driverjs-theme {
-  background-color: #f1cc13;
-  color: #000;
+  background-color: #b2b3b0;
+  color: #fff;
   width: 500px !important;
   min-width: 300px;
 }
@@ -15,7 +15,7 @@
 .driver-popover.driverjs-theme .driver-popover-title,
 .driver-popover.driverjs-theme .driver-popover-description,
 .driver-popover.driverjs-theme .driver-popover-progress-text {
-  color: #000;
+  color: #fff;
   font-size: 16px;
 }
 
@@ -51,22 +51,22 @@
 
 .driver-popover.driverjs-theme
   .driver-popover-arrow-side-left.driver-popover-arrow {
-  border-left-color: #f1cc13;
+  border-left-color: #b2b3b0;
 }
 
 .driver-popover.driverjs-theme
   .driver-popover-arrow-side-right.driver-popover-arrow {
-  border-right-color: #f1cc13;
+  border-right-color: #b2b3b0;
 }
 
 .driver-popover.driverjs-theme
   .driver-popover-arrow-side-top.driver-popover-arrow {
-  border-top-color: #f1cc13;
+  border-top-color: #b2b3b0;
 }
 
 .driver-popover.driverjs-theme
   .driver-popover-arrow-side-bottom.driver-popover-arrow {
-  border-bottom-color: #f1cc13;
+  border-bottom-color: #b2b3b0;
 }
 
 .driver-popover-footer {

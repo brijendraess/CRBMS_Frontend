@@ -4,11 +4,13 @@ import InfoCard from "../../components/InfoCard/InfoCard";
 import { PaperWrapper } from "../../Style";
 import Grid from "@mui/material/Grid2";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
 import { DataGrid } from "@mui/x-data-grid";
-import { Paper, Typography } from "@mui/material";
+import { Paper, Typography, useMediaQuery } from "@mui/material";
+import { useLocation } from "react-router-dom";
+import { handleStartGuide } from "../../utils/utils";
 
 const ReportPage = () => {
   const [counts, setCounts] = useState({
@@ -29,6 +31,19 @@ const ReportPage = () => {
 
   const [roomData, setRoomData] = useState([]);
   const [organizerData, setOrganizerData] = useState([]);
+  const { user } = useSelector((state) => state.user);
+
+  const location = useLocation();
+  const isAdmin = user?.UserType?.isAdmin === 'admin';
+  const isSmallScreen = useMediaQuery("(max-width: 768px)");
+  
+  useEffect(() => {
+    const hasSeenTour = localStorage.getItem("hasSeenReports");
+      if(user && !user.lastLoggedIn && (hasSeenTour === "false" || hasSeenTour === null)){
+        handleStartGuide(location, isSmallScreen, isAdmin);
+        localStorage.setItem("hasSeenReports", "true");
+      }
+  }, [])
 
   const dispatch = useDispatch();
   const fetchCounts = async () => {

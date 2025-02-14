@@ -19,6 +19,8 @@ import {
   EditOutlinedIcon,
 } from "../../components/Common/Buttons/CustomIcon";
 import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
+import { useLocation } from "react-router-dom";
+import { handleStartGuide } from "../../utils/utils";
 
 const LocationPage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -31,6 +33,16 @@ const LocationPage = () => {
   const { user } = useSelector((state) => state.user);
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
   const dispatch = useDispatch();
+  const routerLocation = useLocation();
+  const isAdmin = user?.UserType?.isAdmin === 'admin';
+
+  useEffect(() => {
+    const hasSeenTour = localStorage.getItem("hasSeenLocation");
+      if(user && !user.lastLoggedIn && (hasSeenTour === "false" || hasSeenTour === null)){
+        handleStartGuide(routerLocation, isSmallScreen, isAdmin);
+        localStorage.setItem("hasSeenLocation", "true");
+      }
+  }, [])
   useEffect(() => {
     const fetchLocations = async () => {
       try {

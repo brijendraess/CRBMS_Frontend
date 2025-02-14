@@ -20,7 +20,7 @@ import AddCommitteeForm from "./AddCommitteeForm";
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
 import toast from "react-hot-toast";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 import DeleteModal from "../../components/Common/Modals/Delete/DeleteModal";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,6 +34,7 @@ import {
 import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
 import CustomButton from "../../components/Common/Buttons/CustomButton";
 import BackupTableOutlinedIcon from "@mui/icons-material/BackupTableOutlined";
+import { handleStartGuide } from "../../utils/utils";
 
 const CommitteeManagementMUI = () => {
   const [committeeData, setCommitteeData] = useState([]);
@@ -48,6 +49,19 @@ const CommitteeManagementMUI = () => {
   const [deleteId, setDeleteId] = useState(null);
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const location = useLocation  ();
+  const isAdmin = user?.UserType?.isAdmin === 'admin';
+  useEffect(() => {
+    const hasSeenTour = localStorage.getItem("hasSeenCommittee");
+    console.log(hasSeenTour, "hass")
+    console.log(user, "userData")
+    console.log(user.lastLoggedIn, "userDatalastLoggedIn")
+    if(user && !user.lastLoggedIn && (hasSeenTour === "false" || hasSeenTour === null)){
+      console.log("in if")
+      handleStartGuide(location, isSmallScreen, isAdmin);
+      localStorage.setItem("hasSeenCommittee", "true");
+    }
+}, [])
 
   const fetchCommittee = async () => {
     try {
