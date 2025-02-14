@@ -64,6 +64,8 @@ const TodaysMeetings = () => {
   };
 
   const [meetings, setMeetings] = useState([]);
+  const [allMeetings, setAllMeetings] = useState([]);
+
   const [loading, setLoading] = useState(true);
   const [todayDate, setTodayDate] = useState("");
   const [refreshPage, setRefreshPage] = useState("");
@@ -75,7 +77,29 @@ const TodaysMeetings = () => {
       dispatch(showLoading());
       const response = await axios.get(`/api/v1/rooms/all-meeting`);
       const todayDate = getFormattedDate();
-      setRoom(response.data.data.meeting)
+      console.log(response?.data?.data?.meeting, "resppp")
+      setAllMeetings(response?.data?.data?.meeting);
+
+      console.log(allMeetings, "allll")
+      const meeting = response?.data?.data?.meeting?.filter((meeting) => meeting.meetingDate === todayDate && meeting.status === "scheduled").map((meeting) => {
+        const timeDiff = timeDifference(meeting?.startTime, meeting?.endTime);
+        return {
+          id: meeting?.id,
+          subject: meeting?.subject,
+          agenda: meeting?.agenda,
+          private: meeting?.isPrivate,
+          notes: meeting?.notes,
+          startTime: formatTimeTo12Hour(meeting?.startTime),  // Convert time here
+          meetingDate: meeting?.meetingDate,
+          endTime: formatTimeTo12Hour(meeting?.endTime),  // Convert time here
+          duration: timeDiff,
+          organizerName: meeting?.User?.fullname,
+          status: meeting?.status,
+          roomName: meeting?.Room?.name,
+          roomLocation: meeting?.Room?.Location?.locationName
+        };
+      });
+      setMeetings(meeting);
       dispatch(hideLoading());
     } catch (error) {
       dispatch(hideLoading());
@@ -85,7 +109,7 @@ const TodaysMeetings = () => {
 
   useEffect(() => {
     fetchData();
-  }, [refreshPage]);
+  }, []);
 
   const formatTimeTo12Hour = (time) => {
     const [hours, minutes] = time.split(":");
@@ -94,31 +118,32 @@ const TodaysMeetings = () => {
     return date.toLocaleString("en-US", { hour: "numeric", minute: "2-digit", hour12: true });
   };
 
-  const getAllMeeting = () => {
-    const todayDate = new Date().toISOString().split('T')[0];
+  // const getAllMeeting = () => {
+  //   const todayDate = new Date().toISOString().split('T')[0];
 
-    const meeting = room?.meetings?.filter((meeting) => meeting.meetingDate === todayDate && meeting.status === "scheduled").map((meeting) => {
-      const timeDiff = timeDifference(meeting?.startTime, meeting?.endTime);
-      return {
-        id: meeting.id,
-        subject: meeting.subject,
-        agenda: meeting.agenda,
-        private: meeting.isPrivate,
-        notes: meeting.notes,
-        startTime: formatTimeTo12Hour(meeting.startTime),  // Convert time here
-        meetingDate: meeting.meetingDate,
-        endTime: formatTimeTo12Hour(meeting.endTime),  // Convert time here
-        duration: timeDiff,
-        organizerName: meeting.User?.fullname,
-        status: meeting.status,
-      };
-    });
-    setMeetings(meeting);
-  };
+  //   console.log(allMeetings, "allllll")
+  //   const meeting = allMeetings?.filter((meeting) => meeting.meetingDate === todayDate && meeting.status === "scheduled").map((meeting) => {
+  //     const timeDiff = timeDifference(meeting?.startTime, meeting?.endTime);
+  //     return {
+  //       id: meeting.id,
+  //       subject: meeting.subject,
+  //       agenda: meeting.agenda,
+  //       private: meeting.isPrivate,
+  //       notes: meeting.notes,
+  //       startTime: formatTimeTo12Hour(meeting.startTime),  // Convert time here
+  //       meetingDate: meeting.meetingDate,
+  //       endTime: formatTimeTo12Hour(meeting.endTime),  // Convert time here
+  //       duration: timeDiff,
+  //       organizerName: meeting.User?.fullname,
+  //       status: meeting.status,
+  //     };
+  //   });
+  //   setMeetings(meeting);
+  // };
 
-  useEffect(() => {
-    getAllMeeting();
-  }, [refreshPage]);
+  // useEffect(() => {
+  //   getAllMeeting();
+  // }, []);
 
   useEffect(() => {
     let scrollInterval;
@@ -315,7 +340,7 @@ const TodaysMeetings = () => {
           rows={meetings}
           columns={columns}
           disableSelectionOnClick
-          getRowId={(row) => row.meetingId}
+          getRowId={(row) => row.id}
           loading={loading}
           hideFooterPagination // Hide pagination controls
           rowHeight={50}
