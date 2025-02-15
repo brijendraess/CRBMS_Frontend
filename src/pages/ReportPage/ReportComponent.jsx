@@ -267,6 +267,7 @@ const ReportComponent = () => {
                                 // onOptionSelect={card.title === "Meetings" ? setSelectedOption : undefined}
                                 subHeading={card.title === "Meetings" ? selectedOption : undefined}
                                 Icon={card.Icon}
+                                backSideHeading={card.backSideHeading}
                             />
                         </motion.div>
                     </Grid>
