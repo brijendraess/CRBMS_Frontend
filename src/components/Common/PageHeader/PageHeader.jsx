@@ -11,6 +11,7 @@ const PageHeader = ({
   title,
   nameOfTheClass,
   statusIcon,
+  headingFontColor,
 }) => {
   const { user } = useSelector((state) => state.user);
 
@@ -39,7 +40,7 @@ const PageHeader = ({
           },
           fontWeight: 500,
           lineHeight: 1.5,
-          color: "#2E2E2E",
+          color: headingFontColor ? headingFontColor : "#2E2E2E",
         }}
       >
         {heading || "Page Header"}
