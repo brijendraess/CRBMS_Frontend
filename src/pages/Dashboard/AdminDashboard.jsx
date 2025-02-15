@@ -13,6 +13,7 @@ import InventoryHistory from "./InventoryHistory";
 import ReportComponent from "../ReportPage/ReportComponent";
 import CalendarComponent from "../CalendarPage/CalendarComponent";
 import { Box } from "@mui/material";
+import Grid from '@mui/material/Grid';
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
 
 const AdminDashboard = () => {
@@ -63,9 +64,13 @@ const AdminDashboard = () => {
             headingFontColor="#ffffff"
           />
         </motion.div>
-        {sections.map((item, index) => (
-          <Section key={index} {...item} />
-        ))}
+        <Grid container  md={12}>
+  {sections.map((item, index) => (
+    <Grid key={index} sx={index === 2 &&{paddingRight: "20px"}} item xs={12} md={index === 2 || index === 3 ? 6 : 12}>
+      <Section {...item} />
+    </Grid>
+  ))}
+</Grid>
       </Box>
     </Box>
   );
