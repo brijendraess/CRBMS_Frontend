@@ -13,13 +13,14 @@ import {
 } from "@mui/material";
 import CheckAndShowImage from "../Common/CustomImage/showImage";
 
-const NotificationsMenu = ({ notifications, unReadCount }) => {
+const NotificationsMenu = ({ notifications, unReadCount, onClose }) => {
 
   const navigate = useNavigate();
 
 
   const onViewAll = () => {
     navigate("/notification-all");
+    onClose();
   }
 
 
@@ -71,7 +72,7 @@ const NotificationsMenu = ({ notifications, unReadCount }) => {
         <Button
           variant="contained"
           onClick={onViewAll}
-          sx={{ width: "100%", background:`var(--linear-gradient-main-2)` }}
+          sx={{ width: "100%", background: `var(--linear-gradient-main-2)` }}
         >
           View All Notifications
         </Button>

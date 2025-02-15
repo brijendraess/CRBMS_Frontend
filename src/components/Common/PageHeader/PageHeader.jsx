@@ -31,15 +31,9 @@ const PageHeader = ({
         component="h1"
         sx={{
           marginRight: "20px",
-          fontSize: {
-            xs: "18px",
-            sm: "20px",
-            md: "22px",
-            lg: "24px",
-            xl: "26px",
-          },
+          fontSize: 'var(--heading-font-size)',
           fontWeight: 500,
-          lineHeight: 1.5,
+          // lineHeight: 1.5,
           color: headingFontColor ? headingFontColor : "#2E2E2E",
         }}
       >

@@ -36,10 +36,10 @@ const AmenitiesList = () => {
 
   useEffect(() => {
     const hasSeenTour = localStorage.getItem("hasSeenAmenities");
-      if(user && !user.lastLoggedIn && (hasSeenTour === "false" || hasSeenTour === null)){
-        handleStartGuide(location, isSmallScreen, isAdmin);
-        localStorage.setItem("hasSeenAmenities", "true");
-      }
+    if (user && !user.lastLoggedIn && (hasSeenTour === "false" || hasSeenTour === null)) {
+      handleStartGuide(location, isSmallScreen, isAdmin);
+      localStorage.setItem("hasSeenAmenities", "true");
+    }
   }, [])
   // Fetch amenities only when component mounts
   useEffect(() => {
@@ -224,7 +224,7 @@ const AmenitiesList = () => {
         >
           {amenities.map((amenity) => (
             <AmenitiesCard
-            user={user}
+              user={user}
               key={amenity.id}
               amenity={amenity}
               handleEdit={handleEdit}
@@ -252,8 +252,10 @@ const AmenitiesList = () => {
                 backgroundColor: `var(--linear-gradient-main)`,
                 color: "#fff",
                 fontWeight: "600",
-                fontSize: "16px",
+                fontSize: 'var(--datagrid-header-font-size)'
               },
+              fontSize: 'var(--datagrid-row-font-size)'
+
             }}
             showCellVerticalBorder
             showColumnVerticalBorder

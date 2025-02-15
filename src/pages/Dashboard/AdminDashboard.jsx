@@ -30,18 +30,20 @@ const AdminDashboard = () => {
   return (
     <Box Component={'div'}
       style={{
+        height: "calc(100vh - 10px - 70px)",
+        overflow: "hidden",
+        position: "relative",
+        marginTop: '10px',
+        borderRadius: '12px',
         backgroundImage: "url('./src/assets/Images/meeting-room.jpg')", // Change this path
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundAttachment: "fixed", // Fixes the background while scrolling
-        height: "100vh",
-        overflow: "hidden",
-        position: "relative",
       }}
     >
-      
+
       <Box
-      Component={'div'}
+        Component={'div'}
         style={{
           position: "absolute",
           top: 0,
@@ -49,10 +51,10 @@ const AdminDashboard = () => {
           width: "100%",
           height: "100%",
           overflowY: "auto",
-          padding: "20px",
+          padding: "10px",
         }}
       >
-         <motion.div
+        <motion.div
           style={{
             borderRadius: "12px",
             boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
