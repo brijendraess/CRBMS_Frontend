@@ -12,15 +12,41 @@ import { Paper, Typography, useMediaQuery } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import { handleStartGuide } from "../../utils/utils";
 
+import WifiOutlinedIcon from '@mui/icons-material/WifiOutlined';
+import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined';
+import { GroupsOutlinedIcon, Groups2OutlinedIcon, DesignServicesOutlinedIcon } from "../../components/Common/Buttons/CustomIcon";
+import MeetingRoomOutlinedIcon from '@mui/icons-material/MeetingRoomOutlined';
+import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+import DoneOutlinedIcon from '@mui/icons-material/DoneOutlined';
+import AvTimerIcon from '@mui/icons-material/AvTimer';
+import PersonIcon from '@mui/icons-material/Person';
+import { GpsFixedOutlined } from "@mui/icons-material";
+
+
+
 const ReportPage = () => {
   const [counts, setCounts] = useState({
     users: 0,
     amenities: 0,
     food: 0,
     rooms: 0,
-    activeCommittees: 0,
-    inactiveCommittees: 0,
+    committee: 0,
+    locations: 0,
+    services: 0,
+    allMeeting: 0,
   });
+  const [latest, setLatest] = useState({
+    users: "",
+    amenities: "",
+    food: "",
+    rooms: "",
+    committee: "",
+    locations: "",
+    services: "",
+    allMeeting: "",
+  });
+
   const [meetingCount, setMeetingCount] = useState(0);
   const [cancelledMeetingCount, setCancelledMeetingCount] = useState(0);
   const [completedMeetingCount, setCompletedMeetingCount] = useState(0);
@@ -46,6 +72,7 @@ const ReportPage = () => {
   }, [])
 
   const dispatch = useDispatch();
+
   const fetchCounts = async () => {
     try {
       dispatch(showLoading());
@@ -54,43 +81,93 @@ const ReportPage = () => {
         axios.get("/api/v1/report/amenity-count"),
         axios.get("/api/v1/report/food-count"),
         axios.get("/api/v1/report/room-count"),
-        axios.get("/api/v1/report/active-committee-count"),
-        axios.get("/api/v1/report/inactive-committee-count"),
+        axios.get("/api/v1/report/committee-count"),
+        axios.get("/api/v1/report/location-count"),
+        axios.get("/api/v1/report/service-count"),
+        axios.get("/api/v1/report/all-meeting-count"),
       ]);
       const [
-        userCount,
-        amenityCount,
-        foodCount,
-        roomCount,
-        activeCommitteeCount,
-        inactiveCommitteeCount,
+        userData,
+        amenityData,
+        foodData,
+        roomData,
+        committeeData,
+        locationData,
+        serviceData,
+        allMeetingData
       ] = results;
+      console.log(results);
 
+      setLatest({
+        users:
+          userData.status === "fulfilled"
+            ? userData.value.data.data.latestUser.fullname
+            || ""
+            : "",
+        amenities:
+          amenityData.status === "fulfilled"
+            ? amenityData.value.data.data.latestAmenity.name || ""
+            : "",
+        food:
+          foodData.status === "fulfilled"
+            ? foodData.value.data.data.latestFoodBeverage.foodBeverageName
+            || ""
+            : "",
+        rooms:
+          roomData.status === "fulfilled"
+            ? roomData.value.data.data.latestRoom.name || ""
+            : "",
+        committee:
+          committeeData.status === "fulfilled"
+            ? committeeData.value.data.data.latestCommittee.name || ""
+            : "",
+        locations:
+          locationData.status === "fulfilled"
+            ? locationData.value.data.data.latestLocation.locationName || ""
+            : "",
+        services:
+          serviceData.status === "fulfilled"
+            ? serviceData.value.data.data.latestServices.servicesName || ""
+            : "",
+        allMeeting:
+          allMeetingData.status === "fulfilled"
+            ? allMeetingData.value.data.data.latestMeeting.subject || ""
+            : "",
+      })
       setCounts({
         users:
-          userCount.status === "fulfilled"
-            ? userCount.value.data.data.count || 0
+          userData.status === "fulfilled"
+            ? userData.value.data.data.count || 0
             : 0,
         amenities:
-          amenityCount.status === "fulfilled"
-            ? amenityCount.value.data.data.count || 0
+          amenityData.status === "fulfilled"
+            ? amenityData.value.data.data.count || 0
             : 0,
-        food:
-          foodCount.status === "fulfilled"
-            ? foodCount.value.data.data.count || 0
+        foods:
+          foodData.status === "fulfilled"
+            ? foodData.value.data.data.count || 0
             : 0,
         rooms:
-          roomCount.status === "fulfilled"
-            ? roomCount.value.data.data.count || 0
+          roomData.status === "fulfilled"
+            ? roomData.value.data.data.count || 0
             : 0,
-        activeCommittees:
-          activeCommitteeCount.status === "fulfilled"
-            ? activeCommitteeCount.value.data.data.count || 0
-            : 0,
-        inactiveCommittees:
-          inactiveCommitteeCount.status === "fulfilled"
-            ? inactiveCommitteeCount.value.data.data.count || 0
-            : 0,
+        committee:
+          committeeData.status === "fulfilled"
+            ? committeeData.value.data.data.count || 0
+            : "",
+        locations:
+          locationData.status === "fulfilled"
+            ? locationData.value.data.data.count || 0
+            : "",
+        services:
+          serviceData.status === "fulfilled"
+            ? serviceData.value.data.data.count || 0
+            : "",
+        allMeeting:
+          allMeetingData.status === "fulfilled"
+            ? allMeetingData.value.data.data.count || 0
+            : "",
+
       });
       dispatch(hideLoading());
     } catch (error) {
@@ -113,7 +190,6 @@ const ReportPage = () => {
     setCompletedMeetingFilter(option);
     await fetchCompletedMeetingCounts(option, setCompletedMeetingCount, "/api/v1/report/meeting-count");
   };
-
 
   const fetchRoomAndOrganizerData = async () => {
     try {
@@ -147,11 +223,12 @@ const ReportPage = () => {
     }
   }
 
-
   const fetchMeetingCounts = async (option, setCount) => {
     try {
       let queryParam = `?filter=${option}`;
       const response = await axios.get(`/api/v1/report/meeting-count${queryParam}`);
+      console.log(response);
+
       setCount(response?.data?.data?.meetingCount || 0);
     } catch (error) {
       console.error("Error fetching meeting count:", error);
@@ -183,13 +260,15 @@ const ReportPage = () => {
     {
       field: "roomName",
       headerName: "Most Used Room",
-      width: 260,
+      // width: 260,
+      flex: 1,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "count",
       headerName: "Used Count",
       width: 150,
+
       headerClassName: "super-app-theme--header",
     },
     {
@@ -204,19 +283,20 @@ const ReportPage = () => {
     {
       field: "name",
       headerName: "Most Frequent Organizer",
-      width: 225,
+      // width: 225,
+      flex: 1,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "email",
       headerName: "Email",
-      width: 225,
+      width: 200,
       headerClassName: "super-app-theme--header",
     },
     {
       field: "percentage",
       headerName: "Percentage",
-      width: 110,
+      width: 120,
       headerClassName: "super-app-theme--header",
     },
   ];
@@ -236,27 +316,111 @@ const ReportPage = () => {
     <PaperWrapper>
       <PageHeader heading={"Reports"} />
       <Grid container spacing={2} mb={2}>
-        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <InfoCard
             color={["#1da256", "#48d483"]}
             title="Users"
             count={counts.users}
+            latest={latest.users}
             show={false}
             options={[]}
             nameOfTheClass={"user-report-card"}
+            backSideHeading="Recently Registerd User"
+            Icon={PersonIcon}
           />
         </Grid>
-        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <InfoCard
+            color={["#1da256", "#48d483"]}
+            title="Meetings"
+            count={counts.allMeeting}
+            latest={latest.allMeeting}
+            show={false}
+            options={[]}
+            nameOfTheClass={"user-report-card"}
+            backSideHeading="Recent Meeting"
+            Icon={AvTimerIcon}
+          />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <InfoCard
             color={["#2c78e5", "#60aff5"]}
             title="Amenities"
             count={counts.amenities}
+            latest={latest.amenities}
             show={false}
             options={[]}
             nameOfTheClass={"amenity-report-card"}
+            backSideHeading="Recently Added Amenity"
+            Icon={WifiOutlinedIcon}
           />
         </Grid>
-        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <InfoCard
+            color={["#2c78e5", "#60aff5"]}
+            title="Food & Beverages"
+            count={counts.food}
+            latest={latest.food}
+            show={false}
+            options={[]}
+            nameOfTheClass={"food-report-card"}
+            backSideHeading="Recently Added Beverage"
+            Icon={RestaurantOutlinedIcon}
+          />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <InfoCard
+            color={["#2dd2a6", "#88f2d5"]}
+            title="Committee"
+            options={["Active", "Inactive"]}
+            count={counts.committee}
+            show={false}
+            nameOfTheClass={"committee-report-card"}
+            latest={latest.committee}
+            backSideHeading="Recently Registerd Committee"
+            Icon={GroupsOutlinedIcon}
+          />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <InfoCard
+            color={["#c012e2", "#eb64fe"]}
+            title="Rooms"
+            count={counts.rooms}
+            latest={latest.rooms}
+            options={[]}
+            show={false}
+            nameOfTheClass={"room-report-card"}
+            backSideHeading="Recently Added Room"
+            Icon={MeetingRoomOutlinedIcon}
+          />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <InfoCard
+            color={["#c012e2", "#eb64fe"]}
+            title="Locations"
+            count={counts.locations}
+            latest={latest.locations}
+            options={[]}
+            show={false}
+            nameOfTheClass={"room-report-card"}
+            backSideHeading="Recently Added Location"
+            Icon={LocationOnOutlinedIcon}
+          />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <InfoCard
+            color={["#c012e2", "#eb64fe"]}
+            title="Services"
+            count={counts.services}
+            latest={latest.services}
+            options={[]}
+            show={false}
+            nameOfTheClass={"room-report-card"}
+            backSideHeading="Recently Added Service"
+            Icon={DesignServicesOutlinedIcon}
+          />
+        </Grid>
+        {/* <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <InfoCard
             color={["#e1950e", "#f3cd29"]}
             title="Meetings"
@@ -268,7 +432,7 @@ const ReportPage = () => {
             nameOfTheClass={"meetings-report-card"}
           />
         </Grid>
-        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <InfoCard
             color={["#1da256", "#48d483"]}
             title="Cancelled Meetings"
@@ -280,7 +444,7 @@ const ReportPage = () => {
             nameOfTheClass={"cancelled-meetings-report-card"}
           />
         </Grid>
-        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <InfoCard
             color={["#2c78e5", "#60aff5"]}
             title="Completed Meetings"
@@ -291,66 +455,7 @@ const ReportPage = () => {
             subHeading={completedMeetingFilter}
             nameOfTheClass={"completed-meetings-report-card"}
           />
-        </Grid>
-        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-          <InfoCard
-            color={["#2c78e5", "#60aff5"]}
-            title="Food & Beverages"
-            count={counts.food}
-            show={false}
-            options={[]}
-            nameOfTheClass={"food-report-card"}
-          />
-        </Grid>
-        {/* <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-          <InfoCard
-            color={["#2c78e5", "#60aff5"]}
-            tittle="Most Used Room"
-            count={mostUsedRoom}
-            show={true}
-            options={["This Week", "This Month"]}
-            onOptionSelect={handleMostUsedRoomSelect}
-            subHeading={mostUsedRoomFilter}
-          />
-        </Grid>
-        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-          <InfoCard
-            color={["#2c78e5", "#60aff5"]}
-            tittle="Active Organizer"
-            count={mostActiveOrganizer}
-            show={true}
-            options={["This Week", "This Month"]}
-            onOptionSelect={handleMostActiveOrganizerSelect}
-            subHeading={mostActiveOrganizerFilter}
-          />
         </Grid> */}
-        {/* <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-          <InfoCard
-            color={["#d30d56", "#ff478b"]}
-            title="Visitors"
-            count="80"
-          />
-        </Grid> */}
-        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-          <InfoCard
-            color={["#2dd2a6", "#88f2d5"]}
-            title="Committee"
-            options={["Active", "Inactive"]}
-            count={counts.activeCommittees + counts.inactiveCommittees}
-            show={false}
-            nameOfTheClass={"committee-report-card"}
-          />
-        </Grid>
-        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-          <InfoCard
-            color={["#c012e2", "#eb64fe"]}
-            title="Rooms"
-            count={counts.rooms}
-            options={[]}
-            show={false}
-            nameOfTheClass={"room-report-card"}
-          />
-        </Grid>
       </Grid>
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, sm: 6, md: 6 }}>

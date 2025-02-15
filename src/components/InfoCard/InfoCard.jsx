@@ -1,13 +1,10 @@
 import React, { useState } from "react";
-import { Box, IconButton, Menu, MenuItem, Paper, styled } from "@mui/material";
+import { Box, Icon, IconButton, Menu, MenuItem, Paper, styled, Typography } from "@mui/material";
 import "./InfoCard.css";
-// import "./FlipCard.css"; // Import our flip animation CSS
 import {
   AccountCircleIcon,
   MoreVertIcon,
 } from "../Common/Buttons/CustomIcon";
-
-// Adjusted Paper styling so it fits inside our flip container.
 
 const InfoCard = ({
   color,
@@ -18,7 +15,11 @@ const InfoCard = ({
   onOptionSelect,
   subHeading,
   nameOfTheClass,
+  latest,
+  backSideHeading,
+  Icon
 }) => {
+
   const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
     textAlign: "center",
@@ -95,7 +96,7 @@ const InfoCard = ({
             <Box display="flex" flexDirection="column">
               <Box className="ms-auto">
                 <span className="iconContainer">
-                  <AccountCircleIcon />
+                  {Icon && <Icon />}
                 </span>
               </Box>
             </Box>
@@ -106,7 +107,7 @@ const InfoCard = ({
       {/* Back Side */}
       <div className="back">
         <Item elevation={elevation}>
-          <div style={{ display: show ? "block" : "none" }}>
+          <Box style={{ display: show ? "flex" : "none", justifyContent: 'flex-end' }}>
             <IconButton
               aria-label="more"
               aria-controls={open ? "long-menu" : undefined}
@@ -118,35 +119,39 @@ const InfoCard = ({
             </IconButton>
             <Menu
               id="long-menu"
-              MenuListProps={{
-                "aria-labelledby": "long-button",
-              }}
+              disablePortal
               anchorEl={anchorEl}
               open={open}
               onClose={handleClose}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+              transformOrigin={{ vertical: 'top', horizontal: 'right' }}
               slotProps={{
                 paper: {
                   style: {
-                    maxHeight: "175px",
-                    width: "125px",
+                    maxHeight: "150px",
+                    width: "100px",
                   },
                 },
               }}
             >
               {options.map((option) => (
-                <MenuItem
-                  key={option}
-                  onClick={() => handleOptionClick(option)}
-                >
+                <MenuItem key={option} onClick={() => handleOptionClick(option)} sx={{
+                  fontSize: '12px',
+                  lineHeight: '10px'
+                }}>
                   {option}
                 </MenuItem>
               ))}
             </Menu>
-          </div>
-          <h2>Text</h2>
-          <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-          </p>
+          </Box>
+          <Box display='flex' flexDirection='column'>
+            <Typography variant="body1" component="text">
+              {backSideHeading}
+            </Typography>
+            <Typography variant="h6" component="text" fontSize="18px" lineHeight='20px'>
+              {latest}
+            </Typography>
+          </Box>
         </Item>
       </div>
     </div>
