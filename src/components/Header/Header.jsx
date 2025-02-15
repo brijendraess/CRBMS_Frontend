@@ -15,7 +15,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
-
+import TextFieldsOutlinedIcon from "@mui/icons-material/TextFieldsOutlined";
 // Context and State Management
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
@@ -51,11 +51,42 @@ import { Palette } from "@mui/icons-material";
 import { themeColors } from "../../Theme/ColorFile";
 import NewPopUpModal from "../Common/Modals/Popup/NewPopUpModal";
 
+const presets = {
+  small: {
+    '--para-font-size': 'clamp(12px, 1vw, 16px)',
+    '--button-font-size': 'clamp(12px, 1vw, 16px)',
+    '--heading-font-size': 'clamp(20px, 2.5vw, 28px)',
+    '--subheading-font-size': 'clamp(18px, 2vw, 24px)',
+    '--subsubheading-font-size': 'clamp(16px, 1.8vw, 22px)',
+    '--datagrid-header-font-size': 'clamp(12px, 1.3vw, 18px)',
+    '--datagrid-row-font-size': 'clamp(10px, 0.9vw, 14px)',
+  },
+  normal: {
+    '--para-font-size': 'clamp(14px, 1.2vw, 18px)',
+    '--button-font-size': 'clamp(14px, 1.3vw, 18px)',
+    '--heading-font-size': 'clamp(24px, 3vw, 32px)',
+    '--subheading-font-size': 'clamp(20px, 2.5vw, 28px)',
+    '--subsubheading-font-size': 'clamp(16px, 2vw, 24px)',
+    '--datagrid-header-font-size': 'clamp(14px, 1.5vw, 20px)',
+    '--datagrid-row-font-size': 'clamp(12px, 1vw, 16px)',
+  },
+  large: {
+    '--para-font-size': 'clamp(16px, 1.5vw, 20px)',
+    '--button-font-size': 'clamp(16px, 1.6vw, 20px)',
+    '--heading-font-size': 'clamp(28px, 3.5vw, 36px)',
+    '--subheading-font-size': 'clamp(24px, 3vw, 32px)',
+    '--subsubheading-font-size': 'clamp(20px, 2.5vw, 28px)',
+    '--datagrid-header-font-size': 'clamp(16px, 1.8vw, 24px)',
+    '--datagrid-row-font-size': 'clamp(14px, 1.2vw, 18px)',
+  }
+};
+
 const Header = () => {
   const context = useContext(MyContext);
   const { user } = useSelector((state) => state.user);
   const [menuAnchor, setMenuAnchor] = useState(null);
   const [notificationsAnchor, setNotificationsAnchor] = useState(null);
+  const [fontSizeAnchorEl, setFontSizeAnchorEl] = useState(null);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [notificationList, setNotificationList] = useState([]);
   const [unReadCount, setUnReadCount] = useState(0);
@@ -65,16 +96,30 @@ const Header = () => {
   const [isHelpPopupOpen, setIsHelpPopupOpen] = useState(false);
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
   const location = useLocation();
-  // const { changeTheme } = useContext(ThemeContext);
-  // const [themeMenuAnchor, setThemeMenuAnchor] = useState(null);
-  // const [selectedThemeIndex, setSelectedThemeIndex] = useState(0);
   const isAdmin = user?.UserType?.isAdmin === 'admin';
 
   const dispatch = useDispatch();
   const { changeTheme, selectedThemeIndex, themeColors } = useContext(ThemeContext);
   const [themeMenuAnchor, setThemeMenuAnchor] = useState(null);
+
   const handleThemeMenuToggle = (event) => {
     setThemeMenuAnchor(themeMenuAnchor ? null : event.currentTarget);
+  };
+
+  const handleFontSizeButtonClick = (event) => {
+    setFontSizeAnchorEl(event.currentTarget);
+  };
+
+  const handleFontSizeButtonClose = () => {
+    setFontSizeAnchorEl(null);
+  };
+
+  const handlePresetChange = (presetKey) => {
+    const preset = presets[presetKey];
+    Object.keys(preset).forEach((key) => {
+      document.documentElement.style.setProperty(key, preset[key]);
+    });
+    handleFontSizeButtonClose();
   };
 
   const handleThemeChange = (index) => {
@@ -92,9 +137,7 @@ const Header = () => {
       animate: true,
     });
     driverObj.drive(); // Start the tour
-
   };
-
 
   // Common Function to Toggle Menus
   const handleMenuToggle = (anchorSetter) => (event) => {
@@ -139,8 +182,7 @@ const Header = () => {
             const timeDifference = dayjs().diff(dayjs(data?.createdAt), "hour");
 
             return {
-              avatar: `${import.meta.env.VITE_API_URL}/${data?.User?.avatarPath
-                }`,
+              avatar: `${import.meta.env.VITE_API_URL}/${data?.User?.avatarPath}`,
               name: data?.User?.fullname,
               action: data?.type,
               item: data?.message,
@@ -226,10 +268,7 @@ const Header = () => {
             {isSmallScreen ? (
               ""
             ) : (
-              <Button
-                className="rounded-circle"
-                onClick={handleStartGuide}
-              >
+              <Button className="rounded-circle" onClick={handleStartGuide}>
                 <Tooltip title="Help">
                   <InfoOutlinedIcon />
                 </Tooltip>
@@ -249,6 +288,20 @@ const Header = () => {
                 </Tooltip>
               </Button>
             )}
+            {!isSmallScreen && (
+              <Button
+                className="rounded-circle"
+                onClick={handleFontSizeButtonClick}
+                style={{
+                  color: "white",
+                  backgroundColor: "#0462ffd1",
+                }}
+              >
+                <Tooltip title="Change Theme">
+                  <TextFieldsOutlinedIcon />
+                </Tooltip>
+              </Button>
+            )}
             {user.UserType.notificationModule &&
               user.UserType.notificationModule.split(",").includes("view") && (
                 <Button
@@ -262,8 +315,7 @@ const Header = () => {
                     </Badge>
                   </Tooltip>
                 </Button>
-              )
-            }
+              )}
             <Button
               id="fullscreen-icon"
               className="rounded-circle"
@@ -287,8 +339,7 @@ const Header = () => {
                   <span className="profilePhoto">
                     <CheckAndShowImage
                       placement={"left"}
-                      imageUrl={`${import.meta.env.VITE_API_URL}/${user?.avatarPath
-                        }`}
+                      imageUrl={`${import.meta.env.VITE_API_URL}/${user?.avatarPath}`}
                     />
                   </span>
                 </div>
@@ -297,7 +348,18 @@ const Header = () => {
           </div>
         </div>
       </div>
-
+      {/* Font Size Menu */}
+      <Menu
+        anchorEl={fontSizeAnchorEl}
+        open={Boolean(fontSizeAnchorEl)}
+        onClose={handleFontSizeButtonClose}
+      >
+        <MenuItem onClick={() => handlePresetChange("small")}>Small</MenuItem>
+        <MenuItem onClick={() => handlePresetChange("normal")}>
+          Normal
+        </MenuItem>
+        <MenuItem onClick={() => handlePresetChange("large")}>Large</MenuItem>
+      </Menu>
       {/* Profile Menu */}
       <Menu
         anchorEl={menuAnchor}
@@ -337,10 +399,7 @@ const Header = () => {
           sx={{ color: "black" }}
         >
           <ListItemIcon>
-            <InfoOutlinedIcon
-              fontSize="small"
-              sx={{ color: "black" }}
-            />
+            <InfoOutlinedIcon fontSize="small" sx={{ color: "black" }} />
           </ListItemIcon>
           Take A Tour
         </MenuItem>
@@ -352,10 +411,7 @@ const Header = () => {
           sx={{ color: "black" }}
         >
           <ListItemIcon>
-            <PersonOutlineOutlinedIcon
-              fontSize="small"
-              sx={{ color: "black" }}
-            />
+            <PersonOutlineOutlinedIcon fontSize="small" sx={{ color: "black" }} />
           </ListItemIcon>
           Profile
         </MenuItem>
@@ -441,7 +497,9 @@ const Header = () => {
         <NotificationsMenu
           notifications={notificationList}
           unReadCount={unReadCount}
+          onClose={() => setNotificationsAnchor(null)}
         />
+
       </Popover>
 
       <NewPopUpModal

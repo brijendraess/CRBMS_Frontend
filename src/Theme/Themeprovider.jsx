@@ -61,7 +61,6 @@ export const themeColors = [
 ];
 
 export const ThemeProvider = ({ children }) => {
-  // Load both the theme and the selected index from local storage (if available)
   const [theme, setTheme] = useState(() => {
     const savedTheme = localStorage.getItem("appTheme");
     return savedTheme ? JSON.parse(savedTheme) : defaultTheme;
