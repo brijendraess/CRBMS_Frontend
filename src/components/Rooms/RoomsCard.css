@@ -1,0 +1,31 @@
+.room-card {
+    position: relative;
+    overflow: hidden;
+}
+
+/* The pseudo-element that creates the shine */
+.room-card::after {
+    content: "";
+    position: absolute;
+    z-index: 10;
+    width: 200%;
+    height: 100%;
+    top: -90%;
+    left: -20px;
+    opacity: 0.1;
+    transform: rotate(45deg);
+    background: linear-gradient(to top,
+            transparent,
+            #fff 15%,
+            rgba(255, 255, 255, 0.5));
+    transition: transform 0.3s, top 0.3s, opacity 0.3s;
+}
+
+/* On hover/focus/active, adjust the shine effect */
+.room-card:hover::after,
+.room-card:focus::after,
+.room-card:active::after {
+    transform: rotate(25deg);
+    top: -40%;
+    opacity: .30;
+}

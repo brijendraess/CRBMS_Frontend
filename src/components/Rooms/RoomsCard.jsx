@@ -10,7 +10,6 @@ import {
   FormControlLabel,
   Switch,
 } from "@mui/material";
-
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import RoomGallery from "./RoomGallery";
@@ -28,7 +27,6 @@ import {
   EditOutlinedIcon,
   ExtensionIcon,
   FoodBankOutlinedIcon,
-  Groups2OutlinedIcon,
   GroupsOutlinedIcon,
   LocationOnOutlinedIcon,
   QrCodeOutlinedIcon,
@@ -43,6 +41,9 @@ import StatusSymbol from "../Common/Buttons/StatusSymbol";
 import DeleteNotAllowModel from "../Common/Modals/Delete/DeleteNotAllowModel";
 import NewPopUpModal from "../Common/Modals/Popup/NewPopUpModal";
 import { WifiOutlined } from "@mui/icons-material";
+
+// Import the shine effect CSS
+import "./RoomsCard.css";
 
 const RoomsCard = ({
   room,
@@ -65,7 +66,8 @@ const RoomsCard = ({
   );
   const [isEditOpen, setIsEditOpen] = useState(false);
   const { user } = useSelector((state) => state.user);
-  const [urlData, setUrlData] = React.useState("Not Found");
+  const [urlData, setUrlData] = useState("Not Found");
+
   const handleCardClick = () => {
     navigate(`/rooms/${room.id}`);
   };
@@ -89,6 +91,7 @@ const RoomsCard = ({
   const handleBarCode = () => {
     setIsBarCodeOpen(true);
   };
+
   const handleDeleteClose = () => {
     setIsDeleteOpen(false);
   };
@@ -107,7 +110,6 @@ const RoomsCard = ({
   };
 
   const handleSanitationStatusChange = async (event, roomId) => {
-    // formik.setFieldValue("sanitationStatus", event.target.checked);
     if (user?.UserType?.isAdmin === "admin") {
       setSanitationStatus(event.target.checked);
       const response = await axios.put(
@@ -125,14 +127,12 @@ const RoomsCard = ({
     try {
       dispatch(showLoading());
       const response = await axios.delete(`/api/v1/rooms/${deleteId}`);
-      console.log(response);
       if (response.status === 200) {
         toast.success("Room deleted successfully");
       }
       dispatch(hideLoading());
     } catch (error) {
-      console.error("Error deleting user:", error);
-      // toast.error("Failed to delete user");
+      console.error("Error deleting room:", error);
     } finally {
       setDeleteUpdateStatus(Math.random());
       handleDeleteClose();
@@ -152,19 +152,19 @@ const RoomsCard = ({
     <>
       <Paper
         className="room-card"
-        elevation={hover ? 20 : 4}
+        elevation={hover ? 24 : 1}
         sx={{
           position: "relative",
-          borderRadius: "8px",
+          borderRadius: "15px",
           overflow: "hidden",
           backgroundColor: "#fff",
           transformOrigin: "center",
           width: {
             xs: "100%",
             sm: 320,
-            md: 350,
-            xl: 350,
-            lg: 350,
+            md: 300,
+            xl: 300,
+            lg: 300,
           },
           transition: "all 0.4s ease-in-out",
           ":hover": {
@@ -203,8 +203,7 @@ const RoomsCard = ({
               transformOrigin: "center",
               transform: "scale(1.001)",
               transition: "transform 0.4s ease-in-out",
-              borderRadius: "8px 8px 0 0",
-
+              borderRadius: "4px 4px 0 0",
             }}
           />
         </Box>
@@ -225,12 +224,11 @@ const RoomsCard = ({
             className="title"
             onClick={handleCardClick}
             sx={{
-              // fontFamily: "'Bebas Neue', cursive",
               fontSize: "1.2rem",
               color: "black",
               cursor: "pointer",
               transition: "color 0.3s ease-out",
-              textTransform: 'uppercase'
+              textTransform: "uppercase",
             }}
           >
             {room.name}
@@ -287,7 +285,7 @@ const RoomsCard = ({
                 <CleaningServicesIcon />
               </Tooltip>{" "}
               {user.UserType.roomModule &&
-                user.UserType.roomModule.split(",").includes("sanitization") ? (
+              user.UserType.roomModule.split(",").includes("sanitization") ? (
                 <FormControlLabel
                   className="room-sanitation"
                   control={
@@ -347,17 +345,13 @@ const RoomsCard = ({
               variant="body2"
               sx={{ display: "flex", alignItems: "center" }}
             >
+              {/* You can add additional info here if needed */}
             </Typography>
           </Box>
         </Box>
         <CardActions sx={{ p: 0 }}>
           {user?.UserType?.isAdmin === "admin" ? (
-            <Box
-              sx={{
-                display: "flex",
-                width: "100%",
-              }}
-            >
+            <Box sx={{ display: "flex", width: "100%" }}>
               {user.UserType.roomModule &&
                 user.UserType.roomModule.split(",").includes("view") && (
                   <Button
@@ -367,7 +361,7 @@ const RoomsCard = ({
                     onClick={handleCardClick}
                     title="View Room"
                     sx={{
-                      borderRadius: "0 0 0px 10px",
+                      borderRadius: "0 0 0px 4px",
                       flex: 1,
                       minWidth: "40px",
                     }}
@@ -415,9 +409,7 @@ const RoomsCard = ({
                   </Button>
                 )}
               {user.UserType.roomModule &&
-                user.UserType.roomModule
-                  .split(",")
-                  .includes("foodbeverage") && (
+                user.UserType.roomModule.split(",").includes("foodbeverage") && (
                   <Button
                     className="room-food"
                     fullWidth
@@ -472,7 +464,8 @@ const RoomsCard = ({
                     <EditOutlinedIcon color="white" className="cursor" />
                   </Button>
                 )}
-              {meetingCurrentData?.length == 0 && user.UserType.roomModule &&
+              {meetingCurrentData?.length === 0 &&
+                user.UserType.roomModule &&
                 user.UserType.roomModule.split(",").includes("addMeeting") && (
                   <Button
                     className="room-book"
@@ -499,7 +492,7 @@ const RoomsCard = ({
                     variant="contained"
                     onClick={() => handleDeleteClick(room.id)}
                     sx={{
-                      borderRadius: "0 0 10px 0px",
+                      borderRadius: "0 0 4px 0px",
                       background: "red",
                       flex: 1,
                       minWidth: "40px",
@@ -512,7 +505,7 @@ const RoomsCard = ({
             </Box>
           ) : (
             <Box
-              style={{
+              sx={{
                 display: "flex",
                 justifyContent: "space-around",
                 alignItems: "center",
@@ -523,9 +516,7 @@ const RoomsCard = ({
                 fullWidth
                 variant="contained"
                 onClick={handleCardClick}
-                sx={{
-                  borderRadius: "0",
-                }}
+                sx={{ borderRadius: "0" }}
                 className="room-user-view"
               >
                 View More
@@ -534,10 +525,7 @@ const RoomsCard = ({
                 fullWidth
                 variant="contained"
                 onClick={handleBookNowClick}
-                sx={{
-                  borderRadius: "0",
-                  bgcolor: "red",
-                }}
+                sx={{ borderRadius: "0", bgcolor: "red" }}
                 className="room-user-book-now"
               >
                 Book Now
@@ -545,8 +533,7 @@ const RoomsCard = ({
             </Box>
           )}
         </CardActions>
-      </Paper >
-
+      </Paper>
 
       <NewPopUpModal
         isOpen={isGalleryOpen}
@@ -566,7 +553,6 @@ const RoomsCard = ({
         title={"Room Food & Beverage"}
         modalBody={<RoomFoodBeverages room={room} />}
       />
-
       <NewPopUpModal
         isOpen={isBarCodeOpen}
         setIsOpen={setIsBarCodeOpen}
