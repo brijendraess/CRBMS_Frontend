@@ -11,8 +11,8 @@ const InfoCard = ({
   title,
   count,
   show,
-  options = [],
-  onOptionSelect,
+  // options = [],
+  // onOptionSelect,
   subHeading,
   nameOfTheClass,
   latest,
@@ -107,7 +107,7 @@ const InfoCard = ({
       {/* Back Side */}
       <div className="back">
         <Item elevation={elevation}>
-          <Box style={{ display: show ? "flex" : "none", justifyContent: 'flex-end' }}>
+          {/* <Box style={{ display: show ? "flex" : "none", justifyContent: 'flex-end' }}>
             <IconButton
               aria-label="more"
               aria-controls={open ? "long-menu" : undefined}
@@ -143,7 +143,7 @@ const InfoCard = ({
                 </MenuItem>
               ))}
             </Menu>
-          </Box>
+          </Box> */}
           <Box display='flex' flexDirection='column'>
             <Typography variant="body1" component="text">
               {backSideHeading}

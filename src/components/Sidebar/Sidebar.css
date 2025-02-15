@@ -126,7 +126,7 @@
 }
 
 .sidebar.close .menu-item li:not(.active) a:hover {
-  transform: scale(1.8);
+  transform: scale(2);
   transform-origin: center;
   position: relative;
   z-index: 10;

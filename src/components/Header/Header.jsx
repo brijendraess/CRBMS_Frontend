@@ -288,7 +288,7 @@ const Header = () => {
                 </Tooltip>
               </Button>
             )}
-            {!isSmallScreen && (
+            {/* {!isSmallScreen && (
               <Button
                 className="rounded-circle"
                 onClick={handleFontSizeButtonClick}
@@ -301,7 +301,7 @@ const Header = () => {
                   <TextFieldsOutlinedIcon />
                 </Tooltip>
               </Button>
-            )}
+            )} */}
             {user.UserType.notificationModule &&
               user.UserType.notificationModule.split(",").includes("view") && (
                 <Button
