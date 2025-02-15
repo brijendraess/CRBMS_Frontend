@@ -331,7 +331,7 @@ const ReportPage = () => {
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <InfoCard
-            color={["#1da256", "#48d483"]}
+            color={["#ff9800", "#ffc107"]}
             title="Meetings"
             count={counts.allMeeting}
             latest={latest.allMeeting}
@@ -357,7 +357,7 @@ const ReportPage = () => {
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <InfoCard
-            color={["#2c78e5", "#60aff5"]}
+            color={["#e1950e", "#f3cd29"]}
             title="Food & Beverages"
             count={counts.food}
             latest={latest.food}
@@ -383,7 +383,7 @@ const ReportPage = () => {
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <InfoCard
-            color={["#c012e2", "#eb64fe"]}
+            color={["#d32f2f", "#ef5350"]}
             title="Rooms"
             count={counts.rooms}
             latest={latest.rooms}
@@ -396,7 +396,7 @@ const ReportPage = () => {
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <InfoCard
-            color={["#c012e2", "#eb64fe"]}
+            color={["#00acc1", "#26c6da"]}
             title="Locations"
             count={counts.locations}
             latest={latest.locations}

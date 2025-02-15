@@ -502,9 +502,6 @@ const SingleDisplayPage = () => {
                   display: "flex",
                   alignItems: "center",
                 },
-                "& .MuiDataGrid-row": {
-                  maxHeight: "unset !important", // Ensure rows expand as needed
-                },
                 "& .super-app-theme--header": {
                   backgroundColor: `var(--linear-gradient-main)`,
                   color: "#fff",
@@ -514,17 +511,9 @@ const SingleDisplayPage = () => {
                   display: "none", // Hides footer
                 },
 
-                // Header styles
-                "& .super-app-theme--header": {
-                  backgroundColor: "#006400",
-                  // backgroundColor: "rgba(255, 223, 0, 1)",
-                  color: "#fff",
-                  fontWeight: "600",
-                  fontSize: "16px",
-                },
-
                 // Row styles
                 "& .MuiDataGrid-row": {
+                  maxHeight: "unset !important",
                   "&:nth-of-type(odd)": {
                     backgroundColor: "rgba(93, 220, 205, 0.15)",
                   },

@@ -162,9 +162,9 @@ const RoomsCard = ({
           width: {
             xs: "100%",
             sm: 320,
-            md: 300,
-            xl: 300,
-            lg: 300,
+            md: 350,
+            xl: 350,
+            lg: 350,
           },
           transition: "all 0.4s ease-in-out",
           ":hover": {
