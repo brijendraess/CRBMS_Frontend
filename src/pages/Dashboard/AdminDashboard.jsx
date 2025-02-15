@@ -35,7 +35,7 @@ const AdminDashboard = () => {
         position: "relative",
         marginTop: '10px',
         borderRadius: '12px',
-        backgroundImage: "url('./src/assets/Images/meeting-room.jpg')", // Change this path
+        backgroundImage: "url('./public/meeting-room.jpg')", // Change this path
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundAttachment: "fixed", // Fixes the background while scrolling
