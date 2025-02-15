@@ -723,23 +723,23 @@ const EditUserTypeSettings = () => {
                   formik.setFieldValue("committeeTypeView", "");
                   formik.setFieldValue("committeeTypeChangeStatus", "");
 
-                  formik.setFieldValue("notificationRead", true);
-                  formik.setFieldValue("notificationDelete", true);
-                  formik.setFieldValue("notificationView", true);
+                  formik.setFieldValue("notificationRead", "");
+                  formik.setFieldValue("notificationDelete", "");
+                  formik.setFieldValue("notificationView", "");
 
-                  formik.setFieldValue("inventoryAdd", true);
-                  formik.setFieldValue("inventoryView", true);
-                  formik.setFieldValue("inventoryIncrease", true);
-                  formik.setFieldValue("inventoryDecrease", true);
-                  formik.setFieldValue("inventoryPendingAmenityView", true);
+                  formik.setFieldValue("inventoryAdd", "");
+                  formik.setFieldValue("inventoryView", "");
+                  formik.setFieldValue("inventoryIncrease", "");
+                  formik.setFieldValue("inventoryDecrease", "");
+                  formik.setFieldValue("inventoryPendingAmenityView", "");
                   formik.setFieldValue(
                     "inventoryPendingFoodBeverageView",
-                    true
+                    ""
                   );
-                  formik.setFieldValue("inventoryPendingAmenityStatus", true);
+                  formik.setFieldValue("inventoryPendingAmenityStatus", "");
                   formik.setFieldValue(
                     "inventoryPendingFoodBeverageStatus",
-                    true
+                    ""
                   );
 
                   formik.setFieldValue("committeeMemberDelete", "");
