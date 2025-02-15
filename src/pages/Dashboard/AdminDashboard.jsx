@@ -98,8 +98,6 @@ const Section = ({ title, Component, Icons }) => {
       animate={controls}
       style={{
         marginBottom: "50px",
-        padding: "20px",
-        background: "rgba(255, 255, 255, 0.9)", // Light background for readability
         borderRadius: "12px",
         boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
         willChange: "opacity, transform",
