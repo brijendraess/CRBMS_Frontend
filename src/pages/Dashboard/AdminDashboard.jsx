@@ -1,11 +1,7 @@
-import React from "react";
-import Grid2 from "@mui/material/Grid";
+import React, { useRef } from "react";
+import { motion, useInView, useAnimation } from "framer-motion";
 import { useSelector } from "react-redux";
-import { motion } from "framer-motion";
-import { Box } from "@mui/material";
-
 import AdminInfoCard from "../../components/InfoCard/AdminInfoCard";
-import PageHeader from "../../components/Common/PageHeader/PageHeader";
 import {
   CalendarMonthOutlinedIcon,
   HourglassTopOutlinedIcon,
@@ -16,93 +12,99 @@ import DashboardStock from "./DashboardStock";
 import InventoryHistory from "./InventoryHistory";
 import ReportComponent from "../ReportPage/ReportComponent";
 import CalendarComponent from "../CalendarPage/CalendarComponent";
-import { PaperWrapper } from "../../Style";
+import { Box } from "@mui/material";
+import PageHeader from "../../components/Common/PageHeader/PageHeader";
 
 const AdminDashboard = () => {
   const { user } = useSelector((state) => state.user);
 
-  // Framer Motion Variants for Entry Animation
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 50, scale: 0.8 },
-    visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.8 } },
-  };
+  const sections = [
+    { title: "Meeting Calendar", Component: CalendarComponent, Icons: CalendarMonthOutlinedIcon },
+    { title: "Report", Component: ReportComponent },
+    { title: "Inventory", Component: DashboardStock, Icons: Inventory2OutlinedIcon },
+    { title: "Inventory History", Component: InventoryHistory, Icons: Inventory2OutlinedIcon },
+    { title: "Pending Meeting", Component: PendingMeeting, Icons: HourglassTopOutlinedIcon },
+  ];
 
   return (
-    <PaperWrapper>
+    <Box Component={'div'}
+      style={{
+        backgroundImage: "url('./src/assets/Images/meeting-room.jpg')", // Change this path
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed", // Fixes the background while scrolling
+        height: "100vh",
+        overflow: "hidden",
+        position: "relative",
+      }}
+    >
+      
       <Box
-        sx={{
+      Component={'div'}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
           width: "100%",
-          //backgroundImage: "url('/src/assets/Images/meeting-room.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundAttachment: "fixed",
-          zIndex: -1,
+          height: "100%",
+          overflowY: "auto",
+          padding: "20px",
         }}
-      />
-
-      {/* Page Content */}
-      <Box sx={{ padding: "30px" }}>
-        {/* Page Header */}
-        <motion.div initial="hidden" animate="visible" variants={fadeInUp}>
-          <PageHeader heading={`Welcome, ${user.fullname}`} />
+      >
+         <motion.div
+          style={{
+            borderRadius: "12px",
+            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+            willChange: "opacity, transform",
+          }}
+        >
+          <PageHeader
+            heading={`Welcome, ${user.fullname}`}
+            headingFontColor="#ffffff"
+          />
         </motion.div>
-
-        <Grid2 container spacing={3}>
-
-          <Grid2 item xs={12}>
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeInUp}>
-              <AdminInfoCard
-                color={["var(--linear-gradient-main-2)", "var(--linear-gradient-main)"]}
-                title="Meeting Calendar"
-                Component={CalendarComponent}
-                Icons={CalendarMonthOutlinedIcon}
-              />
-            </motion.div>
-          </Grid2>
-          <Grid2 item xs={12}>
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeInUp}>
-              <AdminInfoCard
-                color={["var(--linear-gradient-main-2)", "var(--linear-gradient-main)"]}
-                Component={ReportComponent}
-              />
-            </motion.div>
-          </Grid2>
-
-          <Grid2 item xs={12} sm={5}>
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeInUp}>
-              <AdminInfoCard
-                color={["var(--linear-gradient-main-2)", "var(--linear-gradient-main)"]}
-                title="Inventory"
-                Icons={Inventory2OutlinedIcon}
-                Component={DashboardStock}
-              />
-            </motion.div>
-          </Grid2>
-
-          <Grid2 item xs={12} sm={7}>
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeInUp}>
-              <AdminInfoCard
-                color={["var(--linear-gradient-main)", "var(--linear-gradient-main-2)"]}
-                title="Inventory History"
-                Icons={Inventory2OutlinedIcon}
-                Component={InventoryHistory}
-              />
-            </motion.div>
-          </Grid2>
-
-          <Grid2 item xs={12}>
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: false }} variants={fadeInUp}>
-              <AdminInfoCard
-                color={["var(--linear-gradient-main)", "var(--linear-gradient-main-2)"]}
-                title="Pending Meeting"
-                Icons={HourglassTopOutlinedIcon}
-                Component={PendingMeeting}
-              />
-            </motion.div>
-          </Grid2>
-        </Grid2>
+        {sections.map((item, index) => (
+          <Section key={index} {...item} />
+        ))}
       </Box>
-    </PaperWrapper>
+    </Box>
+  );
+};
+
+const Section = ({ title, Component, Icons }) => {
+  const ref = useRef(null);
+  const inView = useInView(ref, { amount: 0.5, once: false });
+
+  const controls = useAnimation();
+
+  React.useEffect(() => {
+    if (inView) {
+      controls.start({ opacity: 1, scale: 1, transition: { duration: 0.5 } });
+    } else {
+      controls.start({ opacity: 0.5, scale: 0.85, transition: { duration: 0.5 } });
+    }
+  }, [inView, controls]);
+
+  return (
+    <motion.div
+      ref={ref}
+      animate={controls}
+      style={{
+        marginBottom: "50px",
+        padding: "20px",
+        background: "rgba(255, 255, 255, 0.9)", // Light background for readability
+        borderRadius: "12px",
+        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+        willChange: "opacity, transform",
+      }}
+    >
+      <AdminInfoCard
+        color={["var(--linear-gradient-main-2)", "var(--linear-gradient-main)"]}
+        title={title}
+        Component={Component}
+        Icons={Icons}
+      />
+    </motion.div>
   );
 };
 
