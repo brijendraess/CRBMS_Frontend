@@ -18,6 +18,8 @@ import {
   DeleteOutlineOutlinedIcon,
 } from "../../components/Common/Buttons/CustomIcon";
 import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
+import { handleStartGuide } from "../../utils/utils";
+import { useLocation } from "react-router-dom";
 
 const AmenitiesList = () => {
   const [amenities, setAmenities] = useState([]);
@@ -29,6 +31,16 @@ const AmenitiesList = () => {
   const [isRefreshed, setIsRefreshed] = useState(0);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
+  const location = useLocation();
+  const isAdmin = user?.UserType?.isAdmin === 'admin';
+
+  useEffect(() => {
+    const hasSeenTour = localStorage.getItem("hasSeenAmenities");
+      if(user && !user.lastLoggedIn && (hasSeenTour === "false" || hasSeenTour === null)){
+        handleStartGuide(location, isSmallScreen, isAdmin);
+        localStorage.setItem("hasSeenAmenities", "true");
+      }
+  }, [])
   // Fetch amenities only when component mounts
   useEffect(() => {
     const fetchAmenities = async () => {

@@ -57,7 +57,7 @@ const UserLogin = () => {
         transition={{ duration: 0.5 }}
       >
         <div style={{ padding: 10 }}>
-          <h2 className="heading">Conference Room Booking Management System</h2>
+          <h2 className="heading">Committee Room Booking Management System</h2>
           <form onSubmit={handleLogin}>
             <Input
               icon={Mail}

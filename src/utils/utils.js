@@ -1,4 +1,6 @@
 import axios from "axios";
+import { driver } from "driver.js";
+import guideSteps from "../components/Driver/guideSteps";
 
 const checkFileExists = async (filePath) => {
   try {
@@ -387,6 +389,19 @@ const isPasswordValid = (password) => {
   return validUpperCase && validNumber && validSpecialChar && validLength;
 }
 
+const handleStartGuide = (location, isSmallScreen, isAdmin) => {
+  const driverObj = driver({
+    overlayColor: "black",
+    overlayOpacity: "0.8",
+    prevBtnText: "← Previous",
+    popoverClass: "driverjs-theme",
+    steps: guideSteps[location.pathname]?.(isSmallScreen, isAdmin),
+    animate: true,
+  });
+  driverObj.drive(); // Start the tour
+
+};
+
 
 export {
   checkFileExists,
@@ -407,5 +422,6 @@ export {
   notificationStringManipulation,
   generateRandomPassword,
   isPasswordValid,
-  inventoryStringManipulation
+  inventoryStringManipulation,
+  handleStartGuide
 };

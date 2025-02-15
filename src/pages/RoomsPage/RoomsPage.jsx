@@ -15,6 +15,8 @@ import PageHeader from "../../components/Common/PageHeader/PageHeader";
 import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import ResponsiveFilter from "../../components/Responsive/Filter/ResponsiveFilter";
 import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
+import { useLocation } from "react-router-dom";
+import { handleStartGuide } from "../../utils/utils";
 
 const RoomsPage = () => {
   const [roomsData, setRoomsData] = useState([]); // State for rooms data
@@ -37,6 +39,9 @@ const RoomsPage = () => {
   const [refreshPage, setRefreshPage] = useState(0);
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+
+  const location = useLocation();
+  const isAdmin = user?.UserType?.isAdmin === 'admin';
 
   const fetchRoomsData = async () => {
     try {
@@ -199,6 +204,14 @@ const RoomsPage = () => {
   };
 
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
+
+  useEffect(() => {
+    const hasSeenTour = localStorage.getItem("hasSeenRooms");
+      if(user && !user.lastLoggedIn && (hasSeenTour === "false" || hasSeenTour === null)){
+        handleStartGuide(location, isSmallScreen, isAdmin);
+        localStorage.setItem("hasSeenRooms", "true");
+      }
+  }, [])
   
   return (
     <>

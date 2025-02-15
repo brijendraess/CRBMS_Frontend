@@ -26,6 +26,8 @@ import {
 } from "../../components/Common/Buttons/CustomIcon";
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
 import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
+import { handleStartGuide } from "../../utils/utils";
+import { useLocation } from "react-router-dom";
 
 const FoodBeveragePage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -37,6 +39,8 @@ const FoodBeveragePage = () => {
   const [refreshPage, setRefreshPage] = useState(0);
   const { user } = useSelector((state) => state.user);
   const isSmallScreen = useMediaQuery("(max-width:768px)");
+  const location = useLocation();
+  const isAdmin = user?.UserType?.isAdmin === 'admin';
 
   useEffect(() => {
     const fetchFoodBeverages = async () => {
@@ -67,6 +71,14 @@ const FoodBeveragePage = () => {
     setUpdatedId(id);
     setIsEditOpen(true);
   };
+
+  useEffect(() => {
+    const hasSeenTour = localStorage.getItem("hasSeenFoodAndBeverage");
+      if(user && !user.lastLoggedIn && (hasSeenTour === "false" || hasSeenTour === null)){
+        handleStartGuide(location, isSmallScreen, isAdmin);
+        localStorage.setItem("hasSeenFoodAndBeverage", "true");
+      }
+  }, [])
 
   const handleClose = () => {
     setOpen(false);

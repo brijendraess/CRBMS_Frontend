@@ -7,7 +7,7 @@ const guideSteps = {
           element: ".rbc-calendar",
           popover: {
             title: "Meeting Calendar",
-            description: "This is the calendar view of meetings and events.",
+            description: "View all scheduled meetings and events in a structured calendar format. Stay organized and easily navigate through upcoming engagements.",
             position: "bottom",
           },
         },
@@ -16,7 +16,7 @@ const guideSteps = {
           popover: {
             title: "Navigation Toolbar",
             description:
-              "Use this toolbar to navigate to today, go back, or move forward.",
+              "Use the navigation toolbar to quickly jump to today’s date, move between previous and upcoming dates, and adjust your calendar view.",
             position: "middle",
           },
         },
@@ -25,7 +25,7 @@ const guideSteps = {
           popover: {
             title: "Meeting/Event",
             description:
-              "This indicates a scheduled meeting or event on the calendar.",
+              "Represents a scheduled meeting or event. Click to view details or make updates.",
             position: "middle",
           },
         },
@@ -33,7 +33,7 @@ const guideSteps = {
           element: ".report-component",
           popover: {
             title: "Reports",
-            description: "You can see the count of things here.",
+            description: "This section displays the total count of items.",
             position: "middle",
           },
         },
@@ -41,7 +41,7 @@ const guideSteps = {
           element: ".user-report-card",
           popover: {
             title: "Reports",
-            description: "Total User Count",
+            description: "Displays the total number of users. Provides insights into user activity and engagement.",
             position: "middle",
           },
         },
@@ -49,7 +49,7 @@ const guideSteps = {
           element: ".amenity-report-card",
           popover: {
             title: "Reports",
-            description: "Total Amenity Count",
+            description: "Shows the total number of amenities available. Helps track and manage facility usage.",
             position: "middle",
           },
         },
@@ -58,7 +58,7 @@ const guideSteps = {
           popover: {
             title: "Reports",
             description:
-              "Total Meeting Count. Click on three dots to see more options.",
+              "Displays the total number of meetings. Click the three dots for additional options and actions.",
             position: "middle",
           },
         },
@@ -66,7 +66,7 @@ const guideSteps = {
           element: ".committee-report-card",
           popover: {
             title: "Reports",
-            description: "Total Committee Count",
+            description: "Shows the total number of committees. Helps monitor and manage committee activities.",
             position: "middle",
           },
         },
@@ -74,7 +74,7 @@ const guideSteps = {
           element: ".room-report-card",
           popover: {
             title: "Reports",
-            description: "Total Room Count",
+            description: "Displays the total number of rooms available. Helps in tracking and managing room allocations.",
             position: "middle",
           },
         },
@@ -83,7 +83,7 @@ const guideSteps = {
           popover: {
             title: "Inventory",
             description:
-              "You will see low stock items (items less than 5). You can directly increase or decrease the count from here.",
+              "Here, you can see low-stock items (those with fewer than 5 units). You can directly increase or decrease the count from this section.",
             position: "middle",
           },
         },
@@ -91,7 +91,7 @@ const guideSteps = {
           element: ".inventory-history",
           popover: {
             title: "Inventory History",
-            description: "You can view the history of items here.",
+            description: "View the complete history of inventory items, including updates and changes over time.",
             position: "middle",
           },
         },
@@ -99,7 +99,7 @@ const guideSteps = {
           element: ".pending-meetings",
           popover: {
             title: "Pending Meetings",
-            description: "You can view the list of pending meetings here.",
+            description: "View and manage the list of pending meetings awaiting approval or action.",
             position: "middle",
           },
         },
@@ -111,7 +111,7 @@ const guideSteps = {
           element: ".rbc-calendar",
           popover: {
             title: "Meeting Calendar",
-            description: "This is the calendar view of meetings and events.",
+            description: "View all scheduled meetings and events in a structured calendar format. Stay organized and easily navigate through upcoming engagements.",
             position: "bottom",
           },
         },
@@ -119,7 +119,7 @@ const guideSteps = {
           element: ".rbc-toolbar",
           popover: {
             title: "Navigation Toolbar",
-            description: "Use this toolbar to navigate to today, go back, or move forward.",
+            description: "Use the navigation toolbar to quickly jump to today’s date, move between previous and upcoming dates, and adjust your calendar view.",
             position: "middle",
           },
         },
@@ -127,7 +127,7 @@ const guideSteps = {
           element: ".rbc-event",
           popover: {
             title: "Meeting/Event",
-            description: "This indicates a scheduled meeting or event on the calendar.",
+            description: "Represents a scheduled meeting or event. Click to view details or make updates.",
             position: "middle",
           },
         },
@@ -139,7 +139,7 @@ const guideSteps = {
       element: ".page-header .add-user",
       popover: {
         title: "Add a New User",
-        description: "Click this button to add a new user to the system.",
+        description: "Click to add a new user to the system. Provide necessary details to complete the registration.",
         position: "center",
       },
     },
@@ -150,7 +150,7 @@ const guideSteps = {
           popover: {
             title: "User Information",
             description:
-              "Each card displays user details. Use the icons to view, edit, or delete users.",
+              "Displays user details at a glance. Use the available icons to view, edit, or remove users.",
             position: "top",
           },
         },
@@ -159,7 +159,7 @@ const guideSteps = {
           popover: {
             title: "View User",
             description:
-              "Click here to view detailed information about the user.",
+              "Click to access detailed information about this user.",
             position: "bottom",
           },
         },
@@ -167,7 +167,7 @@ const guideSteps = {
           element: ".user-card .edit-button",
           popover: {
             title: "Edit User",
-            description: "Click here to edit the user's information.",
+            description: "Click to update the user's details and settings.",
             position: "bottom",
           },
         },
@@ -175,7 +175,7 @@ const guideSteps = {
           element: ".user-card .delete-button",
           popover: {
             title: "Delete User",
-            description: "Click here to remove this user from the system.",
+            description: "Click to permanently remove this user from the system.",
             position: "bottom",
           },
         },
@@ -183,7 +183,7 @@ const guideSteps = {
           element: ".user-card .switch-button",
           popover: {
             title: "Block/Unblock User",
-            description: "Toggle this switch to block or unblock the user.",
+            description: "Toggle to restrict or restore the user's access.",
             position: "bottom",
           },
         },
@@ -193,7 +193,7 @@ const guideSteps = {
           element: ".MuiDataGrid-root",
           popover: {
             title: "User List",
-            description: "Displays all users in a tabular format.",
+            description: "Displays all users in a structured table for easy management and navigation.",
             position: "top",
           },
         },
@@ -201,7 +201,7 @@ const guideSteps = {
           element: ".tour-edit",
           popover: {
             title: "Edit User",
-            description: "Click here to modify the user's details.",
+            description: "Click to modify the user's details and update their information.",
             position: "left",
           },
         },
@@ -210,7 +210,7 @@ const guideSteps = {
           popover: {
             title: "View User",
             description:
-              "Click here to see detailed information about the user.",
+              "Click to see a detailed profile and activity of the user",
             position: "left",
           },
         },
@@ -218,7 +218,7 @@ const guideSteps = {
           element: ".tour-delete",
           popover: {
             title: "Delete User",
-            description: "Click here to remove the user from the list.",
+            description: "Click to remove this user permanently from the system.",
             position: "left",
           },
         },
@@ -226,7 +226,7 @@ const guideSteps = {
           element: ".tour-block",
           popover: {
             title: "Block/Unblock User",
-            description: "Click to block or unblock the user.",
+            description: "Click to restrict or restore the user's access.",
             position: "left",
           },
         },
@@ -234,7 +234,7 @@ const guideSteps = {
           element: ".MuiTablePagination-actions",
           popover: {
             title: "Pagination",
-            description: "Click These buttons to move through pages",
+            description: "Use these controls to navigate between pages of user records.",
             position: "left",
           },
         },
@@ -244,24 +244,24 @@ const guideSteps = {
     {
       element: ".add-committee",
       popover: {
-        title: "Add a New Committee",
-        description: "Click this button to create a new committee.",
+        title: "Create a New Committee",
+        description: "Click to create a new committee and define its details.",
         position: "bottom",
       },
     },
     {
       element: ".go-to-committee-type",
       popover: {
-        title: "Switch To Committee Type Tab",
-        description: "List of Committee Type.",
+        title: "Committee Type Tab",
+        description: "View the list of different committee types available.",
         position: "bottom",
       },
     },
     {
       element: ".committee-filter",
       popover: {
-        title: "Filter Committees",
-        description: "Filter committees based on active or inactive status.",
+        title: "Committee Filter",
+        description: "Filter committees based on their active or inactive status.",
         position: "bottom",
       },
     },
@@ -270,42 +270,42 @@ const guideSteps = {
         {
           element: ".committee-card",
           popover: {
-            title: "Committee Details",
+            title: "Committee Overview",
             description:
-              "Each card displays committee details. Use the icons to view, edit, or delete.",
+              "Displays key committee information. Use the icons to view, edit, or delete.",
             position: "top",
           },
         },
         {
           element: ".committee-card .committee-delete",
           popover: {
-            title: "Delete Committee",
-            description: "Click here to remove this committee.",
+            title: "Remove Committee",
+            description: "Click to permanently remove this committee.",
             position: "bottom",
           },
         },
         {
           element: ".committee-card .committee-edit",
           popover: {
-            title: "Edit Committee",
-            description: "Click here to update the committee's information.",
+            title: "Edit Committee Details",
+            description: "Click to update the committee's details and settings.",
             position: "bottom",
           },
         },
         {
           element: ".committee-card .committee-view",
           popover: {
-            title: "View Committee",
-            description: "Click here to view detailed committee information.",
+            title: "View Committee Details",
+            description: "Click to see comprehensive information about this committee.",
             position: "bottom",
           },
         },
         {
           element: ".committee-card .committee-switch",
           popover: {
-            title: "Activate/Deactivate Committee",
+            title: "Enable/Disable Committee",
             description:
-              "Toggle this switch to activate or deactivate the committee.",
+              "Toggle this switch to enable or disable the committee.",
             position: "bottom",
           },
         },
@@ -314,8 +314,8 @@ const guideSteps = {
         {
           element: ".MuiDataGrid-root",
           popover: {
-            title: "Committee List",
-            description: "Displays all committees in a tabular format.",
+            title: "Committee Overview",
+            description: "Displays all committees in a structured table for easy management.",
             position: "top",
           },
         },
@@ -323,33 +323,33 @@ const guideSteps = {
           element: ".committee-delete",
           popover: {
             title: "Delete Committee",
-            description: "Click here to remove this committee.",
+            description: "Click to remove this committee from the system.",
             position: "left",
           },
         },
         {
           element: ".committee-edit",
           popover: {
-            title: "Edit Committee",
-            description: "Click here to modify committee details.",
+            title: "Modify Committee Details",
+            description: "Click to modify committee details and update its settings.",
             position: "left",
           },
         },
         {
           element: ".MuiSwitch-root",
           popover: {
-            title: "Activate/Deactivate Committee",
+            title: "Enable/Disable Committee",
             description:
-              "Use this switch to activate or deactivate the committee.",
+              "Use this switch to enable or disable the committee.",
             position: "left",
           },
         },
         {
           element: ".committee-view",
           popover: {
-            title: "View Committee",
+            title: "Committee Details & Members",
             description:
-              "View detailed information and total members in this committee.",
+              "Click to view detailed information, including total members.",
             position: "left",
           },
         },
@@ -357,7 +357,7 @@ const guideSteps = {
           element: ".MuiTablePagination-actions",
           popover: {
             title: "Pagination Controls",
-            description: "Navigate between pages of the committee list.",
+            description: "Use these buttons to navigate between pages of the committee list.",
             position: "bottom",
           },
         },
@@ -367,8 +367,8 @@ const guideSteps = {
     {
       element: ".my-committee-filter",
       popover: {
-        title: "Filter Committees",
-        description: "Filter committees based on active or inactive status.",
+        title: "Committee Filter",
+        description: "Refine the committee list by filtering based on active or inactive status.",
         position: "bottom",
       },
     },
@@ -376,17 +376,17 @@ const guideSteps = {
     {
       element: ".my-committee-card",
       popover: {
-        title: "Committee Details",
+        title: "Committee Overview",
         description:
-          "Each card displays committee details. Use the icon to view committee member list",
+          "Each card provides key committee details. Use the icon to view the member list.",
         position: "top",
       },
     },
     {
       element: ".my-committee-card .my-committee-view",
       popover: {
-        title: "View Committee",
-        description: "Click here to view detailed committee information.",
+        title: "View Committee Details",
+        description: "Click to access detailed information about this committee.",
         position: "bottom",
       },
     },
@@ -395,16 +395,16 @@ const guideSteps = {
     {
       element: ".add-committeeType",
       popover: {
-        title: "Add a New Committee Type",
-        description: "Click this button to create a new committee.",
+        title: "Create a New Committee Type",
+        description: "Click to add and define a new committee type.",
         position: "bottom",
       },
     },
     {
       element: ".go-to-committee",
       popover: {
-        title: "Switch To Committee Tab",
-        description: "List of Committee.",
+        title: "Switch to Committee Tab",
+        description: "Navigate to the main committee list.",
         position: "bottom",
       },
     },
@@ -413,17 +413,17 @@ const guideSteps = {
         {
           element: ".committee-type-card",
           popover: {
-            title: "Committee Type Details",
+            title: "Committee Type Overview",
             description:
-              "Each card displays committee details. Use the icons to view, edit, or delete.",
+              "Each card provides key details about a committee type. Use the icons to view, edit, or delete.",
             position: "top",
           },
         },
         {
           element: ".committee-type-card .committee-type-delete",
           popover: {
-            title: "Delete Committee Type",
-            description: "Click here to remove this committee.",
+            title: "Remove Committee Type",
+            description: "Click to permanently delete this committee type from the system.",
             position: "bottom",
           },
         },
@@ -431,16 +431,16 @@ const guideSteps = {
           element: ".committee-type-card .committee-type-edit",
           popover: {
             title: "Edit Committee Type",
-            description: "Click here to update the committee's information.",
+            description: "Click to update the committee type's details and settings.",
             position: "bottom",
           },
         },
         {
           element: ".committee-type-card .committee-type-switch",
           popover: {
-            title: "Activate/Deactivate Committee Type",
+            title: "Enable/Disable Committee Type",
             description:
-              "Toggle this switch to activate or deactivate the committee.",
+              "Toggle this switch to activate or deactivate the committee type.",
             position: "bottom",
           },
         },
@@ -450,32 +450,32 @@ const guideSteps = {
           element: ".MuiDataGrid-root",
           popover: {
             title: "Committee Type List",
-            description: "Displays all committees in a tabular format.",
+            description: "Displays all committee types in a structured table for easy management.Displays all committees in a tabular format.",
             position: "top",
           },
         },
         {
           element: ".committee-type-edit",
           popover: {
-            title: "Edit Committee",
-            description: "Click here to modify committee details.",
+            title: "Modify Committee Type",
+            description: "Click to edit and update the committee type's settings.",
             position: "left",
           },
         },
         {
           element: ".committee-type-delete",
           popover: {
-            title: "Delete Committee",
-            description: "Click here to remove this committee.",
+            title: "Delete Committee Type",
+            description: "Click to remove this committee type from the system.",
             position: "left",
           },
         },
         {
           element: ".MuiSwitch-root",
           popover: {
-            title: "Activate/Deactivate Committee",
+            title: "Enable/Disable Committee",
             description:
-              "Use this switch to activate or deactivate the committee.",
+              "Use this switch to activate or deactivate the committee type.",
             position: "left",
           },
         },
@@ -483,7 +483,7 @@ const guideSteps = {
           element: ".MuiTablePagination-actions",
           popover: {
             title: "Pagination Controls",
-            description: "Navigate between pages of the committee list.",
+            description: "Use these buttons to navigate between pages of the committee type list.",
             position: "bottom",
           },
         },
@@ -493,8 +493,8 @@ const guideSteps = {
     {
       element: ".add-amenity",
       popover: {
-        title: "Add Amenity",
-        description: "Click this button to add a new amenity.",
+        title: "Add a New Amenity",
+        description: "Click to create and configure a new amenity.",
         position: "bottom",
       },
     },
@@ -503,34 +503,34 @@ const guideSteps = {
         {
           element: ".amenity-card",
           popover: {
-            title: "Amenity Card",
+            title: "Amenity Overview",
             description:
-              "Each card represents an amenity. Click the icons to view, edit, or delete.",
+              "Each card represents an amenity. Use the icons to view, edit, or delete.",
             position: "top",
           },
         },
         {
           element: ".amenity-card .amenity-edit",
           popover: {
-            title: "Edit Amenity",
-            description: "Click to modify the details of this amenity.",
+            title: "Modify Amenity",
+            description: "Click to update the amenity’s details.",
             position: "bottom",
           },
         },
         {
           element: ".amenity-card .amenity-delete",
           popover: {
-            title: "Delete Amenity",
-            description: "Click to remove this amenity.",
+            title: "Remove Amenity",
+            description: "Click to delete this amenity from the system.",
             position: "bottom",
           },
         },
         {
           element: ".amenity-card .amenity-switch",
           popover: {
-            title: "Toggle Amenity Status",
+            title: "Enable/Disable Amenity",
             description:
-              "Use this switch to activate or deactivate the amenity.",
+              "Toggle this switch to activate or deactivate the amenity.",
             position: "bottom",
           },
         },
@@ -540,15 +540,15 @@ const guideSteps = {
           element: ".MuiDataGrid-root",
           popover: {
             title: "Amenity List",
-            description: "View all amenities in a structured list format.",
+            description: "Displays all amenities in a structured table for efficient management.",
             position: "top",
           },
         },
         {
           element: ".amenity-edit",
           popover: {
-            title: "Edit Amenity",
-            description: "Click to modify this amenity's details.",
+            title: "Edit Amenity Details",
+            description: "Click to modify and update this amenity’s settings.",
             position: "left",
           },
         },
@@ -556,16 +556,16 @@ const guideSteps = {
           element: ".amenity-delete",
           popover: {
             title: "Delete Amenity",
-            description: "Click to remove this amenity from the list.",
+            description: "Click to permanently remove this amenity from the system.",
             position: "left",
           },
         },
         {
           element: ".MuiSwitch-root",
           popover: {
-            title: "Toggle Amenity Status",
+            title: "Enable/Disable Amenity",
             description:
-              "Activate or deactivate the amenity using this switch.",
+              "Use this switch to enable or disable the amenity.",
             position: "left",
           },
         },
@@ -590,7 +590,7 @@ const guideSteps = {
         element: ".room-filter-responsive",
         popover: {
           title: "Filter Rooms",
-          description: "Apply filters to view specific rooms.",
+          description: "Apply filters to view specific rooms based on your preferences.",
           position: "bottom",
         },
       });
@@ -599,7 +599,7 @@ const guideSteps = {
         element: ".room-filter",
         popover: {
           title: "Filter Rooms",
-          description: "Use these options to filter rooms in the list.",
+          description: "Use the filtering options to refine your room search.",
           position: "bottom",
         },
       });
@@ -609,17 +609,17 @@ const guideSteps = {
         {
           element: ".add-room",
           popover: {
-            title: "Add Room",
-            description: "Click this button to add a new room.",
+            title: "Add a New Room",
+            description: "Click to create and configure a new room.",
             position: "bottom",
           },
         },
         {
           element: ".room-card",
           popover: {
-            title: "Room Card",
+            title: "Room Overview",
             description:
-              "Each card displays details of a room. Use the icons to view, edit, or manage the room.",
+              "Each card displays essential details of a room. Use the icons to view, edit, or manage the room.",
             position: "top",
           },
         },
@@ -627,31 +627,31 @@ const guideSteps = {
           element: ".room-card .room-sanitation",
           popover: {
             title: "Sanitation Status",
-            description: "Update the sanitation status for this room.",
+            description: "Update and track the sanitation status of this room.",
             position: "bottom",
           },
         },
         {
           element: ".room-card .room-view",
           popover: {
-            title: "View Room Details",
-            description: "Click to view more information about this room.",
+            title: "Room Details",
+            description: "Click to view complete information about this room.",
             position: "bottom",
           },
         },
         {
           element: ".room-card .room-gallery",
           popover: {
-            title: "Manage Gallery",
-            description: "Update or view the room's photo gallery.",
+            title: "Manage Room Gallery",
+            description: "Update or browse the room's photo gallery.",
             position: "bottom",
           },
         },
         {
           element: ".room-card .room-amenities",
           popover: {
-            title: "Manage Amenities",
-            description: "View or update the amenities for this room.",
+            title: "Manage Room Amenities",
+            description: "View or modify the amenities available in this room.",
             position: "bottom",
           },
         },
@@ -659,7 +659,7 @@ const guideSteps = {
           element: ".room-card .room-food",
           popover: {
             title: "Food Preferences",
-            description: "View or modify food preferences for the room.",
+            description: "View or adjust food preferences for the room.",
             position: "bottom",
           },
         },
@@ -667,15 +667,15 @@ const guideSteps = {
           element: ".room-card .room-barcode",
           popover: {
             title: "Room Barcode",
-            description: "Scan or manage the barcode for this room.",
+            description: "Scan or manage the room’s unique barcode for tracking.",
             position: "bottom",
           },
         },
         {
           element: ".room-card .room-edit",
           popover: {
-            title: "Edit Room",
-            description: "Click to modify this room's details.",
+            title: "Edit Room Details",
+            description: "Modify room settings and update its details.",
             position: "bottom",
           },
         },
@@ -683,7 +683,7 @@ const guideSteps = {
           element: ".room-card .room-delete",
           popover: {
             title: "Delete Room",
-            description: "Click to remove this room from the system.",
+            description: "Remove this room from the system permanently.",
             position: "bottom",
           },
         },
@@ -694,16 +694,16 @@ const guideSteps = {
         {
           element: ".room-card .room-user-view",
           popover: {
-            title: "View User Details",
-            description: "See information about users assigned to this room.",
+            title: "View Assigned Users",
+            description: "See details of users assigned to this room.",
             position: "bottom",
           },
         },
         {
           element: ".room-card .room-user-book-now",
           popover: {
-            title: "Book Room",
-            description: "Quickly book this room for a user.",
+            title: "Book a Room",
+            description: "Quickly reserve this room for a user.",
             position: "bottom",
           },
         }
@@ -716,8 +716,8 @@ const guideSteps = {
     {
       element: ".add-location",
       popover: {
-        title: "Add Location",
-        description: "Click this button to add a new location.",
+        title: "Add a New Location",
+        description: "Click to create and configure a new location.",
         position: "bottom",
       },
     },
@@ -726,9 +726,9 @@ const guideSteps = {
         {
           element: ".location-card",
           popover: {
-            title: "Location Card",
+            title: "Location Overview",
             description:
-              "Each card displays details of a location. Use the icons to view, edit, or delete.",
+              "Each card displays essential details of a location. Use the icons to view, edit, or delete it.",
             position: "top",
           },
         },
@@ -736,7 +736,7 @@ const guideSteps = {
           element: ".location-card .location-edit",
           popover: {
             title: "Edit Location",
-            description: "Click to update the details of this location.",
+            description: "Modify and update the details of this location.",
             position: "bottom",
           },
         },
@@ -744,7 +744,7 @@ const guideSteps = {
           element: ".location-card .location-delete",
           popover: {
             title: "Delete Location",
-            description: "Click to remove this location.",
+            description: "Remove this location permanently from the system.",
             position: "bottom",
           },
         },
@@ -753,7 +753,7 @@ const guideSteps = {
           popover: {
             title: "Activate/Deactivate Location",
             description:
-              "Use this switch to activate or deactivate the Location.",
+              "Toggle this switch to enable or disable the location.",
             position: "left",
           },
         },
@@ -763,7 +763,7 @@ const guideSteps = {
           element: ".MuiDataGrid-root",
           popover: {
             title: "Location List",
-            description: "View all locations in a tabular format.",
+            description: "View all locations in an organized table format.",
             position: "top",
           },
         },
@@ -771,7 +771,7 @@ const guideSteps = {
           element: ".location-edit",
           popover: {
             title: "Edit Location",
-            description: "Click to modify the location's details.",
+            description: "Click to modify the details of a selected location.",
             position: "left",
           },
         },
@@ -779,7 +779,7 @@ const guideSteps = {
           element: ".location-delete",
           popover: {
             title: "Delete Location",
-            description: "Click to delete this location from the list.",
+            description: "Remove a location from the list permanently.",
             position: "left",
           },
         },
@@ -788,7 +788,7 @@ const guideSteps = {
           popover: {
             title: "Activate/Deactivate Location",
             description:
-              "Use this switch to activate or deactivate the Location.",
+              "Enable or disable a location using this switch.",
             position: "left",
           },
         },
@@ -797,7 +797,7 @@ const guideSteps = {
           popover: {
             title: "Pagination Controls",
             description:
-              "Navigate through the list of locations using these controls.",
+              "Navigate through multiple pages of location records.",
             position: "bottom",
           },
         },
@@ -808,7 +808,7 @@ const guideSteps = {
       element: ".add-food",
       popover: {
         title: "Add Food or Beverage",
-        description: "Click this button to add a new food or beverage item.",
+        description: "Click to create and configure a new food or beverage item.",
         position: "bottom",
       },
     },
@@ -817,9 +817,9 @@ const guideSteps = {
         {
           element: ".food-card",
           popover: {
-            title: "Food or Beverage Card",
+            title: "Item Overview",
             description:
-              "Each card displays a food or beverage item. Use the icons to view, edit, or delete.",
+              "Each card displays essential details of a food or beverage item. Use the icons to view, edit, or delete it.",
             position: "top",
           },
         },
@@ -828,7 +828,7 @@ const guideSteps = {
           popover: {
             title: "Edit Item",
             description:
-              "Click to update the details of this food or beverage item.",
+              "Modify and update the details of this food or beverage item.",
             position: "bottom",
           },
         },
@@ -836,7 +836,7 @@ const guideSteps = {
           element: ".food-card .food-delete",
           popover: {
             title: "Delete Item",
-            description: "Click to remove this item from the list.",
+            description: "Remove this item permanently from the list.",
             position: "bottom",
           },
         },
@@ -845,7 +845,7 @@ const guideSteps = {
           popover: {
             title: "Activate/Deactivate Food or Beverage",
             description:
-              "Use this switch to activate or deactivate the Food or Beverage.",
+              "Toggle this switch to enable or disable the item.",
             position: "left",
           },
         },
@@ -856,7 +856,7 @@ const guideSteps = {
           popover: {
             title: "Food and Beverage List",
             description:
-              "View all food and beverage items in a tabular format.",
+              "View all food and beverage items in an organized table format.",
             position: "top",
           },
         },
@@ -864,7 +864,7 @@ const guideSteps = {
           element: ".food-edit",
           popover: {
             title: "Edit Item",
-            description: "Click to modify the details of this item.",
+            description: "Click to modify the details of a selected item.",
             position: "left",
           },
         },
@@ -872,7 +872,7 @@ const guideSteps = {
           element: ".food-delete",
           popover: {
             title: "Delete Item",
-            description: "Click to delete this item from the list.",
+            description: "Remove an item from the list permanently.",
             position: "left",
           },
         },
@@ -881,7 +881,7 @@ const guideSteps = {
           popover: {
             title: "Activate/Deactivate Food or Beverage",
             description:
-              "Use this switch to activate or deactivate the Food or Beverage.",
+              "Enable or disable an item using this switch.",
             position: "left",
           },
         },
@@ -890,7 +890,7 @@ const guideSteps = {
           popover: {
             title: "Pagination Controls",
             description:
-              "Navigate through the list of items using these controls.",
+              "Navigate through multiple pages of food and beverage records.",
             position: "bottom",
           },
         },
@@ -901,7 +901,7 @@ const guideSteps = {
       element: ".add-user-role",
       popover: {
         title: "Add New User Role",
-        description: "Click this button to add a new user role.",
+        description: "Click to create a new user role and configure its permissions.",
         position: "bottom",
       },
     },
@@ -910,23 +910,23 @@ const guideSteps = {
       popover: {
         title: "User Role List",
         description:
-          "View all User Role items in a tabular format.",
+          "View all user roles in a structured table format.",
         position: "top",
       },
     },
     {
       element: ".user-role-edit",
       popover: {
-        title: "Edit Item",
-        description: "Click to modify the details of this role.",
+        title: "Modify User Role",
+        description: "Modify the details and permissions of an existing role.",
         position: "left",
       },
     },
     {
       element: ".user-role-delete",
       popover: {
-        title: "Delete Item",
-        description: "Click to delete this role from the list.",
+        title: "Delete user Role",
+        description: "Remove a user role permanently from the system.",
         position: "left",
       },
     },
@@ -935,7 +935,7 @@ const guideSteps = {
       popover: {
         title: "Activate/Deactivate User Role",
         description:
-          "Use this switch to activate or deactivate the User Role.",
+          "Enable or disable a user role using this switch.",
         position: "left",
       },
     },
@@ -944,7 +944,7 @@ const guideSteps = {
       popover: {
         title: "Pagination Controls",
         description:
-          "Navigate through the list of items using these controls.",
+          "Navigate through multiple pages of user roles.",
         position: "bottom",
       },
     },
@@ -955,7 +955,7 @@ const guideSteps = {
       popover: {
         title: "Users",
         description:
-          "Total Number Of User",
+          "Displays the total number of users.",
         position: "top",
       },
     },
@@ -964,7 +964,7 @@ const guideSteps = {
       popover: {
         title: "Amenities",
         description:
-          "Total Number Of Amenities",
+          "Shows the total count of amenities available.",
         position: "top",
       },
     },
@@ -973,7 +973,7 @@ const guideSteps = {
       popover: {
         title: "Meetings",
         description:
-          "Total Number Of Meetinds",
+          "Indicates the total number of scheduled meetings.",
         position: "top",
       },
     },
@@ -982,7 +982,7 @@ const guideSteps = {
       popover: {
         title: "Cancelled Meetings",
         description:
-          "Total Number Of meetings that are cancelled. You Can Filter them on the basis of Today, This Week, This Month by clicking on three dots.",
+          "Tracks meetings that were canceled. Use the three-dot menu to filter by Today, This Week, or This Month.",
         position: "top",
       },
     },
@@ -991,7 +991,7 @@ const guideSteps = {
       popover: {
         title: "Completed Meetings",
         description:
-          "Total Number Of meetings that are completed. You Can Filter them on the basis of Today, This Week, This Month by clicking on three dots.",
+          "Displays the count of successfully completed meetings. Use the three-dot menu for time-based filtering.",
         position: "top",
       },
     },
@@ -1000,7 +1000,7 @@ const guideSteps = {
       popover: {
         title: "Food & Beverages",
         description:
-          "Total Number Of Food & Beverages",
+          "Lists the total number of food and beverage items.",
         position: "top",
       },
     },
@@ -1009,7 +1009,7 @@ const guideSteps = {
       popover: {
         title: "Committee Meetings",
         description:
-          "Total Number Of Committee",
+          "Shows the total number of committee-related meetings.",
         position: "top",
       },
     },
@@ -1018,7 +1018,7 @@ const guideSteps = {
       popover: {
         title: "Room",
         description:
-          "Total Number Of Rooms",
+          "Indicates the total number of rooms available.",
         position: "top",
       },
     },
@@ -1027,7 +1027,7 @@ const guideSteps = {
       popover: {
         title: "Most Used Room",
         description:
-          "Table shows the most used rooms in percentage",
+          "A table displaying rooms ranked by usage percentage.",
         position: "top",
       },
     },
@@ -1036,7 +1036,7 @@ const guideSteps = {
       popover: {
         title: "Most Frequent Organizer",
         description:
-          "Table shows the most frequent organizer in percentage",
+          "A table showing the most frequent meeting organizers by percentage.",
         position: "top",
       },
     },
@@ -1045,9 +1045,9 @@ const guideSteps = {
     {
       element: ".MuiDataGrid-root",
       popover: {
-        title: "Notification",
+        title: "Notification List",
         description:
-          "See Your Latest meeting alerts here",
+          "View your latest meeting alerts here.",
         position: "top",
       },
     },
@@ -1056,7 +1056,7 @@ const guideSteps = {
       popover: {
         title: "Delete a Notification",
         description:
-          "Delete a notification",
+          "Remove a notification from your list.",
         position: "top",
       },
     },
@@ -1065,7 +1065,7 @@ const guideSteps = {
       popover: {
         title: "Change Notification Status",
         description:
-          "Mark Status as read or unread",
+          "Mark notifications as read or unread.",
         position: "top",
       },
     },
@@ -1076,56 +1076,64 @@ const guideSteps = {
       popover: {
         title: "Logs Table",
         description:
-          "View all logs in a tabular format for better insights.",
+          "View all meeting logs in a structured format.",
         position: "top",
       },
     },
-    {
-      element: ".MuiDataGrid-root .meeting-logs-edit",
-      popover: {
-        title: "Edit Meeting",
-        description: "Click to Edit the meeting.",
-        position: "left",
-      },
-    },
-    {
-      element: ".meeting-logs-postpone",
-      popover: {
-        title: "Postpone Meeting",
-        description: "Click to Postpone the meeting.",
-        position: "left",
-      },
-    },
-    {
-      element: ".meeting-logs-swap",
-      popover: {
-        title: "Swap Meeting",
-        description: "Click to Swap the meeting.",
-        position: "left",
-      },
-    },
-    {
-      element: ".meeting-logs-cancel",
-      popover: {
-        title: "Cancel Meeting",
-        description: "Click to Cancel the meeting.",
-        position: "left",
-      },
-    },
-    {
-      element: ".meeting-logs-approve",
-      popover: {
-        title: "Approve Meeting",
-        description: "Click to Approve the meeting.",
-        position: "left",
-      },
-    },
+    // {
+    //   element: ".MuiDataGrid-root .meeting-logs-edit",
+    //   popover: {
+    //     title: "Modify Meeting",
+    //     description: "Modify meeting details.",
+    //     position: "left",
+    //   },
+    // },
+    // {
+    //   element: ".meeting-logs-postpone",
+    //   popover: {
+    //     title: "Reschedule Meeting",
+    //     description: "Reschedule a meeting to a later time.",
+    //     position: "left",
+    //   },
+    // },
+    // {
+    //   element: ".meeting-logs-swap",
+    //   popover: {
+    //     title: "Swap Meeting",
+    //     description: "Exchange meeting slots between different times or rooms.",
+    //     position: "left",
+    //   },
+    // },
+    // {
+    //   element: ".meeting-logs-cancel",
+    //   popover: {
+    //     title: "Cancel Meeting",
+    //     description: "Click to Cancel the meeting.",
+    //     position: "left",
+    //   },
+    // },
+    // {
+    //   element: ".meeting-logs-approve",
+    //   popover: {
+    //     title: "Approve Meeting",
+    //     description: "Grant approval for a meeting request.",
+    //     position: "left",
+    //   },
+    // },
+    // {
+    //   element: ".meeting-logs-approve",
+    //   popover: {
+    //     title: "Approve Meeting",
+    //     description: "Grant approval for a meeting request.",
+    //     position: "left",
+    //   },
+    // },
     {
       element: ".MuiTablePagination-actions",
       popover: {
         title: "Pagination Controls",
         description:
-          "Navigate through the log entries using these controls.",
+          "Navigate through log entries efficiently.",
         position: "bottom",
       },
     },
@@ -1136,7 +1144,7 @@ const guideSteps = {
       popover: {
         title: "Add New Service",
         description:
-          "List of services",
+          "Click to add a new service.",
         position: "top",
       },
     },
@@ -1145,7 +1153,7 @@ const guideSteps = {
       popover: {
         title: "Service Table",
         description:
-          "List of services",
+          "View all available services in a structured table.",
         position: "top",
       },
     },
@@ -1153,7 +1161,7 @@ const guideSteps = {
       element: ".edit-service",
       popover: {
         title: "Edit Service",
-        description: "Click to Edit the meeting.",
+        description: "Modify service details.",
         position: "left",
       },
     },
@@ -1161,7 +1169,7 @@ const guideSteps = {
       element: ".delete-service",
       popover: {
         title: "Delete Service",
-        description: "Click to Postpone the meeting.",
+        description: "Remove a service from the system.",
         position: "left",
       },
     },
@@ -1169,7 +1177,7 @@ const guideSteps = {
       element: ".MuiSwitch-root",
       popover: {
         title: "Activate or Deactivate a service",
-        description: "Click to Swap the meeting.",
+        description: "Enable or disable a service using this toggle.",
         position: "left",
       },
     },
@@ -1178,7 +1186,7 @@ const guideSteps = {
       popover: {
         title: "Pagination Controls",
         description:
-          "Navigate through the log entries using these controls.",
+          "Navigate through the service list.",
         position: "bottom",
       },
     },
@@ -1189,7 +1197,7 @@ const guideSteps = {
       popover: {
         title: "Add New Item",
         description:
-          "List of services",
+          "Click to add a new stock item.",
         position: "top",
       },
     },
@@ -1198,7 +1206,7 @@ const guideSteps = {
       popover: {
         title: "Pending Amenities",
         description:
-          "List of services",
+          "View pending amenities that need approval or restocking.",
         position: "top",
       },
     },
@@ -1207,32 +1215,32 @@ const guideSteps = {
       popover: {
         title: "Pending Food",
         description:
-          "List of services",
+          "View pending food items that require action.",
         position: "top",
       },
     },
     {
       element: ".MuiDataGrid-root",
       popover: {
-        title: "Service Table",
+        title: "Stock Table",
         description:
-          "List of services",
+          "View all stock items in a structured format.",
         position: "top",
       },
     },
     {
       element: ".decrease-stock",
       popover: {
-        title: "Decrease",
-        description: "Click to Edit the meeting.",
+        title: "Decrease Stock",
+        description: "Reduce stock quantity.",
         position: "left",
       },
     },
     {
       element: ".increase-stock",
       popover: {
-        title: "Delete Service",
-        description: "Click to Postpone the meeting.",
+        title: "Increase Stock",
+        description: "Increase stock quantity.",
         position: "left",
       },
     },
@@ -1241,7 +1249,7 @@ const guideSteps = {
       popover: {
         title: "Pagination Controls",
         description:
-          "Navigate through the log entries using these controls.",
+          "Navigate through the stock entries efficiently.",
         position: "bottom",
       },
     },
