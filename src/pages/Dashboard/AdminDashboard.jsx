@@ -64,9 +64,9 @@ const AdminDashboard = () => {
             headingFontColor="#ffffff"
           />
         </motion.div>
-        <Grid container gap={4}>
+        <Grid container  md={12}>
   {sections.map((item, index) => (
-    <Grid key={index} item xs={index === 2 || index === 3 ? 5 : 12}>
+    <Grid key={index} sx={index === 2 &&{paddingRight: "20px"}} item xs={12} md={index === 2 || index === 3 ? 6 : 12}>
       <Section {...item} />
     </Grid>
   ))}
