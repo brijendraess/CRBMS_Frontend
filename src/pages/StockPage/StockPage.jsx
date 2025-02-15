@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { PaperWrapper } from "../../Style";
 import { DataGrid } from "@mui/x-data-grid";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   IconButton,
   Typography,
@@ -30,6 +30,7 @@ import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
 import CustomButton from "../../components/Common/Buttons/CustomButton";
 import { Restaurant } from "@mui/icons-material";
 import InventoryCard from "./InventoryCard";
+import { handleStartGuide } from "../../utils/utils";
 
 const useStyles = makeStyles({
   lowQuantity: {
@@ -51,6 +52,18 @@ const StockPage = () => {
   const navigate = useNavigate();
 
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
+
+  const location = useLocation();
+  const isAdmin = user?.UserType?.isAdmin === 'admin';  
+  
+
+  useEffect(() => {
+    const hasSeenTour = localStorage.getItem("hasSeenStocks");
+      if(user && !user.lastLoggedIn && (hasSeenTour === "false" || hasSeenTour === null)){
+        handleStartGuide(location, isSmallScreen, isAdmin);
+        localStorage.setItem("hasSeenStocks", "true");
+      }
+  }, [])
 
   // Handle quantity change
   const handleQuantityChange = async (amenityId, uid, id, delta, setData) => {

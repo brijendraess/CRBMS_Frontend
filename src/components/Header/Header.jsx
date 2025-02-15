@@ -86,13 +86,12 @@ const Header = () => {
     const driverObj = driver({
       overlayColor: "black",
       overlayOpacity: "0.8",
-      prevBtnText: "← Go Back",
+      prevBtnText: "← Previous",
       popoverClass: "driverjs-theme",
       steps: guideSteps[location.pathname]?.(isSmallScreen, isAdmin),
       animate: true,
     });
     driverObj.drive(); // Start the tour
-    console.log(isAdmin);
 
   };
 

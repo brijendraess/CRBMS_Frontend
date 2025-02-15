@@ -30,6 +30,8 @@ import {
   VisibilityOutlinedIcon,
 } from "../../components/Common/Buttons/CustomIcon";
 import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
+import { handleStartGuide } from "../../utils/utils";
+import { useLocation } from "react-router-dom";
 
 const MembersPage = () => {
   const [users, setUsers] = useState([]);
@@ -48,7 +50,18 @@ const MembersPage = () => {
     .map((user) => ({ ...user, userType: user?.UserType?.userTypeName }));
   const dispatch = useDispatch();
 
+  const location = useLocation();
+  const isAdmin = user?.UserType?.isAdmin === 'admin';
+
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
+
+  useEffect(() => {
+    const hasSeenTour = localStorage.getItem("hasSeenMembers");
+    if(user && !user.lastLoggedIn && (hasSeenTour === "false" || hasSeenTour === null)){
+      handleStartGuide(location, isSmallScreen, isAdmin);
+      localStorage.setItem("hasSeenMembers", "true");
+    }
+  }, [])
 
   const fetchUsers = async () => {
     try {

@@ -26,6 +26,8 @@ import {
 } from "../../components/Common/Buttons/CustomIcon";
 import PageHeader from "../../components/Common/PageHeader/PageHeader";
 import NewPopUpModal from "../../components/Common/Modals/Popup/NewPopUpModal";
+import { handleStartGuide } from "../../utils/utils";
+import { useLocation } from "react-router-dom";
 
 const ServicesPage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -38,6 +40,17 @@ const ServicesPage = () => {
   const { user } = useSelector((state) => state.user);
   const isSmallScreen = useMediaQuery("(max-width:768px)");
   const dispatch = useDispatch();
+
+  const location = useLocation();
+  const isAdmin = user?.UserType?.isAdmin === 'admin';  
+
+  useEffect(() => {
+    const hasSeenTour = localStorage.getItem("hasSeenServices");
+      if(user && !user.lastLoggedIn && (hasSeenTour === "false" || hasSeenTour === null)){
+        handleStartGuide(location, isSmallScreen, isAdmin);
+        localStorage.setItem("hasSeenServices", "true");
+      }
+  }, [])
 
   useEffect(() => {
     const fetchServices = async () => {
