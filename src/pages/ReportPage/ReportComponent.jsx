@@ -174,22 +174,79 @@ const ReportComponent = () => {
         >
             <Grid container spacing={1.5} display={'flex'} className="report-component" >
                 {[
-                    { title: "Users", count: counts.users, latest: latest.users, color: ["#1da256", "#48d483"], className: "user-report-card", Icon: PersonIcon },
-
-                    { title: "Meetings", count: counts.allMeeting, latest: latest.allMeeting, color: ["#1da256", "#48d483"], className: "meeting-report-card", Icon: AvTimerIcon },
-
-                    { title: "Amenities", count: counts.amenities, latest: latest.amenities, color: ["#2c78e5", "#60aff5"], className: "amenity-report-card", Icon: WifiOutlinedIcon },
-
-                    { title: "Food & Beverages", count: counts.foods, latest: latest.foods, color: ["#e1950e", "#f3cd29"], className: "food-report-card", Icon: RestaurantOutlinedIcon },
-
-                    { title: "Committee", count: counts.committee, latest: latest.committee, color: ["#2dd2a6", "#88f2d5"], className: "committee-report-card", options: ["Active", "Inactive"], Icon: GroupsOutlinedIcon },
-
-                    { title: "Rooms", count: counts.rooms, latest: latest.rooms, color: ["#c012e2", "#eb64fe"], className: "room-report-card", Icon: MeetingRoomOutlinedIcon },
-
-                    { title: "Locations", count: counts.locations, latest: latest.locations, color: ["#c012e2", "#eb64fe"], className: "locations-report-card", Icon: LocationOnOutlinedIcon },
-
-                    { title: "Services", count: counts.services, latest: latest.services, color: ["#c012e2", "#eb64fe"], className: "locations-report-card", Icon: DesignServicesOutlinedIcon }
-
+                    {
+                        title: "Users",
+                        count: counts.users,
+                        latest: latest.users,
+                        color: ["#1da256", "#48d483"],
+                        className: "user-report-card",
+                        Icon: PersonIcon,
+                        backSideHeading: "Recently Registered User"
+                    },
+                    {
+                        title: "Meetings",
+                        count: counts.allMeeting,
+                        latest: latest.allMeeting,
+                        color: ["#ff9800", "#ffc107"], // Changed from green to an orange gradient
+                        className: "meeting-report-card",
+                        Icon: AvTimerIcon,
+                        backSideHeading: "Recently Booked Meeting"
+                    },
+                    {
+                        title: "Amenities",
+                        count: counts.amenities,
+                        latest: latest.amenities,
+                        color: ["#2c78e5", "#60aff5"],
+                        className: "amenity-report-card",
+                        Icon: WifiOutlinedIcon,
+                        backSideHeading: "Recently Added Amenity"
+                    },
+                    {
+                        title: "Food & Beverages",
+                        count: counts.foods,
+                        latest: latest.foods,
+                        color: ["#e1950e", "#f3cd29"],
+                        className: "food-report-card",
+                        Icon: RestaurantOutlinedIcon,
+                        backSideHeading: "Recently Added Food & Beverages"
+                    },
+                    {
+                        title: "Committee",
+                        count: counts.committee,
+                        latest: latest.committee,
+                        color: ["#2dd2a6", "#88f2d5"],
+                        className: "committee-report-card",
+                        options: ["Active", "Inactive"],
+                        Icon: GroupsOutlinedIcon,
+                        backSideHeading: "Recently Added Committee"
+                    },
+                    {
+                        title: "Rooms",
+                        count: counts.rooms,
+                        latest: latest.rooms,
+                        color: ["#c012e2", "#eb64fe"],
+                        className: "room-report-card",
+                        Icon: MeetingRoomOutlinedIcon,
+                        backSideHeading: "Recently Added Room"
+                    },
+                    {
+                        title: "Locations",
+                        count: counts.locations,
+                        latest: latest.locations,
+                        color: ["#00acc1", "#26c6da"], // Changed from purple to a cyan gradient
+                        className: "locations-report-card",
+                        Icon: LocationOnOutlinedIcon,
+                        backSideHeading: "Recently Added Location"
+                    },
+                    {
+                        title: "Services",
+                        count: counts.services,
+                        latest: latest.services,
+                        color: ["#d32f2f", "#ef5350"], // Changed from purple to a red gradient
+                        className: "services-report-card", // Updated class name for clarity
+                        Icon: DesignServicesOutlinedIcon,
+                        backSideHeading: "Recently Added Service"
+                    }
                 ].map((card, index) => (
                     <Grid size={{ xs: 12, sm: 6, md: 3 }} key={index}>
                         <motion.div
