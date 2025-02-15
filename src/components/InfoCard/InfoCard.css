@@ -41,8 +41,8 @@
   perspective: 1000px;
   position: relative;
   display: inline-block;
-  height: 150px;
-  width: 310px;
+  height: 100px;
+  width: 100%;
 }
 
 /* Both faces are absolutely positioned within the flip container */

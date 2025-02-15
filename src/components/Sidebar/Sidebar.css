@@ -7,11 +7,9 @@
   /* background: #FFFB7D; */
 
   /* background-image: linear-gradient(to top, #3f72af, #112d4e); */
-  background-image: linear-gradient(
-    to top,
-    var(--linear-gradient-main),
-    var(--linear-gradient-main-2)
-  );
+  background-image: linear-gradient(to top,
+      var(--linear-gradient-main),
+      var(--linear-gradient-main-2));
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -20,11 +18,13 @@
   z-index: 999;
   transition: all 0.3s ease-in-out;
 }
+
 @media (max-width: 768px) {
   .sidebar {
     width: 0;
   }
 }
+
 .close {
   width: 60px;
   transition: all 0.3s ease-in-out;
@@ -32,10 +32,13 @@
 
 .sidebar .menu-item {
   width: 100%;
-  margin-top: 20px !important;
+  margin-top: 0px !important;
   padding-left: 0 !important;
   margin: 0;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  /* gap: 2px; */
+  /* display: flex; */
+  /* flex-direction: column; */
 }
 
 .sidebar .menu-item li {
@@ -98,6 +101,7 @@
     font-size: 14px;
   }
 }
+
 .sidebar .menu-item li a .icon {
   min-width: 48px;
   display: flex;
@@ -119,4 +123,36 @@
 
 .sidebar.close .menu-item li a .icon {
   font-size: 2rem;
+}
+
+.sidebar.close .menu-item li:not(.active) a:hover {
+  transform: scale(1.8);
+  transform-origin: center;
+  position: relative;
+  z-index: 10;
+  transition: transform 0.2s ease-in-out;
+}
+
+.sidebar.close .menu-item li:not(.active) a:hover::after {
+  content: "";
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.6), transparent); */
+  /* pointer-events: none; */
+  /* allow clicks to pass through */
+  /* animation: shine 0.5s forwards; */
+}
+
+/* Keyframes for the shine animation: moves the gradient overlay from top to bottom */
+@keyframes shine {
+  from {
+    top: -100%;
+  }
+
+  to {
+    top: 100%;
+  }
 }
