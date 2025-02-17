@@ -76,6 +76,7 @@ import KeyboardBackspaceOutlinedIcon from '@mui/icons-material/KeyboardBackspace
 
 
 import VideoCallOutlinedIcon from '@mui/icons-material/VideoCallOutlined';
+import SyncOutlinedIcon from '@mui/icons-material/SyncOutlined';
 export {
   AddIcon,
   RemoveIcon,
@@ -155,5 +156,6 @@ export {
   AssessmentOutlinedIcon,
   CategoryOutlinedIcon,
   KeyboardBackspaceOutlinedIcon,
-  VideoCallOutlinedIcon
+  VideoCallOutlinedIcon,
+  SyncOutlinedIcon
 };

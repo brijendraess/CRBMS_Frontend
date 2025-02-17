@@ -96,7 +96,7 @@ const VerifyEmail = () => {
 
       if (response.data.success) {
         const fullname = response.data.data?.user?.fullname || "User";
-        navigate("/home", {
+        navigate("/dashboard", {
           state: response.data?.data?.user?.UserType?.isAdmin,
         });
         toast.success(`Welcome Back, ${fullname}`);
