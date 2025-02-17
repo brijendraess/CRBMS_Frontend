@@ -39,6 +39,7 @@ import {
   Logout,
   KeyOutlinedIcon,
   InfoOutlinedIcon,
+  SyncOutlinedIcon,
 } from "../Common/Buttons/CustomIcon";
 
 // Driver.js
@@ -50,6 +51,7 @@ import { defaultTheme, ThemeContext } from "../../Theme/Themeprovider";
 import { Palette } from "@mui/icons-material";
 import { themeColors } from "../../Theme/ColorFile";
 import NewPopUpModal from "../Common/Modals/Popup/NewPopUpModal";
+import SyncZimbraCalendar from "../../pages/ProfilePage/SyncZimbraCalendar";
 
 const presets = {
   small: {
@@ -92,6 +94,7 @@ const Header = () => {
   const [unReadCount, setUnReadCount] = useState(0);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isResetPasswordOpen, setIsResetPasswordOpen] = useState(false);
+  const [isZimbraSync, setIsZimbraSync] = useState(false);
   const navigate = useNavigate();
   const [isHelpPopupOpen, setIsHelpPopupOpen] = useState(false);
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
@@ -230,6 +233,11 @@ const Header = () => {
   // Reset Password Handler
   const handleResetPassword = () => {
     setIsResetPasswordOpen(true);
+  };
+
+  // Sync Zimbra Calendar Hook
+  const handleZimbraSync = () => {
+    setIsZimbraSync(true);
   };
 
   return (
@@ -429,6 +437,18 @@ const Header = () => {
         </MenuItem>
         <MenuItem
           onClick={() => {
+            handleZimbraSync();
+            setMenuAnchor(null);
+          }}
+          sx={{ color: "black" }}
+        >
+          <ListItemIcon>
+            <SyncOutlinedIcon fontSize="small" sx={{ color: "black" }} />
+          </ListItemIcon>
+          Sync/Unsync Zimbra
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
             handleLogout();
             setMenuAnchor(null);
           }}
@@ -514,6 +534,13 @@ const Header = () => {
         setIsOpen={setIsResetPasswordOpen}
         title={"Reset Password"}
         modalBody={<ResetPasswordFromProfile user={user} />}
+      />
+
+      <NewPopUpModal
+        isOpen={isZimbraSync}
+        setIsOpen={setIsZimbraSync}
+        title={"Sync Zimbra Calendar"}
+        modalBody={<SyncZimbraCalendar user={user} isOpen={isZimbraSync} />}
       />
     </header>
   );
