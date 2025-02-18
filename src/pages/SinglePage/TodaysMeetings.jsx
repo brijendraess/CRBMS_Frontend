@@ -9,7 +9,8 @@ import {
 } from "@mui/material";
 import "./TodaysMeetings.css";
 
-import flag2 from "../../assets/flag2.webp";
+// import flag2 from "../../assets/flag2.webp";
+import flag2 from "../../assets/kenyaFlag.jpg";
 import dayjs from "dayjs";
 import durationPlugin from "dayjs/plugin/duration";
 import axios from "axios";
