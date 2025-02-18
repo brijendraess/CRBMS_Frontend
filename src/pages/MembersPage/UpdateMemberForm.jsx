@@ -10,6 +10,7 @@ import {
   Avatar,
   IconButton,
   MenuItem,
+  Divider,
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -61,6 +62,7 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
         ]);
         const userData = userResponse.data.data;
         const committees = committeesResponse.data.data.committees || [];
+        console.log(committeesResponse.data.data.committees, "commmmmmmmmmms")
         const services = servicesResponse.data.data.result || [];
         const userRole = userRoleResponse.data.data.result || [];
         setAvailableCommittees(committees);
@@ -356,16 +358,18 @@ const UpdateMemberForm = ({ id, setRefreshPage, setIsEditOpen }) => {
                 ) : null;
               }}
               renderOption={(props, option, { selected }) => (
-                <li
+                <>
+                  <li
                   {...props}
                   style={{
                     backgroundColor: selected ? "#e0f7fa" : "inherit",
                     fontWeight: selected ? "bold" : "normal",
-                    fontSize: "14px",
                   }}
                 >
-                  {option.name}
+                  {option.name + " (" + option.CommitteeType.name + ")"}
                 </li>
+                <Divider variant = "middle" component="li" sx={{ background: "black" }} />
+                  </>
               )}
             />
           </Box>

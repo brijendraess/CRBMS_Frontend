@@ -10,6 +10,7 @@ import {
   Radio,
   Chip,
   Paper,
+  Divider,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
@@ -155,7 +156,10 @@ const MeetingForm = ({ room }) => {
         const formattedCommitteeList = await committeeList.map((committeeData) => {
           return {
             ...committeeData,
-            isAvailable: true
+            isAvailable: true,
+            CommitteeType: {
+              name: committeeData?.CommitteeType?.name
+            }
           }
         });
         setCommitteeList(formattedCommitteeList)
@@ -171,7 +175,11 @@ const MeetingForm = ({ room }) => {
             isAvailable = false
           }
 
-          formattedCommittees.push({ ...committee, isAvailable: isAvailable })
+          formattedCommittees.push({ ...committee, isAvailable: isAvailable,
+            CommitteeType: {
+              name: committee?.CommitteeType?.name
+            }
+           })
         }
 
         setCommitteeList(formattedCommittees)
@@ -381,29 +389,32 @@ const MeetingForm = ({ room }) => {
             }
             getOptionLabel={(option) => option.name}
             renderOption={(props, option) => (
-              <Box
-                component="li"
-                {...props}
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  width: "100%",
-                }}
-              >
-                <div>
-                  {/* Render the attendee's name */}
-                  <span>{option.name}</span>
-                </div>
-                <div sx={{ width: "100%", float: "right" }}>
-                  {/* Render a hardcoded Chip for availability */}
-                  <Chip
-                    label={option.isAvailable ? "Available" : "Unavailable"}
-                    color={option.isAvailable ? "success" : "error"}
-                    size="small"
-                  />
-                </div>
-              </Box>
+              <>
+                <Box
+                  component="li"
+                  {...props}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    width: "100%",
+                  }}
+                >
+                  <div>
+                    {/* Render the attendee's name */}
+                    <span>{option.name + " (" + option?.CommitteeType?.name + ")"}</span>
+                  </div>
+                  <div sx={{ width: "100%", float: "right" }}>
+                    {/* Render a hardcoded Chip for availability */}
+                    <Chip
+                      label={option.isAvailable ? "Available" : "Unavailable"}
+                      color={option.isAvailable ? "success" : "error"}
+                      size="small"
+                    />
+                  </div>
+                </Box>
+                <Divider variant = "middle" component="li" sx={{ background: "black" }} />
+              </>
             )}
             renderInput={(params) => (
               <TextField
