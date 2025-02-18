@@ -388,15 +388,20 @@ const AddMemberForm = ({ setRefreshPage, setIsOpen }) => {
                 return <span>{tagValue.length} selected</span>;
               }}
               renderOption={(props, option, { selected }) => (
-                <li
+                
+                  <>
+                  <li
                   {...props}
                   style={{
                     backgroundColor: selected ? "#e0f7fa" : "inherit",
                     fontWeight: selected ? "bold" : "normal",
                   }}
                 >
-                  {option.name}
+                  {option.name + " (" + option.CommitteeType.name + ")"}
                 </li>
+                <Divider variant = "middle" component="li" sx={{ background: "black" }} />
+                  </>
+                  
               )}
             />
           </Box>

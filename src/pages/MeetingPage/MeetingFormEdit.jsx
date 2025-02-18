@@ -10,6 +10,7 @@ import {
   Radio,
   Chip,
   Paper,
+  Divider,
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
@@ -387,7 +388,8 @@ const MeetingFormEdit = ({ updatedBookingId, room, setRefreshPage }) => {
           }
           getOptionLabel={(option) => option.name}
           renderOption={(props, option) => (
-            <Box
+            <>
+              <Box
               component="li"
               {...props}
               sx={{
@@ -399,7 +401,7 @@ const MeetingFormEdit = ({ updatedBookingId, room, setRefreshPage }) => {
             >
               <div>
                 {/* Render the attendee's name */}
-                <span>{option.name}</span>
+                <span>{option.name + " (" + option?.CommitteeType?.name + ")"}</span>
               </div>
               <div sx={{ width: "100%", float: "right" }}>
                 {/* Render a hardcoded Chip for availability */}
@@ -409,7 +411,10 @@ const MeetingFormEdit = ({ updatedBookingId, room, setRefreshPage }) => {
                                   size="small"
                                 />
               </div>
-            </Box>
+              </Box>
+              <Divider variant = "middle" component="li" sx={{ background: "black" }} />
+            </>
+            
           )}
           renderInput={(params) => (
             <TextField

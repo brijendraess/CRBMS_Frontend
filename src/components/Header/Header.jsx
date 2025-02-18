@@ -539,7 +539,7 @@ const Header = () => {
       <NewPopUpModal
         isOpen={isZimbraSync}
         setIsOpen={setIsZimbraSync}
-        title={"Sync Zimbra Calendar"}
+        title={"Sync/Unsync Zimbra Calendar"}
         modalBody={<SyncZimbraCalendar user={user} isOpen={isZimbraSync} />}
       />
     </header>

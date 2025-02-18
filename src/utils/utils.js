@@ -82,6 +82,9 @@ const fetchActiveCommittee = async (toast, setCommitteeList) => {
     const emails = response.data.data.committees.map((committee) => ({
       name: committee.name,
       id: committee.id,
+      CommitteeType: {
+        name: committee.CommitteeType.name
+      }
     }));
     setCommitteeList(emails);
   } catch (error) {
