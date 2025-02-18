@@ -143,7 +143,7 @@ const ReportPage = () => {
           amenityData.status === "fulfilled"
             ? amenityData.value.data.data.count || 0
             : 0,
-        foods:
+        food:
           foodData.status === "fulfilled"
             ? foodData.value.data.data.count || 0
             : 0,
