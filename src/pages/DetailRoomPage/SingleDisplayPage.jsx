@@ -8,7 +8,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import flag2 from "../../assets/flag2.webp";
+import flag2 from "../../assets/kenyaFlag.jpg";
 import flag from "../../assets/flag.png";
 import Carousel from "../../components/Carousel/Carousel";
 import { useNavigate, useParams } from "react-router-dom";
