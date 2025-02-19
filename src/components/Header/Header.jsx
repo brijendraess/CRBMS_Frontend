@@ -445,7 +445,7 @@ const Header = () => {
           <ListItemIcon>
             <SyncOutlinedIcon fontSize="small" sx={{ color: "black" }} />
           </ListItemIcon>
-          Sync/Unsync Zimbra
+          Sync Zimbra
         </MenuItem>
         <MenuItem
           onClick={() => {
@@ -539,7 +539,7 @@ const Header = () => {
       <NewPopUpModal
         isOpen={isZimbraSync}
         setIsOpen={setIsZimbraSync}
-        title={"Sync/Unsync Zimbra Calendar"}
+        title={"Sync Zimbra Calendar"}
         modalBody={<SyncZimbraCalendar user={user} isOpen={isZimbraSync} />}
       />
     </header>
