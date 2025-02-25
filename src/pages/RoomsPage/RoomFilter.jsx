@@ -48,6 +48,31 @@ const RoomFilter = ({
       elevation={8}
       className={nameOfTheFilterClass}
     >
+       <FormControl sx={{ width: 250 }} size="small">
+        <InputLabel id="demo-multiple-checkbox-label">Services</InputLabel>
+        <Select
+          labelId="demo-multiple-checkbox-label"
+          id="demo-multiple-checkbox"
+          multiple
+          value={selectedServices}
+          onChange={handleChangeServices}
+          input={<OutlinedInput label="Services" />}
+          renderValue={(selected) => (
+            <Box sx={{ display: "flex", gap: 0.5 }}>
+              {selected.map((value) => (
+                <Chip key={value} label={value} size="small" />
+              ))}
+            </Box>
+          )}
+        >
+          {servicesList.map((item, index) => (
+            <MenuItem key={index} value={item}>
+              <Checkbox checked={selectedServices.includes(item)} />
+              <ListItemText primary={item} />
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
       <DatePicker
         value={selectedDate}
         onChange={(newValue) => setSelectedDate(newValue)}
@@ -130,7 +155,7 @@ const RoomFilter = ({
           ))}
         </Select>
       </FormControl>
-      <FormControl sx={{ width: 250 }} size="small">
+      {/* <FormControl sx={{ width: 250 }} size="small">
         <InputLabel id="demo-multiple-checkbox-label">Services</InputLabel>
         <Select
           labelId="demo-multiple-checkbox-label"
@@ -154,7 +179,7 @@ const RoomFilter = ({
             </MenuItem>
           ))}
         </Select>
-      </FormControl>
+      </FormControl> */}
       <FormControl sx={{ width: 360 }} size="small">
         <InputLabel id="demo-multiple-checkbox-label">Food & Beverage</InputLabel>
         <Select

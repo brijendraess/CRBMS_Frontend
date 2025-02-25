@@ -57,11 +57,23 @@ const fetchUsers = async (toast, setEmailsList) => {
       email: user.email,
       id: user.id,
       name: user.fullname,
+      userType: user.user_type
     }));
     setEmailsList(emails);
   } catch (error) {
     toast.error("Failed to load users");
     console.error("Error fetching users:", error);
+  }
+};
+
+const fetchAttendeesType = async (toast, setAttendeesTypeList) => {
+  try {
+    const response = await axios.get("/api/v1/user-type/all");
+    const attendeesType = response.data.data.result;
+    setAttendeesTypeList(attendeesType);
+  } catch (error) {
+    toast.error("Failed to load user type.");
+    console.error("Error fetching user type:", error);
   }
 };
 
@@ -84,7 +96,8 @@ const fetchActiveCommittee = async (toast, setCommitteeList) => {
       id: committee.id,
       CommitteeType: {
         name: committee.CommitteeType.name
-      }
+      },
+      CommitteeMembers: committee.CommitteeMembers
     }));
     setCommitteeList(emails);
   } catch (error) {
@@ -426,5 +439,6 @@ export {
   generateRandomPassword,
   isPasswordValid,
   inventoryStringManipulation,
-  handleStartGuide
+  handleStartGuide,
+  fetchAttendeesType
 };
