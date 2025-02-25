@@ -28,6 +28,7 @@ const MeetingFormSwap = ({ updatedBookingId, room, setRefreshPage, isOpen }) => 
     const [meetings, setMeetings] = useState([]);
     const [myMeetingData, setMeetingData] = useState({});
     const [initialValueState, setInitialValueState] = useState("");
+    const now = new Date();
 
     useEffect(() => {
         if (isOpen) {
@@ -156,7 +157,14 @@ const MeetingFormSwap = ({ updatedBookingId, room, setRefreshPage, isOpen }) => 
                         name="meetingId"
                         size="small"
                         sx={{ width: "100%" }}
-                        options={meetings.filter((m) => m.id != updatedBookingId)} // ✅ List of meetings
+                        options={meetings.filter((m) => {
+                            const [day, month, year] = m.meetingDate.split("/");
+                            const formattedDate = `${year}-${month}-${day}`;
+                            
+                            const meetingDateTime = new Date(`${formattedDate}T${m.startTime.replace(" AM", "").replace(" PM", "")}`);
+                            
+                            return m.id !== updatedBookingId && meetingDateTime > now;
+                        })} // ✅ List of meetings
                         value={meetings.find(m => m.id === formik.values.meetingId) || null} // ✅ Ensure it holds the selected object
                         onChange={(_, newValue) =>
                             formik.setFieldValue("meetingId", newValue ? newValue.id : null) // ✅ Store only meeting.id
