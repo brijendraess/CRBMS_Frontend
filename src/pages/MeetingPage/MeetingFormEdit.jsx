@@ -20,7 +20,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { disablePastDates, fetchActiveCommittee, fetchUsers } from "../../utils/utils";
+import { disablePastDates, fetchActiveCommittee, fetchAttendeesType, fetchUsers } from "../../utils/utils";
 import dayjs from "dayjs";
 import { PopContent } from "../../Style";
 import FormButton from "../../components/Common/Buttons/FormButton/FormButton";
@@ -28,15 +28,22 @@ import FormButton from "../../components/Common/Buttons/FormButton/FormButton";
 const MeetingFormEdit = ({ updatedBookingId, room, setRefreshPage }) => {
   const [emailsList, setEmailsList] = useState([]);
   const [committeeList, setCommitteeList] = useState([]);
+  const [attendeesTypeList, setAttendeesTypeList] = useState([]);
   const [startTime, setStartTime] = useState(""); // Example start time
   const [endTime, setEndTime] = useState(""); // Example end time
   const [difference, setDifference] = useState("0h 0m");
   const [initialValueState, setInitialValueState] = useState("");
   const { user } = useSelector((state) => state.user);
+  const [originalEmailsList, setOriginalEmailsList] = useState([]);
+  const [committeeMembersList, setCommitteeMembersList] = useState([]);
 
   useEffect(() => {
     fetchActiveCommittee(toast, setCommitteeList);
-    fetchUsers(toast, setEmailsList);
+    fetchUsers(toast, (users) => {
+      setOriginalEmailsList(users);
+      setEmailsList(users);
+    });
+    fetchAttendeesType(toast, setAttendeesTypeList);
   }, []);
 
   useEffect(() => {
@@ -63,6 +70,12 @@ const MeetingFormEdit = ({ updatedBookingId, room, setRefreshPage }) => {
               name: data.fullname,
             }))
             : [],
+          attendeesType: room?.meetingsOnly
+            ? room?.meetingsOnly[0]?.UserTypes.map((data) => ({
+              id: data.id,
+              userTypeName: data.userTypeName,
+            }))
+            : [],
           committees: room?.meetingsOnly
             ? room?.meetingsOnly[0]?.Committees
             : [],
@@ -79,7 +92,7 @@ const MeetingFormEdit = ({ updatedBookingId, room, setRefreshPage }) => {
   }, [room]);
 
   const formik = useFormik({
-    initialValues: initialValueState,
+    initialValues: initialValueState ? initialValueState : "",
     enableReinitialize: true,
     validationSchema: Yup.object({
       subject: Yup.string().required("Meeting Title is required"),
@@ -90,6 +103,7 @@ const MeetingFormEdit = ({ updatedBookingId, room, setRefreshPage }) => {
         .min(Yup.ref("startTime"), "End Time must be after Start Time"),
       date: Yup.date().required("Meeting Date is required"),
       attendees: Yup.array().optional(),
+      attendeesType: Yup.array().optional(),
       committees: Yup.array().min(1, "At least one committee must be selected"),
       notes: Yup.string(),
       guestUser: Yup.string(),
@@ -102,6 +116,7 @@ const MeetingFormEdit = ({ updatedBookingId, room, setRefreshPage }) => {
         const payload = {
           ...values,
           attendees: values.attendees.map((attendee) => attendee.id),
+          attendeesType: values.attendeesType.map((attendeeType) => attendeeType.id),
           committees: values.committees.map((committee) => committee.id),
           guestUser: values.guestUser
         };
@@ -124,12 +139,48 @@ const MeetingFormEdit = ({ updatedBookingId, room, setRefreshPage }) => {
   });
 
 
+  // const fetchIsAvailable = async (attendeesList) => {
+  //   if (!formik.values.startTime || !formik.values.endTime || !formik.values.date) return;
+  
+  //   try {
+  //     const response = await axios.post(`/api/v1/user/isAvailable`, {
+  //       attendees: attendeesList.map((attendee) => attendee.id),
+  //       startTime: formik.values.startTime,
+  //       endTime: formik.values.endTime,
+  //       meetingDate: formik.values.date,
+  //     });
+  
+  //     const notAvailableAttendees = response?.data?.data?.notAvailableAttendees;
+  //     setEmailsList((prevEmailsList) =>
+  //       prevEmailsList.map((email) => ({
+  //         ...email,
+  //         isAvailable: !notAvailableAttendees.some(
+  //           (attendee) => attendee.attendeeId === email.id
+  //         ),
+  //       }))
+  //     );
+  //   } catch (error) {
+  //     console.error("Error checking availability:", error);
+  //   }
+  // };
+
   const fetchIsAvailable = async (attendeesList) => {
     if (!formik.values.startTime || !formik.values.endTime || !formik.values.date) return;
   
+    let filteredAttendees = attendeesList;
+  
+    if (formik.values.attendeesType.length > 0) {
+      const selectedAttendeeTypeIds = formik.values.attendeesType.map((type) => type.id);
+      filteredAttendees = attendeesList.filter((attendee) =>
+        selectedAttendeeTypeIds.includes(attendee.userType)
+      );
+    }
+  
+    setEmailsList(filteredAttendees);
+  
     try {
       const response = await axios.post(`/api/v1/user/isAvailable`, {
-        attendees: attendeesList.map((attendee) => attendee.id),
+        attendees: filteredAttendees.map((attendee) => attendee.id),
         startTime: formik.values.startTime,
         endTime: formik.values.endTime,
         meetingDate: formik.values.date,
@@ -176,15 +227,20 @@ const MeetingFormEdit = ({ updatedBookingId, room, setRefreshPage }) => {
   
 
   useEffect(() => {
-    if (emailsList.length > 0) {
-      fetchIsAvailable(emailsList);
-    }
+    // if (emailsList.length > 0) {
+      // fetchIsAvailable(emailsList);
+    // }
 
     if (committeeList.length > 0) {
       fetchCommitteeIsAvailable(committeeList);
     }
 
   }, [formik.values.startTime, formik.values.endTime, formik.values.date, formik.values.attendees, formik.values.committees])
+
+
+  useEffect(() => {
+    fetchIsAvailable(originalEmailsList);
+  }, [formik.values.attendeesType]);
 
   const calculateDifference = () => {
     // Parse times into Date objects (using today's date)
@@ -319,7 +375,37 @@ const MeetingFormEdit = ({ updatedBookingId, room, setRefreshPage }) => {
           size="small"
         />
       </Box>
-      <Box display="flex" gap={1} justifyContent="space-between">
+        <Box display="flex" justifyContent="space-between" >
+          <Autocomplete
+            multiple
+            id="attendeesType"
+            name="attendeesType"
+            size="small"
+            sx={{
+              width: "100%",
+            }}
+            options={attendeesTypeList}
+            value={formik.values.attendeesType || []}
+            onChange={(_, newValue) => formik.setFieldValue("attendeesType", newValue)}
+            getOptionLabel={(option) => option?.userTypeName}
+            renderOption={(props, option) => (
+              <Box component="li" {...props} sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+                <span>{option?.userTypeName}</span>
+              </Box>
+            )}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Select Attendees Type"
+                error={formik.touched.attendeesType && Boolean(formik.errors.attendeesType)}
+                helperText={formik.touched.attendeesType && formik.errors.attendeesType}
+              />
+            )}
+            disableCloseOnSelect
+            isOptionEqualToValue={(option, value) => option.id === value.id}
+          />
+        </Box>
+      <Box display="flex" gap={1} justifyContent="space-between" mt={2}>
         <Autocomplete
           multiple
           id="attendees"
@@ -430,6 +516,53 @@ const MeetingFormEdit = ({ updatedBookingId, room, setRefreshPage }) => {
           isOptionEqualToValue={(option, value) => option.id === value.id}
         />
       </Box>
+        {formik.values.committees && formik.values.committees.length > 0 && (
+          <Box mt={1} p={2} sx={{ backgroundColor: "#f5f5f5", borderRadius: 1 }}>
+            <Typography variant="subtitle2">Selected Committee Members:</Typography>
+
+            <Box
+              sx={{
+                p: 2,
+                border: "1px solid #ddd",
+                borderRadius: 1,
+                backgroundColor: "#fff",
+                maxHeight: "200px", // Set a max height for scrolling
+                overflowY: "auto",
+                paddingRight: "8px",
+                "&::-webkit-scrollbar": {
+                  width: "5px",
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  backgroundColor: "#bbb",
+                  borderRadius: "4px",
+                },
+                "&::-webkit-scrollbar-track": {
+                  backgroundColor: "#f5f5f5",
+                },
+              }}
+            >
+              {formik.values.committees.map((committee) => (
+                <Box key={committee.id} sx={{ mb: 2 }}>
+                  <Typography variant="body2" fontWeight="bold">
+                    {committee.name} ({committee?.CommitteeType?.name})
+                  </Typography>
+
+                  {committee.CommitteeMembers?.length > 0 ? (
+                    committee.CommitteeMembers.map((member) => (
+                      <Typography key={member?.User?.id} variant="body2">
+                        - {member?.User?.fullname} ({member?.User?.email})
+                      </Typography>
+                    ))
+                  ) : (
+                    <Typography variant="body2" color="textSecondary">
+                      No members assigned.
+                    </Typography>
+                  )}
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        )}
       <Box display="flex" gap={1} justifyContent="space-between">
         {/* Description */}
         <TextField
