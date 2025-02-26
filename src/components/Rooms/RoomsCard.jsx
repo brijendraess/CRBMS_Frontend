@@ -50,6 +50,9 @@ const RoomsCard = ({
   setDeleteUpdateStatus,
   setRefreshPage,
   meetingCurrentData,
+  selectedFilterMeetingDate,
+  selectedFilterMeetingStartTime,
+  selectedFilterMeetingEndingTime
 }) => {
   const navigate = useNavigate();
   const [hover, setHover] = useState(false);
@@ -575,7 +578,7 @@ const RoomsCard = ({
         isOpen={isBookNowOpen}
         setIsOpen={setIsBookNowOpen}
         title={"Add New Meeting"}
-        modalBody={<MeetingForm room={room} />}
+        modalBody={<MeetingForm room={room} selectedFilterMeetingDate={selectedFilterMeetingDate ? selectedFilterMeetingDate : null} selectedFilterMeetingStartTime={selectedFilterMeetingStartTime ? selectedFilterMeetingStartTime : null} selectedFilterMeetingEndingTime={selectedFilterMeetingEndingTime ? selectedFilterMeetingEndingTime : null}/>}
       />
       <DeleteModal
         open={isDeleteOpen}

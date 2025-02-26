@@ -122,6 +122,31 @@ const ResponsiveFilter = ({
         onClose={handleClose}
       >
         <Box sx={{ padding: "16px", width: 300 }}>
+        <FormControl fullWidth size="small" sx={{ marginBottom: "16px" }}>
+                  <InputLabel id="demo-multiple-checkbox-label">Services</InputLabel>
+                  <Select
+                    labelId="demo-multiple-checkbox-label"
+                    id="demo-multiple-checkbox"
+                    multiple
+                    value={selectedServices}
+                    onChange={handleChangeServices}
+                    input={<OutlinedInput label="Services" />}
+                    renderValue={(selected) => (
+                      <Box sx={{ display: "flex", gap: 0.5 }}>
+                        {selected.map((value) => (
+                          <Chip key={value} label={value} size="small" />
+                        ))}
+                      </Box>
+                    )}
+                  >
+                    {servicesList.map((item, index) => (
+                      <MenuItem key={index} value={item}>
+                        <Checkbox checked={selectedServices.includes(item)} />
+                        <ListItemText primary={item} />
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
           <DatePicker
             value={selectedDate}
             onChange={(newValue) => setSelectedDate(newValue)}
@@ -213,31 +238,7 @@ const ResponsiveFilter = ({
                     ))}
                   </Select>
                 </FormControl>
-                <FormControl fullWidth size="small" sx={{ marginBottom: "16px" }}>
-                  <InputLabel id="demo-multiple-checkbox-label">Services</InputLabel>
-                  <Select
-                    labelId="demo-multiple-checkbox-label"
-                    id="demo-multiple-checkbox"
-                    multiple
-                    value={selectedServices}
-                    onChange={handleChangeServices}
-                    input={<OutlinedInput label="Services" />}
-                    renderValue={(selected) => (
-                      <Box sx={{ display: "flex", gap: 0.5 }}>
-                        {selected.map((value) => (
-                          <Chip key={value} label={value} size="small" />
-                        ))}
-                      </Box>
-                    )}
-                  >
-                    {servicesList.map((item, index) => (
-                      <MenuItem key={index} value={item}>
-                        <Checkbox checked={selectedServices.includes(item)} />
-                        <ListItemText primary={item} />
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                
                 <FormControl fullWidth size="small" sx={{ marginBottom: "16px" }}>
                   <InputLabel id="demo-multiple-checkbox-label">Food & Beverage</InputLabel>
                   <Select

@@ -25,7 +25,9 @@ import { hideLoading, showLoading } from "../../Redux/alertSlicer";
 import { PopContent } from "../../Style";
 import FormButton from "../../components/Common/Buttons/FormButton/FormButton";
 
-const MeetingForm = ({ room }) => {
+const MeetingForm = ({ room, selectedFilterMeetingDate,
+  selectedFilterMeetingStartTime,
+  selectedFilterMeetingEndingTime }) => {
   const [emailsList, setEmailsList] = useState([]);
   const [attendeesTypeList, setAttendeesTypeList] = useState([]);
   const [committeeMembersList, setCommitteeMembersList] = useState([]);
@@ -34,10 +36,14 @@ const MeetingForm = ({ room }) => {
   const [endTime, setEndTime] = useState(""); // Example end time
   const [difference, setDifference] = useState("0h 0m");
   const [originalEmailsList, setOriginalEmailsList] = useState([]);
+  const [originalCommitteeList, setOriginalCommitteeList] = useState([]);
 
   const { user } = useSelector((state) => state.user);
   useEffect(() => {
-    fetchActiveCommittee(toast, setCommitteeList);
+    fetchActiveCommittee(toast, (users) => {
+      setOriginalCommitteeList(users);
+      setCommitteeList(users);
+    });
     // fetchUsers(toast, setEmailsList);
     fetchUsers(toast, (users) => {
       setOriginalEmailsList(users);
@@ -54,9 +60,9 @@ const MeetingForm = ({ room }) => {
       subject: "",
       agenda: "",
       guestUser: "",
-      startTime: null,
-      endTime: null,
-      date: null,
+      startTime: selectedFilterMeetingStartTime ? selectedFilterMeetingStartTime : null,
+      endTime: selectedFilterMeetingEndingTime ? selectedFilterMeetingEndingTime : null,
+      date: selectedFilterMeetingDate ? selectedFilterMeetingDate : null,
       attendees: [],
       committees: [],
       attendeesType: [],
@@ -178,12 +184,12 @@ const MeetingForm = ({ room }) => {
     }
   };
 
-  const fetchCommitteeIsAvailable = async (committeeList) => {
+  const fetchCommitteeIsAvailable = async () => {
     if (!formik.values.startTime || !formik.values.endTime || !formik.values.date) return;
 
     try {
       const response = await axios.post(`/api/v1/committee/isAvailable`, {
-        committees: committeeList.map((committee) => committee.id),
+        committees: originalCommitteeList.map((committee) => committee.id),
         startTime: formik.values.startTime,
         endTime: formik.values.endTime,
         meetingDate: formik.values.date,
@@ -191,7 +197,7 @@ const MeetingForm = ({ room }) => {
 
       const notAvailableCommittees = response?.data?.data?.notAvailableCommittees;
       if (notAvailableCommittees.length == 0) {
-        const formattedCommitteeList = await committeeList.map((committeeData) => {
+        const formattedCommitteeList = await originalCommitteeList.map((committeeData) => {
           return {
             ...committeeData,
             isAvailable: true,
@@ -206,7 +212,7 @@ const MeetingForm = ({ room }) => {
 
       if (notAvailableCommittees.length > 0) {
         let formattedCommittees = [];
-        for (let committee of committeeList) {
+        for (let committee of originalCommitteeList) {
           let isAvailable = true;
 
           const notAvailable = await notAvailableCommittees.find((committeeData) => committeeData.committeeId === committee.id);
@@ -245,17 +251,18 @@ const MeetingForm = ({ room }) => {
   // }
 
   useEffect(() => {
-      fetchIsAvailable();
 
-    if (committeeList.length > 0) {
-      fetchCommitteeIsAvailable(committeeList);
+    // if (committeeList.length > 0) {
+    //   fetchCommitteeIsAvailable(committeeList);
+    // }
+    if (formik.values.date && formik.values.startTime && formik.values.endTime && originalCommitteeList.length > 0) {
+      fetchCommitteeIsAvailable();
     }
   }, [
     formik.values.startTime,
     formik.values.endTime,
     formik.values.date,
-    formik.values.attendees,
-    formik.values.committees,
+    originalCommitteeList
   ]);
 
   useEffect(() => {
@@ -263,6 +270,12 @@ const MeetingForm = ({ room }) => {
   }, [
     formik.values.attendeesType,
   ]);
+
+  useEffect(() => {
+      if (formik.values.date && formik.values.startTime && formik.values.endTime && originalEmailsList.length > 0) {
+        fetchIsAvailable();
+      }
+  }, [formik.values.date, formik.values.startTime, formik.values.endTime, originalEmailsList]);
 
 //   useEffect(() => {
 //     fetchSelectedCommitteeMembers();

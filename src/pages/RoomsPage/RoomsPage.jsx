@@ -310,6 +310,9 @@ const RoomsPage = () => {
                         : []
                     }
                     setDeleteUpdateStatus={setDeleteUpdateStatus}
+                    selectedFilterMeetingDate={selectedDate ? selectedDate : null}
+                    selectedFilterMeetingStartTime={meetingStartTime ? meetingStartTime : null}
+                    selectedFilterMeetingEndingTime={meetingEndingTime ? meetingEndingTime : null}
                   />
                 </Grid2>
               ))}
