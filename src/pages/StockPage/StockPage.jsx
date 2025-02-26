@@ -31,6 +31,7 @@ import CustomButton from "../../components/Common/Buttons/CustomButton";
 import { Restaurant } from "@mui/icons-material";
 import InventoryCard from "./InventoryCard";
 import { handleStartGuide } from "../../utils/utils";
+import WifiOutlinedIcon from '@mui/icons-material/WifiOutlined';
 
 const useStyles = makeStyles({
   lowQuantity: {
@@ -278,7 +279,7 @@ const StockPage = () => {
             background={"var(--linear-gradient-main)"}
             nameOfTheClass="pending-amenities"
             onClick={handleNavigatePendingAmenities}
-            Icon={Groups2OutlinedIcon}
+            Icon={WifiOutlinedIcon}
             title="Pending Amenities"
             badgeContent={pendingAmenities}
           />
