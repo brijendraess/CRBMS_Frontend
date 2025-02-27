@@ -313,6 +313,13 @@ const MeetingForm = ({ room, selectedFilterMeetingDate,
     <PopContent>
       <Box component="form" onSubmit={formik.handleSubmit}>
         {/* Date */}
+        {formik.values.date && formik.values.startTime && formik.values.endTime ? 
+            <></>
+          :
+          <Typography variant="subtitle1" component="p" mb={0} size='small' style={{color: "orange", fontSize: "small"}}>
+            Fill meeting timings to get availability of Attendees and Committees.
+          </Typography>
+        }
         <Box display="flex" justifyContent="space-between" flexDirection={{ xs: 'column', sm: 'row' }} gap={1}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker

@@ -13,6 +13,7 @@ import {
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
 import "./RoomsPage.css";
 import { ContentHeader } from "../../Style";
+import { disablePastDates } from "../../utils/utils";
 
 const RoomFilter = ({
   handleChangeAmenities,
@@ -73,7 +74,7 @@ const RoomFilter = ({
           ))}
         </Select>
       </FormControl>
-      <DatePicker
+      {/* <DatePicker
         value={selectedDate}
         onChange={(newValue) => setSelectedDate(newValue)}
         format="DD-MM-YYYY"
@@ -84,6 +85,26 @@ const RoomFilter = ({
             height: "40px",
           },
         }}
+      /> */}
+      <DatePicker
+        value={selectedDate}
+        onChange={(value) => setSelectedDate(value)}
+        // shouldDisableDate={disablePastDates}
+        disablePast
+        sx={{
+          "& .MuiInputBase-root": {
+            fontSize: "16px",
+            height: "40px",
+          },
+        }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            margin="normal"
+            fullWidth
+            size="small"
+          />
+        )}
       />
       <TimePicker
         value={meetingStartTime}

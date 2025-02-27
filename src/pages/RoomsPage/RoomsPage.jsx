@@ -154,6 +154,7 @@ const RoomsPage = () => {
     refreshPage,
     selectedDate,
     meetingStartTime,
+    meetingEndingTime,
     selectedAmenities,
     selectedLocation,
     selectedServices,
