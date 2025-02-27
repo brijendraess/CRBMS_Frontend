@@ -436,7 +436,7 @@ const RoomsCard = ({
                     className="room-barcode"
                     fullWidth
                     variant="contained"
-                    title="Barcode"
+                    title="QR Code"
                     onClick={handleBarCode}
                     sx={{
                       background: "white",
@@ -559,7 +559,7 @@ const RoomsCard = ({
       <NewPopUpModal
         isOpen={isBarCodeOpen}
         setIsOpen={setIsBarCodeOpen}
-        title={"Room Barcode"}
+        title={"Room QR Code"}
         modalBody={<BarCode urlData={urlData} />}
       />
       <NewPopUpModal
