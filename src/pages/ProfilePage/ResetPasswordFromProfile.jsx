@@ -77,6 +77,7 @@ const ResetPasswordFromProfile = () => {
         toast.success("Password Reset Successfully");
         resetForm();
       } catch (error) {
+        toast.error("Unable to reset password.")
         console.error(error);
       } finally {
         setSubmitting(false);
