@@ -69,7 +69,7 @@ const fetchUsers = async (toast, setEmailsList) => {
 const fetchAttendeesType = async (toast, setAttendeesTypeList) => {
   try {
     const response = await axios.get("/api/v1/user-type/all");
-    const attendeesType = response.data.data.result;
+    const attendeesType = response.data.data.result.filter((attendeeType) => attendeeType.status === true);
     setAttendeesTypeList(attendeesType);
   } catch (error) {
     toast.error("Failed to load user type.");
